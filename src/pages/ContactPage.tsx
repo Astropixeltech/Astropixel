@@ -45,10 +45,14 @@ const ContactPage = () => {
   ];
 
   const contactCards = [
-    { icon: Phone, label: "Call us", value: phone, href: `tel:${normalizePhoneForHref(phone)}`, accent: "from-cyan-400/20 to-transparent" },
-    { icon: Mail, label: "Email us", value: email, href: `mailto:${email}`, accent: "from-primary/20 to-transparent" },
-    { icon: MapPin, label: "Location", value: address, accent: "from-violet-400/20 to-transparent" },
-    { icon: Clock, label: "Working hours", value: "Sat – Thu · 10:00 AM – 8:00 PM", accent: "from-amber-300/20 to-transparent" },
+    { icon: Phone, label: "Call us", value: phone, href: `tel:${normalizePhoneForHref(phone)}`,
+      bg: "#DCF2E4", ink: "#0F5132", iconBg: "#B8E6C8" },
+    { icon: Mail, label: "Email us", value: email, href: `mailto:${email}`,
+      bg: "#FCE4D6", ink: "#8A3A12", iconBg: "#F8C7A8" },
+    { icon: MapPin, label: "Location", value: address,
+      bg: "#F3E1F4", ink: "#5B2166", iconBg: "#E5C3E8" },
+    { icon: Clock, label: "Working hours", value: "Sat – Thu · 10:00 AM – 8:00 PM",
+      bg: "#DCEBFF", ink: "#0B3D91", iconBg: "#B8D4FA" },
   ];
 
   return (
@@ -143,18 +147,20 @@ const ContactPage = () => {
                   >
                     <Wrapper
                       {...(c.href ? { href: c.href } : {})}
-                      className="group relative block h-full p-6 rounded-3xl bg-[#F6F7F9] border border-black/5 hover:border-primary/30 hover:-translate-y-1 hover:shadow-xl transition-all duration-300 overflow-hidden"
+                      style={{ backgroundColor: c.bg, color: c.ink }}
+                      className="group relative block h-full p-6 rounded-3xl border border-black/5 hover:-translate-y-1 hover:shadow-xl transition-all duration-300 overflow-hidden"
                     >
                       <div className="relative">
                         <div className="flex items-start justify-between mb-8">
-                          <div className="w-12 h-12 rounded-2xl bg-white border border-black/5 flex items-center justify-center shadow-sm">
-                            <c.icon className="w-5 h-5 text-primary" />
+                          <div className="w-12 h-12 rounded-2xl flex items-center justify-center shadow-sm"
+                            style={{ backgroundColor: c.iconBg, color: c.ink }}>
+                            <c.icon className="w-5 h-5" />
                           </div>
-                          {c.href && <ArrowUpRight className="w-5 h-5 text-neutral-400 group-hover:text-primary group-hover:rotate-45 transition-all" />}
+                          {c.href && <ArrowUpRight className="w-5 h-5 opacity-60 group-hover:opacity-100 group-hover:rotate-45 transition-all" style={{ color: c.ink }} />}
                         </div>
 
-                        <div className="text-xs uppercase tracking-wider text-neutral-500 mb-2">{c.label}</div>
-                        <div className="text-lg font-semibold text-black leading-snug">{c.value}</div>
+                        <div className="text-xs uppercase tracking-wider mb-2 opacity-70">{c.label}</div>
+                        <div className="text-lg font-semibold leading-snug">{c.value}</div>
                       </div>
                     </Wrapper>
                   </motion.div>
@@ -202,8 +208,8 @@ const ContactPage = () => {
                         viewport={{ once: true }}
                         transition={{ delay: i * 0.05 }}
                         whileHover={{ y: -3 }}
-                        style={{ ["--brand" as any]: s.brand }}
-                        className="group relative flex items-center gap-3 p-4 rounded-2xl bg-[#F6F7F9] border border-black/5 overflow-hidden hover:border-[color:var(--brand)]/40 hover:shadow-[0_10px_30px_-10px_var(--brand)] transition-all"
+                        style={{ ["--brand" as any]: s.brand, backgroundColor: `${s.brand}12` }}
+                        className="group relative flex items-center gap-3 p-4 rounded-2xl border border-[color:var(--brand)]/15 overflow-hidden hover:border-[color:var(--brand)]/50 hover:shadow-[0_10px_30px_-10px_var(--brand)] transition-all"
                       >
                         
                         <span className="relative w-11 h-11 rounded-xl flex items-center justify-center shrink-0 transition-transform duration-300 group-hover:scale-110"
