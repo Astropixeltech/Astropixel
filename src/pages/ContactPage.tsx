@@ -45,10 +45,14 @@ const ContactPage = () => {
   ];
 
   const contactCards = [
-    { icon: Phone, label: "Call us", value: phone, href: `tel:${normalizePhoneForHref(phone)}`, accent: "from-cyan-400/20 to-transparent" },
-    { icon: Mail, label: "Email us", value: email, href: `mailto:${email}`, accent: "from-primary/20 to-transparent" },
-    { icon: MapPin, label: "Location", value: address, accent: "from-violet-400/20 to-transparent" },
-    { icon: Clock, label: "Working hours", value: "Sat – Thu · 10:00 AM – 8:00 PM", accent: "from-amber-300/20 to-transparent" },
+    { icon: Phone, label: "Call us", value: phone, href: `tel:${normalizePhoneForHref(phone)}`,
+      bg: "#DCF2E4", ink: "#0F5132", iconBg: "#B8E6C8" },
+    { icon: Mail, label: "Email us", value: email, href: `mailto:${email}`,
+      bg: "#FCE4D6", ink: "#8A3A12", iconBg: "#F8C7A8" },
+    { icon: MapPin, label: "Location", value: address,
+      bg: "#F3E1F4", ink: "#5B2166", iconBg: "#E5C3E8" },
+    { icon: Clock, label: "Working hours", value: "Sat – Thu · 10:00 AM – 8:00 PM",
+      bg: "#DCEBFF", ink: "#0B3D91", iconBg: "#B8D4FA" },
   ];
 
   return (
