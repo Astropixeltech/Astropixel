@@ -147,18 +147,20 @@ const ContactPage = () => {
                   >
                     <Wrapper
                       {...(c.href ? { href: c.href } : {})}
-                      className="group relative block h-full p-6 rounded-3xl bg-[#F6F7F9] border border-black/5 hover:border-primary/30 hover:-translate-y-1 hover:shadow-xl transition-all duration-300 overflow-hidden"
+                      style={{ backgroundColor: c.bg, color: c.ink }}
+                      className="group relative block h-full p-6 rounded-3xl border border-black/5 hover:-translate-y-1 hover:shadow-xl transition-all duration-300 overflow-hidden"
                     >
                       <div className="relative">
                         <div className="flex items-start justify-between mb-8">
-                          <div className="w-12 h-12 rounded-2xl bg-white border border-black/5 flex items-center justify-center shadow-sm">
-                            <c.icon className="w-5 h-5 text-primary" />
+                          <div className="w-12 h-12 rounded-2xl flex items-center justify-center shadow-sm"
+                            style={{ backgroundColor: c.iconBg, color: c.ink }}>
+                            <c.icon className="w-5 h-5" />
                           </div>
-                          {c.href && <ArrowUpRight className="w-5 h-5 text-neutral-400 group-hover:text-primary group-hover:rotate-45 transition-all" />}
+                          {c.href && <ArrowUpRight className="w-5 h-5 opacity-60 group-hover:opacity-100 group-hover:rotate-45 transition-all" style={{ color: c.ink }} />}
                         </div>
 
-                        <div className="text-xs uppercase tracking-wider text-neutral-500 mb-2">{c.label}</div>
-                        <div className="text-lg font-semibold text-black leading-snug">{c.value}</div>
+                        <div className="text-xs uppercase tracking-wider mb-2 opacity-70">{c.label}</div>
+                        <div className="text-lg font-semibold leading-snug">{c.value}</div>
                       </div>
                     </Wrapper>
                   </motion.div>
