@@ -98,7 +98,8 @@ const WorkPage = () => {
       <section id="site-hero" className="relative overflow-hidden -mt-20 pt-28 pb-12 lg:pt-32 lg:pb-16 rounded-b-[2.5rem]">
         <div className="absolute inset-0 bg-black" />
         <img src={servicesHeroBg.url} alt="" loading="eager" decoding="async"
-          className="absolute inset-x-0 top-0 w-full h-full object-cover object-top scale-110 opacity-85" />
+          style={{ filter: "blur(21px)" }}
+          className="absolute inset-x-0 top-0 w-full h-full object-cover object-top scale-125 opacity-85" />
         <div className="absolute inset-0 bg-black/35" />
         <div className="container mx-auto px-6 relative z-10">
           <div className="max-w-4xl mx-auto text-center">
