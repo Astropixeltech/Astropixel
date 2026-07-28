@@ -208,8 +208,8 @@ const ContactPage = () => {
                         viewport={{ once: true }}
                         transition={{ delay: i * 0.05 }}
                         whileHover={{ y: -3 }}
-                        style={{ ["--brand" as any]: s.brand }}
-                        className="group relative flex items-center gap-3 p-4 rounded-2xl bg-[#F6F7F9] border border-black/5 overflow-hidden hover:border-[color:var(--brand)]/40 hover:shadow-[0_10px_30px_-10px_var(--brand)] transition-all"
+                        style={{ ["--brand" as any]: s.brand, backgroundColor: `${s.brand}12` }}
+                        className="group relative flex items-center gap-3 p-4 rounded-2xl border border-[color:var(--brand)]/15 overflow-hidden hover:border-[color:var(--brand)]/50 hover:shadow-[0_10px_30px_-10px_var(--brand)] transition-all"
                       >
                         
                         <span className="relative w-11 h-11 rounded-xl flex items-center justify-center shrink-0 transition-transform duration-300 group-hover:scale-110"
