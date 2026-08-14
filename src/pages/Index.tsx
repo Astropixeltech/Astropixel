@@ -463,7 +463,7 @@ const Index = () => {
       <div className="hidden lg:block">
         <ProjectMarquee />
       </div>
-      <section className="py-12 lg:py-16 bg-background relative z-[15]">
+      <section className="py-2 lg:py-4 bg-background relative z-[15]">
         <div className="container mx-auto px-6">
           {(() => {
             const defaultLogos: { src: string; alt: string; scale?: number }[] = [
@@ -530,7 +530,7 @@ const Index = () => {
       </section>
 
       {/* ══════════ SERVICES — BENTO GRID ══════════ */}
-      <section className="pb-16 lg:pb-24 relative bg-background">
+      <section className="pb-16 lg:pb-24 pt-4 lg:pt-8 relative bg-background">
         <div className="container mx-auto px-6 relative z-10">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
