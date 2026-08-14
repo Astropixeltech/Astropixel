@@ -98,11 +98,11 @@ const HeroSection = React.forwardRef<HTMLDivElement, HeroSectionProps>(
               {/* Ref-styled Button */}
               <a
                 href={ctaHref}
-                className="group relative flex items-center gap-3 bg-neutral-950 text-white px-8 py-4 rounded-full text-lg font-medium transition-all hover:bg-neutral-800"
+                className="group relative flex items-center gap-2 bg-neutral-950 text-white px-5 py-2.5 rounded-full text-sm font-medium transition-all hover:bg-neutral-800"
               >
                 <span>{ctaText}</span>
-                <div className="bg-white text-neutral-950 p-1.5 rounded-full transition-transform group-hover:rotate-45">
-                  <ArrowUpRight size={18} strokeWidth={2.5} />
+                <div className="bg-white text-neutral-950 p-1 rounded-full transition-transform group-hover:rotate-45">
+                  <ArrowUpRight size={14} strokeWidth={2.5} />
                 </div>
               </a>
 
@@ -112,7 +112,7 @@ const HeroSection = React.forwardRef<HTMLDivElement, HeroSectionProps>(
                   {[1, 2, 3, 4].map((i) => (
                     <div 
                       key={i} 
-                      className="w-10 h-10 rounded-full border-2 border-white bg-neutral-200 overflow-hidden ring-1 ring-neutral-100"
+                      className="w-6 h-6 rounded-full border border-white bg-neutral-200 overflow-hidden ring-1 ring-neutral-100"
                     >
                       <img 
                         src={`https://i.pravatar.cc/100?img=${i + 10}`} 
@@ -125,10 +125,10 @@ const HeroSection = React.forwardRef<HTMLDivElement, HeroSectionProps>(
                 <div className="flex flex-col items-start gap-0.5">
                   <div className="flex text-amber-500">
                     {[1, 2, 3, 4, 5].map((s) => (
-                      <Star key={s} size={14} fill="currentColor" />
+                      <Star key={s} size={10} fill="currentColor" />
                     ))}
                   </div>
-                  <span className="text-xs font-semibold text-neutral-500 tracking-wide uppercase">
+                  <span className="text-[10px] font-semibold text-neutral-500 tracking-wide uppercase">
                     Trusted by 1000+ clients
                   </span>
                 </div>
