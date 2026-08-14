@@ -112,10 +112,12 @@ const Navbar = () => {
             initial={{ y: -20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ duration: 0.6, type: "spring", bounce: 0.3 }}
-            className={`relative flex items-center justify-between rounded-2xl px-4 sm:px-5 py-2.5 transition-all duration-500 backdrop-blur-2xl backdrop-saturate-150 border border-neutral-200/50 dark:border-white/10 shadow-[0_1px_0_0_rgba(255,255,255,0.8)_inset,0_10px_30px_-12px_rgba(0,0,0,0.1)] ${
-              isScrolled
-               ? "bg-white/40 dark:bg-white/[0.06]"
-               : "bg-white/10 dark:bg-white/[0.02] border-white/5"
+            className={`relative flex items-center justify-between rounded-2xl px-4 sm:px-5 py-2.5 transition-all duration-500 backdrop-blur-2xl backdrop-saturate-150 border shadow-[0_1px_0_0_rgba(255,255,255,0.8)_inset,0_10px_30px_-12px_rgba(0,0,0,0.1)] ${
+              isOverHero
+                ? "bg-white/10 dark:bg-white/[0.05] border-white/20"
+                : isScrolled
+                  ? "bg-white/40 dark:bg-white/[0.06] border-neutral-200/50"
+                  : "bg-white/10 dark:bg-white/[0.02] border-white/5"
             }`}
             style={{ WebkitBackdropFilter: "blur(28px) saturate(160%)", backdropFilter: "blur(28px) saturate(160%)" }}
           >
@@ -134,7 +136,7 @@ const Navbar = () => {
                   alt="Astropixel Logo"
                   className="absolute inset-0 h-full w-auto object-contain object-left transition-opacity duration-300 ease-out"
                   style={{
-                    opacity: 0,
+                    opacity: isOverHero ? 1 : 0,
                     filter: "brightness(0) invert(1) drop-shadow(0 1px 2px rgba(0,0,0,0.35)) drop-shadow(0 0 8px rgba(255,255,255,0.15))",
                   }}
                   loading="eager"
@@ -148,7 +150,7 @@ const Navbar = () => {
                   aria-hidden
                   className="absolute inset-0 h-full w-auto object-contain object-left transition-opacity duration-300 ease-out"
                   style={{
-                    opacity: 1,
+                    opacity: isOverHero ? 0 : 1,
                     filter: "brightness(0) saturate(0) invert(0.08) drop-shadow(0 1px 1px rgba(255,255,255,0.4))",
                   }}
                   loading="eager"
@@ -181,7 +183,7 @@ const Navbar = () => {
                         isActive
                           ? "text-cyan-600 font-semibold"
                           : isOverHero
-                            ? "text-neutral-700 hover:text-black"
+                            ? "text-white/80 hover:text-white"
                             : "text-neutral-800 hover:text-black"
                       }`}>
                         {link.name}
