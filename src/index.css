@@ -360,10 +360,10 @@ html::-webkit-scrollbar, body::-webkit-scrollbar { display: none; width: 0; heig
     100% { transform: translate3d(0, 0, 0); }
   }
  .marquee-left {
-   animation: marquee-scroll-left 420s linear infinite;
+   animation: marquee-scroll-left 600s linear infinite;
  }
  .marquee-right {
-   animation: marquee-scroll-right 450s linear infinite;
+   animation: marquee-scroll-right 650s linear infinite;
  }
   /* marquee runs continuously — no pause on hover */
 }
@@ -398,7 +398,7 @@ html::-webkit-scrollbar, body::-webkit-scrollbar { display: none; width: 0; heig
 }
 .project-marquee-track {
   will-change: transform;
-  animation-duration: 320s;
+  animation-duration: 500s;
   animation-timing-function: linear;
   animation-iteration-count: infinite;
   transform: translate3d(0, 0, 0);
@@ -450,5 +450,5 @@ html::-webkit-scrollbar, body::-webkit-scrollbar { display: none; width: 0; heig
 }
 
 .animate-marquee-brand {
-  animation: marquee-brand 60s linear infinite;
+  animation: marquee-brand 90s linear infinite;
 }
