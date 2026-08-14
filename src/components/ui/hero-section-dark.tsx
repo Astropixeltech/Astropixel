@@ -91,7 +91,7 @@ const HeroSection = React.forwardRef<HTMLDivElement, HeroSectionProps>(
             delay={0.5}
             className="max-w-2xl mx-auto text-lg md:text-xl text-neutral-600 leading-relaxed"
           >
-            {typeof description === 'string' ? description : ''}
+            {typeof description === 'string' ? description : (description as any)?.props?.children || ''}
           </TextReveal>
 
           {/* CTA and Trust Elements */}
