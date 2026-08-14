@@ -530,7 +530,7 @@ const Index = () => {
       </section>
 
       {/* ══════════ SERVICES — BENTO GRID ══════════ */}
-      <section className="pb-16 lg:pb-24 relative bg-background">
+      <section className="pb-16 lg:pb-24 pt-4 lg:pt-8 relative bg-background">
         <div className="container mx-auto px-6 relative z-10">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
