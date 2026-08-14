@@ -115,11 +115,11 @@ const HeroSection = React.forwardRef<HTMLDivElement, HeroSectionProps>(
                 <img
                   src={bottomImage.dark}
                   alt=""
-                  className="w-full [aspect-ratio:3/2] object-cover block"
+                  className="w-full [aspect-ratio:1.8] object-cover block"
                   style={{ transform: "scale(1.12)", transformOrigin: "center" }}
                   loading="eager"
                 />
-                <div className="dark absolute inset-0 flex items-start justify-center px-4 pt-[10%] text-foreground">
+                <div className="dark absolute inset-0 flex items-center justify-center px-4 text-foreground">
                   <HeroContent
                     title={title}
                     subtitle={subtitle}
