@@ -80,8 +80,8 @@ const HeroSection = React.forwardRef<HTMLDivElement, HeroSectionProps>(
               alt="Hero Background" 
               className="w-full h-full object-cover"
             />
-            {/* Optional overlay to ensure text readability */}
-            <div className="absolute inset-0 bg-white/30 backdrop-blur-[2px]" />
+            {/* Removed overlay to show image clearly */}
+
           </div>
         )}
         
