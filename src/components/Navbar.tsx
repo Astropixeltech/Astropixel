@@ -34,7 +34,7 @@ const LEARN_ROUTES = ["/courses", "/instructors", "/learn-about"];
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
-  const [isOverHero, setIsOverHero] = useState(true);
+  const [isOverHero, setIsOverHero] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
