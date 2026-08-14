@@ -598,25 +598,9 @@ const Index = () => {
       </section>
 
       {/* ══════════ TRUSTED BY GLOBAL BRANDS — Premium SaaS ══════════ */}
-      <section className="relative py-12 lg:py-16 bg-white overflow-hidden">
-        {/* Ambient radial glows */}
-        <div
-          aria-hidden
-          className="pointer-events-none absolute -left-40 top-1/2 -translate-y-1/2 w-[520px] h-[520px] rounded-full"
-          style={{ background: "radial-gradient(circle, rgba(0,0,0,0.05) 0%, rgba(0,0,0,0) 70%)" }}
-        />
-        <div
-          aria-hidden
-          className="pointer-events-none absolute -right-40 top-1/2 -translate-y-1/2 w-[520px] h-[520px] rounded-full"
-          style={{ background: "radial-gradient(circle, rgba(0,0,0,0.05) 0%, rgba(0,0,0,0) 70%)" }}
-        />
-        <div
-          aria-hidden
-          className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[900px] h-[380px] rounded-full"
-          style={{ background: "radial-gradient(ellipse, rgba(0,0,0,0.035) 0%, rgba(0,0,0,0) 70%)" }}
-        />
-
+      <section className="relative z-[15] -mt-32 sm:-mt-48 lg:-mt-72 pb-20 overflow-visible">
         <div className="relative container mx-auto px-6 max-w-[1280px]">
+
           {(() => {
             const defaultLogos: { src: string; alt: string; scale?: number }[] = [
               { src: resolveLogoUrl(clientAlokchitra.url), alt: "Alokchitra", scale: 1.0 },
