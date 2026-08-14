@@ -183,7 +183,7 @@ const Navbar = () => {
                         isActive
                           ? "text-cyan-600 font-semibold"
                           : isOverHero
-                            ? "text-neutral-700 hover:text-black"
+                            ? "text-white/80 hover:text-white"
                             : "text-neutral-800 hover:text-black"
                       }`}>
                         {link.name}
