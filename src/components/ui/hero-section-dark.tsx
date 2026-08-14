@@ -1,6 +1,7 @@
 import * as React from "react"
 import { cn } from "@/lib/utils"
 import { ChevronRight, Star, ArrowUpRight } from "lucide-react"
+import { TextReveal } from "./text-reveal"
 import gsap from "gsap"
 
 interface HeroSectionProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -76,21 +77,22 @@ const HeroSection = React.forwardRef<HTMLDivElement, HeroSectionProps>(
         
         <div className="relative z-10 max-w-5xl mx-auto space-y-6 md:space-y-8">
           {/* Main Headline */}
-          <h1 
-            data-hero-title 
+          <TextReveal
+            as="h1"
+            preset="fade-in-blur"
             className="text-[35px] md:text-[54px] lg:text-[86px] font-bold tracking-tight text-neutral-900 leading-[1.1]"
           >
-            {subtitle.regular}
-            <span className="block">{subtitle.gradient}</span>
-          </h1>
+            {`${subtitle.regular}${subtitle.gradient}`}
+          </TextReveal>
 
           {/* Description */}
-          <p 
-            data-hero-desc 
+          <TextReveal
+            preset="slide"
+            delay={0.5}
             className="max-w-2xl mx-auto text-lg md:text-xl text-neutral-600 leading-relaxed"
           >
-            {description}
-          </p>
+            {typeof description === 'string' ? description : ''}
+          </TextReveal>
 
           {/* CTA and Trust Elements */}
           <div data-hero-cta className="flex flex-col items-center gap-8">
