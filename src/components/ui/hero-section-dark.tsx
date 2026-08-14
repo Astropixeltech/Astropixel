@@ -138,7 +138,7 @@ const HeroSection = React.forwardRef<HTMLDivElement, HeroSectionProps>(
                       <Star key={s} size={10} fill="currentColor" />
                     ))}
                   </div>
-                  <span className="text-[10px] font-semibold text-neutral-500 tracking-wide uppercase">
+                  <span className="text-[10px] font-semibold text-white/50 tracking-wide uppercase">
                     Trusted by 1000+ clients
                   </span>
                 </div>
