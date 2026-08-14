@@ -67,11 +67,8 @@ const seoTablet = { url: `${SERVICE_IMG}/seo-tablet.png` };
 
 
 
-import ToolsAndWorksSection from "@/components/ui/tools-and-works";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { usePageContent } from "@/hooks/usePageContent";
-
-
 import { useHomepageSection, useHomepageSectionItems } from "@/hooks/useHomepageSections";
 
 import { memo, useRef, useState, useEffect, type ReactNode } from "react";
@@ -699,11 +696,7 @@ const Index = () => {
         </div>
       </section>
       </div>
-
-      <ToolsAndWorksSection />
     </LayoutComponent>
-
-
   );
 };
 
