@@ -148,7 +148,7 @@ const Navbar = () => {
                   aria-hidden
                   className="absolute inset-0 h-full w-auto object-contain object-left transition-opacity duration-300 ease-out"
                   style={{
-                    opacity: isOverHero ? 0 : 1,
+                    opacity: 1,
                     filter: "brightness(0) saturate(0) invert(0.08) drop-shadow(0 1px 1px rgba(255,255,255,0.4))",
                   }}
                   loading="eager"
