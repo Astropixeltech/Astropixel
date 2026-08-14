@@ -468,10 +468,10 @@ const Index = () => {
           {(() => {
             const defaultLogos: { src: string; alt: string; scale?: number }[] = [
               { src: resolveLogoUrl(clientAlokchitra.url), alt: "Alokchitra", scale: 1.0 },
-              { src: resolveLogoUrl(clientAura.url), alt: "Aura Signature", scale: 6.5 },
-              { src: resolveLogoUrl(clientGreenpeak.url), alt: "GreenPeak", scale: 4.8 },
-              { src: resolveLogoUrl(clientBlackzen.url), alt: "BlackZen", scale: 5.6 },
-              { src: resolveLogoUrl(clientDarkAura.url), alt: "Dark Aura", scale: 5.6 },
+              { src: resolveLogoUrl(clientAura.url), alt: "Aura Signature", scale: 3.8 },
+              { src: resolveLogoUrl(clientGreenpeak.url), alt: "GreenPeak", scale: 2.6 },
+              { src: resolveLogoUrl(clientBlackzen.url), alt: "BlackZen", scale: 3.2 },
+              { src: resolveLogoUrl(clientDarkAura.url), alt: "Dark Aura", scale: 3.2 },
               { src: resolveLogoUrl(clientAtix.url), alt: "Atix", scale: 1.0 },
               { src: resolveLogoUrl(clientSA.url), alt: "SA", scale: 1.35 },
               { src: "https://res.cloudinary.com/de348sqlb/image/upload/v1784827651/alphazero-assets/brands/unavailable-attire.png", alt: "Unavailable Attire", scale: 1.05 },
@@ -493,7 +493,7 @@ const Index = () => {
                   src={logo.src}
                   alt={logo.alt}
                   loading="lazy"
-                  style={{ transform: `scale(${(logo.scale ?? 1) * 1.0})` }}
+                  style={{ transform: `scale(${(logo.scale ?? 1) * 1.3})` }}
                   className="max-h-16 lg:max-h-20 w-auto object-contain brightness-0 opacity-40 group-hover:opacity-100 transition-all duration-300 ease-out"
                 />
               </div>
