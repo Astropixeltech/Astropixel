@@ -189,7 +189,7 @@ const HeroContent = ({
       <span className="">
         {splitWords(subtitle.regular)}
       </span>
-      <span className="text-transparent bg-clip-text bg-gradient-to-r from-[hsl(var(--gradient-start))] via-[hsl(var(--gradient-mid))] to-[hsl(var(--gradient-end))] [text-shadow:0_0_40px_hsl(var(--gradient-mid)/0.4)]">
+      <span className="text-white">
         {splitWords(subtitle.gradient)}
       </span>
     </h2>
