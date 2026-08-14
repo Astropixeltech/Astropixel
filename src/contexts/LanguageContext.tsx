@@ -23,8 +23,8 @@ const translations: Record<Language, Record<string, string>> = {
     
     // Home Page
     "home.badge": "✦ Creative Design & Web Development Agency",
-    "home.title1": "Starting every idea from",
-    "home.title2": "zero",
+    "home.title1": "Pixels That Move",
+    "home.title2": "Brands Forward.",
     "home.tagline": "From zero to impact",
     "home.description": "We craft designs, websites & brand visuals that stand out.",
     "home.cta1": "Start Your Project",
