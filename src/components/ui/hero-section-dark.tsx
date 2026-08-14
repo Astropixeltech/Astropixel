@@ -141,7 +141,7 @@ const HeroSection = React.forwardRef<HTMLDivElement, HeroSectionProps>(
                   style={{ transform: "scale(1.12)", transformOrigin: "center" }}
                   loading="eager"
                 />
-                <div className="relative z-10 flex flex-col px-4 pt-32 sm:pt-36 pb-8">
+                <div className="relative z-10 flex flex-col px-4 pt-20 sm:pt-24 pb-8">
                   <div className="flex-none">
                     <HeroContent
                       title={title}
