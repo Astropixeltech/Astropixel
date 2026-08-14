@@ -675,7 +675,8 @@ const Index = () => {
       </section>
 
       {/* Start of White Background Content */}
-      <div className="relative z-10 bg-white">
+      <div className="relative z-10 bg-white rounded-t-[40px] md:rounded-t-[80px]">
+
         {/* OUR TEAM or OTHER SECTIONS would go here if they exist */}
         
         {/* ══════════ TESTIMONIALS ══════════ */}
