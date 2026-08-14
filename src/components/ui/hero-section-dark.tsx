@@ -193,7 +193,7 @@ const HeroContent = ({
         {splitWords(subtitle.gradient)}
       </span>
     </h2>
-    <p data-hero-desc className="max-w-3xl mx-auto text-white text-sm sm:text-lg md:text-2xl drop-shadow-lg px-2">
+    <p data-hero-desc className="max-w-3xl mx-auto text-white text-xs sm:text-base md:text-xl drop-shadow-lg px-2 tracking-widest opacity-90">
       {description}
     </p>
     <div className="items-center justify-center gap-x-3 space-y-3 sm:flex sm:space-y-0">
