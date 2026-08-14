@@ -196,12 +196,6 @@ const AboutPage = () => {
             viewport={{ once: true }}
             className="max-w-5xl mx-auto text-center mb-16"
           >
-            <div className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full border border-black/10 bg-black/[0.03] mb-6">
-              <Award size={16} className="text-black/70" />
-              <span className="text-sm font-bold tracking-[0.25em] uppercase text-black/70">
-                Network
-              </span>
-            </div>
             <h2 className="font-display font-bold leading-[1.05] tracking-tight text-3xl sm:text-4xl lg:text-5xl text-black">
               {(() => {
                 const t = (sisterSection?.title || 'Our brand constellation').trim();
