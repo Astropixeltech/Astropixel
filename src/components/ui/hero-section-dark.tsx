@@ -139,7 +139,7 @@ const HeroSection = React.forwardRef<HTMLDivElement, HeroSectionProps>(
                     ))}
                   </div>
                   <span className="text-[10px] font-semibold text-white/50 tracking-wide uppercase">
-                    Trusted by 1000+ clients
+                    Trusted by 123+ clients
                   </span>
                 </div>
               </div>
