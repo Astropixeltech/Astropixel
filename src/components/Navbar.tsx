@@ -134,7 +134,7 @@ const Navbar = () => {
                   alt="Astropixel Logo"
                   className="absolute inset-0 h-full w-auto object-contain object-left transition-opacity duration-300 ease-out"
                   style={{
-                    opacity: isOverHero ? 1 : 0,
+                    opacity: 0,
                     filter: "brightness(0) invert(1) drop-shadow(0 1px 2px rgba(0,0,0,0.35)) drop-shadow(0 0 8px rgba(255,255,255,0.15))",
                   }}
                   loading="eager"
