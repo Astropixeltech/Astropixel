@@ -71,19 +71,17 @@ const HeroSection = React.forwardRef<HTMLDivElement, HeroSectionProps>(
 
     return (
       <div className={cn("relative min-h-[90vh] flex flex-col items-center justify-center pt-24 pb-16 px-4 text-center overflow-hidden", className)} ref={innerRef} {...props}>
-        {/* Background Image/Gradient */}
-        <div className="absolute inset-0 z-0 pointer-events-none">
-          {bottomImage ? (
+        {/* Dark Background */}
+        <div className="absolute inset-0 z-0 pointer-events-none bg-neutral-950">
+          {bottomImage && (
             <>
               <img 
-                src={bottomImage.light} 
+                src={bottomImage.dark || bottomImage.light} 
                 alt="" 
-                className="w-full h-full object-cover opacity-100" 
+                className="w-full h-full object-cover opacity-40 grayscale" 
               />
-              <div className="absolute inset-0 bg-white/60 backdrop-blur-[2px]" />
+              <div className="absolute inset-0 bg-gradient-to-b from-neutral-950/20 via-neutral-950/60 to-neutral-950" />
             </>
-          ) : (
-            <div className="absolute inset-0 bg-gradient-to-br from-[#f0f9ff] via-[#ffffff] to-[#fff7ed] opacity-50" />
           )}
         </div>
         
@@ -91,7 +89,7 @@ const HeroSection = React.forwardRef<HTMLDivElement, HeroSectionProps>(
           {/* Main Headline */}
           <h1 
             data-hero-title 
-            className="text-5xl md:text-7xl lg:text-8xl font-bold tracking-tight text-neutral-900 leading-[1.1]"
+            className="text-5xl md:text-7xl lg:text-8xl font-bold tracking-tight text-white leading-[1.1]"
           >
             {subtitle.regular}
             <span className="block">{subtitle.gradient}</span>
@@ -100,7 +98,7 @@ const HeroSection = React.forwardRef<HTMLDivElement, HeroSectionProps>(
           {/* Description */}
           <p 
             data-hero-desc 
-            className="max-w-2xl mx-auto text-lg md:text-xl text-neutral-600 leading-relaxed"
+            className="max-w-2xl mx-auto text-lg md:text-xl text-neutral-400 leading-relaxed"
           >
             {description}
           </p>
@@ -111,10 +109,10 @@ const HeroSection = React.forwardRef<HTMLDivElement, HeroSectionProps>(
               {/* Ref-styled Button */}
               <a
                 href={ctaHref}
-                className="group relative flex items-center gap-3 bg-neutral-950 text-white px-8 py-4 rounded-full text-lg font-medium transition-all hover:bg-neutral-800"
+                className="group relative flex items-center gap-3 bg-white text-neutral-950 px-8 py-4 rounded-full text-lg font-medium transition-all hover:bg-neutral-200"
               >
                 <span>{ctaText}</span>
-                <div className="bg-white text-neutral-950 p-1.5 rounded-full transition-transform group-hover:rotate-45">
+                <div className="bg-neutral-950 text-white p-1.5 rounded-full transition-transform group-hover:rotate-45">
                   <ArrowUpRight size={18} strokeWidth={2.5} />
                 </div>
               </a>
@@ -125,7 +123,7 @@ const HeroSection = React.forwardRef<HTMLDivElement, HeroSectionProps>(
                   {[1, 2, 3, 4].map((i) => (
                     <div 
                       key={i} 
-                      className="w-10 h-10 rounded-full border-2 border-white bg-neutral-200 overflow-hidden ring-1 ring-neutral-100"
+                      className="w-10 h-10 rounded-full border-2 border-neutral-800 bg-neutral-900 overflow-hidden ring-1 ring-white/10"
                     >
                       <img 
                         src={`https://i.pravatar.cc/100?img=${i + 10}`} 
@@ -141,7 +139,7 @@ const HeroSection = React.forwardRef<HTMLDivElement, HeroSectionProps>(
                       <Star key={s} size={14} fill="currentColor" />
                     ))}
                   </div>
-                  <span className="text-xs font-semibold text-neutral-500 tracking-wide uppercase">
+                  <span className="text-xs font-semibold text-neutral-400 tracking-wide uppercase">
                     Trusted by 1000+ clients
                   </span>
                 </div>
