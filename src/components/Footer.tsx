@@ -1,6 +1,6 @@
 import { ArrowUpRight, Facebook, Instagram, MessageCircle, Twitter, Youtube, Github, Globe, Mail, Phone, Linkedin, LucideIcon } from "lucide-react";
 import { Link } from "react-router-dom";
-import logoAsset from "@/assets/alphazero-logo-new.png.asset.json";
+import logoAsset from "@/assets/astropixel-logo.png.asset.json";
 const logo = logoAsset.url;
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useFooterLinks, useFooterContent } from "@/hooks/useFooterData";

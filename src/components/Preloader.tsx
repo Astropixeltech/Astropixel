@@ -1,7 +1,7 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { useEffect, useState, memo } from "react";
 import learnIconJson from "@/assets/learn-preloader-icon.png.asset.json";
-import agencyLogoJson from "@/assets/alphazero-logo-3.png.asset.json";
+import agencyLogoJson from "@/assets/astropixel-logo.png.asset.json";
 
 const learnIcon = learnIconJson.url;
 const agencyLogo = agencyLogoJson.url;
