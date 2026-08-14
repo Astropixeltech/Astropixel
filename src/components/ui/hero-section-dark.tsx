@@ -147,12 +147,8 @@ const HeroSection = React.forwardRef<HTMLDivElement, HeroSectionProps>(
           </div>
         </div>
 
-        {/* Decorative Grid or Background Elements if needed */}
-        {bottomImage && (
-          <div className="absolute bottom-0 left-0 right-0 w-full opacity-10 pointer-events-none">
-             <img src={bottomImage.light} alt="" className="w-full object-cover" />
-          </div>
-        )}
+        {/* Grid options can be applied here if needed in the future */}
+
       </div>
     )
   },
