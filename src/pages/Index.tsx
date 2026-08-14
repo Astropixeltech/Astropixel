@@ -597,9 +597,6 @@ const Index = () => {
         </div>
       </section>
 
-        </div>
-      </section>
-
       {/* Start of White Background Content */}
       <div className="relative z-10 bg-white rounded-t-[40px] md:rounded-t-[80px]">
 
