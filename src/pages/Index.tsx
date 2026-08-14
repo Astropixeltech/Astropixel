@@ -729,11 +729,11 @@ const Index = () => {
           </div>
         </div>
       </section>
-
-
+      </div>
     </LayoutComponent>
   );
 };
+
 
 const TrustedByExperts = () => {
   const { theme } = useTheme();
