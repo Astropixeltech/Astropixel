@@ -88,7 +88,7 @@ const HeroSection = React.forwardRef<HTMLDivElement, HeroSectionProps>(
         
         <div className="relative z-10 max-w-5xl mx-auto space-y-6 md:space-y-8">
           {/* Main Headline */}
-          <h1 className="text-[28px] md:text-[44px] lg:text-[64px] font-bold tracking-tight text-neutral-900 leading-[1.2]">
+          <h1 className="text-[22px] md:text-[36px] lg:text-[48px] font-bold tracking-tight text-neutral-900 leading-[1.2]">
             <span className="block">We Create Brands Beyond the Ordinary.</span>
             <span className="block text-neutral-500">Powered by Design, Technology & Innovation</span>
           </h1>
