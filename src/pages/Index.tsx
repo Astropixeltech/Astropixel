@@ -187,7 +187,7 @@ const ServicePair = ({
   priority?: boolean;
 }) => {
   return (
-    <div data-service-index={index} className="lg:min-h-[70vh] flex items-center">
+    <div data-service-index={index} className="lg:min-h-[600px] flex items-center">
       <div className="w-full grid grid-cols-2 gap-3 sm:gap-4 md:gap-6 items-start">
         <div className="-mt-4 md:-mt-8">
           <MemoMockupCard

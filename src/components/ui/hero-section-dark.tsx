@@ -112,13 +112,14 @@ const HeroSection = React.forwardRef<HTMLDivElement, HeroSectionProps>(
             <>
               {/* ────── Desktop (lg+): keep original layout with aspect-ratio image + absolute overlay ────── */}
               <div className="relative w-full hidden lg:block">
-                <img
-                  src={bottomImage.dark}
-                  alt=""
-                  className="w-full [aspect-ratio:1.8] object-cover block"
-                  style={{ transform: "scale(1.12)", transformOrigin: "center" }}
-                  loading="eager"
-                />
+                <div className="relative w-full aspect-video lg:aspect-[1.8] overflow-hidden">
+                  <img
+                    src={bottomImage.dark}
+                    alt=""
+                    className="w-full h-full object-cover scale-[1.12]"
+                    loading="eager"
+                  />
+                </div>
                 <div className="dark absolute inset-0 flex items-start pt-32 lg:pt-40 justify-center px-4 text-foreground">
                   <HeroContent
                     title={title}
@@ -134,13 +135,14 @@ const HeroSection = React.forwardRef<HTMLDivElement, HeroSectionProps>(
 
               {/* ────── Mobile & Tablet (<lg): full-bleed hero image, gallery flows below ────── */}
               <div className="relative w-full lg:hidden dark text-foreground">
-                <img
-                  src={bottomImage.dark}
-                  alt=""
-                  className="absolute inset-0 w-full h-full object-cover"
-                  style={{ transform: "scale(1.12)", transformOrigin: "center" }}
-                  loading="eager"
-                />
+                <div className="absolute inset-0 overflow-hidden">
+                  <img
+                    src={bottomImage.dark}
+                    alt=""
+                    className="w-full h-full object-cover scale-[1.12]"
+                    loading="eager"
+                  />
+                </div>
                 <div className="relative z-10 flex flex-col px-4 pt-20 sm:pt-24 pb-8">
                   <div className="flex-none">
                     <HeroContent
