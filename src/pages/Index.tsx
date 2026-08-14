@@ -26,6 +26,7 @@ import {
 } from "lucide-react";
 import { ContainerTextFlip } from "@/components/ui/modern-animated-multi-words";
 import { HeroSection } from "@/components/ui/hero-section-dark";
+import aboutHeroBg from "@/assets/about-hero-blue-orb.jpg.asset.json";
 import { Spotlight } from "@/components/ui/spotlight";
 import { BackgroundBeams } from "@/components/ui/background-beams";
 import { Sparkles as SparklesFx } from "@/components/ui/sparkles";
@@ -434,7 +435,7 @@ const Index = () => {
           description={language === "bn" ? "An integrated creative and digital agency for ambitious brands." : "An integrated creative and digital agency for ambitious brands."}
           ctaText={c("cta1", "home.cta1")}
           ctaHref="/contact"
-          bottomImage={{ light: designShowcaseLight, dark: designShowcase }}
+          bottomImage={{ light: aboutHeroBg.url, dark: aboutHeroBg.url }}
           className="w-full"
         />
       </section>
