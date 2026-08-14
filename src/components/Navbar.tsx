@@ -179,9 +179,9 @@ const Navbar = () => {
                       )}
                       <span className={`relative z-10 transition-colors duration-300 ${
                         isActive
-                          ? "text-cyan-400 font-semibold"
+                          ? "text-cyan-600 font-semibold"
                           : isOverHero
-                            ? "text-white/90 hover:text-white drop-shadow-[0_1px_2px_rgba(0,0,0,0.35)]"
+                            ? "text-neutral-700 hover:text-black"
                             : "text-neutral-800 hover:text-black"
                       }`}>
                         {link.name}
