@@ -464,8 +464,8 @@ const translations: Record<Language, Record<string, string>> = {
     
     // Home Page
     "home.badge": "✦ Creative Design & Web Development Agency",
-    "home.title1": "প্রতিটি আইডিয়া শুরু হয়",
-    "home.title2": "শূন্য থেকে",
+    "home.title1": "Pixels That Move",
+    "home.title2": "Brands Forward.",
     "home.tagline": "শূন্য থেকে প্রভাব",
     "home.description": "গ্রাফিক ডিজাইন ও ওয়েব ডেভেলপমেন্টের ক্রিয়েটিভ আইটি এজেন্সি।",
     "home.cta1": "আপনার প্রজেক্ট শুরু করুন",
