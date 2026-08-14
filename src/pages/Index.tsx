@@ -488,13 +488,13 @@ const Index = () => {
             const marqueeLogos = [...logos, ...logos, ...logos, ...logos];
 
             const LogoItem = ({ logo }: { logo: { src: string; alt: string; scale?: number } }) => (
-              <div className="group flex items-center justify-center h-16 sm:h-20 lg:h-24 w-[180px] sm:w-[220px] lg:w-[280px] px-4 sm:px-6 shrink-0">
+              <div className="group flex items-center justify-center h-12 sm:h-14 lg:h-16 w-[160px] sm:w-[200px] lg:w-[240px] px-4 sm:px-6 shrink-0">
                 <img
                   src={logo.src}
                   alt={logo.alt}
                   loading="lazy"
-                  style={{ transform: `scale(${(logo.scale ?? 1) * 1.3})` }}
-                  className="max-h-16 lg:max-h-20 w-auto object-contain brightness-0 opacity-40 group-hover:opacity-100 transition-all duration-300 ease-out"
+                  style={{ transform: `scale(${logo.scale ?? 1})` }}
+                  className="max-h-12 lg:max-h-14 w-auto object-contain brightness-0 opacity-40 group-hover:opacity-100 transition-all duration-300 ease-out"
                 />
               </div>
             );
