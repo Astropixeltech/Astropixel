@@ -21,7 +21,8 @@ import {
   ChevronRight,
   Triangle,
   Radio,
-  Compass
+  Compass,
+  TrendingUp
 } from "lucide-react";
 import { ContainerTextFlip } from "@/components/ui/modern-animated-multi-words";
 import { HeroSection } from "@/components/ui/hero-section-dark";
@@ -260,60 +261,87 @@ const Index = () => {
 
   const services = [
     {
-      icon: Monitor,
-      label: language === "bn" ? "ওয়েবসাইট" : "Website",
-      title: c("service.web", "home.service.web"),
-      description: c("service.webDesc", "home.service.webDesc"),
+      icon: Palette,
+      label: language === "bn" ? "ইউআই/ইউএক্স" : "UI/UX",
+      title: language === "bn" ? "ইউআই/ইউএক্স ডিজাইন" : "UI/UX Design",
+      description: language === "bn" ? "ইউজার ফ্রেন্ডলি এবং মডার্ন ইন্টারফেস ডিজাইন যা আপনার ইউজারদের দেবে সেরা অভিজ্ঞতা।" : "User-friendly and modern interface designs that give your users the best experience.",
       meta: [
-        { k: language === "bn" ? "স্কোপ" : "Scope", v: language === "bn" ? "ডিজাইন ও ডেভেলপমেন্ট" : "Design & Development" },
-        { k: language === "bn" ? "সময়" : "Timeline", v: language === "bn" ? "২–৪ সপ্তাহ" : "2–4 Weeks" },
+        { k: language === "bn" ? "স্কোপ" : "Scope", v: language === "bn" ? "মোবাইল ও ওয়েব" : "Mobile & Web" },
+        { k: language === "bn" ? "সময়" : "Timeline", v: language === "bn" ? "১–২ সপ্তাহ" : "1–2 Weeks" },
       ],
       bg: "#dbeafe", text: "#0c1e3d", stripe: "#3b82f6",
-      primaryImage: webDevDashboard.url,
-      secondaryImage: webDevTablet.url,
-    },
-
-    {
-      icon: PenTool,
-      label: language === "bn" ? "গ্রাফিক" : "Graphic",
-      title: language === "bn" ? "গ্রাফিক ডিজাইন" : "Graphic Design",
-      description: language === "bn" ? "পোস্টার, ব্যানার, থাম্বনেইল ও ব্র্যান্ড কোলেটারাল পিক্সেল-পারফেক্ট ডিজাইন।" : "Posters, banners, thumbnails & brand collateral crafted with pixel-precise care.",
-      meta: [
-        { k: language === "bn" ? "ডেলিভারি" : "Delivery", v: language === "bn" ? "৪৮ ঘন্টা" : "48 Hours" },
-        { k: language === "bn" ? "ফরম্যাট" : "Format", v: "Print + Digital" },
-      ],
-      bg: "#cffafe", text: "#083344", stripe: "#06b6d4",
       primaryImage: uiuxDesktop.url,
       secondaryImage: uiuxPhone.url,
     },
 
     {
-      icon: Search,
-      label: "SEO",
-      title: c("service.seo", "home.service.seo"),
-      description: c("service.seoDesc", "home.service.seoDesc"),
+      icon: PenTool,
+      label: language === "bn" ? "ব্র্যান্ডিং" : "Branding",
+      title: language === "bn" ? "লোগো ডিজাইন ও ব্র্যান্ডিং" : "Logo Design & Branding",
+      description: language === "bn" ? "আপনার ব্র্যান্ডের জন্য একটি ইউনিক এবং শক্তিশালী ভিজ্যুয়াল আইডেন্টিটি তৈরি করুন।" : "Create a unique and strong visual identity for your brand.",
       meta: [
-        { k: language === "bn" ? "রিপোর্ট" : "Reporting", v: language === "bn" ? "মাসিক" : "Monthly" },
-        { k: language === "bn" ? "ফোকাস" : "Focus", v: "On-page + Off-page" },
+        { k: language === "bn" ? "ডেলিভারি" : "Delivery", v: language === "bn" ? "৭ দিন" : "7 Days" },
+        { k: language === "bn" ? "ফরম্যাট" : "Format", v: "Vector + Guidelines" },
       ],
-      bg: "#e0f2fe", text: "#0c1e3d", stripe: "#0ea5e9",
-      primaryImage: seoTablet.url,
-      secondaryImage: seoMonitor.url,
+      bg: "#cffafe", text: "#083344", stripe: "#06b6d4",
+      primaryImage: brandingStartio.url,
+      secondaryImage: brandingPhoneMockup.url,
     },
 
     {
-      icon: PenTool,
-      label: language === "bn" ? "ব্র্যান্ডিং" : "Branding",
-      title: c("service.branding", "home.service.branding"),
-      description: c("service.brandingDesc", "home.service.brandingDesc"),
+      icon: Share2,
+      label: language === "bn" ? "প্যাকেজিং" : "Packaging",
+      title: language === "bn" ? "সোশ্যাল মিডিয়া ও প্যাকেজিং ডিজাইন" : "Social Media & Packaging Design",
+      description: language === "bn" ? "সোশ্যাল মিডিয়া কন্টেন্ট এবং প্রোডাক্ট প্যাকেজিং যা ক্রেতার নজর কাড়বে মুহূর্তেই।" : "Social media content and product packaging that catches the eye instantly.",
       meta: [
-        { k: language === "bn" ? "ডেলিভারেবল" : "Deliverable", v: language === "bn" ? "লোগো + গাইডলাইন" : "Logo + Guidelines" },
-        { k: language === "bn" ? "সময়" : "Timeline", v: language === "bn" ? "১–২ সপ্তাহ" : "1–2 Weeks" },
+        { k: language === "bn" ? "টার্গেট" : "Target", v: "Print & Digital" },
+        { k: language === "bn" ? "ফোকাস" : "Focus", v: "Engagement" },
+      ],
+      bg: "#e0f2fe", text: "#0c1e3d", stripe: "#0ea5e9",
+      primaryImage: uiuxPhone.url,
+      secondaryImage: brandingPhoneMockup.url,
+    },
+
+    {
+      icon: Monitor,
+      label: language === "bn" ? "ডেভেলপমেন্ট" : "Development",
+      title: language === "bn" ? "ওয়েব ডেভেলপমেন্ট" : "Web Development",
+      description: language === "bn" ? "মডার্ন ও হাই-পারফর্মিং ওয়েবসাইট যা আপনার বিজনেসের গ্রোথ নিশ্চিত করবে।" : "Modern and high-performing websites that ensure your business growth.",
+      meta: [
+        { k: language === "bn" ? "স্ট্যাক" : "Stack", v: "React / Next.js" },
+        { k: language === "bn" ? "পারফরম্যান্স" : "Performance", v: "99+" },
       ],
       bg: "#ccfbf1", text: "#042f2e", stripe: "#14b8a6",
-      primaryImage: brandingStartio.url,
-      secondaryImage: brandingPhoneMockup.url,
+      primaryImage: webDevDashboard.url,
+      secondaryImage: webDevTablet.url,
+    },
 
+    {
+      icon: Zap,
+      label: "SaaS",
+      title: language === "bn" ? "SaaS ডেভেলপমেন্ট" : "SaaS Development",
+      description: language === "bn" ? "স্কেলেবল এবং শক্তিশালী ক্লাউড-বেজড সফটওয়্যার সলিউশন।" : "Scalable and powerful cloud-based software solutions.",
+      meta: [
+        { k: language === "bn" ? "স্কেলিং" : "Scaling", v: "Enterprise" },
+        { k: language === "bn" ? "সিকিউরিটি" : "Security", v: "High" },
+      ],
+      bg: "#fef3c7", text: "#92400e", stripe: "#f59e0b",
+      primaryImage: webDevDashboard.url,
+      secondaryImage: webDevTablet.url,
+    },
+
+    {
+      icon: TrendingUp,
+      label: language === "bn" ? "মার্কেটিং" : "Marketing",
+      title: language === "bn" ? "ডিজিটাল মার্কেটিং" : "Digital Marketing",
+      description: language === "bn" ? "আপনার বিজনেসকে সঠিক টার্গেট অডিয়েন্সের কাছে পৌঁছে দেওয়ার গ্যারান্টি।" : "Guaranteed delivery of your business to the right target audience.",
+      meta: [
+        { k: language === "bn" ? "চ্যানেল" : "Channels", v: "Social + Search" },
+        { k: language === "bn" ? "আরওআই" : "ROI", v: "High" },
+      ],
+      bg: "#fce7f3", text: "#9d174d", stripe: "#ec4899",
+      primaryImage: seoMonitor.url,
+      secondaryImage: seoTablet.url,
     },
   ];
   const [activeService, setActiveService] = useState(0);
