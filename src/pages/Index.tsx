@@ -424,38 +424,23 @@ const Index = () => {
   return (
     <LayoutComponent>
       {/* ══════════ HERO — Retro Grid Dark ══════════ */}
-      <section id="site-hero" ref={heroRef} className="relative -mt-20 bg-background text-foreground">
-        {/* Aceternity-style ambient FX */}
-        <Spotlight className="-top-40 left-0 md:-top-20 md:left-60" />
-        <BackgroundBeams className="opacity-70" />
-
-        <div className="relative z-[2]">
-          <HeroSection
-            title={c("badge", "home.badge")}
-            subtitle={{
-              regular: `${c("title1", "home.title1")} `,
-              gradient: c("title2", "home.title2"),
-            }}
-            description={language === "bn" ? "An integrated creative and digital agency for ambitious brands." : "An integrated creative and digital agency for ambitious brands."}
-
-            ctaText={c("cta1", "home.cta1")}
-            ctaHref="/contact"
-            bottomImage={{ light: designShowcaseLight, dark: designShowcase }}
-            gridOptions={{
-              angle: 65,
-              opacity: 0.35,
-              cellSize: 55,
-              lightLineColor: "hsl(215 25% 70%)",
-              darkLineColor: "hsl(185 60% 40%)",
-            }}
-          >
-            {/* Mobile & Tablet: gallery lives inside the hero as flex-column child */}
-            <div className="lg:hidden">
-              <ProjectMarquee />
-            </div>
-          </HeroSection>
-        </div>
-
+      <section id="site-hero" ref={heroRef} className="relative z-[2]">
+        <HeroSection
+          title={c("badge", "home.badge")}
+          subtitle={{
+            regular: `${c("title1", "home.title1")} `,
+            gradient: c("title2", "home.title2"),
+          }}
+          description={language === "bn" ? "An integrated creative and digital agency for ambitious brands." : "An integrated creative and digital agency for ambitious brands."}
+          ctaText={c("cta1", "home.cta1")}
+          ctaHref="/contact"
+          bottomImage={{ light: designShowcaseLight, dark: designShowcase }}
+        >
+          {/* Mobile & Tablet: gallery lives below main content */}
+          <div className="lg:hidden">
+            <ProjectMarquee />
+          </div>
+        </HeroSection>
       </section>
 
 

@@ -1,9 +1,7 @@
 import * as React from "react"
 import { cn } from "@/lib/utils"
-import { ChevronRight } from "lucide-react"
+import { ChevronRight, Star, ArrowUpRight } from "lucide-react"
 import gsap from "gsap"
-import AsciiMosaic from "./AsciiMosaic"
-
 
 interface HeroSectionProps extends React.HTMLAttributes<HTMLDivElement> {
   title?: string
@@ -27,37 +25,6 @@ interface HeroSectionProps extends React.HTMLAttributes<HTMLDivElement> {
   }
 }
 
-const RetroGrid = ({
-  angle = 65,
-  cellSize = 60,
-  opacity = 0.5,
-  lightLineColor = "gray",
-  darkLineColor = "gray",
-}: NonNullable<HeroSectionProps["gridOptions"]>) => {
-  const gridStyles = {
-    "--grid-angle": `${angle}deg`,
-    "--cell-size": `${cellSize}px`,
-    "--opacity": opacity,
-    "--light-line": lightLineColor,
-    "--dark-line": darkLineColor,
-  } as React.CSSProperties
-
-  return (
-    <div
-      className={cn(
-        "pointer-events-none absolute size-full overflow-hidden [perspective:200px]",
-        `opacity-[var(--opacity)]`,
-      )}
-      style={gridStyles}
-    >
-      <div className="absolute inset-0 [transform:rotateX(var(--grid-angle))]">
-        <div className="animate-grid [background-image:linear-gradient(to_right,var(--light-line)_1px,transparent_0),linear-gradient(to_bottom,var(--light-line)_1px,transparent_0)] [background-repeat:repeat] [background-size:var(--cell-size)_var(--cell-size)] [height:300vh] [inset:0%_0px] [margin-left:-200%] [transform-origin:100%_0_0] [width:600vw] dark:[background-image:linear-gradient(to_right,var(--dark-line)_1px,transparent_0),linear-gradient(to_bottom,var(--dark-line)_1px,transparent_0)]" />
-      </div>
-      <div className="absolute inset-0 bg-gradient-to-t from-background to-transparent to-90%" />
-    </div>
-  )
-}
-
 const HeroSection = React.forwardRef<HTMLDivElement, HeroSectionProps>(
   (
     {
@@ -71,7 +38,6 @@ const HeroSection = React.forwardRef<HTMLDivElement, HeroSectionProps>(
       ctaText = "Browse courses",
       ctaHref = "#",
       bottomImage,
-
       gridOptions,
       ...props
     },
@@ -86,7 +52,7 @@ const HeroSection = React.forwardRef<HTMLDivElement, HeroSectionProps>(
       if (window.matchMedia?.("(prefers-reduced-motion: reduce)").matches) return;
 
       const ctx = gsap.context(() => {
-        const targets = ["[data-hero-badge]", "[data-hero-title]", "[data-hero-desc]", "[data-hero-cta]"];
+        const targets = ["[data-hero-title]", "[data-hero-desc]", "[data-hero-cta]"];
         gsap.fromTo(
           targets,
           { y: 24, autoAlpha: 0 },
@@ -96,125 +62,91 @@ const HeroSection = React.forwardRef<HTMLDivElement, HeroSectionProps>(
             duration: 0.7,
             ease: "power3.out",
             stagger: 0.12,
-            clearProps: "transform,opacity,visibility",
+            clearProps: "all",
           }
         );
       }, root);
       return () => ctx.revert();
     }, []);
 
-    const splitWords = (text: string) => text;
-
     return (
-      <div className={cn("relative", className)} ref={innerRef} {...props}>
-        <section className="relative max-w-full mx-auto z-1">
-          {bottomImage && (
-            <>
-              {/* ────── Desktop (lg+): keep original layout with aspect-ratio image + absolute overlay ────── */}
-              <div className="relative w-full hidden lg:block">
-                <div className="relative w-full aspect-video lg:aspect-[1.8] overflow-hidden">
-                  <img
-                    src={bottomImage.dark}
-                    alt=""
-                    className="w-full h-full object-cover scale-[1.12]"
-                    loading="eager"
-                  />
-                </div>
-                <div className="dark absolute inset-0 flex items-start pt-32 lg:pt-40 justify-center px-4 text-foreground">
-                  <HeroContent
-                    title={title}
-                    subtitle={subtitle}
-                    description={description}
-                    ctaText={ctaText}
-                    ctaHref={ctaHref}
-                    splitWords={splitWords}
-                  />
-                </div>
+      <div className={cn("relative min-h-[90vh] flex flex-col items-center justify-center pt-24 pb-16 px-4 text-center overflow-hidden", className)} ref={innerRef} {...props}>
+        {/* Soft background gradient inspired by reference */}
+        <div className="absolute inset-0 z-0 bg-gradient-to-br from-[#f0f9ff] via-[#ffffff] to-[#fff7ed] opacity-50 pointer-events-none" />
+        
+        <div className="relative z-10 max-w-5xl mx-auto space-y-10">
+          {/* Main Headline */}
+          <h1 
+            data-hero-title 
+            className="text-5xl md:text-7xl lg:text-8xl font-bold tracking-tight text-neutral-900 leading-[1.1]"
+          >
+            {subtitle.regular}
+            <span className="block">{subtitle.gradient}</span>
+          </h1>
 
-              </div>
+          {/* Description */}
+          <p 
+            data-hero-desc 
+            className="max-w-2xl mx-auto text-lg md:text-xl text-neutral-600 leading-relaxed"
+          >
+            {description}
+          </p>
 
-              {/* ────── Mobile & Tablet (<lg): full-bleed hero image, gallery flows below ────── */}
-              <div className="relative w-full lg:hidden dark text-foreground">
-                <div className="absolute inset-0 overflow-hidden">
-                  <img
-                    src={bottomImage.dark}
-                    alt=""
-                    className="w-full h-full object-cover scale-[1.12]"
-                    loading="eager"
-                  />
+          {/* CTA and Trust Elements */}
+          <div data-hero-cta className="flex flex-col items-center gap-8">
+            <div className="flex flex-wrap items-center justify-center gap-6">
+              {/* Ref-styled Button */}
+              <a
+                href={ctaHref}
+                className="group relative flex items-center gap-3 bg-neutral-950 text-white px-8 py-4 rounded-full text-lg font-medium transition-all hover:bg-neutral-800"
+              >
+                <span>{ctaText}</span>
+                <div className="bg-white text-neutral-950 p-1.5 rounded-full transition-transform group-hover:rotate-45">
+                  <ArrowUpRight size={18} strokeWidth={2.5} />
                 </div>
-                <div className="relative z-10 flex flex-col px-4 pt-20 sm:pt-24 pb-8">
-                  <div className="flex-none">
-                    <HeroContent
-                      title={title}
-                      subtitle={subtitle}
-                      description={description}
-                      ctaText={ctaText}
-                      ctaHref={ctaHref}
-                      splitWords={splitWords}
-                    />
+              </a>
+
+              {/* User Avatars and Stars */}
+              <div className="flex items-center gap-4">
+                <div className="flex -space-x-3">
+                  {[1, 2, 3, 4].map((i) => (
+                    <div 
+                      key={i} 
+                      className="w-10 h-10 rounded-full border-2 border-white bg-neutral-200 overflow-hidden ring-1 ring-neutral-100"
+                    >
+                      <img 
+                        src={`https://i.pravatar.cc/100?img=${i + 10}`} 
+                        alt="User" 
+                        className="w-full h-full object-cover grayscale"
+                      />
+                    </div>
+                  ))}
+                </div>
+                <div className="flex flex-col items-start gap-0.5">
+                  <div className="flex text-amber-500">
+                    {[1, 2, 3, 4, 5].map((s) => (
+                      <Star key={s} size={14} fill="currentColor" />
+                    ))}
                   </div>
-                  {props.children ? (
-                    <div className="mt-8 sm:mt-10 -mx-4">{props.children as React.ReactNode}</div>
-                  ) : null}
+                  <span className="text-xs font-semibold text-neutral-500 tracking-wide uppercase">
+                    Trusted by 1000+ clients
+                  </span>
                 </div>
               </div>
-            </>
-          )}
-        </section>
+            </div>
+          </div>
+        </div>
+
+        {/* Decorative Grid or Background Elements if needed */}
+        {bottomImage && (
+          <div className="absolute bottom-0 left-0 right-0 w-full opacity-10 pointer-events-none">
+             <img src={bottomImage.light} alt="" className="w-full object-cover" />
+          </div>
+        )}
       </div>
     )
   },
 )
 HeroSection.displayName = "HeroSection"
-
-const HeroContent = ({
-  title,
-  subtitle,
-  description,
-  ctaText,
-  ctaHref,
-  splitWords,
-}: {
-  title: string
-  subtitle: { regular: string; gradient: string }
-  description: React.ReactNode
-  ctaText: string
-  ctaHref: string
-  splitWords: (t: string) => string
-}) => (
-  <div className="space-y-4 sm:space-y-7 max-w-6xl leading-tight lg:leading-5 mx-auto text-center">
-    <h1 data-hero-badge className="text-[11px] sm:text-xs md:text-sm text-white group font-geist mx-auto px-3 sm:px-4 py-1.5 bg-gradient-to-tr from-primary/20 via-primary/10 to-transparent border-[2px] border-border rounded-3xl w-fit backdrop-blur-sm">
-      {title}
-      <ChevronRight className="inline w-3 h-3 ml-1.5 group-hover:translate-x-1 duration-300" />
-    </h1>
-    <h2 data-hero-title style={{ fontFamily: "'Roboto', sans-serif" }} className="text-[2rem] leading-[1.05] sm:text-5xl md:text-6xl lg:text-7xl font-black tracking-tighter mx-auto drop-shadow-2xl sm:whitespace-nowrap text-white">
-      <span className="">
-        {splitWords(subtitle.regular)}
-      </span>
-      <span className="text-white">
-        {splitWords(subtitle.gradient)}
-      </span>
-    </h2>
-    <p data-hero-desc className="max-w-3xl mx-auto text-white text-xs sm:text-base md:text-xl drop-shadow-lg px-2 tracking-widest opacity-90">
-      {description}
-    </p>
-    <div className="items-center justify-center gap-x-3 space-y-3 sm:flex sm:space-y-0">
-      <span className="relative inline-block overflow-hidden rounded-full p-[1.5px]">
-        <span className="absolute inset-[-1000%] animate-[spin_2s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,hsl(var(--primary)/0.2)_0%,hsl(var(--primary))_50%,hsl(var(--primary)/0.2)_100%)]" />
-        <div className="inline-flex h-full w-full cursor-pointer items-center justify-center rounded-full bg-background/90 backdrop-blur-3xl text-xs font-medium text-foreground">
-          <a
-            href={ctaHref}
-            data-hero-cta
-            className="inline-flex rounded-full text-center group items-center w-full justify-center bg-gradient-to-tr from-primary/20 via-primary/10 to-transparent text-foreground border-input border-[1px] hover:bg-gradient-to-tr hover:from-primary/30 hover:via-primary/20 hover:to-transparent transition-all sm:w-auto py-4 px-10"
-          >
-            {ctaText}
-          </a>
-        </div>
-      </span>
-    </div>
-  </div>
-)
-
 
 export { HeroSection }

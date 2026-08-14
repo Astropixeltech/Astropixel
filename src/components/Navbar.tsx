@@ -34,7 +34,7 @@ const LEARN_ROUTES = ["/courses", "/instructors", "/learn-about"];
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
-  const [isOverHero, setIsOverHero] = useState(true);
+  const [isOverHero, setIsOverHero] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
@@ -112,10 +112,10 @@ const Navbar = () => {
             initial={{ y: -20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ duration: 0.6, type: "spring", bounce: 0.3 }}
-            className={`relative flex items-center justify-between rounded-2xl px-4 sm:px-5 py-2.5 transition-all duration-500 backdrop-blur-2xl backdrop-saturate-150 border border-white/15 dark:border-white/10 shadow-[0_1px_0_0_rgba(255,255,255,0.35)_inset,0_-1px_0_0_rgba(0,0,0,0.06)_inset,0_10px_30px_-12px_rgba(0,0,0,0.25)] ${
+            className={`relative flex items-center justify-between rounded-2xl px-4 sm:px-5 py-2.5 transition-all duration-500 backdrop-blur-2xl backdrop-saturate-150 border border-neutral-200/50 dark:border-white/10 shadow-[0_1px_0_0_rgba(255,255,255,0.8)_inset,0_10px_30px_-12px_rgba(0,0,0,0.1)] ${
               isScrolled
-               ? "bg-white/[0.08] dark:bg-white/[0.06]"
-               : "bg-white/[0.06] dark:bg-white/[0.04]"
+               ? "bg-white/40 dark:bg-white/[0.06]"
+               : "bg-white/20 dark:bg-white/[0.04]"
             }`}
             style={{ WebkitBackdropFilter: "blur(28px) saturate(160%)", backdropFilter: "blur(28px) saturate(160%)" }}
           >
@@ -134,7 +134,7 @@ const Navbar = () => {
                   alt="Astropixel Logo"
                   className="absolute inset-0 h-full w-auto object-contain object-left transition-opacity duration-300 ease-out"
                   style={{
-                    opacity: isOverHero ? 1 : 0,
+                    opacity: 0,
                     filter: "brightness(0) invert(1) drop-shadow(0 1px 2px rgba(0,0,0,0.35)) drop-shadow(0 0 8px rgba(255,255,255,0.15))",
                   }}
                   loading="eager"
@@ -148,7 +148,7 @@ const Navbar = () => {
                   aria-hidden
                   className="absolute inset-0 h-full w-auto object-contain object-left transition-opacity duration-300 ease-out"
                   style={{
-                    opacity: isOverHero ? 0 : 1,
+                    opacity: 1,
                     filter: "brightness(0) saturate(0) invert(0.08) drop-shadow(0 1px 1px rgba(255,255,255,0.4))",
                   }}
                   loading="eager"
@@ -173,15 +173,15 @@ const Navbar = () => {
                       {isActive && (
                         <motion.div
                           layoutId="navbar-active-pill"
-                          className="absolute inset-0 rounded-full bg-cyan-500/10 border border-cyan-500/25 shadow-[0_0_14px_-2px_rgba(6,182,212,0.35)]"
+                          className="absolute inset-0 rounded-full bg-cyan-600/10 border border-cyan-600/20 shadow-sm"
                           transition={{ type: "spring", bounce: 0.25, duration: 0.5 }}
                         />
                       )}
                       <span className={`relative z-10 transition-colors duration-300 ${
                         isActive
-                          ? "text-cyan-400 font-semibold"
+                          ? "text-cyan-600 font-semibold"
                           : isOverHero
-                            ? "text-white/90 hover:text-white drop-shadow-[0_1px_2px_rgba(0,0,0,0.35)]"
+                            ? "text-neutral-700 hover:text-black"
                             : "text-neutral-800 hover:text-black"
                       }`}>
                         {link.name}
