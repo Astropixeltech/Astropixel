@@ -71,8 +71,21 @@ const HeroSection = React.forwardRef<HTMLDivElement, HeroSectionProps>(
 
     return (
       <div className={cn("relative min-h-[90vh] flex flex-col items-center justify-center pt-24 pb-16 px-4 text-center overflow-hidden", className)} ref={innerRef} {...props}>
-        {/* Soft background gradient inspired by reference */}
-        <div className="absolute inset-0 z-0 bg-gradient-to-br from-[#f0f9ff] via-[#ffffff] to-[#fff7ed] opacity-50 pointer-events-none" />
+        {/* Background Image/Gradient */}
+        <div className="absolute inset-0 z-0 pointer-events-none">
+          {bottomImage ? (
+            <>
+              <img 
+                src={bottomImage.light} 
+                alt="" 
+                className="w-full h-full object-cover opacity-100" 
+              />
+              <div className="absolute inset-0 bg-white/60 backdrop-blur-[2px]" />
+            </>
+          ) : (
+            <div className="absolute inset-0 bg-gradient-to-br from-[#f0f9ff] via-[#ffffff] to-[#fff7ed] opacity-50" />
+          )}
+        </div>
         
         <div className="relative z-10 max-w-5xl mx-auto space-y-10">
           {/* Main Headline */}
@@ -137,12 +150,6 @@ const HeroSection = React.forwardRef<HTMLDivElement, HeroSectionProps>(
           </div>
         </div>
 
-        {/* Decorative Grid or Background Elements if needed */}
-        {bottomImage && (
-          <div className="absolute bottom-0 left-0 right-0 w-full opacity-10 pointer-events-none">
-             <img src={bottomImage.light} alt="" className="w-full object-cover" />
-          </div>
-        )}
       </div>
     )
   },
