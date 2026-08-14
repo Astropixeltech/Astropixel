@@ -78,7 +78,7 @@ const HeroSection = React.forwardRef<HTMLDivElement, HeroSectionProps>(
           {/* Main Headline */}
           <h1 
             data-hero-title 
-            className="text-5xl md:text-7xl lg:text-8xl font-bold tracking-tight text-neutral-900 leading-[1.1]"
+            className="text-5xl md:text-7xl lg:text-8xl font-bold tracking-tight text-white leading-[1.1]"
           >
             {subtitle.regular}
             <span className="block">{subtitle.gradient}</span>
@@ -87,7 +87,7 @@ const HeroSection = React.forwardRef<HTMLDivElement, HeroSectionProps>(
           {/* Description */}
           <p 
             data-hero-desc 
-            className="max-w-2xl mx-auto text-lg md:text-xl text-neutral-600 leading-relaxed"
+            className="max-w-2xl mx-auto text-lg md:text-xl text-white/80 leading-relaxed"
           >
             {description}
           </p>
@@ -112,7 +112,7 @@ const HeroSection = React.forwardRef<HTMLDivElement, HeroSectionProps>(
                   {[1, 2, 3, 4].map((i) => (
                     <div 
                       key={i} 
-                      className="w-10 h-10 rounded-full border-2 border-white bg-neutral-200 overflow-hidden ring-1 ring-neutral-100"
+                      className="w-10 h-10 rounded-full border-2 border-white/20 bg-neutral-200 overflow-hidden ring-1 ring-white/10"
                     >
                       <img 
                         src={`https://i.pravatar.cc/100?img=${i + 10}`} 
@@ -128,7 +128,7 @@ const HeroSection = React.forwardRef<HTMLDivElement, HeroSectionProps>(
                       <Star key={s} size={14} fill="currentColor" />
                     ))}
                   </div>
-                  <span className="text-xs font-semibold text-neutral-500 tracking-wide uppercase">
+                  <span className="text-xs font-semibold text-white/60 tracking-wide uppercase">
                     Trusted by 1000+ clients
                   </span>
                 </div>
