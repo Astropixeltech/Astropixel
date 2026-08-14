@@ -72,13 +72,13 @@ const HeroSection = React.forwardRef<HTMLDivElement, HeroSectionProps>(
     return (
       <div className={cn("relative min-h-screen flex flex-col items-center justify-center pt-24 pb-16 px-4 text-center overflow-hidden", className)} ref={innerRef} {...props}>
         {/* Soft background gradient inspired by reference */}
-        <div className="absolute inset-0 z-0 bg-white pointer-events-none" />
+        <div className="absolute inset-0 z-0 bg-gradient-to-br from-[#f0f9ff] via-[#ffffff] to-[#fff7ed] opacity-50 pointer-events-none" />
         
         <div className="relative z-10 max-w-5xl mx-auto space-y-10">
           {/* Main Headline */}
           <h1 
             data-hero-title 
-            className="text-5xl md:text-7xl lg:text-8xl font-bold tracking-tight text-white leading-[1.1]"
+            className="text-5xl md:text-7xl lg:text-8xl font-bold tracking-tight text-neutral-900 leading-[1.1]"
           >
             {subtitle.regular}
             <span className="block">{subtitle.gradient}</span>
@@ -87,7 +87,7 @@ const HeroSection = React.forwardRef<HTMLDivElement, HeroSectionProps>(
           {/* Description */}
           <p 
             data-hero-desc 
-            className="max-w-2xl mx-auto text-lg md:text-xl text-white/80 leading-relaxed"
+            className="max-w-2xl mx-auto text-lg md:text-xl text-neutral-600 leading-relaxed"
           >
             {description}
           </p>
@@ -112,7 +112,7 @@ const HeroSection = React.forwardRef<HTMLDivElement, HeroSectionProps>(
                   {[1, 2, 3, 4].map((i) => (
                     <div 
                       key={i} 
-                      className="w-10 h-10 rounded-full border-2 border-white/20 bg-neutral-200 overflow-hidden ring-1 ring-white/10"
+                      className="w-10 h-10 rounded-full border-2 border-white bg-neutral-200 overflow-hidden ring-1 ring-neutral-100"
                     >
                       <img 
                         src={`https://i.pravatar.cc/100?img=${i + 10}`} 
@@ -128,7 +128,7 @@ const HeroSection = React.forwardRef<HTMLDivElement, HeroSectionProps>(
                       <Star key={s} size={14} fill="currentColor" />
                     ))}
                   </div>
-                  <span className="text-xs font-semibold text-white/60 tracking-wide uppercase">
+                  <span className="text-xs font-semibold text-neutral-500 tracking-wide uppercase">
                     Trusted by 1000+ clients
                   </span>
                 </div>
@@ -139,14 +139,8 @@ const HeroSection = React.forwardRef<HTMLDivElement, HeroSectionProps>(
 
         {/* Decorative Grid or Background Elements if needed */}
         {bottomImage && (
-          <div className="absolute inset-0 w-full h-full z-0">
-             <img 
-               src={bottomImage.light} 
-               alt="" 
-               className="w-full h-full object-cover object-bottom" 
-               style={{ filter: "blur(4px)", transform: "scale(1.08)" }}
-             />
-             <div className="absolute inset-0 bg-black/10" />
+          <div className="absolute bottom-0 left-0 right-0 w-full opacity-10 pointer-events-none">
+             <img src={bottomImage.light} alt="" className="w-full object-cover" />
           </div>
         )}
       </div>
