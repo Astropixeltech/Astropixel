@@ -443,3 +443,12 @@ html::-webkit-scrollbar, body::-webkit-scrollbar { display: none; width: 0; heig
 .reviews-swiper .swiper-slide > * {
   height: 100%;
 }
+
+@keyframes marquee-brand {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.animate-marquee-brand {
+  animation: marquee-brand 40s linear infinite;
+}
