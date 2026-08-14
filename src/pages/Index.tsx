@@ -463,7 +463,7 @@ const Index = () => {
       <div className="hidden lg:block">
         <ProjectMarquee />
       </div>
-      <section className="py-12 lg:py-16 bg-background relative z-[15]">
+      <section className="py-2 lg:py-4 bg-background relative z-[15]">
         <div className="container mx-auto px-6">
           {(() => {
             const defaultLogos: { src: string; alt: string; scale?: number }[] = [
