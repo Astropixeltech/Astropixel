@@ -78,7 +78,7 @@ const HeroSection = React.forwardRef<HTMLDivElement, HeroSectionProps>(
           {/* Main Headline */}
           <h1 
             data-hero-title 
-            className="text-[44px] md:text-[68px] lg:text-[108px] font-bold tracking-tight text-neutral-900 leading-[1.1]"
+            className="text-[35px] md:text-[54px] lg:text-[86px] font-bold tracking-tight text-neutral-900 leading-[1.1]"
           >
             {subtitle.regular}
             <span className="block">{subtitle.gradient}</span>
