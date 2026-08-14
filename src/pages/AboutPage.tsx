@@ -177,14 +177,14 @@ const AboutPage = () => {
       </section>
 
       {/* Brand Constellation Section */}
-      <section className="py-20 lg:py-28 relative bg-black overflow-hidden">
+      <section className="py-20 lg:py-28 relative bg-white overflow-hidden">
         {/* Boxy grid pattern background */}
         <div
           aria-hidden
           className="pointer-events-none absolute inset-0 opacity-[0.05]"
           style={{
             backgroundImage:
-              "linear-gradient(to right, #fff 1px, transparent 1px), linear-gradient(to bottom, #fff 1px, transparent 1px)",
+              "linear-gradient(to right, #000 1px, transparent 1px), linear-gradient(to bottom, #000 1px, transparent 1px)",
             backgroundSize: "56px 56px",
           }}
         />
@@ -196,13 +196,13 @@ const AboutPage = () => {
             viewport={{ once: true }}
             className="max-w-5xl mx-auto text-center mb-16"
           >
-            <div className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full border border-white/10 bg-white/[0.03] mb-6">
-              <Award size={16} className="text-white/70" />
-              <span className="text-sm font-bold tracking-[0.25em] uppercase text-white/70">
+            <div className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full border border-black/10 bg-black/[0.03] mb-6">
+              <Award size={16} className="text-black/70" />
+              <span className="text-sm font-bold tracking-[0.25em] uppercase text-black/70">
                 Network
               </span>
             </div>
-            <h2 className="font-display font-bold leading-[1.05] tracking-tight text-3xl sm:text-4xl lg:text-5xl text-white">
+            <h2 className="font-display font-bold leading-[1.05] tracking-tight text-3xl sm:text-4xl lg:text-5xl text-black">
               {(() => {
                 const t = (sisterSection?.title || 'Our brand constellation').trim();
                 const words = t.split(' ');
@@ -210,8 +210,8 @@ const AboutPage = () => {
                 const last = words[words.length - 1] || '';
                 return (
                   <>
-                    <span className="text-white/60">{first}</span>{" "}
-                    <span className="text-white relative">
+                    <span className="text-black/60">{first}</span>{" "}
+                    <span className="text-black relative">
                       {last}
                       <span className="absolute -top-1 -right-3 text-cyan-300 text-xs animate-pulse">✦</span>
                     </span>
