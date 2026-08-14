@@ -115,7 +115,7 @@ const Navbar = () => {
             className={`relative flex items-center justify-between rounded-2xl px-4 sm:px-5 py-2.5 transition-all duration-500 backdrop-blur-2xl backdrop-saturate-150 border border-neutral-200/50 dark:border-white/10 shadow-[0_1px_0_0_rgba(255,255,255,0.8)_inset,0_10px_30px_-12px_rgba(0,0,0,0.1)] ${
               isScrolled
                ? "bg-white/40 dark:bg-white/[0.06]"
-               : "bg-white/20 dark:bg-white/[0.04]"
+               : "bg-white/10 dark:bg-white/[0.02] border-white/5"
             }`}
             style={{ WebkitBackdropFilter: "blur(28px) saturate(160%)", backdropFilter: "blur(28px) saturate(160%)" }}
           >

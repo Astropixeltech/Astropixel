@@ -435,12 +435,8 @@ const Index = () => {
           ctaText={c("cta1", "home.cta1")}
           ctaHref="/contact"
           bottomImage={{ light: designShowcaseLight, dark: designShowcase }}
-        >
-          {/* Mobile & Tablet: gallery lives below main content */}
-          <div className="lg:hidden">
-            <ProjectMarquee />
-          </div>
-        </HeroSection>
+          className="w-full"
+        />
       </section>
 
 
