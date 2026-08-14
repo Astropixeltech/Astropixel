@@ -73,10 +73,9 @@ import { useHomepageSection, useHomepageSectionItems } from "@/hooks/useHomepage
 
 import { memo, useRef, useState, useEffect, type ReactNode } from "react";
 import { useTheme } from "next-themes";
-import heroBgAsset from "@/assets/hero-bg.jpg.asset.json";
-import heroBgLightAsset from "@/assets/hero-bg-light.png.asset.json";
-const designShowcase = heroBgAsset.url;
-const designShowcaseLight = heroBgLightAsset.url;
+import heroGradientAsset from "@/assets/hero-gradient.png.asset.json";
+const designShowcase = heroGradientAsset.url;
+const designShowcaseLight = heroGradientAsset.url;
 const resolveLogoUrl = (url: string) => url.startsWith("/") ? `https://alphazero.online${url}` : url;
 
 // Tilted device mockup card (browser / phone / image)
