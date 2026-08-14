@@ -69,11 +69,11 @@ const Footer = () => {
             {/* Brand */}
             <div className="lg:pr-6">
               <Link to="/" className="inline-block mb-6">
-                <img
-                  src={logo}
-                  alt="AlphaZero"
-                  className="h-9 w-auto invert"
-                />
+              <img
+                src={logo}
+                alt="Astropixel"
+                className="h-9 w-auto invert"
+              />
               </Link>
               <p className="text-sm leading-relaxed text-background/60 max-w-xs">
                 {description}

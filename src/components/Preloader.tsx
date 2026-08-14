@@ -47,10 +47,10 @@ const Preloader = memo(({ onComplete }: { onComplete: () => void }) => {
               <div className="absolute inset-0 blur-2xl opacity-40 bg-gradient-to-tr from-cyan-400/40 to-blue-500/40 rounded-full" />
               <img
                 src={logoSrc}
-                alt="AlphaZero"
+                alt="Astropixel"
                 width={120}
                 height={120}
-                className="relative h-24 md:h-28 w-auto"
+                className="relative h-20 md:h-24 w-auto max-w-[260px] md:max-w-[320px]"
                 loading="eager"
                 fetchPriority="high"
                 decoding="sync"
