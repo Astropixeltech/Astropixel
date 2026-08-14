@@ -497,7 +497,7 @@ const Index = () => {
 
             <h2 className="font-display font-bold leading-[1.05] tracking-tight text-3xl sm:text-4xl lg:text-5xl">
               {(() => {
-                const t = (sisterSection?.title || 'Our brand constellation').trim();
+                const t = (sisterSection?.title || 'Trusted by 26+ brands').trim();
                 const words = t.split(' ');
                 const first = words.slice(0, Math.max(1, words.length - 1)).join(' ');
                 const last = words[words.length - 1] || '';
