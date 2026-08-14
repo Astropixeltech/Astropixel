@@ -640,26 +640,20 @@ const Index = () => {
 
 
 
-            // duplicated for mobile marquee
-            const marqueeLogos = [...logos, ...logos];
-
-            // split into two rows so each row has a distinct set
-            const row1 = logos.filter((_, i) => i % 2 === 0);
-            const row2 = logos.filter((_, i) => i % 2 === 1);
+            // duplicated for scrolling effect
+            const marqueeLogos = [...logos, ...logos, ...logos, ...logos];
 
             const LogoItem = ({ logo }: { logo: { src: string; alt: string; scale?: number } }) => (
-              <div className="group flex items-center justify-center h-12 sm:h-14 lg:h-16 w-full px-2 overflow-hidden">
+              <div className="group flex items-center justify-center h-12 sm:h-14 lg:h-16 w-[160px] sm:w-[200px] lg:w-[240px] px-4 sm:px-6 shrink-0">
                 <img
                   src={logo.src}
                   alt={logo.alt}
                   loading="lazy"
                   style={{ transform: `scale(${logo.scale ?? 1})` }}
-                  className="max-h-12 lg:max-h-14 w-auto object-contain [filter:brightness(0)_saturate(100%)] opacity-80 group-hover:opacity-100 transition-all duration-300 ease-out"
+                  className="max-h-12 lg:max-h-14 w-auto object-contain [filter:brightness(0)_saturate(100%)] opacity-70 group-hover:opacity-100 transition-all duration-300 ease-out"
                 />
               </div>
             );
-
-
 
             return (
               <motion.div
@@ -669,19 +663,23 @@ const Index = () => {
                 transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
               >
                 {/* Centered headline */}
-                <div className="text-center max-w-3xl mx-auto mb-12 lg:mb-16">
+                <div className="text-center max-w-3xl mx-auto mb-10 lg:mb-14">
                   <h2 className="text-2xl sm:text-3xl lg:text-4xl font-display font-semibold tracking-[-0.02em] text-[#111] leading-[1.2]">
                     Trusted by <span className="text-primary">26+</span> brands
                   </h2>
                 </div>
 
-                {/* Responsive static grid */}
-                <div className="grid grid-cols-4 sm:grid-cols-4 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-x-4 gap-y-0 lg:gap-x-6 lg:gap-y-1 items-center justify-items-center">
-                  {logos.map((logo, i) => (
-                    <LogoItem key={`${logo.alt}-${i}`} logo={logo} />
-                  ))}
+                {/* Marquee Row */}
+                <div className="relative w-full overflow-hidden">
+                  <div className="absolute left-0 top-0 bottom-0 w-20 z-10 bg-gradient-to-r from-white via-white/40 to-transparent pointer-events-none" />
+                  <div className="absolute right-0 top-0 bottom-0 w-20 z-10 bg-gradient-to-l from-white via-white/40 to-transparent pointer-events-none" />
+                  
+                  <div className="flex w-max animate-marquee-brand py-4">
+                    {marqueeLogos.map((logo, i) => (
+                      <LogoItem key={`${logo.alt}-${i}`} logo={logo} />
+                    ))}
+                  </div>
                 </div>
-
               </motion.div>
             );
 
