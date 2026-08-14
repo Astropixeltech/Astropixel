@@ -80,7 +80,7 @@ const HeroSection = React.forwardRef<HTMLDivElement, HeroSectionProps>(
           <TextReveal
             as="h1"
             preset="fade-in-blur"
-            className="text-[35px] md:text-[54px] lg:text-[86px] font-bold tracking-tight text-neutral-900 leading-[1.1]"
+            className="text-[32px] md:text-[48px] lg:text-[76px] font-bold tracking-tight text-neutral-900 leading-[1.1] whitespace-pre-line"
           >
             {`${subtitle.regular}${subtitle.gradient}`}
           </TextReveal>
