@@ -13,13 +13,21 @@ import { useTeamMembers } from "@/hooks/useTeamMembers";
 import servicesHeroBg from "@/assets/about-hero-blue-orb.jpg.asset.json";
 import ctaBlueWaves from "@/assets/about-cta-blue-waves.png.asset.json";
 import TeamBento from "@/components/TeamBento";
-import { Users } from "lucide-react";
+import { Users, Award } from "lucide-react";
+import { LogoCloud } from "@/components/ui/logo-cloud-2";
+import { useHomepageSection, useHomepageSectionItems } from "@/hooks/useHomepageSections";
+import brand1 from "@/assets/brands/b1.png.asset.json";
+import brand2 from "@/assets/brands/b2.png.asset.json";
+import brand3 from "@/assets/brands/b3.png.asset.json";
+import brand4 from "@/assets/brands/b4.png.asset.json";
 
 
 const AboutPage = () => {
   const { t } = useLanguage();
   const { getContent } = usePageContent('about');
   const { data: teamMembers } = useTeamMembers();
+  const { section: sisterSection } = useHomepageSection('sister_brands', 'agency', 'home');
+  const { data: sisterItems } = useHomepageSectionItems(sisterSection?.id);
 
   const founder = teamMembers?.find(m => m.name.toLowerCase().includes('sofiullah') || m.role.toLowerCase().includes('founder'));
 
@@ -165,6 +173,78 @@ const AboutPage = () => {
             </motion.div>
             <TeamBento />
           </div>
+        </div>
+      </section>
+
+      {/* Brand Constellation Section */}
+      <section className="py-20 lg:py-28 relative bg-black overflow-hidden">
+        {/* Boxy grid pattern background */}
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-0 opacity-[0.05]"
+          style={{
+            backgroundImage:
+              "linear-gradient(to right, #fff 1px, transparent 1px), linear-gradient(to bottom, #fff 1px, transparent 1px)",
+            backgroundSize: "56px 56px",
+          }}
+        />
+
+        <div className="container mx-auto px-6 relative">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="max-w-5xl mx-auto text-center mb-16"
+          >
+            <div className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full border border-white/10 bg-white/[0.03] mb-6">
+              <Award size={16} className="text-white/70" />
+              <span className="text-sm font-bold tracking-[0.25em] uppercase text-white/70">
+                Network
+              </span>
+            </div>
+            <h2 className="font-display font-bold leading-[1.05] tracking-tight text-3xl sm:text-4xl lg:text-5xl text-white">
+              {(() => {
+                const t = (sisterSection?.title || 'Our brand constellation').trim();
+                const words = t.split(' ');
+                const first = words.slice(0, Math.max(1, words.length - 1)).join(' ');
+                const last = words[words.length - 1] || '';
+                return (
+                  <>
+                    <span className="text-white/60">{first}</span>{" "}
+                    <span className="text-white relative">
+                      {last}
+                      <span className="absolute -top-1 -right-3 text-cyan-300 text-xs animate-pulse">✦</span>
+                    </span>
+                  </>
+                );
+              })()}
+            </h2>
+          </motion.div>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="max-w-5xl mx-auto"
+          >
+            {(() => {
+              const activeSister = (sisterItems ?? []).filter((it) => it.is_active && it.image_url);
+              const sisterLogos = activeSister.length
+                ? activeSister.map((it, i) => ({
+                    src: it.image_url as string,
+                    alt: it.title || `Brand ${i + 1}`,
+                    href: it.url || undefined,
+                    invert: true,
+                    large: i === activeSister.length - 1,
+                  }))
+                : [
+                    { src: brand1.url, alt: "AlphaZero", invert: true },
+                    { src: brand2.url, alt: "Sister Brand", invert: true },
+                    { src: brand3.url, alt: "Alpha Portfolio", href: "https://portfolio.alphazero.online/", invert: true },
+                    { src: brand4.url, alt: "Learn with AlphaZero", invert: true, large: true },
+                  ];
+              return <LogoCloud logos={sisterLogos} />;
+            })()}
+          </motion.div>
         </div>
       </section>
 
