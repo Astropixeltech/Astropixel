@@ -72,8 +72,19 @@ const HeroSection = React.forwardRef<HTMLDivElement, HeroSectionProps>(
 
     return (
       <div className={cn("relative min-h-screen flex flex-col items-center justify-start pt-32 pb-16 px-4 text-center overflow-hidden", className)} ref={innerRef} {...props}>
-        {/* Soft background gradient inspired by reference */}
-        <div className="absolute inset-0 z-0 bg-gradient-to-br from-[#f0f9ff] via-[#ffffff] to-[#fff7ed] opacity-50 pointer-events-none" />
+        {/* Full-screen background image */}
+        {bottomImage && (
+          <div className="absolute inset-0 z-0">
+            <img 
+              src={bottomImage.light} 
+              alt="Hero Background" 
+              className="w-full h-full object-cover"
+            />
+            {/* Optional overlay to ensure text readability */}
+            <div className="absolute inset-0 bg-white/30 backdrop-blur-[2px]" />
+          </div>
+        )}
+        
         
         <div className="relative z-10 max-w-5xl mx-auto space-y-6 md:space-y-8">
           {/* Main Headline */}
