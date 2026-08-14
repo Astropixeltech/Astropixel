@@ -486,61 +486,6 @@ const Index = () => {
             </p>
           </motion.div>
 
-          {(() => {
-            const defaultLogos: { src: string; alt: string; scale?: number }[] = [
-              { src: resolveLogoUrl(clientAlokchitra.url), alt: "Alokchitra", scale: 1.0 },
-              { src: resolveLogoUrl(clientAura.url), alt: "Aura Signature", scale: 3.8 },
-              { src: resolveLogoUrl(clientGreenpeak.url), alt: "GreenPeak", scale: 2.6 },
-              { src: resolveLogoUrl(clientBlackzen.url), alt: "BlackZen", scale: 3.2 },
-              { src: resolveLogoUrl(clientDarkAura.url), alt: "Dark Aura", scale: 3.2 },
-              { src: resolveLogoUrl(clientAtix.url), alt: "Atix", scale: 1.0 },
-              { src: resolveLogoUrl(clientSA.url), alt: "SA", scale: 1.35 },
-              { src: "https://res.cloudinary.com/de348sqlb/image/upload/v1784827651/alphazero-assets/brands/unavailable-attire.png", alt: "Unavailable Attire", scale: 1.05 },
-              { src: "https://res.cloudinary.com/dzuex7n2u/image/upload/v1779254926/amin-one/banners/p5rstcffeky3xd7arakc.png", alt: "Amin One", scale: 0.9 },
-              { src: "https://alphazero.online/__l5e/assets-v1/0edf2ae9-ec96-4989-a03b-9449fbf1aaf6/brand-2.png", alt: "Static Vibes", scale: 1.35 },
-              { src: "https://maarifulquranacademy.com/wp-content/uploads/2025/09/final-logo-2048x401.png", alt: "Maariful Quran Academy", scale: 0.95 },
-            ];
-
-            const activeItems = (brandItems ?? []).filter((it) => it.is_active && it.image_url);
-            const logos: { src: string; alt: string; scale?: number }[] = activeItems.length
-              ? activeItems.map((it) => ({ src: it.image_url as string, alt: it.title || "Brand" }))
-              : defaultLogos;
-
-            const marqueeLogos = [...logos, ...logos, ...logos, ...logos];
-
-            const LogoItem = ({ logo }: { logo: { src: string; alt: string; scale?: number } }) => (
-              <div className="group flex items-center justify-center h-12 sm:h-14 lg:h-16 w-[160px] sm:w-[200px] lg:w-[240px] px-4 sm:px-6 shrink-0">
-                <img
-                  src={logo.src}
-                  alt={logo.alt}
-                  loading="lazy"
-                  style={{ transform: `scale(${logo.scale ?? 1})` }}
-                  className="max-h-12 lg:max-h-14 w-auto object-contain brightness-0 opacity-40 group-hover:opacity-100 transition-all duration-300 ease-out"
-                />
-              </div>
-            );
-
-            return (
-              <motion.div
-                initial={{ opacity: 0, y: 24 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-80px" }}
-                transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-                className="mb-20 lg:mb-32"
-              >
-                <div className="relative w-full overflow-hidden">
-                  <div className="absolute left-0 top-0 bottom-0 w-20 z-10 bg-gradient-to-r from-background via-background/40 to-transparent pointer-events-none" />
-                  <div className="absolute right-0 top-0 bottom-0 w-20 z-10 bg-gradient-to-l from-background via-background/40 to-transparent pointer-events-none" />
-                  
-                  <div className="flex w-max animate-marquee-brand py-4">
-                    {marqueeLogos.map((logo, i) => (
-                      <LogoItem key={`${logo.alt}-${i}`} logo={logo} />
-                    ))}
-                  </div>
-                </div>
-              </motion.div>
-            );
-          })()}
 
 
 
