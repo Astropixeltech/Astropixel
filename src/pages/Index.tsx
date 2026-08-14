@@ -436,7 +436,7 @@ const Index = () => {
               regular: `${c("title1", "home.title1")} `,
               gradient: c("title2", "home.title2"),
             }}
-            description={language === "bn" ? "পিক্সেল যা ব্র্যান্ডকে এগিয়ে নিয়ে যায়।" : "Pixels That Move Brands Forward."}
+            description={language === "bn" ? "Pixels That Move Brands Forward." : "Pixels That Move Brands Forward."}
 
             ctaText={c("cta1", "home.cta1")}
             ctaHref="/contact"
