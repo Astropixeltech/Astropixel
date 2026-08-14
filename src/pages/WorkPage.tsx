@@ -1,6 +1,6 @@
 import { useMemo, useState, useEffect, useCallback } from "react";
 import { motion } from "framer-motion";
-import servicesHeroBg from "@/assets/services-hero-bg-2.jpg.asset.json";
+import aboutHeroBg from "@/assets/about-hero-blue-orb.jpg.asset.json";
 import { X, Play, ArrowUpRight, Plus, Minus } from "lucide-react";
 import Layout from "@/components/Layout";
 import { useWorks, type Work } from "@/hooks/useWorks";
@@ -94,30 +94,51 @@ const WorkPage = () => {
 
   return (
     <Layout>
-      {/* Hero — Services style */}
-      <section id="site-hero" className="relative overflow-hidden -mt-20 pt-28 pb-12 lg:pt-32 lg:pb-16 rounded-b-[2.5rem]">
-        <div className="absolute inset-0 bg-black" />
-        <img src={servicesHeroBg.url} alt="" loading="eager" decoding="async"
-          style={{ filter: "blur(21px)" }}
-          className="absolute inset-x-0 top-0 w-full h-full object-cover object-top scale-125 opacity-85" />
-        <div className="absolute inset-0 bg-black/35" />
+      {/* Hero — About style */}
+      <section id="site-hero" className="relative overflow-hidden -mt-20 pt-32 pb-14 lg:pt-36 lg:pb-18 rounded-b-[2.5rem]">
+        {/* Uploaded background image from About page */}
+        <img
+          src={aboutHeroBg.url}
+          alt=""
+          loading="eager"
+          fetchPriority="high"
+          decoding="async"
+          className="absolute inset-0 w-full h-full object-cover object-bottom"
+          style={{ filter: "blur(4px)", transform: "scale(1.08)" }}
+        />
+        <div className="absolute inset-0 bg-black/10" />
+
         <div className="container mx-auto px-6 relative z-10">
           <div className="max-w-4xl mx-auto text-center">
-            <h1
-              className="text-4xl sm:text-5xl lg:text-7xl font-display font-bold leading-[1.05] text-white mb-6">
+            <motion.h1 
+              initial={{ opacity: 0, y: 30 }} 
+              animate={{ opacity: 1, y: 0 }} 
+              transition={{ delay: 0.1 }}
+              className="text-4xl sm:text-5xl lg:text-7xl font-display font-bold leading-[1.05] text-white mb-6"
+            >
               {(() => {
                 const raw = hero("hero.title", "Our Creative |Works & Projects|");
                 const parts = raw.split("|");
                 if (parts.length >= 3) {
-                  return <><span className="font-normal" style={{ fontFamily: "'Mea Culpa', cursive" }}>{parts[0]}</span><span className="font-normal gradient-text" style={{ fontFamily: "'Mea Culpa', cursive" }}>{parts[1]}</span>{parts.slice(2).join("|")}</>;
+                  return (
+                    <>
+                      <span>{parts[0]}</span>
+                      <span className="gradient-text">{parts[1]}</span>
+                      <span>{parts.slice(2).join("|")}</span>
+                    </>
+                  );
                 }
                 return raw;
               })()}
-            </h1>
-            <p
-              className="text-base lg:text-lg text-white/60 max-w-2xl mx-auto mb-8">
+            </motion.h1>
+            <motion.p 
+              initial={{ opacity: 0, y: 20 }} 
+              animate={{ opacity: 1, y: 0 }} 
+              transition={{ delay: 0.2 }}
+              className="text-base lg:text-lg text-white/60 max-w-2xl mx-auto"
+            >
               {hero("hero.description", "Discover our finest graphic designs, web projects, and video productions — all crafted with precision and passion.")}
-            </p>
+            </motion.p>
           </div>
         </div>
       </section>
