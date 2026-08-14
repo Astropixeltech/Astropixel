@@ -493,7 +493,7 @@ const Index = () => {
                   src={logo.src}
                   alt={logo.alt}
                   loading="lazy"
-                  style={{ transform: `scale(${(logo.scale ?? 1) * 1.3})` }}
+                  style={{ transform: `scale(${(logo.scale ?? 1) * 1.0})` }}
                   className="max-h-16 lg:max-h-20 w-auto object-contain brightness-0 opacity-40 group-hover:opacity-100 transition-all duration-300 ease-out"
                 />
               </div>
