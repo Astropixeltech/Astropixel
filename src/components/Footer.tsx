@@ -72,7 +72,7 @@ const Footer = () => {
               <img
                 src={logo}
                 alt="Astropixel"
-                className="h-9 w-auto invert"
+                className="h-9 w-auto"
               />
               </Link>
               <p className="text-sm leading-relaxed text-background/60 max-w-xs">
