@@ -70,7 +70,7 @@ const HeroSection = React.forwardRef<HTMLDivElement, HeroSectionProps>(
     }, []);
 
     return (
-      <div className={cn("relative min-h-[90vh] flex flex-col items-center justify-center pt-24 pb-16 px-4 text-center overflow-hidden", className)} ref={innerRef} {...props}>
+      <div className={cn("relative min-h-screen flex flex-col items-center justify-center pt-32 pb-16 px-4 text-center overflow-hidden", className)} ref={innerRef} {...props}>
         {/* Soft background gradient inspired by reference */}
         <div className="absolute inset-0 z-0 bg-gradient-to-br from-[#f0f9ff] via-[#ffffff] to-[#fff7ed] opacity-50 pointer-events-none" />
         
