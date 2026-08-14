@@ -181,7 +181,7 @@ const HeroContent = ({
   splitWords: (t: string) => string
 }) => (
   <div className="space-y-4 sm:space-y-7 max-w-6xl leading-tight lg:leading-5 mx-auto text-center">
-    <h1 data-hero-badge className="text-[11px] sm:text-xs md:text-sm text-foreground/95 group font-geist mx-auto px-3 sm:px-4 py-1.5 bg-gradient-to-tr from-primary/20 via-primary/10 to-transparent border-[2px] border-border rounded-3xl w-fit backdrop-blur-sm">
+    <h1 data-hero-badge className="text-[11px] sm:text-xs md:text-sm text-white group font-geist mx-auto px-3 sm:px-4 py-1.5 bg-gradient-to-tr from-primary/20 via-primary/10 to-transparent border-[2px] border-border rounded-3xl w-fit backdrop-blur-sm">
       {title}
       <ChevronRight className="inline w-3 h-3 ml-1.5 group-hover:translate-x-1 duration-300" />
     </h1>
@@ -193,7 +193,7 @@ const HeroContent = ({
         {splitWords(subtitle.gradient)}
       </span>
     </h2>
-    <p data-hero-desc className="max-w-3xl mx-auto text-foreground/90 text-sm sm:text-lg md:text-2xl drop-shadow-lg px-2">
+    <p data-hero-desc className="max-w-3xl mx-auto text-white text-sm sm:text-lg md:text-2xl drop-shadow-lg px-2">
       {description}
     </p>
     <div className="items-center justify-center gap-x-3 space-y-3 sm:flex sm:space-y-0">
