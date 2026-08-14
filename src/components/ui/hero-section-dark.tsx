@@ -88,16 +88,16 @@ const HeroSection = React.forwardRef<HTMLDivElement, HeroSectionProps>(
         
         <div className="relative z-10 max-w-5xl mx-auto space-y-6 md:space-y-8">
           {/* Main Headline */}
-          <h1 className="text-[22px] md:text-[36px] lg:text-[48px] font-bold tracking-tight text-neutral-900 leading-[1.2]">
+          <h1 className="text-[22px] md:text-[36px] lg:text-[48px] font-bold tracking-tight text-white leading-[1.2]">
             <span className="block">We Create Brands Beyond the Ordinary.</span>
-            <span className="block text-neutral-500">Powered by Design, Technology & Innovation</span>
+            <span className="block text-white/70">Powered by Design, Technology & Innovation</span>
           </h1>
 
           {/* Description */}
           <TextReveal
             preset="slide"
             delay={0.5}
-            className="max-w-2xl mx-auto text-lg md:text-xl text-neutral-600 leading-relaxed"
+            className="max-w-2xl mx-auto text-lg md:text-xl text-white/60 leading-relaxed"
           >
             {typeof description === 'string' ? description : (description as any)?.props?.children || ''}
           </TextReveal>
@@ -138,7 +138,7 @@ const HeroSection = React.forwardRef<HTMLDivElement, HeroSectionProps>(
                       <Star key={s} size={10} fill="currentColor" />
                     ))}
                   </div>
-                  <span className="text-[10px] font-semibold text-neutral-500 tracking-wide uppercase">
+                  <span className="text-[10px] font-semibold text-white/50 tracking-wide uppercase">
                     Trusted by 1000+ clients
                   </span>
                 </div>
