@@ -424,7 +424,7 @@ const Index = () => {
   return (
     <LayoutComponent>
       {/* ══════════ HERO — Retro Grid Dark ══════════ */}
-      <section id="site-hero" ref={heroRef} className="relative z-[2]">
+      <section id="site-hero" ref={heroRef} className="relative z-[2] -mt-[88px]">
         <HeroSection
           title={c("badge", "home.badge")}
           subtitle={{
