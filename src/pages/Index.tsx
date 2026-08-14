@@ -428,7 +428,7 @@ const Index = () => {
         <HeroSection
           title={c("badge", "home.badge")}
           subtitle={{
-            regular: "We Create Brands Beyond the Ordinary. ",
+            regular: "We Create Brands Beyond the Ordinary.\n",
             gradient: "Powered by Design, Technology & Innovation",
           }}
           description="Pixels That Move Brands Forward."
