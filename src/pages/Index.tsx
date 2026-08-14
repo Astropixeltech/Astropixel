@@ -463,29 +463,8 @@ const Index = () => {
       <div className="hidden lg:block">
         <ProjectMarquee />
       </div>
-
-
-
-
-
-
-      {/* ══════════ SERVICES — BENTO GRID ══════════ */}
-      <section className="pb-16 lg:pb-24 relative bg-background">
-        <div className="container mx-auto px-6 relative z-10">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-center mb-10 lg:mb-28"
-          >
-            <h2 className="text-3xl lg:text-5xl xl:text-6xl font-display font-bold mb-4">
-              {c("whatWeDo", "home.whatWeDo")} <span className="gradient-text">{c("do", "home.do")}</span>
-            </h2>
-            <p className="text-muted-foreground max-w-xl mx-auto text-base lg:text-lg">
-              We craft designs, websites & brand visuals that stand out.
-            </p>
-          </motion.div>
-
+      <section className="py-12 lg:py-16 bg-background relative z-[15]">
+        <div className="container mx-auto px-6">
           {(() => {
             const defaultLogos: { src: string; alt: string; scale?: number }[] = [
               { src: resolveLogoUrl(clientAlokchitra.url), alt: "Alokchitra", scale: 1.0 },
@@ -526,7 +505,6 @@ const Index = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-80px" }}
                 transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-                className="mb-20 lg:mb-32"
               >
                 <div className="relative w-full overflow-hidden">
                   <div className="absolute left-0 top-0 bottom-0 w-20 z-10 bg-gradient-to-r from-background via-background/40 to-transparent pointer-events-none" />
@@ -541,6 +519,26 @@ const Index = () => {
               </motion.div>
             );
           })()}
+        </div>
+      </section>
+
+      {/* ══════════ SERVICES — BENTO GRID ══════════ */}
+      <section className="pb-16 lg:pb-24 relative bg-background">
+        <div className="container mx-auto px-6 relative z-10">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-10 lg:mb-28"
+          >
+            <h2 className="text-3xl lg:text-5xl xl:text-6xl font-display font-bold mb-4">
+              {c("whatWeDo", "home.whatWeDo")} <span className="gradient-text">{c("do", "home.do")}</span>
+            </h2>
+            <p className="text-muted-foreground max-w-xl mx-auto text-base lg:text-lg">
+              We craft designs, websites & brand visuals that stand out.
+            </p>
+          </motion.div>
+
 
 
 
