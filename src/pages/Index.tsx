@@ -506,6 +506,13 @@ const Index = () => {
                 viewport={{ once: true, margin: "-80px" }}
                 transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
               >
+                {/* Centered headline */}
+                <div className="text-center max-w-3xl mx-auto mb-8 lg:mb-10">
+                  <h2 className="text-2xl sm:text-3xl lg:text-4xl font-display font-semibold tracking-[-0.02em] text-foreground leading-[1.2]">
+                    Trusted by <span className="text-primary">26+</span> brands
+                  </h2>
+                </div>
+
                 <div className="relative w-full overflow-hidden">
                   <div className="absolute left-0 top-0 bottom-0 w-20 z-10 bg-gradient-to-r from-background via-background/40 to-transparent pointer-events-none" />
                   <div className="absolute right-0 top-0 bottom-0 w-20 z-10 bg-gradient-to-l from-background via-background/40 to-transparent pointer-events-none" />
