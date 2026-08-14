@@ -598,25 +598,9 @@ const Index = () => {
       </section>
 
       {/* ══════════ TRUSTED BY GLOBAL BRANDS — Premium SaaS ══════════ */}
-      <section className="relative py-12 lg:py-16 bg-white overflow-hidden">
-        {/* Ambient radial glows */}
-        <div
-          aria-hidden
-          className="pointer-events-none absolute -left-40 top-1/2 -translate-y-1/2 w-[520px] h-[520px] rounded-full"
-          style={{ background: "radial-gradient(circle, rgba(0,0,0,0.05) 0%, rgba(0,0,0,0) 70%)" }}
-        />
-        <div
-          aria-hidden
-          className="pointer-events-none absolute -right-40 top-1/2 -translate-y-1/2 w-[520px] h-[520px] rounded-full"
-          style={{ background: "radial-gradient(circle, rgba(0,0,0,0.05) 0%, rgba(0,0,0,0) 70%)" }}
-        />
-        <div
-          aria-hidden
-          className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[900px] h-[380px] rounded-full"
-          style={{ background: "radial-gradient(ellipse, rgba(0,0,0,0.035) 0%, rgba(0,0,0,0) 70%)" }}
-        />
-
+      <section className="relative z-[15] -mt-32 sm:-mt-48 lg:-mt-72 pb-20 overflow-visible">
         <div className="relative container mx-auto px-6 max-w-[1280px]">
+
           {(() => {
             const defaultLogos: { src: string; alt: string; scale?: number }[] = [
               { src: resolveLogoUrl(clientAlokchitra.url), alt: "Alokchitra", scale: 1.0 },
@@ -650,10 +634,11 @@ const Index = () => {
                   alt={logo.alt}
                   loading="lazy"
                   style={{ transform: `scale(${logo.scale ?? 1})` }}
-                  className="max-h-12 lg:max-h-14 w-auto object-contain [filter:brightness(0)_saturate(100%)] opacity-70 group-hover:opacity-100 transition-all duration-300 ease-out"
+                  className="max-h-12 lg:max-h-14 w-auto object-contain brightness-0 invert opacity-70 group-hover:opacity-100 transition-all duration-300 ease-out"
                 />
               </div>
             );
+
 
             return (
               <motion.div
@@ -664,15 +649,17 @@ const Index = () => {
               >
                 {/* Centered headline */}
                 <div className="text-center max-w-3xl mx-auto mb-10 lg:mb-14">
-                  <h2 className="text-2xl sm:text-3xl lg:text-4xl font-display font-semibold tracking-[-0.02em] text-[#111] leading-[1.2]">
+                  <h2 className="text-2xl sm:text-3xl lg:text-4xl font-display font-semibold tracking-[-0.02em] text-white leading-[1.2]">
                     Trusted by <span className="text-primary">26+</span> brands
                   </h2>
+
                 </div>
 
                 {/* Marquee Row */}
                 <div className="relative w-full overflow-hidden">
-                  <div className="absolute left-0 top-0 bottom-0 w-20 z-10 bg-gradient-to-r from-white via-white/40 to-transparent pointer-events-none" />
-                  <div className="absolute right-0 top-0 bottom-0 w-20 z-10 bg-gradient-to-l from-white via-white/40 to-transparent pointer-events-none" />
+                  <div className="absolute left-0 top-0 bottom-0 w-20 z-10 bg-gradient-to-r from-black via-black/40 to-transparent pointer-events-none" />
+                  <div className="absolute right-0 top-0 bottom-0 w-20 z-10 bg-gradient-to-l from-black via-black/40 to-transparent pointer-events-none" />
+
                   
                   <div className="flex w-max animate-marquee-brand py-4">
                     {marqueeLogos.map((logo, i) => (
@@ -687,12 +674,13 @@ const Index = () => {
         </div>
       </section>
 
+      {/* Start of White Background Content */}
+      <div className="relative z-10 bg-white">
+        {/* OUR TEAM or OTHER SECTIONS would go here if they exist */}
+        
+        {/* ══════════ TESTIMONIALS ══════════ */}
+        <section className="py-12 lg:py-16 relative">
 
-      {/* ══════════ OUR TEAM ══════════ */}
-      
-
-      {/* ══════════ TESTIMONIALS ══════════ */}
-      <section className="py-12 lg:py-16 relative">
         <div className="container mx-auto px-6">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -741,11 +729,11 @@ const Index = () => {
           </div>
         </div>
       </section>
-
-
+      </div>
     </LayoutComponent>
   );
 };
+
 
 const TrustedByExperts = () => {
   const { theme } = useTheme();
