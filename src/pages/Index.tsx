@@ -428,10 +428,10 @@ const Index = () => {
         <HeroSection
           title={c("badge", "home.badge")}
           subtitle={{
-            regular: `${c("title1", "home.title1")} `,
-            gradient: c("title2", "home.title2"),
+            regular: "We Create Brands Beyond the Ordinary. ",
+            gradient: "Powered by Design, Technology & Innovation",
           }}
-          description={language === "bn" ? "We Create Brands Beyond the Ordinary.\nPowered by Design, Technology & Innovation" : "We Create Brands Beyond the Ordinary.\nPowered by Design, Technology & Innovation"}
+          description="Pixels That Move Brands Forward."
           ctaText={c("cta1", "home.cta1")}
           ctaHref="/contact"
           bottomImage={{ light: designShowcaseLight, dark: designShowcase }}
