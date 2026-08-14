@@ -23,7 +23,7 @@ import {
 import { Link, useLocation } from "react-router-dom";
 import { useTheme } from "next-themes";
 import { useLanguage } from "@/contexts/LanguageContext";
-import logoFullAsset from "@/assets/alphazero-logo-new.png.asset.json";
+import logoFullAsset from "@/assets/astropixel-logo.png.asset.json";
 import learnLogoAssetJson from "@/assets/learn-with-alphazero-logo.png.asset.json";
 const learnLogo = learnLogoAssetJson.url;
 const logoFull = logoFullAsset.url;
@@ -127,11 +127,11 @@ const Navbar = () => {
             {/* Logo — adaptive: white over dark hero, metallic silver/dark over light content */}
             <Link to="/" className="flex items-center group relative shrink-0">
               <div className="absolute -inset-2 bg-primary/10 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-              <div className="relative h-7 sm:h-8 w-[140px] sm:w-[160px] z-10">
+              <div className="relative h-7 sm:h-8 w-[160px] sm:w-[190px] z-10">
                 {/* White logo — visible over dark hero (top of page) */}
                 <img
                   src={brandLogo}
-                  alt="AlphaZero Logo"
+                  alt="Astropixel Logo"
                   className="absolute inset-0 h-full w-auto object-contain object-left transition-opacity duration-300 ease-out"
                   style={{
                     opacity: isOverHero ? 1 : 0,
