@@ -1,5 +1,5 @@
-# AlphaZero - Creative Design Agency
-# Canonical domain: https://alphazero.online (non-www)
+# Astropixel - Creative Design Agency
+# Canonical domain: https://astropixel.tech (non-www)
 
 User-agent: Googlebot
 Allow: /
@@ -33,7 +33,7 @@ Disallow: /teacher/dashboard
 Disallow: /passcode
 
 # Sitemap location (canonical non-www domain)
-Sitemap: https://alphazero.online/sitemap.xml
+Sitemap: https://astropixel.tech/sitemap.xml
 
 # Host directive for canonical domain
-Host: https://alphazero.online
+Host: https://astropixel.tech
