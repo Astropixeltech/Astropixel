@@ -440,7 +440,7 @@ const Index = () => {
 
 
       {/* ══════════ PROJECT MARQUEE — Desktop only (sibling, uses topOffset pin) ══════════ */}
-      <div className="hidden lg:block">
+      <div className="block">
         <ProjectMarquee />
       </div>
       <section className="py-2 lg:py-4 bg-background relative z-[15]">

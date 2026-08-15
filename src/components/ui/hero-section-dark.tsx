@@ -71,7 +71,7 @@ const HeroSection = React.forwardRef<HTMLDivElement, HeroSectionProps>(
     }, []);
 
     return (
-      <div className={cn("relative min-h-screen flex flex-col items-center justify-start pt-32 pb-16 px-4 text-center overflow-hidden", className)} ref={innerRef} {...props}>
+      <div className={cn("relative min-h-[82vh] md:min-h-screen flex flex-col items-center justify-start pt-28 md:pt-32 pb-10 md:pb-16 px-4 text-center overflow-hidden", className)} ref={innerRef} {...props}>
         {/* Full-screen background image */}
         {bottomImage && (
           <div className="absolute inset-0 z-0">
