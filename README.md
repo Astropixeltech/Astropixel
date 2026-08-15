@@ -1,8 +1,8 @@
-# AlphaZero BD
+# Astropixel
 
 > Bangladesh's bilingual creative agency and AI-powered online learning platform — one product, two brands.
 
-AlphaZero BD is a production platform combining a full-service creative agency (logo, branding, UI/UX, web and social-media design) with **AlphaZero Learn**, an AI-powered online learning platform focused on Bangladesh. The Learn side teaches AI, Graphic Design, Web Development, Programming, Digital Marketing, UI/UX Design, Video Editing, Photography, Motion Graphics, Freelancing, Content Creation, Office Applications, Cyber Security, and future digital skills — natively in Bangla and English.
+Astropixel is a production platform combining a full-service creative agency (logo, branding, UI/UX, web and social-media design) with **Astropixel Learn**, an AI-powered online learning platform focused on Bangladesh. The Learn side teaches AI, Graphic Design, Web Development, Programming, Digital Marketing, UI/UX Design, Video Editing, Photography, Motion Graphics, Freelancing, Content Creation, Office Applications, Cyber Security, and future digital skills — natively in Bangla and English.
 
 Both experiences live in a single React SPA backed by a Supabase (Postgres + Auth + Storage + Edge Functions + Realtime) core, with Cloudinary media delivery, UddoktaPay for local BDT payments (bKash / Nagad / cards), Resend email, Telegram admin notifications, and Gemini 2.5 through the Lovable AI Gateway powering the in-product assistants.
 
@@ -10,7 +10,7 @@ Both experiences live in a single React SPA backed by a Supabase (Postgres + Aut
 
 ## About the Project
 
-AlphaZero was built for Bangladeshi learners, entrepreneurs, and small businesses who need world-class design services **and** an accessible, native-language path into digital skills. The platform is:
+Astropixel was built for Bangladeshi learners, entrepreneurs, and small businesses who need world-class design services **and** an accessible, native-language path into digital skills. The platform is:
 
 - **Bilingual by design.** A language toggle swaps every string, font, and hero image — no mixed-script screens.
 - **Two brands, one codebase.** Requests to `learn.<domain>` transparently render the Learn variant of `/`, `/about`, `/contact` and swap favicons.
