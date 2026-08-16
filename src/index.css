@@ -452,3 +452,96 @@ html::-webkit-scrollbar, body::-webkit-scrollbar { display: none; width: 0; heig
 .animate-marquee-brand {
   animation: marquee-brand 90s linear infinite;
 }
+
+/* ══════════ ANIMATED ARROW BUTTON (BUTTON04) ══════════ */
+.button04 {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.625rem 1.25rem;
+  border-radius: 9999px;
+  overflow: hidden;
+  text-decoration: none;
+  background: linear-gradient(135deg, #06b6d4 0%, #0284c7 50%, #2563eb 100%);
+  color: #ffffff !important;
+  font-weight: 600;
+  font-size: 0.875rem;
+  box-shadow: 0 4px 20px rgba(6, 182, 212, 0.35);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+}
+
+.button04:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 28px rgba(6, 182, 212, 0.55);
+}
+
+.button04_bg {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, #0891b2 0%, #0369a1 100%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.button04:hover .button04_bg {
+  opacity: 1;
+}
+
+.button04_inner {
+  position: relative;
+  z-index: 10;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.button04_text {
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+
+.button04_icon-wrap {
+  position: relative;
+  width: 1.125rem;
+  height: 1.125rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.button04_icon {
+  position: absolute;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 1.5px;
+  width: 1.125rem;
+  height: 1.125rem;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.button04_icon.is-arrow {
+  grid-template-columns: repeat(3, 1fr);
+  opacity: 0;
+  transform: scale(0.6) translate(-2px, 2px);
+}
+
+.button04:hover .button04_icon:not(.is-arrow) {
+  opacity: 0;
+  transform: scale(0.6) translate(2px, -2px);
+}
+
+.button04:hover .button04_icon.is-arrow {
+  opacity: 1;
+  transform: scale(1) translate(0, 0);
+}
+
+.button04_dot {
+  width: 2.5px;
+  height: 2.5px;
+  background-color: currentColor;
+  border-radius: 50%;
+  opacity: calc(1 - (var(--index, 0) * 0.3));
+}
