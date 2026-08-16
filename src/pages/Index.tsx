@@ -24,6 +24,7 @@ import {
   Compass,
   TrendingUp
 } from "lucide-react";
+import SEO from "@/components/SEO";
 import { ContainerTextFlip } from "@/components/ui/modern-animated-multi-words";
 import { HeroSection } from "@/components/ui/hero-section-dark";
 import { Spotlight } from "@/components/ui/spotlight";
@@ -422,6 +423,11 @@ const Index = () => {
 
   return (
     <LayoutComponent>
+      <SEO 
+        title="AstroPixel — Creative Design Agency in Rajshahi, Bangladesh" 
+        description="AstroPixel is a creative design agency in Rajshahi, Bangladesh, founded by Sofiullah Ahammad. Logo design, branding, UI/UX, web design & social media graphics. From zero to impact." 
+        canonical="https://astropixel.tech/" 
+      />
       {/* ══════════ HERO — Retro Grid Dark ══════════ */}
       <section id="site-hero" ref={heroRef} className="relative z-[2] -mt-[88px]">
         <HeroSection

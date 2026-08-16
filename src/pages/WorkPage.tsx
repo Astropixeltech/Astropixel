@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import aboutHeroBg from "@/assets/about-hero-blue-orb.jpg.asset.json";
 import { X, Play, ArrowUpRight, Plus, Minus } from "lucide-react";
 import Layout from "@/components/Layout";
+import SEO from "@/components/SEO";
 import { useWorks, type Work } from "@/hooks/useWorks";
 import { usePageHero } from "@/hooks/usePageHero";
 
@@ -94,6 +95,11 @@ const WorkPage = () => {
 
   return (
     <Layout>
+      <SEO 
+        title="Portfolio — AstroPixel Design Work" 
+        description="Browse AstroPixel's design portfolio featuring logo design, brand identity, UI/UX projects, web development, and social media graphics." 
+        canonical="https://astropixel.tech/work" 
+      />
       {/* Hero — About style */}
       <section id="site-hero" className="relative overflow-hidden -mt-20 pt-32 pb-14 lg:pt-36 lg:pb-18 rounded-b-[2.5rem]">
         {/* Uploaded background image from About page */}

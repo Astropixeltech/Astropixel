@@ -64,6 +64,8 @@ const iconMap: Record<string, typeof Sparkles> = {
   Globe, Mail, Phone, Settings, Shield, Award, Heart, Star, CheckCircle
 };
 
+import SEO from "@/components/SEO";
+
 const ServicesPage = () => {
   const { t } = useLanguage();
   const hero = usePageHero("services");
@@ -87,6 +89,11 @@ const ServicesPage = () => {
 
   return (
     <LayoutComponent>
+      <SEO 
+        title="Creative Design Services — Logo, Branding, UI/UX, Web Design | AstroPixel" 
+        description="Explore AstroPixel design services: Logo & Brand Identity, Branding Strategy, UI/UX Design, Web Design & Development, and Social Media Design." 
+        canonical="https://astropixel.tech/services" 
+      />
       {/* Hero */}
       <section id="site-hero" className="relative overflow-hidden -mt-20 pt-28 pb-12 lg:pt-32 lg:pb-16 rounded-b-[2.5rem]">
         {/* Dark base */}

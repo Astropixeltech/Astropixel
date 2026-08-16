@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { Mail, MapPin, Phone, Clock, MessageCircle, Facebook, Instagram, Twitter, Linkedin, ArrowUpRight, Sparkles } from "lucide-react";
 import Layout from "@/components/Layout";
+import SEO from "@/components/SEO";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useFooterContent, useFooterLinks } from "@/hooks/useFooterData";
 import { usePageContent } from "@/hooks/usePageContent";
@@ -57,6 +58,11 @@ const ContactPage = () => {
 
   return (
     <Layout>
+      <SEO 
+        title="Contact AstroPixel — Creative Design Agency in Rajshahi, Bangladesh" 
+        description="Get in touch with AstroPixel in Rajshahi, Bangladesh for logo design, branding, UI/UX, and web design projects." 
+        canonical="https://astropixel.tech/contact" 
+      />
       {/* ===== Editorial Hero ===== */}
       <section id="site-hero" className="relative overflow-hidden -mt-20 pt-32 pb-20 lg:pt-40 lg:pb-28 rounded-b-[2.5rem]">
         {/* Dark base */}

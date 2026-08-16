@@ -22,6 +22,8 @@ import brand3 from "@/assets/brands/b3.png.asset.json";
 import brand4 from "@/assets/brands/b4.png.asset.json";
 
 
+import SEO from "@/components/SEO";
+
 const AboutPage = () => {
   const { t } = useLanguage();
   const { getContent } = usePageContent('about');
@@ -63,6 +65,11 @@ const AboutPage = () => {
 
   return (
     <Layout flushTop>
+      <SEO 
+        title="About AstroPixel — Founder Sofiullah Ahammad" 
+        description="Learn about AstroPixel, a creative design agency in Rajshahi, Bangladesh, founded by Sofiullah Ahammad. From zero to impact." 
+        canonical="https://astropixel.tech/about" 
+      />
       <div className="overflow-x-hidden">
       {/* Hero — Services style */}
       <section id="site-hero" className="relative overflow-hidden pt-32 pb-14 lg:pt-36 lg:pb-18 rounded-b-[2.5rem]">

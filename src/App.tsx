@@ -130,6 +130,11 @@ function AppContent() {
             <Route path="/about" element={typeof window !== "undefined" && window.location.hostname.startsWith("learn.") ? <LearnAboutPage /> : <AboutPage />} />
             <Route path="/learn-about" element={<LearnAboutPage />} />
             <Route path="/services" element={<ServicesPage />} />
+            <Route path="/services/logo-brand-identity" element={<ServicesPage />} />
+            <Route path="/services/branding" element={<ServicesPage />} />
+            <Route path="/services/ui-ux-design" element={<ServicesPage />} />
+            <Route path="/services/web-design-development" element={<ServicesPage />} />
+            <Route path="/services/social-media-design" element={<ServicesPage />} />
             <Route path="/work" element={<WorkPage />} />
             <Route path="/team" element={<Navigate to="/about#team" replace />} />
             <Route path="/join-team" element={<JoinTeamPage />} />
