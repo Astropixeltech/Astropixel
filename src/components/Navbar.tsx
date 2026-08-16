@@ -100,41 +100,44 @@ const Navbar = () => {
     setIsMobileMenuOpen(false);
   };
 
+  const isWhiteNavText = isScrolled || isOverHero;
+
   return (
     <>
       <nav
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
-          isScrolled ? "py-2" : "py-3"
+        className={`fixed left-0 right-0 z-50 transition-all duration-500 ease-in-out ${
+          isScrolled ? "top-3 sm:top-4 px-3 sm:px-4 md:px-6" : "top-0 px-0"
         }`}
       >
-        <div className="container mx-auto px-4 sm:px-6">
-          {/* Floating navbar container */}
+        <div className="w-full">
+          {/* Header container — completely transparent overlay at top, floating pill on scroll */}
           <motion.div
             initial={{ y: -20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
-            transition={{ duration: 0.6, type: "spring", bounce: 0.3 }}
-            className={`relative flex items-center justify-between rounded-2xl px-4 sm:px-5 py-2.5 transition-all duration-500 backdrop-blur-2xl backdrop-saturate-150 border shadow-[0_1px_0_0_rgba(255,255,255,0.8)_inset,0_10px_30px_-12px_rgba(0,0,0,0.1)] ${
-              isOverHero
-                ? "bg-white/10 dark:bg-white/[0.05] border-white/20"
-                : isScrolled
-                  ? "bg-white/40 dark:bg-white/[0.06] border-neutral-200/50"
-                  : "bg-white/10 dark:bg-white/[0.02] border-white/5"
+            transition={{ duration: 0.6, type: "spring", bounce: 0.2 }}
+            className={`relative flex items-center justify-between transition-all duration-500 ease-in-out ${
+              isScrolled
+                ? "max-w-5xl mx-auto rounded-full px-5 py-2.5 bg-neutral-950/85 dark:bg-neutral-950/90 border border-white/15 shadow-[0_10px_35px_-5px_rgba(0,0,0,0.5)] backdrop-blur-xl backdrop-saturate-150 text-white"
+                : "max-w-7xl mx-auto px-6 sm:px-8 py-5 sm:py-6 bg-transparent border-transparent shadow-none backdrop-blur-none rounded-none"
             }`}
-            style={{ WebkitBackdropFilter: "blur(28px) saturate(160%)", backdropFilter: "blur(28px) saturate(160%)" }}
+            style={{
+              WebkitBackdropFilter: isScrolled ? "blur(20px) saturate(150%)" : "none",
+              backdropFilter: isScrolled ? "blur(20px) saturate(150%)" : "none",
+            }}
           >
-            {/* Soft top glass highlight */}
-            <div aria-hidden className="pointer-events-none absolute inset-x-4 top-0 h-px bg-gradient-to-r from-transparent via-white/40 to-transparent rounded-full" />
-            {/* Faint bottom shadow line */}
-            <div aria-hidden className="pointer-events-none absolute inset-x-6 bottom-0 h-px bg-gradient-to-r from-transparent via-black/10 dark:via-white/5 to-transparent" />
+            {/* Soft top highlight for floating pill */}
+            {isScrolled && (
+              <div aria-hidden className="pointer-events-none absolute inset-x-6 top-0 h-px bg-gradient-to-r from-transparent via-white/30 to-transparent rounded-full" />
+            )}
 
-            {/* Logo — white over dark hero, turns crisp black over light content */}
+            {/* Logo */}
             <Link to="/" className="flex items-center group relative shrink-0 z-10">
               <img
                 src={logoFullPng}
                 alt="AstroPixel"
                 className="h-8 sm:h-9 max-w-[180px] sm:max-w-[220px] w-auto object-contain transition-all duration-300 group-hover:scale-105"
                 style={{
-                  filter: isOverHero ? "none" : "brightness(0)",
+                  filter: isWhiteNavText ? "none" : "brightness(0)",
                 }}
                 loading="eager"
                 fetchPriority="high"
@@ -160,7 +163,7 @@ const Navbar = () => {
                       <span className={`relative z-10 font-semibold text-sm transition-colors duration-300 ${
                         isActive
                           ? "text-cyan-400 font-bold"
-                          : isOverHero
+                          : isWhiteNavText
                             ? "text-white/90 hover:text-white drop-shadow-sm"
                             : "text-neutral-900 hover:text-cyan-600"
                       }`}>
@@ -207,23 +210,18 @@ const Navbar = () => {
 
             </div>
 
-            {/* Mobile: login + theme + menu on top bar */}
+            {/* Mobile menu button */}
             <div className="flex items-center gap-1.5 lg:hidden">
-              <Link
-                to="/student/login"
-                className="w-9 h-9 rounded-full bg-secondary/80 dark:bg-secondary/50 border border-border/50 dark:border-border/30 flex items-center justify-center"
-              >
-                <User size={15} className="text-muted-foreground" />
-              </Link>
-
-
-
               <button
                 onClick={() => setIsMobileMenuOpen((v) => !v)}
                 aria-label={isMobileMenuOpen ? "Close menu" : "Open menu"}
-                className="w-9 h-9 rounded-full bg-primary/20 border border-primary/30 flex items-center justify-center hover:bg-primary/30 transition-colors"
+                className={`w-9 h-9 rounded-full flex items-center justify-center transition-colors border ${
+                  isWhiteNavText
+                    ? "bg-white/10 border-white/20 text-white hover:bg-white/20"
+                    : "bg-neutral-900/10 border-neutral-900/20 text-neutral-900 hover:bg-neutral-900/20"
+                }`}
               >
-                {isMobileMenuOpen ? <X size={16} className="text-primary" /> : <Menu size={16} className="text-primary" />}
+                {isMobileMenuOpen ? <X size={16} /> : <Menu size={16} />}
               </button>
             </div>
           </motion.div>
@@ -237,25 +235,19 @@ const Navbar = () => {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -10 }}
               transition={{ duration: 0.2 }}
-              className="lg:hidden container mx-auto px-4 sm:px-6 mt-2"
+              className="lg:hidden max-w-md mx-auto px-4 mt-2"
             >
-              <div className="rounded-2xl bg-white/[0.08] dark:bg-white/[0.06] backdrop-blur-2xl backdrop-saturate-150 border border-white/15 dark:border-white/10 shadow-[0_1px_0_0_rgba(255,255,255,0.35)_inset,0_-1px_0_0_rgba(0,0,0,0.06)_inset,0_10px_30px_-12px_rgba(0,0,0,0.25)] overflow-hidden" style={{ WebkitBackdropFilter: "blur(28px) saturate(160%)", backdropFilter: "blur(28px) saturate(160%)" }}>
-                <div className="grid grid-cols-2 gap-1 p-2">
+              <div className="rounded-2xl bg-neutral-950/90 backdrop-blur-2xl border border-white/15 shadow-2xl overflow-hidden p-3">
+                <div className="grid grid-cols-1 gap-1">
                   {navLinksWithIcons.map((link) => {
                     const IconComp = link.icon;
                     const isActive = location.pathname === link.href;
-                    const baseText = isOverHero ? "text-white/90 hover:bg-white/10" : "text-neutral-800 hover:bg-black/5";
-                    const iconTone = isActive
-                      ? "text-white"
-                      : isOverHero
-                        ? "text-white/80"
-                        : "text-cyan-600/80";
-                    const cls = `flex items-center gap-2 px-3 py-2.5 rounded-xl text-sm transition-colors ${
+                    const cls = `flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-colors ${
                       isActive
-                        ? "bg-gradient-to-br from-cyan-400 via-cyan-500 to-blue-600 text-white font-semibold shadow-[0_6px_20px_-6px_rgba(6,182,212,0.55)]"
-                        : baseText
+                        ? "bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-semibold shadow-md"
+                        : "text-white/80 hover:bg-white/10 hover:text-white"
                     }`;
-                    const inner = (<><IconComp size={16} className={iconTone} />{link.name}</>);
+                    const inner = (<><IconComp size={18} className={isActive ? "text-white" : "text-cyan-400"} />{link.name}</>);
                     return link.href.startsWith("http") ? (
                       <a key={link.href} href={link.href} target="_blank" rel="noopener noreferrer" onClick={handleNavClick} className={cls}>{inner}</a>
                     ) : (
@@ -263,26 +255,21 @@ const Navbar = () => {
                         {inner}
                       </Link>
                     );
-
                   })}
                 </div>
-                <div className={`flex items-center justify-between gap-2 p-2 border-t ${isOverHero ? "border-white/15" : "border-black/10"}`}>
-
-
+                <div className="mt-3 pt-3 border-t border-white/10 flex items-center justify-between">
                   <Link
                     to="/contact"
                     onClick={handleNavClick}
-                    className="relative flex-1 h-10 rounded-xl overflow-hidden font-semibold text-xs flex items-center justify-center gap-1 text-white shadow-[0_6px_20px_-6px_rgba(6,182,212,0.55)]"
+                    className="relative w-full h-11 rounded-xl overflow-hidden font-semibold text-xs flex items-center justify-center gap-1.5 text-white shadow-lg"
                   >
                     <span className="absolute inset-0 bg-gradient-to-br from-cyan-400 via-cyan-500 to-blue-600" />
-                    <span className="absolute inset-0 bg-gradient-to-b from-white/25 via-transparent to-black/15 opacity-60" />
-                    <span className="relative z-10 flex items-center gap-1">
+                    <span className="relative z-10 flex items-center gap-1.5 text-sm font-semibold">
                       {t("nav.startProject")}
-                      <ArrowUpRight size={13} />
+                      <ArrowUpRight size={15} />
                     </span>
                   </Link>
                 </div>
-
               </div>
             </motion.div>
           )}
