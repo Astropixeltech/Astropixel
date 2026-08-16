@@ -72,7 +72,7 @@ const HeroSection = React.forwardRef<HTMLDivElement, HeroSectionProps>(
     }, []);
 
     return (
-      <div className={cn("relative min-h-[82vh] md:min-h-screen flex flex-col items-center justify-start pt-28 md:pt-32 pb-2 md:pb-4 px-0 text-center overflow-hidden bg-black text-white", className)} ref={innerRef} {...props}>
+      <div className={cn("relative min-h-[82vh] md:min-h-screen flex flex-col items-center justify-start pt-28 md:pt-32 pb-0 md:pb-0 px-0 text-center overflow-hidden bg-black text-white", className)} ref={innerRef} {...props}>
         {/* Custom background image — 100% full clarity without black overlay */}
         {bottomImage && bottomImage.light && (
           <div className="absolute inset-0 z-0 opacity-100">
@@ -149,7 +149,7 @@ const HeroSection = React.forwardRef<HTMLDivElement, HeroSectionProps>(
         </div>
 
         {children && (
-          <div className="relative z-10 w-full px-0 mt-4 md:mt-6 overflow-hidden">
+          <div className="relative z-10 w-full px-0 mt-2 md:mt-4 overflow-hidden">
             {children}
           </div>
         )}
