@@ -41,11 +41,11 @@ const SECTIONS: Section[] = [
     gradient: "from-sky-500 to-blue-600",
     fields: [
       { key: "subtitle", label: "🔖 Top Badge", description: "Small uppercase text above the title", fallback: "About Us" },
-      { key: "title", label: "🏢 Hero Title", description: "Before the highlighted 'AlphaZero' word", fallback: "Meet" },
+      { key: "title", label: "🏢 Hero Title", description: "Before the highlighted 'Astropixel' word", fallback: "Meet" },
       { key: "description", label: "📝 Description", description: "Paragraph shown below the title", type: "textarea", fallback: "A creative studio crafting bold brands and impactful design." },
       { key: "tagline", label: "⚡ Founder Tagline", description: "Short tagline shown under founder name", fallback: "From zero to impact" },
       { key: "badge.agency", label: "🏷️ Founder Badge", description: "Small chip beside founder role (e.g., Agency)", fallback: "Agency" },
-      { key: "whyChoose", label: "✅ 'Why Choose' Heading", description: "Header line above the 5 reasons list", fallback: "Why choose AlphaZero" },
+      { key: "whyChoose", label: "✅ 'Why Choose' Heading", description: "Header line above the 5 reasons list", fallback: "Why choose Astropixel" },
     ],
   },
   {
@@ -56,8 +56,8 @@ const SECTIONS: Section[] = [
     gradient: "from-fuchsia-500 to-pink-600",
     fields: [
       { key: "founder.badge", label: "🔖 Top Badge", description: "Small uppercase chip above the heading", fallback: "Meet The Founder" },
-      { key: "founder.title", label: "📣 Heading (before AlphaZero)", fallback: "The Visionary Behind" },
-      { key: "founder.title2", label: "📣 Heading (after AlphaZero)", description: "Leave empty if not needed", fallback: "" },
+      { key: "founder.title", label: "📣 Heading (before Astropixel)", fallback: "The Visionary Behind" },
+      { key: "founder.title2", label: "📣 Heading (after Astropixel)", description: "Leave empty if not needed", fallback: "" },
       { key: "founder.role", label: "🎯 Role Text", description: "Shown under founder name (both on image + info side)", fallback: "Photographer, Founder & Graphic Designer" },
     ],
   },
@@ -69,9 +69,9 @@ const SECTIONS: Section[] = [
     gradient: "from-violet-500 to-purple-600",
     fields: [
       { key: "story.badge", label: "🔖 Story Badge", fallback: "Our Story" },
-      { key: "story.title", label: "📖 Story Title (before AlphaZero)", fallback: "The story behind" },
-      { key: "story.title2", label: "📖 Story Title (after AlphaZero)", fallback: "" },
-      { key: "story.logoUrl", label: "🖼️ Logo / Image", description: "Image shown in the tagline card (leave empty to use default AlphaZero logo)", type: "image", fallback: "" },
+      { key: "story.title", label: "📖 Story Title (before Astropixel)", fallback: "The story behind" },
+      { key: "story.title2", label: "📖 Story Title (after Astropixel)", fallback: "" },
+      { key: "story.logoUrl", label: "🖼️ Logo / Image", description: "Image shown in the tagline card (leave empty to use default Astropixel logo)", type: "image", fallback: "" },
       { key: "story.card1.title", label: "🚀 Card 1 Title", fallback: "Launched with vision" },
       { key: "story.card1.desc", label: "🚀 Card 1 Description", type: "textarea", fallback: "Started with a bold idea and endless creativity." },
       { key: "story.card2.title", label: "⚡ Card 2 Title", fallback: "Built for impact" },

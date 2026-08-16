@@ -12,43 +12,43 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 const rules = [
   {
     title: "1. Agreement Purpose",
-    content: "This agreement defines the rules, responsibilities, and benefits for individuals joining Alphazero as team members. The journey starts with learning and contribution and may progress to paid professional projects based on performance and agency needs."
+    content: "This agreement defines the rules, responsibilities, and benefits for individuals joining Astropixel as team members. The journey starts with learning and contribution and may progress to paid professional projects based on performance and agency needs."
   },
   {
     title: "2. Member Status (Starting Phase)",
-    content: "At the beginning, a member will join Alphazero as a Learning / Trial Team Member. During this phase, the member will observe workflows, assist with small tasks, and develop skills. No monthly salary or payment is guaranteed at this stage."
+    content: "At the beginning, a member will join Astropixel as a Learning / Trial Team Member. During this phase, the member will observe workflows, assist with small tasks, and develop skills. No monthly salary or payment is guaranteed at this stage."
   },
   {
     title: "3. Professional Work Activation",
-    content: "When Alphazero assigns a professional client project, the scope of work, deadline, and payment share will be clearly defined before starting. All work completed under Alphazero represents the agency and remains agency property."
+    content: "When Astropixel assigns a professional client project, the scope of work, deadline, and payment share will be clearly defined before starting. All work completed under Astropixel represents the agency and remains agency property."
   },
   {
     title: "4. Payment Distribution Rule (Fixed)",
-    content: "For any paid client project acquired through Alphazero:\n• 70% of the client payment will be paid to the Team Member responsible for the work.\n• 30% of the payment will be retained by Alphazero.\nThe agency share covers client management, marketing, lead generation, revisions, operational costs, and business risk."
+    content: "For any paid client project acquired through Astropixel:\n• 70% of the client payment will be paid to the Team Member responsible for the work.\n• 30% of the payment will be retained by Astropixel.\nThe agency share covers client management, marketing, lead generation, revisions, operational costs, and business risk."
   },
   {
     title: "5. Client Ownership",
-    content: "All clients obtained through Alphazero are the exclusive property of the agency. Team Members may work with clients but cannot claim ownership or establish independent agreements with them."
+    content: "All clients obtained through Astropixel are the exclusive property of the agency. Team Members may work with clients but cannot claim ownership or establish independent agreements with them."
   },
   {
     title: "6. Agency Rights",
-    content: "Alphazero reserves the right to showcase client work for portfolio, marketing, and promotional purposes, and to reassign or change team members on any project when necessary."
+    content: "Astropixel reserves the right to showcase client work for portfolio, marketing, and promotional purposes, and to reassign or change team members on any project when necessary."
   },
   {
     title: "7. Team Member Benefits",
-    content: "By being part of Alphazero, a team member gains real client experience, skill development, professional exposure, and permission to display completed work in their personal portfolio with proper agency credit."
+    content: "By being part of Astropixel, a team member gains real client experience, skill development, professional exposure, and permission to display completed work in their personal portfolio with proper agency credit."
   },
   {
     title: "8. Restrictions",
-    content: "Team Members may not directly contact agency clients for personal work, sell agency projects under their own name, misuse the Alphazero brand, or present themselves as owners or partners of the agency."
+    content: "Team Members may not directly contact agency clients for personal work, sell agency projects under their own name, misuse the Astropixel brand, or present themselves as owners or partners of the agency."
   },
   {
     title: "9. Confidentiality",
-    content: "All client information, files, pricing, and internal processes must remain confidential during and after association with Alphazero."
+    content: "All client information, files, pricing, and internal processes must remain confidential during and after association with Astropixel."
   },
   {
     title: "10. After Leaving the Agency",
-    content: "After leaving Alphazero, a former team member may not work with previous Alphazero clients without written permission from the agency or a separate agreement."
+    content: "After leaving Astropixel, a former team member may not work with previous Astropixel clients without written permission from the agency or a separate agreement."
   },
   {
     title: "11. Payment Clarity",
@@ -60,7 +60,7 @@ const rules = [
   },
   {
     title: "13. Agreement Termination",
-    content: "Either party may terminate this agreement with a 7-day written notice. Any ongoing work must be properly handed over to Alphazero."
+    content: "Either party may terminate this agreement with a 7-day written notice. Any ongoing work must be properly handed over to Astropixel."
   },
   {
     title: "14. Final Declaration",
@@ -163,7 +163,7 @@ const JoinTeamPage = () => {
               animate={{ opacity: 1, y: 0 }}
               className="text-primary text-sm font-medium tracking-wider uppercase mb-4 block"
             >
-              Join Alphazero
+              Join Astropixel
             </motion.span>
             <motion.h1
               initial={{ opacity: 0, y: 30 }}
@@ -370,7 +370,7 @@ const JoinTeamPage = () => {
                   name="message"
                   value={formData.message}
                   onChange={handleInputChange}
-                  placeholder="Tell us why you want to join Alphazero..."
+                  placeholder="Tell us why you want to join Astropixel..."
                   rows={4}
                 />
               </div>
@@ -389,7 +389,7 @@ const JoinTeamPage = () => {
                   className="mt-1"
                 />
                 <label htmlFor="agreement" className={`text-sm ${allRulesOpened ? 'cursor-pointer' : 'cursor-not-allowed'}`}>
-                  <span className="font-semibold">I have read and agree to all 14 terms and conditions</span> of the Alphazero Team Member Agreement stated above. I understand my responsibilities, rights, and the payment structure.
+                  <span className="font-semibold">I have read and agree to all 14 terms and conditions</span> of the Astropixel Team Member Agreement stated above. I understand my responsibilities, rights, and the payment structure.
                   {!allRulesOpened && (
                     <span className="block text-xs text-muted-foreground mt-1">
                       (Please read all {rules.length} rules above to enable this checkbox)

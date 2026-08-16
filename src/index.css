@@ -74,7 +74,7 @@ html::-webkit-scrollbar, body::-webkit-scrollbar { display: none; width: 0; heig
 
     --radius: 0.5rem;
 
-    /* Custom AlphaZero tokens */
+    /* Custom Astropixel tokens */
     --gradient-start: 185 100% 38%;
     --gradient-mid: 195 100% 42%;
     --gradient-end: 215 100% 52%;

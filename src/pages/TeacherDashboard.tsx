@@ -175,7 +175,7 @@ export default function TeacherDashboard() {
         {/* Logo + Profile */}
         <div className="p-3 border-b border-border/50 space-y-3">
           <div className="flex items-center gap-2">
-            <img src={learnLogo} alt="Learn with AlphaZero" className="h-8 w-auto object-contain dark:brightness-0 dark:invert" />
+            <img src={learnLogo} alt="Learn with Astropixel" className="h-8 w-auto object-contain dark:brightness-0 dark:invert" />
             <div>
               <p className="text-[10px] text-muted-foreground">Teacher Dashboard</p>
             </div>

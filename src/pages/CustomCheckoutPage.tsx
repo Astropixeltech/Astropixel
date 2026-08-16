@@ -34,7 +34,7 @@ export default function CustomCheckoutPage() {
   const [paying, setPaying] = useState(false);
 
   useEffect(() => {
-    document.title = 'Secure Checkout — AlphaZero Pay';
+    document.title = 'Secure Checkout — Astropixel Pay';
     if (!invoiceId) return;
     fetch(`${FN_BASE}/api-checkout-info?invoice_id=${encodeURIComponent(invoiceId)}`)
       .then(r => r.json())
@@ -183,7 +183,7 @@ export default function CustomCheckoutPage() {
           {/* Footer */}
           <div className="px-6 py-3 border-t border-white/5 text-center">
             <p className="text-[10px] text-slate-500">
-              Powered by <span className="text-slate-300 font-semibold">AlphaZero Pay</span>
+              Powered by <span className="text-slate-300 font-semibold">Astropixel Pay</span>
             </p>
           </div>
         </div>

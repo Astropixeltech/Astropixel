@@ -437,8 +437,8 @@ const AIChatbot = () => {
                   </h4>
                   <p className="text-sm text-muted-foreground mb-5 px-2">
                     {language === "bn" 
-                      ? "আমি Alpha One! AlphaZero সম্পর্কে জিজ্ঞেস করুন।"
-                      : "I'm Alpha One! Ask me about AlphaZero."}
+                      ? "আমি Alpha One! Astropixel সম্পর্কে জিজ্ঞেস করুন।"
+                      : "I'm Alpha One! Ask me about Astropixel."}
                   </p>
                   
                   {/* Quick Questions */}
@@ -676,7 +676,7 @@ const AIChatbot = () => {
               {/* Powered by */}
               <div className="text-center mt-1.5">
                 <span className="text-[10px] text-muted-foreground">
-                  {language === "bn" ? "AlphaZero AI দ্বারা চালিত" : "Powered by AlphaZero AI"}
+                  {language === "bn" ? "Astropixel AI দ্বারা চালিত" : "Powered by Astropixel AI"}
                 </span>
               </div>
             </form>

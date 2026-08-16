@@ -262,7 +262,7 @@ export const TeamManagement = () => {
         fields={[
           { key: "hero.subtitle", label: "🔖 Top Badge", description: "Small uppercase text above the title", type: "input", fallback: "Our Team" },
           { key: "hero.title", label: "👥 Hero Title", description: "Wrap highlighted words with | | — e.g. Meet the |Creators|", type: "input", fallback: "Meet the |Creators|" },
-          { key: "hero.description", label: "📝 Description", description: "Paragraph shown below the title", type: "textarea", fallback: "The creative minds behind AlphaZero." },
+          { key: "hero.description", label: "📝 Description", description: "Paragraph shown below the title", type: "textarea", fallback: "The creative minds behind Astropixel." },
         ]}
       />
 

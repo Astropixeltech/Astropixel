@@ -23,7 +23,7 @@ const translations = {
     message: 'Message',
     messagePlaceholder: 'Write your message here...',
     senderName: 'Sender Name (optional)',
-    senderNamePlaceholder: 'AlphaZero Academy',
+    senderNamePlaceholder: 'Astropixel Academy',
     sendEmail: 'Send Email',
     sending: 'Sending...',
     success: 'Email sent successfully!',
@@ -31,7 +31,7 @@ const translations = {
     emailRequired: 'Please enter recipient email',
     subjectRequired: 'Please enter subject',
     messageRequired: 'Please enter message',
-    fromDomain: 'Emails will be sent from: noreply@alphazero.online',
+    fromDomain: 'Emails will be sent from: noreply@astropixel.tech',
     recentEmails: 'Email will be sent professionally with your domain branding',
   },
   bn: {
@@ -44,7 +44,7 @@ const translations = {
     message: 'Message',
     messagePlaceholder: 'Write your message here...',
     senderName: 'Sender Name (Optional)',
-    senderNamePlaceholder: 'AlphaZero Academy',
+    senderNamePlaceholder: 'Astropixel Academy',
     sendEmail: 'Send Email',
     sending: 'Sending...',
     success: 'Email sent successfully!',
@@ -52,7 +52,7 @@ const translations = {
     emailRequired: "Enter recipient's email",
     subjectRequired: 'Enter subject',
     messageRequired: 'Write message',
-    fromDomain: 'Email will be sent from: noreply@alphazero.online',
+    fromDomain: 'Email will be sent from: noreply@astropixel.tech',
     recentEmails: 'Professional emails will be sent with your domain branding',
   }
 };
@@ -91,7 +91,7 @@ export default function EmailManagement({ language }: EmailManagementProps) {
           to: recipientEmail.trim(),
           subject: subject.trim(),
           message: message.trim(),
-          senderName: senderName.trim() || 'AlphaZero Academy',
+          senderName: senderName.trim() || 'Astropixel Academy',
         }
       });
 

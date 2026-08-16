@@ -56,8 +56,8 @@ const LearnAboutPage = () => {
       icon: Users,
       title: t("এক্সপার্ট ইনস্ট্রাক্টর", "Expert Instructors"),
       desc: t(
-        "AlphaZero এজেন্সির অভিজ্ঞ ক্রিয়েটর ও ডেভেলপারদের কাছ থেকে সরাসরি শিখুন।",
-        "Learn directly from AlphaZero agency's experienced creators and developers."
+        "Astropixel এজেন্সির অভিজ্ঞ ক্রিয়েটর ও ডেভেলপারদের কাছ থেকে সরাসরি শিখুন।",
+        "Learn directly from Astropixel agency's experienced creators and developers."
       ),
     },
     {
@@ -114,7 +114,7 @@ const LearnAboutPage = () => {
   ];
 
   const whyChoose = [
-    t("এক্সপার্ট AlphaZero ইনস্ট্রাক্টর", "Expert AlphaZero instructors"),
+    t("এক্সপার্ট Astropixel ইনস্ট্রাক্টর", "Expert Astropixel instructors"),
     t("লাইফটাইম কোর্স অ্যাক্সেস", "Lifetime course access"),
     t("বাংলা ও ইংরেজি ভাষা সাপোর্ট", "Bangla & English language support"),
     t("রিয়েল প্রজেক্ট ও অ্যাসাইনমেন্ট", "Real projects and assignments"),
@@ -146,7 +146,7 @@ const LearnAboutPage = () => {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.1 }}
                 src={learnLogo}
-                alt="Learn with AlphaZero"
+                alt="Learn with Astropixel"
                 className="h-16 md:h-20 w-auto mx-auto mb-8 brightness-0 dark:invert"
               />
 
@@ -157,7 +157,7 @@ const LearnAboutPage = () => {
                 className="text-4xl lg:text-6xl font-display font-bold mb-6 leading-tight"
               >
                 {cms("hero.title.bn", "hero.title.en", "শিখুন ", "Learn with ")}
-                <span className="gradient-text">AlphaZero</span>
+                <span className="gradient-text">Astropixel</span>
               </motion.h1>
 
               <motion.p
@@ -167,15 +167,15 @@ const LearnAboutPage = () => {
                 className="text-xl text-muted-foreground max-w-2xl mx-auto"
               >
                 {cms("hero.description.bn", "hero.description.en",
-                  "AlphaZero-এর নিজস্ব লার্নিং প্ল্যাটফর্ম — যেখানে ডিজাইন, ডেভেলপমেন্ট, ফটোগ্রাফি ও ডিজিটাল ক্রিয়েটিভ স্কিল শেখানো হয় প্র্যাকটিকাল ও প্রফেশনাল উপায়ে।",
-                  "AlphaZero's very own learning platform — teaching design, development, photography, and digital creative skills the practical, professional way."
+                  "Astropixel-এর নিজস্ব লার্নিং প্ল্যাটফর্ম — যেখানে ডিজাইন, ডেভেলপমেন্ট, ফটোগ্রাফি ও ডিজিটাল ক্রিয়েটিভ স্কিল শেখানো হয় প্র্যাকটিকাল ও প্রফেশনাল উপায়ে।",
+                  "Astropixel's very own learning platform — teaching design, development, photography, and digital creative skills the practical, professional way."
                 )}
               </motion.p>
             </div>
           </div>
         </section>
 
-        {/* What is Learn with AlphaZero */}
+        {/* What is Learn with Astropixel */}
         <section className="py-12 lg:py-16 relative">
           <div className="container mx-auto px-6">
             <div className="max-w-5xl mx-auto grid lg:grid-cols-2 gap-10 items-center">
@@ -187,7 +187,7 @@ const LearnAboutPage = () => {
               >
                 <img
                   src={learnLogo}
-                  alt="Learn with AlphaZero Logo"
+                  alt="Learn with Astropixel Logo"
                   className="h-24 md:h-32 w-auto mx-auto brightness-0 dark:invert mb-6"
                 />
                 <p className="text-primary text-lg font-semibold tracking-wide">
@@ -223,15 +223,15 @@ const LearnAboutPage = () => {
                 </h2>
                 <p className="text-muted-foreground leading-relaxed">
                   {cms("mission.desc.bn", "mission.desc.en",
-                    "Learn with AlphaZero হলো AlphaZero এজেন্সির লার্নিং শাখা। এখানে আমরা এমন কোর্স তৈরি করি যা শুধু থিওরি নয় — আসল ক্লায়েন্ট প্রজেক্টে ব্যবহৃত টুলস, প্রসেস ও ওয়ার্কফ্লো শেখায়। শিক্ষার্থীরা শেখেন, তৈরি করেন এবং সরাসরি পোর্টফোলিও গড়ে তোলেন।",
-                    "Learn with AlphaZero is the education arm of the AlphaZero agency. We build courses that go beyond theory — teaching the exact tools, processes, and workflows used on real client projects. Students learn, build, and grow a portfolio at the same time."
+                    "Learn with Astropixel হলো Astropixel এজেন্সির লার্নিং শাখা। এখানে আমরা এমন কোর্স তৈরি করি যা শুধু থিওরি নয় — আসল ক্লায়েন্ট প্রজেক্টে ব্যবহৃত টুলস, প্রসেস ও ওয়ার্কফ্লো শেখায়। শিক্ষার্থীরা শেখেন, তৈরি করেন এবং সরাসরি পোর্টফোলিও গড়ে তোলেন।",
+                    "Learn with Astropixel is the education arm of the Astropixel agency. We build courses that go beyond theory — teaching the exact tools, processes, and workflows used on real client projects. Students learn, build, and grow a portfolio at the same time."
                   )}
                 </p>
 
                 <div className="p-5 rounded-2xl glass-card">
                   <h4 className="text-base font-bold mb-3 flex items-center gap-2">
                     <CheckCircle className="w-4 h-4 text-primary" />
-                    {cms("mission.whyTitle.bn", "mission.whyTitle.en", "কেন Learn with AlphaZero?", "Why Learn with AlphaZero?")}
+                    {cms("mission.whyTitle.bn", "mission.whyTitle.en", "কেন Learn with Astropixel?", "Why Learn with Astropixel?")}
                   </h4>
                   <div className="space-y-2.5">
                     {whyChoose.map((item, i) => (

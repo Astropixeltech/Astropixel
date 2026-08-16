@@ -24,7 +24,7 @@ const ContactPage = () => {
   const getPreferred = (pk: string, fk: string, fb: string) => getPageContent(pk) || getFooterContent(fk) || fb;
 
   const phone = getPreferred("info.phone", "phone", "+880 1344-497808");
-  const email = getPreferred("info.email", "email", "contact@alphazero.online").trim();
+  const email = getPreferred("info.email", "email", "contact@astropixel.tech").trim();
   const address = getPreferred("info.address", "address", t("contact.locationValue"));
   const whatsappValue = getPageContent("info.whatsapp")?.trim();
   const whatsappLink =
@@ -38,8 +38,8 @@ const ContactPage = () => {
   const socials = [
     { name: "Facebook", handle: "@alphazero", url: "https://www.facebook.com/share/1Zm7yMhPtk/", icon: Facebook, brand: "#1877F2" },
     { name: "WhatsApp", handle: "Chat now", url: whatsappLink, icon: MessageCircle, brand: "#25D366" },
-    { name: "Instagram", handle: "@alphazero.online", url: "https://www.instagram.com/alphazero.online", icon: Instagram, brand: "#E4405F" },
-    { name: "LinkedIn", handle: "AlphaZero Agency", url: "https://www.linkedin.com/company/alphazero-agency", icon: Linkedin, brand: "#0A66C2" },
+    { name: "Instagram", handle: "@astropixel.tech", url: "https://www.instagram.com/alphazero.online", icon: Instagram, brand: "#E4405F" },
+    { name: "LinkedIn", handle: "Astropixel Agency", url: "https://www.linkedin.com/company/alphazero-agency", icon: Linkedin, brand: "#0A66C2" },
     { name: "X", handle: "@AgencyAlphazero", url: "https://x.com/AgencyAlphazero", icon: Twitter, brand: "#0F172A" },
     { name: "Discord", handle: "Join community", url: "https://discord.gg/uerwPXFf5", icon: DiscordIcon, brand: "#5865F2" },
   ];
@@ -246,7 +246,7 @@ const ContactPage = () => {
                 {/* Live map */}
                 <div className="relative flex-1 min-h-[220px] mx-6 lg:mx-8 rounded-2xl overflow-hidden border border-white/10 group">
                   <iframe
-                    title="AlphaZero Studio location"
+                    title="Astropixel Studio location"
                     src="https://www.google.com/maps?q=Hi-Tech+Park+Rajshahi+Bangladesh&output=embed"
                     loading="lazy"
                     referrerPolicy="no-referrer-when-downgrade"

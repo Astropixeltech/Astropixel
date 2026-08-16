@@ -31,7 +31,7 @@ const LearnContactPage = () => {
     return c.content_en;
   };
   const phone = getPageContent("learn.phone") || getFooterContent("phone") || "+880 1344-497808";
-  const email = (getPageContent("learn.email") || "support@learn.alphazero.online").trim();
+  const email = (getPageContent("learn.email") || "support@learn.astropixel.tech").trim();
   const address = cms("learn.address", "learn.address.en", "ঢাকা, বাংলাদেশ", "Dhaka, Bangladesh");
   const waNumber = phone.replace(/\D/g, "");
 
