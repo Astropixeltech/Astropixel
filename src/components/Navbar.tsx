@@ -127,12 +127,15 @@ const Navbar = () => {
             {/* Faint bottom shadow line */}
             <div aria-hidden className="pointer-events-none absolute inset-x-6 bottom-0 h-px bg-gradient-to-r from-transparent via-black/10 dark:via-white/5 to-transparent" />
 
-            {/* Logo — new white brand logo (no text beside logo) */}
+            {/* Logo — white over dark hero, turns crisp black over light content */}
             <Link to="/" className="flex items-center group relative shrink-0 z-10">
               <img
                 src={logoFullPng}
                 alt="AstroPixel"
-                className="h-8 sm:h-9 max-w-[180px] sm:max-w-[220px] w-auto object-contain transition-transform duration-300 group-hover:scale-105"
+                className="h-8 sm:h-9 max-w-[180px] sm:max-w-[220px] w-auto object-contain transition-all duration-300 group-hover:scale-105"
+                style={{
+                  filter: isOverHero ? "none" : "brightness(0)",
+                }}
                 loading="eager"
                 fetchPriority="high"
               />

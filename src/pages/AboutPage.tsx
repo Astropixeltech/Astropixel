@@ -125,7 +125,8 @@ const AboutPage = () => {
                 <motion.img
                   src={journeyLogo}
                   alt="AstroPixel"
-                  className="w-full max-w-md object-contain filter drop-shadow-[0_10px_30px_rgba(6,182,212,0.2)]"
+                  className="w-full max-w-md object-contain"
+                  style={{ filter: "brightness(0)" }}
                   initial={{ scale: 0.85, opacity: 0 }}
                   whileInView={{ scale: 1, opacity: 1 }}
                   viewport={{ once: true }}
