@@ -47,7 +47,7 @@ const Navbar = () => {
 
   
 
-  const COURSES_URL = "https://learn.alphazero.online";
+  const COURSES_URL = "https://learn.astropixel.tech";
 
   const navLinks = [
     { name: t("nav.home"), href: "/", num: "01" },

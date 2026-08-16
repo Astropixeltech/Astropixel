@@ -103,7 +103,7 @@ export default function CourseLandingPage() {
   const videoId = getYouTubeId(c?.intro_video_url);
 
   const seoTitle = useMemo(
-    () => title ? `${title} | AlphaZero` : 'Course | AlphaZero',
+    () => title ? `${title} | Astropixel` : 'Course | Astropixel',
     [title]
   );
   const seoDesc = (shortDesc || desc || '').slice(0, 155);
@@ -128,7 +128,7 @@ export default function CourseLandingPage() {
       el.setAttribute(attr, value);
     };
     setMeta('meta[name="description"]', 'content', seoDesc);
-    setMeta('link[rel="canonical"]', 'href', `https://alphazero.online/courses/${slug}`);
+    setMeta('link[rel="canonical"]', 'href', `https://astropixel.tech/courses/${slug}`);
     setMeta('meta[property="og:title"]', 'content', seoTitle);
     setMeta('meta[property="og:description"]', 'content', seoDesc);
     if (c.thumbnail_url) setMeta('meta[property="og:image"]', 'content', c.thumbnail_url);
@@ -146,7 +146,7 @@ export default function CourseLandingPage() {
       '@type': 'Course',
       name: title,
       description: seoDesc,
-      provider: { '@type': 'Organization', name: 'AlphaZero', sameAs: 'https://alphazero.online' },
+      provider: { '@type': 'Organization', name: 'Astropixel', sameAs: 'https://astropixel.tech' },
       image: c.thumbnail_url,
       offers: { '@type': 'Offer', price: c.price, priceCurrency: 'BDT' },
     });
@@ -207,7 +207,7 @@ export default function CourseLandingPage() {
             >
               <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
             </button>
-            <Link to="/" className="flex items-center" aria-label="Learn with AlphaZero">
+            <Link to="/" className="flex items-center" aria-label="Learn with Astropixel">
               <div
                 className="h-9 w-36"
                 style={{
@@ -241,7 +241,7 @@ export default function CourseLandingPage() {
             <div className="lg:col-span-7">
               <div className="flex items-center gap-3 mb-6 flex-wrap">
                 <span className="bg-cyan-500/20 text-cyan-300 border border-cyan-500/30 px-3 py-1 rounded-full text-xs font-bold tracking-wide uppercase">
-                  AlphaZero Academy
+                  Astropixel Academy
                 </span>
                 {c.course_type && (
                   <span className="bg-white/5 text-slate-300 border border-white/10 px-3 py-1 rounded-full text-xs font-semibold capitalize">

@@ -30,7 +30,7 @@ const Footer = () => {
 
   const socialLinks = footerLinks?.filter(link => link.link_type === 'social') || [];
   const defaultSocialLinks = [
-    { name: "Website", url: "https://www.alphazero.online", icon: "Globe" },
+    { name: "Website", url: "https://www.astropixel.tech", icon: "Globe" },
     { name: "Email", url: "mailto:agency.alphazero@gmail.com", icon: "Mail" },
     { name: "Discord", url: "https://discord.gg/uerwPXFf5", icon: "Discord" },
     { name: "YouTube", url: "https://youtube.com", icon: "Youtube" },
@@ -58,7 +58,7 @@ const Footer = () => {
 
   const email = getContent('email') || 'agency.alphazero@gmail.com';
   const address = getContent('address') || 'Rajshahi, Bangladesh';
-  const description = getContent('description') || 'AlphaZero is a creative studio blending strategy, design and technology to craft standout digital experiences.';
+  const description = getContent('description') || 'Astropixel is a creative studio blending strategy, design and technology to craft standout digital experiences.';
 
   return (
     <footer className="relative bg-foreground text-background">
@@ -170,7 +170,7 @@ const Footer = () => {
 
           {/* Bottom */}
           <div className="mt-10 pt-6 border-t border-background/10 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-background/50">
-            <span>© {new Date().getFullYear()} AlphaZero — {t("footer.rights") || "All rights reserved."}</span>
+            <span>© {new Date().getFullYear()} Astropixel — {t("footer.rights") || "All rights reserved."}</span>
             <a
               href="mailto:agency.alphazero@gmail.com"
               className="hover:text-background transition-colors"

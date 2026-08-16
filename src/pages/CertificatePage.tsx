@@ -196,12 +196,12 @@ export default function CertificatePage() {
                 <div className="flex flex-col items-center gap-2">
                   <img 
                     src="/logo.png" 
-                    alt="AlphaZero Academy" 
+                    alt="Astropixel Academy" 
                     className="w-16 h-16 md:w-20 md:h-20 object-contain"
                     crossOrigin="anonymous"
                   />
                   <h2 className="text-[#1a3a4a] text-sm md:text-base font-semibold tracking-[0.3em] uppercase">
-                    AlphaZero Academy
+                    Astropixel Academy
                   </h2>
                   <div className="w-24 h-px bg-[#c9a227] mt-1" />
                 </div>

@@ -116,7 +116,7 @@ const AboutPage = () => {
               >
                 <motion.img
                   src={journeyLogo}
-                  alt="AlphaZero"
+                  alt="Astropixel"
                   className="w-full max-w-md object-contain opacity-30"
                   initial={{ scale: 0.85, opacity: 0 }}
                   whileInView={{ scale: 1, opacity: 0.3 }}
@@ -137,7 +137,7 @@ const AboutPage = () => {
                 </div>
                 <h2 className="text-4xl sm:text-5xl lg:text-6xl font-display font-bold leading-[1.05] tracking-tight mb-8">
                   {c("story.title", "about.story.title")}{" "}
-                  <span className="gradient-text">AlphaZero</span>{" "}
+                  <span className="gradient-text">Astropixel</span>{" "}
                   {c("story.title2", "about.story.title2")}
                 </h2>
                 <div className="space-y-5 text-muted-foreground text-base lg:text-lg leading-relaxed max-w-xl mb-10">
@@ -231,10 +231,10 @@ const AboutPage = () => {
                     large: i === activeSister.length - 1,
                   }))
                 : [
-                    { src: brand1.url, alt: "AlphaZero", invert: true },
+                    { src: brand1.url, alt: "Astropixel", invert: true },
                     { src: brand2.url, alt: "Sister Brand", invert: true },
-                    { src: brand3.url, alt: "Alpha Portfolio", href: "https://portfolio.alphazero.online/", invert: true },
-                    { src: brand4.url, alt: "Learn with AlphaZero", invert: true, large: true },
+                    { src: brand3.url, alt: "Alpha Portfolio", href: "https://portfolio.astropixel.tech/", invert: true },
+                    { src: brand4.url, alt: "Learn with Astropixel", invert: true, large: true },
                   ];
               return <LogoCloud logos={sisterLogos} />;
             })()}
@@ -448,10 +448,10 @@ const FaqSection = () => {
 
 
 const faqs = [
-  { q: "What services does AlphaZero offer?", a: "We offer branding, web development, digital marketing, video production, graphic design, and a full learning academy — everything to build a strong digital presence." },
+  { q: "What services does Astropixel offer?", a: "We offer branding, web development, digital marketing, video production, graphic design, and a full learning academy — everything to build a strong digital presence." },
   { q: "Do you work with startups and small businesses?", a: "Absolutely. We tailor our approach for every stage — from early-stage founders to established brands scaling globally." },
   { q: "How long does a typical project take?", a: "Most branding and web projects run 2–6 weeks depending on scope. We share a clear timeline before kickoff, so you always know what's next." },
-  { q: "Can I learn digital skills at AlphaZero?", a: "Yes — AlphaZero Learn offers structured courses in AI, design, programming, marketing, and freelancing, taught by industry practitioners." },
+  { q: "Can I learn digital skills at Astropixel?", a: "Yes — Astropixel Learn offers structured courses in AI, design, programming, marketing, and freelancing, taught by industry practitioners." },
   { q: "How do I get started?", a: "Book a free discovery call. We'll understand your goals, share a plan, and only move forward when everything feels right." },
 ];
 

@@ -274,7 +274,7 @@ Content-Type: application/json
   "metadata": { "product": "Pro Plan" }
 }
 
-→ { "success": true, "invoice_id": "AZ-...", "payment_url": "https://alphazero.online/pay/AZ-..." }`}</pre>
+→ { "success": true, "invoice_id": "AZ-...", "payment_url": "https://astropixel.tech/pay/AZ-..." }`}</pre>
               <p className="text-xs text-muted-foreground mt-1">Redirect the user to <code>payment_url</code> . This will show a <strong>branded checkout page</strong> (with your logo + brand color). When the Pay button is clicked, the user will go to the UddoktaPay gateway and return to your <code>redirect_url</code> after payment — with <code>invoice_id</code> and <code>status</code> in the query parameters.</p>
             </div>
 

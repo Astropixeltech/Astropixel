@@ -26,7 +26,7 @@ const CoursesFooter = () => {
     { icon: Instagram, url: "https://www.instagram.com/alphazero.online", label: "Instagram" },
     { icon: Youtube, url: "https://youtube.com/@alphazero", label: "YouTube" },
     { icon: MessageCircle, url: "https://wa.me/8801776965533", label: "WhatsApp" },
-    { icon: Mail, url: "mailto:learn@alphazero.online", label: "Email" },
+    { icon: Mail, url: "mailto:learn@astropixel.tech", label: "Email" },
   ];
 
   return (
@@ -37,7 +37,7 @@ const CoursesFooter = () => {
           <div className="lg:col-span-1">
             <img
               src={learnLogo}
-              alt="Learn with AlphaZero"
+              alt="Learn with Astropixel"
               className="h-10 w-auto brightness-0 dark:brightness-0 dark:invert mb-4"
             />
             <p className="text-sm text-muted-foreground leading-relaxed">
@@ -98,16 +98,16 @@ const CoursesFooter = () => {
               <a href="tel:+8801776965533" className="flex items-center gap-2 text-foreground hover:text-primary transition-colors">
                 <Phone size={14} /> +880 1776-965533
               </a>
-              <a href="mailto:learn@alphazero.online" className="flex items-center gap-2 text-foreground hover:text-primary transition-colors break-all">
-                <Mail size={14} /> learn@alphazero.online
+              <a href="mailto:learn@astropixel.tech" className="flex items-center gap-2 text-foreground hover:text-primary transition-colors break-all">
+                <Mail size={14} /> learn@astropixel.tech
               </a>
               <a
-                href="https://alphazero.online"
+                href="https://astropixel.tech"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-block mt-2 text-xs text-primary hover:underline"
               >
-                {isBn ? "মূল সাইট → alphazero.online" : "Main site → alphazero.online"}
+                {isBn ? "মূল সাইট → astropixel.tech" : "Main site → astropixel.tech"}
               </a>
             </div>
           </div>
@@ -119,7 +119,7 @@ const CoursesFooter = () => {
         <div className="container mx-auto px-5 sm:px-6 py-4 pb-16 sm:pb-4">
           <div className="max-w-6xl mx-auto flex items-center justify-between gap-2">
             <span className="text-[10px] sm:text-xs text-muted-foreground">
-              © {new Date().getFullYear()} Learn with AlphaZero
+              © {new Date().getFullYear()} Learn with Astropixel
             </span>
             <button
               onClick={scrollToTop}

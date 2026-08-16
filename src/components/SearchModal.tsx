@@ -65,8 +65,8 @@ const staticPages: SearchItem[] = [
   {
     title: "Home",
     titleBn: "হোম",
-    description: "Welcome to AlphaZero - Creative Design Agency",
-    descriptionBn: "AlphaZero-এ স্বাগতম - ক্রিয়েটিভ ডিজাইন এজেন্সি",
+    description: "Welcome to Astropixel - Creative Design Agency",
+    descriptionBn: "Astropixel-এ স্বাগতম - ক্রিয়েটিভ ডিজাইন এজেন্সি",
     path: "/",
     icon: Layout,
     keywords: ["home", "main", "landing", "welcome", "alphazero", "alpha", "zero", "agency", "এজেন্সি", "হোম", "প্রধান", "স্বাগতম", "আলফাজিরো", "আলফা"],
@@ -75,8 +75,8 @@ const staticPages: SearchItem[] = [
   {
     title: "About Us",
     titleBn: "আমাদের সম্পর্কে",
-    description: "Learn about AlphaZero's journey, mission, vision and values",
-    descriptionBn: "AlphaZero-এর যাত্রা, মিশন, ভিশন এবং মূল্যবোধ সম্পর্কে জানুন",
+    description: "Learn about Astropixel's journey, mission, vision and values",
+    descriptionBn: "Astropixel-এর যাত্রা, মিশন, ভিশন এবং মূল্যবোধ সম্পর্কে জানুন",
     path: "/about",
     icon: Info,
     keywords: ["about", "story", "values", "mission", "vision", "history", "company", "who", "we", "are", "journey", "আমাদের", "সম্পর্কে", "গল্প", "মিশন", "ভিশন", "কোম্পানি", "যাত্রা", "ইতিহাস"],
@@ -105,8 +105,8 @@ const staticPages: SearchItem[] = [
   {
     title: "Our Team",
     titleBn: "আমাদের টিম",
-    description: "Meet the creative minds behind AlphaZero - Designers, Developers",
-    descriptionBn: "AlphaZero-এর পেছনের ক্রিয়েটিভ মানুষদের সাথে পরিচিত হন",
+    description: "Meet the creative minds behind Astropixel - Designers, Developers",
+    descriptionBn: "Astropixel-এর পেছনের ক্রিয়েটিভ মানুষদের সাথে পরিচিত হন",
     path: "/about#team",
     icon: Users,
     keywords: ["team", "members", "people", "staff", "founder", "ceo", "designer", "developer", "employee", "crew", "join", "career", "টিম", "সদস্য", "মানুষ", "ফাউন্ডার", "ডিজাইনার", "ডেভেলপার", "কর্মী", "trainer", "instructor", "ট্রেইনার"],
@@ -125,7 +125,7 @@ const staticPages: SearchItem[] = [
   {
     title: "Contact Us",
     titleBn: "যোগাযোগ করুন",
-    description: "Get in touch - Email: contact@alphazero.com, Phone: +880 1779-277603",
+    description: "Get in touch - Email: contact@astropixel.tech, Phone: +880 1779-277603",
     descriptionBn: "যোগাযোগ করুন - ইমেইল, ফোন: +৮৮০ ১৭৭৯-২৭৭৬০৩, হোয়াটসঅ্যাপ",
     path: "/contact",
     icon: Phone,
@@ -135,8 +135,8 @@ const staticPages: SearchItem[] = [
   {
     title: "Join Our Team",
     titleBn: "টিমে যোগ দিন",
-    description: "Career opportunities at AlphaZero - Apply now",
-    descriptionBn: "AlphaZero-তে ক্যারিয়ারের সুযোগ - এখনই আবেদন করুন",
+    description: "Career opportunities at Astropixel - Apply now",
+    descriptionBn: "Astropixel-তে ক্যারিয়ারের সুযোগ - এখনই আবেদন করুন",
     path: "/join-team",
     icon: Users,
     keywords: ["join", "career", "job", "jobs", "apply", "hiring", "work", "opportunity", "vacancy", "recruitment", "যোগ", "চাকরি", "আবেদন", "নিয়োগ", "ক্যারিয়ার", "সুযোগ"],
@@ -155,8 +155,8 @@ const staticPages: SearchItem[] = [
   {
     title: "Verify Certificate",
     titleBn: "সার্টিফিকেট যাচাই",
-    description: "Verify your AlphaZero certificate authenticity",
-    descriptionBn: "আপনার AlphaZero সার্টিফিকেটের সত্যতা যাচাই করুন",
+    description: "Verify your Astropixel certificate authenticity",
+    descriptionBn: "আপনার Astropixel সার্টিফিকেটের সত্যতা যাচাই করুন",
     path: "/verify-certificate",
     icon: BookOpen,
     keywords: ["verify", "certificate", "check", "validate", "authenticity", "সার্টিফিকেট", "যাচাই", "চেক", "ভেরিফাই"],
@@ -210,8 +210,8 @@ const SearchModal = ({ isOpen, onClose }: SearchModalProps) => {
             dynamicItems.push({
               title: course.title,
               titleBn: course.title,
-              description: course.description || "Learn with AlphaZero",
-              descriptionBn: course.description || "AlphaZero-এর সাথে শিখুন",
+              description: course.description || "Learn with Astropixel",
+              descriptionBn: course.description || "Astropixel-এর সাথে শিখুন",
               path: "/courses",
               icon: GraduationCap,
               keywords: [course.title.toLowerCase(), "course", "কোর্স", "training", "ট্রেনিং"],
@@ -286,7 +286,7 @@ const SearchModal = ({ isOpen, onClose }: SearchModalProps) => {
     try {
       const { data, error } = await supabase.functions.invoke('ai-assistant', {
         body: {
-          message: `User is searching for "${searchQuery}" on AlphaZero website. AlphaZero is a creative design agency offering: Graphic Design, Web Development, Video Editing, Digital Marketing, Logo Design, Branding, and also provides courses. Contact: +880 1779-277603.
+          message: `User is searching for "${searchQuery}" on Astropixel website. Astropixel is a creative design agency offering: Graphic Design, Web Development, Video Editing, Digital Marketing, Logo Design, Branding, and also provides courses. Contact: +880 1779-277603.
           
 Based on their search, suggest which page they should visit in 1 short sentence. Available pages: Home, About Us, Services, Our Work/Portfolio, Team, Courses, Contact, Join Team, Student Login, Verify Certificate.
 

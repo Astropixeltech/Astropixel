@@ -338,7 +338,7 @@ export default function EmailInbox({ language }: EmailInboxProps) {
                         </span>
                         {message.direction === 'outbound' && message.sender_identity && (
                           <Badge variant="outline" className="text-xs">
-                            {message.sender_identity}@alphazero.online
+                            {message.sender_identity}@astropixel.tech
                           </Badge>
                         )}
                       </div>
@@ -366,10 +366,10 @@ export default function EmailInbox({ language }: EmailInboxProps) {
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="noreply">noreply@alphazero.online</SelectItem>
-                  <SelectItem value="support">support@alphazero.online</SelectItem>
-                  <SelectItem value="info">info@alphazero.online</SelectItem>
-                  <SelectItem value="admin">admin@alphazero.online</SelectItem>
+                  <SelectItem value="noreply">noreply@astropixel.tech</SelectItem>
+                  <SelectItem value="support">support@astropixel.tech</SelectItem>
+                  <SelectItem value="info">info@astropixel.tech</SelectItem>
+                  <SelectItem value="admin">admin@astropixel.tech</SelectItem>
                 </SelectContent>
               </Select>
             </div>

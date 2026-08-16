@@ -174,10 +174,10 @@ const getCourseMetadata = (title: string): CourseMetadata => {
 
 const translations = {
   en: {
-    badge: "100% Online-Based Courses", title: "Learn with AlphaZero",
+    badge: "100% Online-Based Courses", title: "Learn with Astropixel",
     subtitle: "Learn practical, job-ready and AI-powered skills. Build websites, brands and digital careers without deep technical knowledge.",
     beginnerFriendly: "Beginner-Friendly", certificate: "Certificate Provided", expertTrainer: "Expert Trainers",
-    aboutTitle: "About", aboutDesc: "Learn with AlphaZero teaches practical, job-ready and AI-powered skills so students can build websites, brands, and digital careers without needing deep technical knowledge. All courses are 100% online-based, designed for beginners and affordable for Bangladesh market.",
+    aboutTitle: "About", aboutDesc: "Learn with Astropixel teaches practical, job-ready and AI-powered skills so students can build websites, brands, and digital careers without needing deep technical knowledge. All courses are 100% online-based, designed for beginners and affordable for Bangladesh market.",
     ourCourses: "Our", coursesTitle: "Courses", coursesSubtitle: "Professional Online Courses - Start Your Career Today",
     popularCourses: "Courses",
     coursesDesc: "We have designed our courses with the most demanding professional skills. The knowledge, experience, and expertise gained through the program will ensure your desired career in the global market. From the list below you can enroll in any online or offline course at any time.",
@@ -191,10 +191,10 @@ const translations = {
     loginFirst: "Please login first to enroll",
   },
   bn: {
-    badge: "১০০% অনলাইন-ভিত্তিক কোর্স", title: "Learn with AlphaZero",
+    badge: "১০০% অনলাইন-ভিত্তিক কোর্স", title: "Learn with Astropixel",
     subtitle: "প্র্যাক্টিক্যাল, জব-রেডি ও AI-পাওয়ার্ড স্কিল শিখুন। কোনো টেকনিক্যাল জ্ঞান ছাড়াই ওয়েবসাইট, ব্র্যান্ড ও ডিজিটাল ক্যারিয়ার গড়ুন।",
     beginnerFriendly: "বিগিনার-ফ্রেন্ডলি", certificate: "সার্টিফিকেট প্রদান", expertTrainer: "এক্সপার্ট ট্রেইনার",
-    aboutTitle: "সম্পর্কে", aboutDesc: "Learn with AlphaZero প্র্যাক্টিক্যাল, জব-রেডি এবং AI-পাওয়ার্ড স্কিল শেখায় যাতে শিক্ষার্থীরা গভীর টেকনিক্যাল জ্ঞান ছাড়াই ওয়েবসাইট, ব্র্যান্ড এবং ডিজিটাল ক্যারিয়ার গড়ে তুলতে পারে। আমাদের সব কোর্স ১০০% অনলাইন-ভিত্তিক, বিগিনার ও আধুনিক শিক্ষার্থীদের জন্য ডিজাইন করা এবং বাংলাদেশের বাজারের জন্য সাশ্রয়ী মূল্যে।",
+    aboutTitle: "সম্পর্কে", aboutDesc: "Learn with Astropixel প্র্যাক্টিক্যাল, জব-রেডি এবং AI-পাওয়ার্ড স্কিল শেখায় যাতে শিক্ষার্থীরা গভীর টেকনিক্যাল জ্ঞান ছাড়াই ওয়েবসাইট, ব্র্যান্ড এবং ডিজিটাল ক্যারিয়ার গড়ে তুলতে পারে। আমাদের সব কোর্স ১০০% অনলাইন-ভিত্তিক, বিগিনার ও আধুনিক শিক্ষার্থীদের জন্য ডিজাইন করা এবং বাংলাদেশের বাজারের জন্য সাশ্রয়ী মূল্যে।",
     ourCourses: "আমাদের", coursesTitle: "কোর্সসমূহ", coursesSubtitle: "প্রফেশনাল অনলাইন কোর্স - আপনার ক্যারিয়ার শুরু করুন আজই",
     popularCourses: "কোর্স",
     coursesDesc: "আমরা সবচেয়ে চাহিদাসম্পন্ন প্রফেশনাল স্কিল দিয়ে আমাদের কোর্সগুলো সাজিয়েছি। এই প্রোগ্রাম থেকে অর্জিত জ্ঞান, অভিজ্ঞতা ও দক্ষতা গ্লোবাল মার্কেটে আপনার কাঙ্ক্ষিত ক্যারিয়ার নিশ্চিত করবে। নিচের তালিকা থেকে যেকোনো সময় অনলাইন বা অফলাইন কোর্সে ভর্তি হতে পারবেন।",
@@ -361,8 +361,8 @@ const CoursesPage = () => {
 
   // Redirect to learn subdomain when accessed from main site
   useEffect(() => {
-    if (typeof window !== "undefined" && !window.location.hostname.startsWith("learn.") && window.location.hostname.includes("alphazero.online")) {
-      window.location.replace("https://learn.alphazero.online" + window.location.pathname.replace(/^\/courses/, "") + window.location.search);
+    if (typeof window !== "undefined" && !window.location.hostname.startsWith("learn.") && window.location.hostname.includes("astropixel.tech")) {
+      window.location.replace("https://learn.astropixel.tech" + window.location.pathname.replace(/^\/courses/, "") + window.location.search);
     }
   }, []);
 
@@ -495,41 +495,41 @@ const CoursesPage = () => {
 
 
       <Helmet>
-        <title>AlphaZero Academy — Learn Graphic Design, Web Development, Vibe Coding, AI & Digital Marketing in Bangla</title>
-        <meta name="description" content="AlphaZero Academy (Learn with AlphaZero) — Bangla online courses on graphic design, web development, vibe coding, digital marketing, AI automation, prompt engineering, motion graphics, Figma, Fiverr freelancing & digital products. Learn from experts & get certified." />
-        <meta name="keywords" content="AlphaZero Academy, Learn with AlphaZero, graphic design course Bangla, web development Bangla, vibe coding, digital marketing Bangla, AI automation, prompt engineering, motion graphics, Figma course, Fiverr freelancing, digital product course, online course Bangladesh" />
-        <meta name="author" content="AlphaZero Academy" />
+        <title>Astropixel Academy — Learn Graphic Design, Web Development, Vibe Coding, AI & Digital Marketing in Bangla</title>
+        <meta name="description" content="Astropixel Academy (Learn with Astropixel) — Bangla online courses on graphic design, web development, vibe coding, digital marketing, AI automation, prompt engineering, motion graphics, Figma, Fiverr freelancing & digital products. Learn from experts & get certified." />
+        <meta name="keywords" content="Astropixel Academy, Learn with Astropixel, graphic design course Bangla, web development Bangla, vibe coding, digital marketing Bangla, AI automation, prompt engineering, motion graphics, Figma course, Fiverr freelancing, digital product course, online course Bangladesh" />
+        <meta name="author" content="Astropixel Academy" />
         <meta name="robots" content="index, follow, max-image-preview:large" />
-        <link rel="canonical" href="https://learn.alphazero.online/" />
+        <link rel="canonical" href="https://learn.astropixel.tech/" />
 
-        <meta property="og:site_name" content="AlphaZero Academy" />
-        <meta property="og:title" content="AlphaZero Academy — Learn Design, Web Dev, Vibe Coding, AI & Digital Marketing" />
+        <meta property="og:site_name" content="Astropixel Academy" />
+        <meta property="og:title" content="Astropixel Academy — Learn Design, Web Dev, Vibe Coding, AI & Digital Marketing" />
         <meta property="og:description" content="Bangla online courses on graphic design, web development, vibe coding, digital marketing, AI automation, prompt engineering, motion graphics, Figma & Fiverr freelancing." />
-        <meta property="og:url" content="https://learn.alphazero.online/" />
+        <meta property="og:url" content="https://learn.astropixel.tech/" />
         <meta property="og:type" content="website" />
         <meta property="og:locale" content="bn_BD" />
         <meta property="og:locale:alternate" content="en_US" />
         <meta property="og:image" content={learnOgImage.url} />
         <meta property="og:image:width" content="1200" />
         <meta property="og:image:height" content="630" />
-        <meta property="og:image:alt" content="AlphaZero Academy — Learn with AlphaZero" />
+        <meta property="og:image:alt" content="Astropixel Academy — Learn with Astropixel" />
 
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="AlphaZero Academy — Design, Web Dev, Vibe Coding, AI & Digital Marketing" />
+        <meta name="twitter:title" content="Astropixel Academy — Design, Web Dev, Vibe Coding, AI & Digital Marketing" />
         <meta name="twitter:description" content="Bangla courses on graphic design, web development, vibe coding, digital marketing, AI automation, prompt engineering, motion graphics, Figma & Fiverr freelancing." />
         <meta name="twitter:image" content={learnOgImage.url} />
-        <meta name="twitter:image:alt" content="AlphaZero Academy — Learn with AlphaZero" />
+        <meta name="twitter:image:alt" content="Astropixel Academy — Learn with Astropixel" />
 
         <script type="application/ld+json">{JSON.stringify({
           "@context": "https://schema.org",
           "@type": "EducationalOrganization",
-          "name": "AlphaZero Academy",
-          "alternateName": ["Learn with AlphaZero", "AlphaZero Learn"],
-          "url": "https://learn.alphazero.online/",
-          "logo": "https://alphazero.online/logo.png",
-          "description": "AlphaZero Academy — Bangla online learning platform teaching graphic design, web development, vibe coding, digital marketing, AI automation, prompt engineering, motion graphics, Figma, Fiverr freelancing and digital products.",
+          "name": "Astropixel Academy",
+          "alternateName": ["Learn with Astropixel", "Astropixel Learn"],
+          "url": "https://learn.astropixel.tech/",
+          "logo": "https://astropixel.tech/logo.png",
+          "description": "Astropixel Academy — Bangla online learning platform teaching graphic design, web development, vibe coding, digital marketing, AI automation, prompt engineering, motion graphics, Figma, Fiverr freelancing and digital products.",
           "sameAs": [
-            "https://alphazero.online",
+            "https://astropixel.tech",
             "https://www.facebook.com/alphazero.online",
             "https://www.youtube.com/@alphazero.online"
           ],
@@ -545,13 +545,13 @@ const CoursesPage = () => {
         <script type="application/ld+json">{JSON.stringify({
           "@context": "https://schema.org",
           "@type": "WebSite",
-          "name": "AlphaZero Academy",
-          "alternateName": "Learn with AlphaZero",
-          "url": "https://learn.alphazero.online/",
+          "name": "Astropixel Academy",
+          "alternateName": "Learn with Astropixel",
+          "url": "https://learn.astropixel.tech/",
           "inLanguage": ["bn", "en"],
           "potentialAction": {
             "@type": "SearchAction",
-            "target": "https://learn.alphazero.online/?q={search_term_string}",
+            "target": "https://learn.astropixel.tech/?q={search_term_string}",
             "query-input": "required name=search_term_string"
           }
         })}</script>
@@ -559,7 +559,7 @@ const CoursesPage = () => {
         <script type="application/ld+json">{JSON.stringify({
           "@context": "https://schema.org",
           "@type": "ItemList",
-          "name": "AlphaZero Academy Courses",
+          "name": "Astropixel Academy Courses",
           "itemListElement": [
             { "@type": "ListItem", "position": 1, "name": "Graphic Design Course (Bangla)" },
             { "@type": "ListItem", "position": 2, "name": "Web Development Course (Bangla)" },
@@ -958,8 +958,8 @@ const CoursesPage = () => {
                 name: isBn ? "তানভীর আহমেদ" : "Tanvir Ahmed",
                 role: isBn ? "ভাইব কোডিং" : "Vibe Coding",
                 quote: isBn
-                  ? "AlphaZero-এর টিচিং স্টাইল অসাধারণ। প্রথম মাসেই নিজে একটা ওয়েবসাইট বানাতে পেরেছি।"
-                  : "AlphaZero's teaching style is amazing. I built my own website within the first month.",
+                  ? "Astropixel-এর টিচিং স্টাইল অসাধারণ। প্রথম মাসেই নিজে একটা ওয়েবসাইট বানাতে পেরেছি।"
+                  : "Astropixel's teaching style is amazing. I built my own website within the first month.",
               },
               {
                 name: isBn ? "মেহেদী হাসান" : "Mehedi Hasan",

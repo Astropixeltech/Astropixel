@@ -292,7 +292,7 @@ function YouTubeCustomPlayer({
         <div className="absolute inset-0 z-50 bg-black flex items-center justify-center">
           <div className="text-center animate-pulse">
             <img src="/logo.png" alt="Logo" className="w-20 h-20 mx-auto mb-3 dark:invert" />
-            <p className="text-white/80 text-sm font-medium">AlphaZero Academy</p>
+            <p className="text-white/80 text-sm font-medium">Astropixel Academy</p>
           </div>
         </div>
       )}
@@ -701,7 +701,7 @@ export default function SecureVideoPlayer({
         <div className="absolute inset-0 z-50 bg-black flex items-center justify-center">
           <div className="text-center animate-pulse">
             <img src="/logo.png" alt="Logo" className="w-20 h-20 mx-auto mb-3 dark:invert" />
-            <p className="text-white/80 text-sm font-medium">AlphaZero Academy</p>
+            <p className="text-white/80 text-sm font-medium">Astropixel Academy</p>
           </div>
         </div>
       )}

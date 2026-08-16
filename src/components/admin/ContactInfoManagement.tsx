@@ -47,7 +47,7 @@ const GROUPS: Group[] = [
       { key: "info.phone_label", label: "📱 Phone Label", fallback: "Phone" },
       { key: "info.phone", label: "📱 Phone Number", fallback: "+8801410190019", placeholder: "+880..." },
       { key: "info.email_label", label: "✉️ Email Label", fallback: "Email" },
-      { key: "info.email", label: "✉️ Email Address", fallback: "hello@alphazero.com", placeholder: "name@example.com" },
+      { key: "info.email", label: "✉️ Email Address", fallback: "hello@astropixel.tech", placeholder: "name@example.com" },
       { key: "info.address_label", label: "🏠 Address Label", fallback: "Address" },
       { key: "info.address", label: "🏠 Office Address", type: "textarea", fallback: "Dhaka, Bangladesh" },
       { key: "info.hours_label", label: "🕐 Business Hours Label", fallback: "Business Hours" },

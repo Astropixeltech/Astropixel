@@ -41,7 +41,7 @@ export default function StudentIDCard({ profile }: StudentIDCardProps) {
     });
     
     pdf.addImage(imgData, 'PNG', 0, 0, 86, 54);
-    pdf.save(`AlphaZero_ID_${profile.full_name.replace(/\s+/g, '_')}.pdf`);
+    pdf.save(`Astropixel_ID_${profile.full_name.replace(/\s+/g, '_')}.pdf`);
   };
 
   const studentId = `AZA-${profile.created_at?.slice(0, 10).replace(/-/g, '')}-${profile.id.slice(0, 4).toUpperCase()}`;
@@ -68,7 +68,7 @@ export default function StudentIDCard({ profile }: StudentIDCardProps) {
           <div className="mb-3">
             <img
               src={logoImg}
-              alt="AlphaZero"
+              alt="Astropixel"
               className="h-12 w-auto object-contain"
               style={{ filter: 'brightness(0) invert(1)' }}
             />
@@ -126,7 +126,7 @@ export default function StudentIDCard({ profile }: StudentIDCardProps) {
               </span>
               <span className="flex items-center gap-1">
                 <Mail className="w-3 h-3" />
-                info@alphazero.com
+                info@astropixel.tech
               </span>
             </div>
             <div className="bg-white rounded-md px-2 py-1 flex justify-center">

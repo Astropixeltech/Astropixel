@@ -912,7 +912,7 @@ function AdminDashboardInner() {
           <div className="flex flex-col items-center gap-2 md:items-start">
             <img
               src={scope === 'learn' ? learnLogo : alphazeroLogoAsset.url}
-              alt={scope === 'learn' ? 'Learn with AlphaZero' : 'AlphaZero Logo'}
+              alt={scope === 'learn' ? 'Learn with Astropixel' : 'Astropixel Logo'}
               className={`w-auto flex-shrink-0 ${scope === 'learn' ? 'h-9 brightness-0 dark:invert' : 'h-8 brightness-0 dark:invert'}`}
             />
             <div className="hidden md:block">

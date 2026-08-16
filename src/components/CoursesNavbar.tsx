@@ -25,7 +25,7 @@ const CoursesNavbar = () => {
   const coursesHomeHref = isLearnSubdomain ? "/" : "/courses";
   const contactHref = "/learn-contact";
   const aboutHref = "/learn-about";
-  const agencyHref = isLearnSubdomain ? "https://alphazero.online" : "/";
+  const agencyHref = isLearnSubdomain ? "https://astropixel.tech" : "/";
 
   const navLinks: Array<{ name: string; to?: string; href?: string; id?: string; icon: any; internal?: boolean; external?: boolean }> = [
     { name: isBn ? "হোম" : "Home", to: coursesHomeHref, id: "home", icon: Home, internal: true },
@@ -105,7 +105,7 @@ const CoursesNavbar = () => {
               className="flex items-center gap-2 group shrink-0"
             >
               <div
-                aria-label="Learn with AlphaZero"
+                aria-label="Learn with Astropixel"
                 className="h-8 sm:h-9 w-32 sm:w-36 transition-all"
                 style={{
                   backgroundImage: `linear-gradient(90deg, hsl(var(--gradient-start)), hsl(var(--gradient-mid)), hsl(var(--gradient-end)))`,

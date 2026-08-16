@@ -588,7 +588,7 @@ const ItemRow = ({
           <div className="grid md:grid-cols-2 gap-4">
             {mode === "brands" && (
               <div className="md:col-span-2">
-                <FieldInput label="Brand Name" value={f.title} onChange={(v) => set("title", v)} placeholder="e.g. AlphaZero" />
+                <FieldInput label="Brand Name" value={f.title} onChange={(v) => set("title", v)} placeholder="e.g. Astropixel" />
               </div>
             )}
             {mode === "cards" && (
