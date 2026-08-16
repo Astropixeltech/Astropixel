@@ -3,7 +3,7 @@ import { cn } from "@/lib/utils"
 import { ChevronRight, Star, ArrowUpRight } from "lucide-react"
 import { TextReveal } from "./text-reveal"
 import gsap from "gsap"
-import { Button04 } from "@/components/ui/animated-arrow-button"
+import { ShinyButton } from "@/components/ui/shiny-button"
 
 interface HeroSectionProps extends React.HTMLAttributes<HTMLDivElement> {
   title?: string
@@ -107,8 +107,8 @@ const HeroSection = React.forwardRef<HTMLDivElement, HeroSectionProps>(
           {/* CTA and Trust Elements */}
           <div data-hero-cta className="flex flex-col items-center gap-8">
             <div className="flex flex-wrap items-center justify-center gap-6">
-              {/* Animated Arrow Button */}
-              <Button04 text={ctaText} href={ctaHref} />
+              {/* Shiny Button */}
+              <ShinyButton href={ctaHref}>{ctaText}</ShinyButton>
 
               {/* User Avatars and Stars */}
               <div className="flex items-center gap-4">

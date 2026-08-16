@@ -30,7 +30,7 @@ const learnLogo = learnLogoAssetJson.url;
 const logoFull = logoFullPng || logoFullAsset?.url;
 const isLearnSubdomain = typeof window !== "undefined" && window.location.hostname.startsWith("learn.");
 import SearchModal from "./SearchModal";
-import { Button04 } from "@/components/ui/animated-arrow-button";
+import { ShinyButton } from "@/components/ui/shiny-button";
 
 const LEARN_ROUTES = ["/courses", "/instructors", "/learn-about"];
 
@@ -194,7 +194,7 @@ const Navbar = () => {
 
             {/* Right-aligned Controls (desktop) */}
             <div className="hidden lg:flex items-center gap-1.5 ml-2">
-              <Button04 text={t("nav.startProject")} href="/contact" />
+              <ShinyButton href="/contact">{t("nav.startProject")}</ShinyButton>
             </div>
 
             {/* Mobile: login + menu on top bar */}
