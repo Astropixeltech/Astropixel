@@ -441,7 +441,7 @@ const Index = () => {
           ctaText={c("cta1", "home.cta1")}
           ctaHref="/contact"
           bottomImage={{ light: designShowcaseLight, dark: designShowcase }}
-          className="w-full pb-6 lg:pb-12"
+          className="w-full pb-0"
         >
           <ProjectMarquee />
         </HeroSection>
