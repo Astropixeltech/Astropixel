@@ -1,81 +1,79 @@
 "use client";
 
 import React from "react";
-import { motion, type AnimationProps } from "framer-motion";
+import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { cn } from "@/lib/utils";
-
-const animationProps: AnimationProps = {
-  initial: { "--x": "100%", scale: 0.8 },
-  animate: { "--x": "-100%", scale: 1 },
-  whileTap: { scale: 0.95 },
-  transition: {
-    repeat: Infinity,
-    repeatType: "loop",
-    repeatDelay: 1,
-    type: "spring",
-    stiffness: 20,
-    damping: 15,
-    mass: 2,
-    scale: {
-      type: "spring",
-      stiffness: 200,
-      damping: 5,
-      mass: 0.5,
-    },
-  },
-};
 
 interface ShinyButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   children: React.ReactNode;
   className?: string;
   href?: string;
+  onClick?: () => void;
 }
 
 export const ShinyButton: React.FC<ShinyButtonProps> = ({
   children,
   className,
   href,
+  onClick,
   ...props
 }) => {
   const buttonEl = (
     <motion.button
-      {...animationProps}
+      initial={{ scale: 0.96 }}
+      animate={{ scale: 1 }}
+      whileHover={{ scale: 1.04 }}
+      whileTap={{ scale: 0.94 }}
+      transition={{
+        type: "spring",
+        stiffness: 250,
+        damping: 15,
+      }}
+      onClick={onClick}
       {...props}
       className={cn(
-        "relative rounded-lg px-6 py-2.5 font-medium backdrop-blur-xl transition-shadow duration-300 ease-in-out hover:shadow dark:bg-[radial-gradient(circle_at_50%_0%,hsl(var(--primary)/10%)_0%,transparent_60%)] dark:hover:shadow-[0_0_20px_hsl(var(--primary)/10%)] bg-black/40 border border-white/10 text-white cursor-pointer inline-flex items-center justify-center",
+        "shiny-button-container relative rounded-full px-6 py-2.5 font-medium backdrop-blur-xl transition-all duration-300 ease-in-out cursor-pointer inline-flex items-center justify-center bg-neutral-950/90 text-white border border-cyan-500/40 shadow-[0_0_20px_rgba(6,182,212,0.4)] hover:shadow-[0_0_35px_rgba(6,182,212,0.75)] hover:border-cyan-400 overflow-hidden",
         className
       )}
     >
+      {/* Background Radial Glow */}
+      <span className="absolute inset-0 z-0 bg-[radial-gradient(circle_at_50%_0%,rgba(6,182,212,0.35)_0%,transparent_70%)] pointer-events-none" />
+
+      {/* Shiny Text */}
       <span
-        className="relative block size-full text-sm uppercase tracking-wide text-white/90 dark:font-light dark:text-[rgb(255,255,255,90%)]"
-        style={{
-          maskImage:
-            "linear-gradient(-75deg,hsl(var(--primary)) calc(var(--x) + 20%),transparent calc(var(--x) + 30%),hsl(var(--primary)) calc(var(--x) + 100%))",
-          WebkitMaskImage:
-            "linear-gradient(-75deg,hsl(var(--primary)) calc(var(--x) + 20%),transparent calc(var(--x) + 30%),hsl(var(--primary)) calc(var(--x) + 100%))",
-        }}
+        className="shiny-button-text relative z-10 block text-sm font-semibold tracking-wide uppercase text-white"
       >
         {children}
       </span>
+
+      {/* Shiny Border Sweep */}
       <span
         style={{
-          mask: "linear-gradient(rgb(0,0,0), rgb(0,0,0)) content-box,linear-gradient(rgb(0,0,0), rgb(0,0,0))",
-          WebkitMask: "linear-gradient(rgb(0,0,0), rgb(0,0,0)) content-box,linear-gradient(rgb(0,0,0), rgb(0,0,0))",
+          mask: "linear-gradient(#000, #000) content-box, linear-gradient(#000, #000)",
+          WebkitMask: "linear-gradient(#000, #000) content-box, linear-gradient(#000, #000)",
           maskComposite: "exclude",
           WebkitMaskComposite: "xor",
         }}
-        className="absolute inset-0 z-10 block rounded-[inherit] bg-[linear-gradient(-75deg,hsl(var(--primary)/10%)_calc(var(--x)+20%),hsl(var(--primary)/50%)_calc(var(--x)+25%),hsl(var(--primary)/10%)_calc(var(--x)+100%))] p-px pointer-events-none"
-      ></span>
+        className="shiny-button-border absolute inset-0 z-20 block rounded-[inherit] p-[1.5px] pointer-events-none"
+      />
     </motion.button>
   );
 
   if (href) {
     if (href.startsWith("http") || href.startsWith("#")) {
-      return <a href={href} className="inline-block no-underline">{buttonEl}</a>;
+      return (
+        <a href={href} className="inline-block no-underline">
+          {buttonEl}
+        </a>
+      );
     }
-    return <Link to={href} className="inline-block no-underline">{buttonEl}</Link>;
+    return (
+      <Link to={href} className="inline-block no-underline">
+        {buttonEl}
+      </Link>
+    );
   }
 
   return buttonEl;
