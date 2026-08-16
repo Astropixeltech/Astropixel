@@ -76,17 +76,17 @@ const HeroSection = React.forwardRef<HTMLDivElement, HeroSectionProps>(
         <div className="absolute inset-0 bg-gradient-to-b from-black via-neutral-950 to-black z-0" />
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-purple-900/30 via-black/80 to-black pointer-events-none z-0" />
 
-        {/* Optional background image */}
+        {/* Custom background image */}
         {bottomImage && bottomImage.light && (
-          <div className="absolute inset-0 z-0 opacity-40">
+          <div className="absolute inset-0 z-0 opacity-70">
             <img 
               src={bottomImage.light} 
               alt="" 
               aria-hidden
-              className="w-full h-full object-cover"
+              className="w-full h-full object-cover object-center"
               onError={(e) => { (e.target as HTMLElement).style.display = "none"; }}
             />
-            <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/50 to-black" />
+            <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/40 to-black" />
           </div>
         )}
         

@@ -75,8 +75,9 @@ import { useHomepageSection, useHomepageSectionItems } from "@/hooks/useHomepage
 import { memo, useRef, useState, useEffect, type ReactNode } from "react";
 import { useTheme } from "next-themes";
 import heroGradientAsset from "@/assets/hero-gradient.png.asset.json";
-const designShowcase = heroGradientAsset.url;
-const designShowcaseLight = heroGradientAsset.url;
+import customHeroBg from "@/assets/hero-bg-custom.png";
+const designShowcase = customHeroBg;
+const designShowcaseLight = customHeroBg;
 const resolveLogoUrl = (url: string) => url.startsWith("/") ? `https://astropixel.tech${url}` : url;
 
 // Tilted device mockup card (browser / phone / image)
