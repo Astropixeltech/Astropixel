@@ -147,8 +147,11 @@ const HeroSection = React.forwardRef<HTMLDivElement, HeroSectionProps>(
           </div>
         </div>
 
-        {/* Grid options can be applied here if needed in the future */}
-
+        {children && (
+          <div className="relative z-10 w-full mt-8 md:mt-12">
+            {children}
+          </div>
+        )}
       </div>
     )
   },

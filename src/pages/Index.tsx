@@ -441,15 +441,11 @@ const Index = () => {
           ctaText={c("cta1", "home.cta1")}
           ctaHref="/contact"
           bottomImage={{ light: designShowcaseLight, dark: designShowcase }}
-          className="w-full"
-        />
+          className="w-full pb-6 lg:pb-12"
+        >
+          <ProjectMarquee />
+        </HeroSection>
       </section>
-
-
-      {/* ══════════ PROJECT MARQUEE — Desktop only (sibling, uses topOffset pin) ══════════ */}
-      <div className="block">
-        <ProjectMarquee />
-      </div>
       <section className="py-2 lg:py-4 bg-background relative z-[15]">
         <div className="container mx-auto px-6">
           {(() => {

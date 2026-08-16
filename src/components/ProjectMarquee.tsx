@@ -141,7 +141,7 @@ export default function ProjectMarquee() {
   if (items.length === 0) return null;
 
   return (
-    <section ref={sectionRef} style={{ marginTop: topOffset }} className="relative pt-0 pb-10 md:pb-14 overflow-hidden bg-transparent z-20">
+    <section ref={sectionRef} className="relative pt-0 pb-6 md:pb-10 overflow-hidden bg-transparent z-20">
       <div className="relative h-[180px] sm:h-[200px] md:h-[180px] project-marquee-row">
         <div className="flex h-full w-max project-marquee-track project-marquee-track-left">
           {track1.map((p, i) => <Card key={`r1-${p.id}-${i}`} item={p} />)}
