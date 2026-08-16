@@ -24,9 +24,10 @@ import { Link, useLocation } from "react-router-dom";
 import { useTheme } from "next-themes";
 import { useLanguage } from "@/contexts/LanguageContext";
 import logoFullAsset from "@/assets/astropixel-logo.png.asset.json";
+import logoFullPng from "@/assets/logo-full.png";
 import learnLogoAssetJson from "@/assets/learn-with-alphazero-logo.png.asset.json";
 const learnLogo = learnLogoAssetJson.url;
-const logoFull = logoFullAsset.url;
+const logoFull = logoFullPng || logoFullAsset?.url;
 const isLearnSubdomain = typeof window !== "undefined" && window.location.hostname.startsWith("learn.");
 import SearchModal from "./SearchModal";
 
@@ -126,40 +127,26 @@ const Navbar = () => {
             {/* Faint bottom shadow line */}
             <div aria-hidden className="pointer-events-none absolute inset-x-6 bottom-0 h-px bg-gradient-to-r from-transparent via-black/10 dark:via-white/5 to-transparent" />
 
-            {/* Logo — adaptive: white over dark hero, metallic silver/dark over light content */}
-            <Link to="/" className="flex items-center group relative shrink-0">
-              <div className="absolute -inset-2 bg-primary/10 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-              <div className="relative h-7 sm:h-8 w-[160px] sm:w-[190px] z-10">
-                {/* White logo — visible over dark hero (top of page) */}
+            {/* Logo — crisp brand image + text fallback */}
+            <Link to="/" className="flex items-center gap-2 group relative shrink-0 z-10">
+              <div className="relative h-8 w-auto flex items-center gap-2">
                 <img
                   src={brandLogo}
-                  alt="Astropixel Logo"
-                  className="absolute inset-0 h-full w-auto object-contain object-left transition-opacity duration-300 ease-out"
-                  style={{
-                    opacity: isOverHero ? 1 : 0,
-                    filter: "brightness(0) invert(1) drop-shadow(0 1px 2px rgba(0,0,0,0.35)) drop-shadow(0 0 8px rgba(255,255,255,0.15))",
+                  alt="AstroPixel"
+                  className="h-8 w-auto object-contain"
+                  onError={(e) => {
+                    (e.target as HTMLElement).style.display = "none";
                   }}
                   loading="eager"
                   fetchPriority="high"
-                  decoding="async"
                 />
-                {/* Dark logo — visible over light content past the hero */}
-                <img
-                  src={brandLogo}
-                  alt=""
-                  aria-hidden
-                  className="absolute inset-0 h-full w-auto object-contain object-left transition-opacity duration-300 ease-out"
-                  style={{
-                    opacity: isOverHero ? 0 : 1,
-                    filter: "brightness(0) saturate(0) invert(0.08) drop-shadow(0 1px 1px rgba(255,255,255,0.4))",
-                  }}
-                  loading="eager"
-                  decoding="async"
-                />
+                <span className={`font-display font-bold text-lg tracking-tight transition-colors ${
+                  isOverHero ? "text-white drop-shadow-md" : "text-neutral-900"
+                }`}>
+                  Astro<span className="text-cyan-500">Pixel</span>
+                </span>
               </div>
             </Link>
-
-
 
             {/* Desktop Navigation - Pill style (centered) */}
             <div className="hidden lg:flex items-center absolute left-1/2 -translate-x-1/2">
@@ -167,28 +154,25 @@ const Navbar = () => {
                 {navLinks.map((link) => {
                   const isActive = location.pathname === link.href;
 
-
                   const linkClasses = "relative px-4 py-2 text-sm font-medium transition-all duration-300 rounded-full";
                   const linkInner = (
-
                     <>
                       {isActive && (
                         <motion.div
                           layoutId="navbar-active-pill"
-                          className="absolute inset-0 rounded-full bg-cyan-600/10 border border-cyan-600/20 shadow-sm"
+                          className="absolute inset-0 rounded-full bg-cyan-500/20 border border-cyan-400/40 shadow-sm"
                           transition={{ type: "spring", bounce: 0.25, duration: 0.5 }}
                         />
                       )}
-                      <span className={`relative z-10 transition-colors duration-300 ${
+                      <span className={`relative z-10 font-semibold text-sm transition-colors duration-300 ${
                         isActive
-                          ? "text-cyan-600 font-semibold"
+                          ? "text-cyan-400 font-bold"
                           : isOverHero
-                            ? "text-white/80 hover:text-white"
-                            : "text-neutral-800 hover:text-black"
+                            ? "text-white/90 hover:text-white drop-shadow-sm"
+                            : "text-neutral-900 hover:text-cyan-600"
                       }`}>
                         {link.name}
                       </span>
-
                     </>
                   );
                   return link.href.startsWith("http") ? (

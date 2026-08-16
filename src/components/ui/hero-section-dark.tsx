@@ -71,17 +71,22 @@ const HeroSection = React.forwardRef<HTMLDivElement, HeroSectionProps>(
     }, []);
 
     return (
-      <div className={cn("relative min-h-[82vh] md:min-h-screen flex flex-col items-center justify-start pt-28 md:pt-32 pb-10 md:pb-16 px-4 text-center overflow-hidden", className)} ref={innerRef} {...props}>
-        {/* Full-screen background image */}
-        {bottomImage && (
-          <div className="absolute inset-0 z-0">
+      <div className={cn("relative min-h-[82vh] md:min-h-screen flex flex-col items-center justify-start pt-28 md:pt-32 pb-10 md:pb-16 px-4 text-center overflow-hidden bg-black text-white", className)} ref={innerRef} {...props}>
+        {/* Dark base background & glow effect */}
+        <div className="absolute inset-0 bg-gradient-to-b from-black via-neutral-950 to-black z-0" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-purple-900/30 via-black/80 to-black pointer-events-none z-0" />
+
+        {/* Optional background image */}
+        {bottomImage && bottomImage.light && (
+          <div className="absolute inset-0 z-0 opacity-40">
             <img 
               src={bottomImage.light} 
-              alt="Hero Background" 
+              alt="" 
+              aria-hidden
               className="w-full h-full object-cover"
+              onError={(e) => { (e.target as HTMLElement).style.display = "none"; }}
             />
-            {/* Removed overlay to show image clearly */}
-
+            <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/50 to-black" />
           </div>
         )}
         
