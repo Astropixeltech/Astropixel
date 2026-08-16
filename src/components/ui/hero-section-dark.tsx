@@ -29,6 +29,7 @@ interface HeroSectionProps extends React.HTMLAttributes<HTMLDivElement> {
 const HeroSection = React.forwardRef<HTMLDivElement, HeroSectionProps>(
   (
     {
+      children,
       className,
       title = "Build products for everyone",
       subtitle = {
