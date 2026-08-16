@@ -446,7 +446,7 @@ const Index = () => {
           <ProjectMarquee />
         </HeroSection>
       </section>
-      <section className="pt-8 pb-6 lg:pt-12 lg:pb-8 bg-background relative z-[15] rounded-t-[32px] md:rounded-t-[48px] -mt-4 sm:-mt-6">
+      <section className="pt-8 pb-6 lg:pt-12 lg:pb-8 bg-background relative z-[15] rounded-t-xl md:rounded-t-2xl -mt-2 sm:-mt-3">
         <div className="container mx-auto px-6">
           {(() => {
             const defaultLogos: { src: string; alt: string; scale?: number }[] = [
