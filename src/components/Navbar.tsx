@@ -158,28 +158,19 @@ const Navbar = () => {
                 {navLinks.map((link) => {
                   const isActive = location.pathname === link.href;
 
-                  const linkClasses = "relative px-4 py-2 text-sm font-medium transition-all duration-300 rounded-full";
+                  const linkClasses = "relative px-3.5 py-2 text-sm font-medium transition-all duration-300";
                   const linkInner = (
-                    <>
-                      {isActive && (
-                        <motion.div
-                          layoutId="navbar-active-pill"
-                          className="absolute inset-0 rounded-full bg-cyan-500/20 border border-cyan-400/40 shadow-sm"
-                          transition={{ type: "spring", bounce: 0.25, duration: 0.5 }}
-                        />
-                      )}
-                      <span className={`relative z-10 font-semibold text-sm transition-colors duration-300 ${
-                        isActive
-                          ? "text-cyan-400 font-bold"
-                          : isOverHero
-                            ? "text-white/90 hover:text-white drop-shadow-sm"
-                            : isScrolled
-                              ? "text-neutral-900 dark:text-white hover:text-cyan-600"
-                              : "text-neutral-900 hover:text-cyan-600"
-                      }`}>
-                        {link.name}
-                      </span>
-                    </>
+                    <span className={`relative z-10 font-semibold text-sm transition-colors duration-300 ${
+                      isActive
+                        ? "text-cyan-400 font-bold drop-shadow-sm"
+                        : isOverHero
+                          ? "text-white/90 hover:text-cyan-400 drop-shadow-sm"
+                          : isScrolled
+                            ? "text-neutral-900 dark:text-white hover:text-cyan-600"
+                            : "text-neutral-900 hover:text-cyan-600"
+                    }`}>
+                      {link.name}
+                    </span>
                   );
                   return link.href.startsWith("http") ? (
                     <a key={link.href} href={link.href} target="_blank" rel="noopener noreferrer" className={linkClasses}>{linkInner}</a>
