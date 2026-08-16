@@ -127,25 +127,15 @@ const Navbar = () => {
             {/* Faint bottom shadow line */}
             <div aria-hidden className="pointer-events-none absolute inset-x-6 bottom-0 h-px bg-gradient-to-r from-transparent via-black/10 dark:via-white/5 to-transparent" />
 
-            {/* Logo — crisp brand image + text fallback */}
-            <Link to="/" className="flex items-center gap-2 group relative shrink-0 z-10">
-              <div className="relative h-8 w-auto flex items-center gap-2">
-                <img
-                  src={brandLogo}
-                  alt="AstroPixel"
-                  className="h-8 w-auto object-contain"
-                  onError={(e) => {
-                    (e.target as HTMLElement).style.display = "none";
-                  }}
-                  loading="eager"
-                  fetchPriority="high"
-                />
-                <span className={`font-display font-bold text-lg tracking-tight transition-colors ${
-                  isOverHero ? "text-white drop-shadow-md" : "text-neutral-900"
-                }`}>
-                  Astro<span className="text-cyan-500">Pixel</span>
-                </span>
-              </div>
+            {/* Logo — new white brand logo (no text beside logo) */}
+            <Link to="/" className="flex items-center group relative shrink-0 z-10">
+              <img
+                src={logoFullPng}
+                alt="AstroPixel"
+                className="h-8 sm:h-9 max-w-[180px] sm:max-w-[220px] w-auto object-contain transition-transform duration-300 group-hover:scale-105"
+                loading="eager"
+                fetchPriority="high"
+              />
             </Link>
 
             {/* Desktop Navigation - Pill style (centered) */}
