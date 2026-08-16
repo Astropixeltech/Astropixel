@@ -107,17 +107,19 @@ export default function ProjectMarquee() {
 
         if (!marquee) return;
 
-        // Desktop only: pin marquee just below the hero CTA.
-        // Tablet/mobile: let it flow naturally beneath the hero.
-        const isDesktop = window.matchMedia("(min-width: 1024px)").matches;
-        if (!isDesktop || !cta) {
+        // Pin marquee just below the hero CTA on every screen size,
+        // so it always sits INSIDE the hero section (not after it).
+        if (!cta) {
           setTopOffset((current) => (current !== 0 ? 0 : current));
           return;
         }
 
-        const desiredTop = cta.getBoundingClientRect().bottom + HERO_CTA_GAP_PX;
+        const isDesktop = window.matchMedia("(min-width: 1024px)").matches;
+        const gap = isDesktop ? HERO_CTA_GAP_PX : 32;
+        const desiredTop = cta.getBoundingClientRect().bottom + gap;
         const currentTop = marquee.getBoundingClientRect().top;
         const nextOffset = Math.round(topOffset + desiredTop - currentTop);
+
 
         setTopOffset((current) => (Math.abs(nextOffset - current) > 1 ? nextOffset : current));
       });
