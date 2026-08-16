@@ -72,7 +72,7 @@ const HeroSection = React.forwardRef<HTMLDivElement, HeroSectionProps>(
     }, []);
 
     return (
-      <div className={cn("relative min-h-[82vh] md:min-h-screen flex flex-col items-center justify-start pt-28 md:pt-32 pb-10 md:pb-16 px-4 text-center overflow-hidden bg-black text-white", className)} ref={innerRef} {...props}>
+      <div className={cn("relative min-h-[82vh] md:min-h-screen flex flex-col items-center justify-start pt-28 md:pt-32 pb-10 md:pb-16 px-0 text-center overflow-hidden bg-black text-white", className)} ref={innerRef} {...props}>
         {/* Custom background image — 100% full clarity without black overlay */}
         {bottomImage && bottomImage.light && (
           <div className="absolute inset-0 z-0 opacity-100">
@@ -87,7 +87,7 @@ const HeroSection = React.forwardRef<HTMLDivElement, HeroSectionProps>(
         )}
         
         
-        <div className="relative z-10 max-w-5xl mx-auto space-y-6 md:space-y-8">
+        <div className="relative z-10 max-w-5xl mx-auto px-4 space-y-6 md:space-y-8">
           {/* Main Headline */}
           <h1 className="text-[31px] md:text-[52px] lg:text-[70px] font-bold tracking-tight text-white leading-[1.2]">
             <span className="block whitespace-pre-line">Vision Into Reality.{"\n"}Pixel by Pixel.</span>
@@ -149,7 +149,7 @@ const HeroSection = React.forwardRef<HTMLDivElement, HeroSectionProps>(
         </div>
 
         {children && (
-          <div className="relative z-10 w-full mt-8 md:mt-12">
+          <div className="relative z-10 w-full px-0 mt-8 md:mt-12 overflow-hidden">
             {children}
           </div>
         )}
