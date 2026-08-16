@@ -107,16 +107,8 @@ const HeroSection = React.forwardRef<HTMLDivElement, HeroSectionProps>(
           {/* CTA and Trust Elements */}
           <div data-hero-cta className="flex flex-col items-center gap-8">
             <div className="flex flex-wrap items-center justify-center gap-6">
-              {/* Original Hero CTA Button */}
-              <a
-                href={ctaHref}
-                className="group relative flex items-center gap-2 bg-neutral-950 text-white px-5 py-2.5 rounded-full text-sm font-medium transition-all hover:bg-neutral-800"
-              >
-                <span>{ctaText}</span>
-                <div className="bg-white text-neutral-950 p-1 rounded-full transition-transform group-hover:rotate-45">
-                  <ArrowUpRight size={14} strokeWidth={2.5} />
-                </div>
-              </a>
+              {/* Shiny Button */}
+              <ShinyButton href={ctaHref}>{ctaText}</ShinyButton>
 
               {/* User Avatars and Stars */}
               <div className="flex items-center gap-4">

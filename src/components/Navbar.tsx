@@ -185,22 +185,7 @@ const Navbar = () => {
 
             {/* Right-aligned Controls (desktop) */}
             <div className="hidden lg:flex items-center gap-1.5 ml-2">
-              <Link
-                to="/contact"
-                className="group relative flex items-center gap-2 px-6 py-2.5 rounded-full overflow-hidden transition-all duration-300 active:scale-95"
-              >
-                {/* Satin gradient base */}
-                <div className="absolute inset-0 bg-gradient-to-br from-cyan-400 via-cyan-500 to-blue-600" />
-                {/* Internal lighting overlay */}
-                <div className="absolute inset-0 bg-gradient-to-b from-white/25 via-transparent to-black/15 opacity-60" />
-                {/* Inner highlight edge */}
-                <div className="absolute inset-[1px] rounded-full border-t border-white/40 pointer-events-none" />
-                {/* Outer bloom on hover */}
-                <div className="absolute inset-0 rounded-full shadow-[0_6px_24px_rgba(6,182,212,0.5)] opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-
-                <span className="relative z-10 text-sm font-semibold text-white tracking-wide">{t("nav.startProject")}</span>
-                <ArrowUpRight size={14} className="relative z-10 text-white group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-              </Link>
+              <ShinyButton href="/contact">{t("nav.startProject")}</ShinyButton>
             </div>
 
             {/* Mobile: login + menu on top bar */}

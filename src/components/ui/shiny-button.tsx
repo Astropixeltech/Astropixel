@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 import { cn } from "@/lib/utils";
 
 const animationProps: AnimationProps = {
-  initial: { "--x": "100%", scale: 0.95 },
+  initial: { "--x": "100%", scale: 0.8 },
   animate: { "--x": "-100%", scale: 1 },
   whileTap: { scale: 0.95 },
   transition: {
@@ -31,28 +31,25 @@ interface ShinyButtonProps
   children: React.ReactNode;
   className?: string;
   href?: string;
-  onClick?: () => void;
 }
 
 export const ShinyButton: React.FC<ShinyButtonProps> = ({
   children,
   className,
   href,
-  onClick,
   ...props
 }) => {
-  const buttonContent = (
+  const buttonEl = (
     <motion.button
       {...animationProps}
       {...props}
-      onClick={onClick}
       className={cn(
-        "relative rounded-full px-6 py-2.5 font-semibold text-sm backdrop-blur-xl transition-all duration-300 ease-in-out hover:shadow-lg dark:bg-[radial-gradient(circle_at_50%_0%,hsl(var(--primary)/20%)_0%,transparent_60%)] bg-gradient-to-r from-cyan-500 via-cyan-600 to-blue-600 text-white shadow-md shadow-cyan-500/25 cursor-pointer flex items-center justify-center gap-2",
+        "relative rounded-lg px-6 py-2.5 font-medium backdrop-blur-xl transition-shadow duration-300 ease-in-out hover:shadow dark:bg-[radial-gradient(circle_at_50%_0%,hsl(var(--primary)/10%)_0%,transparent_60%)] dark:hover:shadow-[0_0_20px_hsl(var(--primary)/10%)] bg-black/40 border border-white/10 text-white cursor-pointer inline-flex items-center justify-center",
         className
       )}
     >
       <span
-        className="relative block size-full text-sm font-semibold tracking-wide text-white"
+        className="relative block size-full text-sm uppercase tracking-wide text-white/90 dark:font-light dark:text-[rgb(255,255,255,90%)]"
         style={{
           maskImage:
             "linear-gradient(-75deg,hsl(var(--primary)) calc(var(--x) + 20%),transparent calc(var(--x) + 30%),hsl(var(--primary)) calc(var(--x) + 100%))",
@@ -76,20 +73,12 @@ export const ShinyButton: React.FC<ShinyButtonProps> = ({
 
   if (href) {
     if (href.startsWith("http") || href.startsWith("#")) {
-      return (
-        <a href={href} className="inline-block no-underline">
-          {buttonContent}
-        </a>
-      );
+      return <a href={href} className="inline-block no-underline">{buttonEl}</a>;
     }
-    return (
-      <Link to={href} className="inline-block no-underline">
-        {buttonContent}
-      </Link>
-    );
+    return <Link to={href} className="inline-block no-underline">{buttonEl}</Link>;
   }
 
-  return buttonContent;
+  return buttonEl;
 };
 
-export default ShinyButton;
+export default { ShinyButton };
