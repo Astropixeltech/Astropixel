@@ -61,7 +61,6 @@ const Card = ({ item }: { item: Item }) => {
 export default function ProjectMarquee() {
   const { data: works } = useWorks();
   const sectionRef = useRef<HTMLElement>(null);
-  const [topOffset, setTopOffset] = useState(0);
   const items = useMemo<Item[]>(() => {
     const g = (works || []).filter(isGraphics).map((w) => ({
       id: String(w.id),
@@ -96,47 +95,6 @@ export default function ProjectMarquee() {
 
   const track1 = buildTrack(row1);
   const track2 = buildTrack(row2);
-
-  useEffect(() => {
-    let frame = 0;
-    const schedulePosition = () => {
-      window.cancelAnimationFrame(frame);
-      frame = window.requestAnimationFrame(() => {
-        const marquee = sectionRef.current;
-        const cta = document.querySelector<HTMLElement>("[data-hero-cta]");
-
-        if (!marquee) return;
-
-        // Pin marquee just below the hero CTA on every screen size,
-        // so it always sits INSIDE the hero section (not after it).
-        if (!cta) {
-          setTopOffset((current) => (current !== 0 ? 0 : current));
-          return;
-        }
-
-        const isDesktop = window.matchMedia("(min-width: 1024px)").matches;
-        const gap = isDesktop ? HERO_CTA_GAP_PX : 32;
-        const desiredTop = cta.getBoundingClientRect().bottom + gap;
-        const currentTop = marquee.getBoundingClientRect().top;
-        const nextOffset = Math.round(topOffset + desiredTop - currentTop);
-
-
-        setTopOffset((current) => (Math.abs(nextOffset - current) > 1 ? nextOffset : current));
-      });
-    };
-
-    schedulePosition();
-    const timers = [150, 500, 1000].map((delay) => window.setTimeout(schedulePosition, delay));
-    window.addEventListener("resize", schedulePosition);
-    window.addEventListener("orientationchange", schedulePosition);
-
-    return () => {
-      window.cancelAnimationFrame(frame);
-      timers.forEach((timer) => window.clearTimeout(timer));
-      window.removeEventListener("resize", schedulePosition);
-      window.removeEventListener("orientationchange", schedulePosition);
-    };
-  }, [items.length, topOffset]);
 
   if (items.length === 0) return null;
 
