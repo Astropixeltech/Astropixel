@@ -3,10 +3,11 @@ import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { Globe, Zap, Target, CheckCircle, ArrowRight, Sparkles, Rocket, Heart, Camera, Palette, Code, Instagram, Facebook, Linkedin, ExternalLink, Plus, Minus } from "lucide-react";
 import { Link } from "react-router-dom";
 import Layout from "@/components/Layout";
+import logoFullPng from "@/assets/logo-full.png";
 import logoAssetJson from "@/assets/logo.png.asset.json";
 import journeyLogoJson from "@/assets/alphazero-up-logo.png.asset.json";
-const logo = logoAssetJson.url;
-const journeyLogo = journeyLogoJson.url;
+const logo = logoFullPng || logoAssetJson.url;
+const journeyLogo = logoFullPng || journeyLogoJson.url;
 import { useLanguage } from "@/contexts/LanguageContext";
 import { usePageContent } from "@/hooks/usePageContent";
 import { useTeamMembers } from "@/hooks/useTeamMembers";
@@ -123,10 +124,10 @@ const AboutPage = () => {
               >
                 <motion.img
                   src={journeyLogo}
-                  alt="Astropixel"
-                  className="w-full max-w-md object-contain opacity-30"
+                  alt="AstroPixel"
+                  className="w-full max-w-md object-contain filter drop-shadow-[0_10px_30px_rgba(6,182,212,0.2)]"
                   initial={{ scale: 0.85, opacity: 0 }}
-                  whileInView={{ scale: 1, opacity: 0.3 }}
+                  whileInView={{ scale: 1, opacity: 1 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.8 }}
                 />
