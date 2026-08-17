@@ -190,13 +190,13 @@ const Navbar = () => {
             <div className="hidden lg:flex items-center gap-1.5 ml-2">
               <Link
                 to="/contact"
-                className="group relative flex items-center gap-2 px-6 py-2.5 rounded-xl overflow-hidden transition-all duration-300 active:scale-95 bg-gradient-to-r from-[#6D28D9] via-[#7C3AED] to-[#9333EA] text-white shadow-[0_6px_22px_-2px_rgba(124,58,237,0.6)] hover:shadow-[0_10px_30px_rgba(168,85,247,0.85)] border border-white/30 hover:border-white/50"
+                className="group relative flex items-center gap-1.5 px-4 py-2 rounded-xl overflow-hidden transition-all duration-300 active:scale-95 bg-gradient-to-r from-[#6D28D9] via-[#7C3AED] to-[#9333EA] text-white shadow-[0_5px_18px_-2px_rgba(124,58,237,0.6)] hover:shadow-[0_8px_24px_rgba(168,85,247,0.85)] border border-white/30 hover:border-white/50"
               >
                 {/* Top-right glossy flare overlay */}
-                <div aria-hidden className="absolute top-0 right-0 w-16 h-16 bg-[radial-gradient(ellipse_at_top_right,rgba(255,255,255,0.45),transparent_70%)] pointer-events-none rounded-tr-xl" />
+                <div aria-hidden className="absolute top-0 right-0 w-12 h-12 bg-[radial-gradient(ellipse_at_top_right,rgba(255,255,255,0.45),transparent_70%)] pointer-events-none rounded-tr-xl" />
 
-                <span className="relative z-10 text-sm font-bold text-white tracking-wide">{t("nav.startProject")}</span>
-                <ArrowUpRight size={15} className="relative z-10 text-white group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+                <span className="relative z-10 text-xs sm:text-[13px] font-bold text-white tracking-wide">{t("nav.startProject")}</span>
+                <ArrowUpRight size={14} className="relative z-10 text-white group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
               </Link>
             </div>
 
