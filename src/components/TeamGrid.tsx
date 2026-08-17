@@ -57,7 +57,7 @@ export default function TeamGrid() {
         if (member.portfolio_url) socials.push({ href: member.portfolio_url, icon: <Globe size={14} />, label: "Portfolio" });
         memberLinks.forEach(link => socials.push({
           href: link.url,
-          icon: link.icon_url ? <img src={link.icon_url} alt={link.label} className="w-3.5 h-3.5 object-contain" /> : <ExternalLink size={14} />,
+          icon: link.icon_url ? <img src={link.icon_url} alt={link.label} width={14} height={14} loading="lazy" decoding="async" className="w-3.5 h-3.5 object-contain" /> : <ExternalLink size={14} />,
           label: link.label,
         }));
 
@@ -65,7 +65,7 @@ export default function TeamGrid() {
           <motion.div key={member.id} initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: index * 0.06 }} className="group relative">
             <div className="relative h-full rounded-2xl overflow-hidden border border-border/20 hover:border-primary/30 transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl hover:shadow-primary/[0.1]">
               <div className="relative aspect-[4/5] overflow-hidden bg-secondary">
-                <img src={member.image_url || '/placeholder.svg'} alt={member.name} loading="lazy" decoding="async" referrerPolicy="no-referrer" crossOrigin="anonymous"
+                <img src={member.image_url || '/placeholder.svg'} alt={`AstroPixel Team Member — ${member.name}`} width={400} height={500} loading="lazy" decoding="async" referrerPolicy="no-referrer" crossOrigin="anonymous"
                   className="w-full h-full object-cover object-top group-hover:scale-110 transition-transform duration-700"
                   onError={(e) => { const target = e.currentTarget; if (!target.dataset.retried) { target.dataset.retried = 'true'; target.removeAttribute('crossorigin'); target.src = member.image_url || '/placeholder.svg'; } else { target.src = '/placeholder.svg'; } }} />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/20 to-transparent group-hover:from-black/100 group-hover:via-black/50 transition-all duration-500" />

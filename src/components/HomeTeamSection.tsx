@@ -51,8 +51,11 @@ const HomeTeamSection = () => {
                   <div className="relative aspect-[3/4] overflow-hidden rounded-2xl border border-border/30 hover:border-primary/40 transition-all duration-500 hover:-translate-y-1 hover:shadow-xl hover:shadow-primary/10 bg-secondary">
                     <img
                       src={member.image_url || "/placeholder.svg"}
-                      alt={member.name}
+                      alt={`AstroPixel Team Member — ${member.name}`}
+                      width={300}
+                      height={400}
                       loading="lazy"
+                      decoding="async"
                       referrerPolicy="no-referrer"
                       className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-700"
                       onError={(e) => {

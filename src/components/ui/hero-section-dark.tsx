@@ -79,8 +79,12 @@ const HeroSection = React.forwardRef<HTMLDivElement, HeroSectionProps>(
           <div className="absolute inset-0 z-0 opacity-100">
             <img 
               src={bottomImage.light} 
-              alt="" 
-              aria-hidden
+              alt="AstroPixel Agency Creative Design Showcase Hero Background" 
+              width={1920}
+              height={1080}
+              fetchPriority="high"
+              loading="eager"
+              decoding="async"
               className="w-full h-full object-cover object-center"
               onError={(e) => { (e.target as HTMLElement).style.display = "none"; }}
             />
@@ -128,7 +132,11 @@ const HeroSection = React.forwardRef<HTMLDivElement, HeroSectionProps>(
                     >
                       <img 
                         src={`https://i.pravatar.cc/100?img=${i + 10}`} 
-                        alt="User" 
+                        alt={`AstroPixel Client Avatar ${i}`} 
+                        width={24}
+                        height={24}
+                        loading="lazy"
+                        decoding="async"
                         className="w-full h-full object-cover grayscale"
                       />
                     </div>

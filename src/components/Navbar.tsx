@@ -142,13 +142,16 @@ const Navbar = () => {
             <Link to="/" className="flex items-center group relative shrink-0 z-10">
               <img
                 src={logoFullPng}
-                alt="AstroPixel"
+                alt="AstroPixel Creative Design Agency Logo"
+                width={180}
+                height={36}
                 className="h-8 sm:h-9 max-w-[180px] sm:max-w-[220px] w-auto object-contain transition-all duration-300 group-hover:scale-105"
                 style={{
                   filter: isOverHero ? "none" : (isScrolled ? "none" : "brightness(0)"),
                 }}
                 loading="eager"
                 fetchPriority="high"
+                decoding="async"
               />
             </Link>
 

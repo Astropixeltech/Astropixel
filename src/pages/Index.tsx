@@ -52,14 +52,14 @@ import clientDarkAura from "@/assets/clients/darkaura.png.asset.json";
 import clientAtix from "@/assets/clients/atix.png.asset.json";
 import clientSA from "@/assets/clients/sa.png.asset.json";
 const SERVICE_IMG = "/services";
-const brandingStartio = { url: `${SERVICE_IMG}/branding-startio.png` };
-const brandingPhoneMockup = { url: `${SERVICE_IMG}/branding-phone.png` };
-const webDevDashboard = { url: `${SERVICE_IMG}/web-dev-dashboard.png` };
-const webDevTablet = { url: `${SERVICE_IMG}/web-dev-tablet.png` };
-const uiuxDesktop = { url: `${SERVICE_IMG}/uiux-desktop.png` };
-const uiuxPhone = { url: `${SERVICE_IMG}/uiux-phone.png` };
-const seoMonitor = { url: `${SERVICE_IMG}/seo-monitor.png` };
-const seoTablet = { url: `${SERVICE_IMG}/seo-tablet.png` };
+const brandingStartio = { url: `${SERVICE_IMG}/branding-startio.webp` };
+const brandingPhoneMockup = { url: `${SERVICE_IMG}/branding-phone.webp` };
+const webDevDashboard = { url: `${SERVICE_IMG}/web-dev-dashboard.webp` };
+const webDevTablet = { url: `${SERVICE_IMG}/web-dev-tablet.webp` };
+const uiuxDesktop = { url: `${SERVICE_IMG}/uiux-desktop.webp` };
+const uiuxPhone = { url: `${SERVICE_IMG}/uiux-phone.webp` };
+const seoMonitor = { url: `${SERVICE_IMG}/seo-monitor.webp` };
+const seoTablet = { url: `${SERVICE_IMG}/seo-tablet.webp` };
 
 
 
@@ -75,7 +75,7 @@ import { useHomepageSection, useHomepageSectionItems } from "@/hooks/useHomepage
 import { memo, useRef, useState, useEffect, type ReactNode } from "react";
 import { useTheme } from "next-themes";
 import heroGradientAsset from "@/assets/hero-gradient.png.asset.json";
-import customHeroBg from "@/assets/hero-bg-custom.png";
+import customHeroBg from "@/assets/hero-bg-custom.webp";
 const designShowcase = customHeroBg;
 const designShowcaseLight = customHeroBg;
 const resolveLogoUrl = (url: string) => url.startsWith("/") ? `https://astropixel.tech${url}` : url;

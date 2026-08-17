@@ -1,4 +1,4 @@
-import { useCallback, useState, useEffect, Suspense } from "react";
+import { useCallback, useState, useEffect, Suspense, lazy } from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -14,7 +14,6 @@ import SmoothScroll from "@/components/SmoothScroll";
 import ScrollReveal from "@/components/ScrollReveal";
 import { SiteScopeProvider } from "@/contexts/SiteScopeContext";
 
-
 // Preload logos immediately
 import logoAssetJson from "@/assets/logo.png.asset.json";
 const logoSrc = logoAssetJson.url;
@@ -23,7 +22,7 @@ const preloadImg = (src: string) => { const img = new Image(); img.src = src; };
 preloadImg(logoSrc);
 preloadImg(logoFullSrc);
 
-// Main site pages - loaded immediately for instant navigation
+// Main site pages - loaded immediately for instant initial navigation
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import AboutPage from "./pages/AboutPage";
@@ -34,27 +33,25 @@ import JoinTeamPage from "./pages/JoinTeamPage";
 import ContactPage from "./pages/ContactPage";
 import CoursesPage from "./pages/CoursesPage";
 
-
-// LMS pages - loaded immediately for fast access
-import AdminLoginPage from "./pages/AdminLoginPage";
-import StudentLoginPage from "./pages/StudentLoginPage";
-import DashboardPage from "./pages/DashboardPage";
-
-import AdminDashboard from "./pages/AdminDashboard";
-import StudentDashboard from "./pages/StudentDashboard";
-import TeacherDashboard from "./pages/TeacherDashboard";
-import TeacherLoginPage from "./pages/TeacherLoginPage";
-import MyCertificatesPage from "./pages/MyCertificatesPage";
-import CourseViewerPage from "./pages/CourseViewerPage";
-import CertificatePage from "./pages/CertificatePage";
-import VerifyCertificatePage from "./pages/VerifyCertificatePage";
-import ForgotPasswordPage from "./pages/ForgotPasswordPage";
-import ResetPasswordPage from "./pages/ResetPasswordPage";
-import PaymentCallbackPage from "./pages/PaymentCallbackPage";
-import PaymentCancelPage from "./pages/PaymentCancelPage";
-import CustomCheckoutPage from "./pages/CustomCheckoutPage";
-import CourseLandingPage from "./pages/CourseLandingPage";
-import LearnContactPage from "./pages/LearnContactPage";
+// Lazy-loaded LMS & secondary pages for code splitting & instant initial page load
+const AdminLoginPage = lazy(() => import("./pages/AdminLoginPage"));
+const StudentLoginPage = lazy(() => import("./pages/StudentLoginPage"));
+const TeacherLoginPage = lazy(() => import("./pages/TeacherLoginPage"));
+const DashboardPage = lazy(() => import("./pages/DashboardPage"));
+const AdminDashboard = lazy(() => import("./pages/AdminDashboard"));
+const StudentDashboard = lazy(() => import("./pages/StudentDashboard"));
+const TeacherDashboard = lazy(() => import("./pages/TeacherDashboard"));
+const MyCertificatesPage = lazy(() => import("./pages/MyCertificatesPage"));
+const CourseViewerPage = lazy(() => import("./pages/CourseViewerPage"));
+const CertificatePage = lazy(() => import("./pages/CertificatePage"));
+const VerifyCertificatePage = lazy(() => import("./pages/VerifyCertificatePage"));
+const ForgotPasswordPage = lazy(() => import("./pages/ForgotPasswordPage"));
+const ResetPasswordPage = lazy(() => import("./pages/ResetPasswordPage"));
+const PaymentCallbackPage = lazy(() => import("./pages/PaymentCallbackPage"));
+const PaymentCancelPage = lazy(() => import("./pages/PaymentCancelPage"));
+const CustomCheckoutPage = lazy(() => import("./pages/CustomCheckoutPage"));
+const CourseLandingPage = lazy(() => import("./pages/CourseLandingPage"));
+const LearnContactPage = lazy(() => import("./pages/LearnContactPage"));
 
 
 import AIChatbot from "./components/AIChatbot";
@@ -123,55 +120,52 @@ function AppContent() {
           exit={{ opacity: 0 }}
           transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
         >
-          <Routes location={location}>
-            {/* Main site routes */}
-            <Route path="/" element={typeof window !== "undefined" && window.location.hostname.startsWith("learn.") ? <CoursesPage /> : <Index />} />
+          <Suspense fallback={<div className="min-h-screen bg-background" />}>
+            <Routes location={location} key={location.pathname}>
+              <Route path="/" element={typeof window !== "undefined" && window.location.hostname.startsWith("learn.") ? <CoursesPage /> : <Index />} />
+              <Route path="/about" element={typeof window !== "undefined" && window.location.hostname.startsWith("learn.") ? <LearnAboutPage /> : <AboutPage />} />
+              <Route path="/learn-about" element={<LearnAboutPage />} />
+              <Route path="/services" element={<ServicesPage />} />
+              <Route path="/services/logo-brand-identity" element={<ServicesPage />} />
+              <Route path="/services/branding" element={<ServicesPage />} />
+              <Route path="/services/ui-ux-design" element={<ServicesPage />} />
+              <Route path="/services/web-design-development" element={<ServicesPage />} />
+              <Route path="/services/social-media-design" element={<ServicesPage />} />
+              <Route path="/work" element={<WorkPage />} />
+              <Route path="/team" element={<Navigate to="/about#team" replace />} />
+              <Route path="/join-team" element={<JoinTeamPage />} />
+              <Route path="/contact" element={typeof window !== "undefined" && window.location.hostname.startsWith("learn.") ? <LearnContactPage /> : <ContactPage />} />
+              <Route path="/learn-contact" element={<LearnContactPage />} />
 
-            <Route path="/about" element={typeof window !== "undefined" && window.location.hostname.startsWith("learn.") ? <LearnAboutPage /> : <AboutPage />} />
-            <Route path="/learn-about" element={<LearnAboutPage />} />
-            <Route path="/services" element={<ServicesPage />} />
-            <Route path="/services/logo-brand-identity" element={<ServicesPage />} />
-            <Route path="/services/branding" element={<ServicesPage />} />
-            <Route path="/services/ui-ux-design" element={<ServicesPage />} />
-            <Route path="/services/web-design-development" element={<ServicesPage />} />
-            <Route path="/services/social-media-design" element={<ServicesPage />} />
-            <Route path="/work" element={<WorkPage />} />
-            <Route path="/team" element={<Navigate to="/about#team" replace />} />
-            <Route path="/join-team" element={<JoinTeamPage />} />
-            <Route path="/contact" element={typeof window !== "undefined" && window.location.hostname.startsWith("learn.") ? <LearnContactPage /> : <ContactPage />} />
-            <Route path="/learn-contact" element={<LearnContactPage />} />
+              <Route path="/courses" element={<CoursesPage />} />
+              <Route path="/courses/all" element={<CoursesPage />} />
+              <Route path="/instructors" element={<CoursesPage />} />
 
-            <Route path="/courses" element={<CoursesPage />} />
-            <Route path="/courses/all" element={<CoursesPage />} />
-            <Route path="/instructors" element={<CoursesPage />} />
+              {/* LMS & Secondary Lazy-Loaded Routes */}
+              <Route path="/admin/login" element={<AdminLoginPage />} />
+              <Route path="/student/login" element={<StudentLoginPage />} />
+              <Route path="/teacher/login" element={<TeacherLoginPage />} />
+              <Route path="/auth" element={<StudentLoginPage />} />
+              <Route path="/dashboard" element={<DashboardPage />} />
 
-            
+              <Route path="/admin" element={<AdminDashboard />} />
+              <Route path="/student" element={<StudentDashboard />} />
+              <Route path="/student/course/:courseId" element={<CourseViewerPage />} />
+              <Route path="/teacher" element={<TeacherDashboard />} />
+              <Route path="/my-certificates" element={<MyCertificatesPage />} />
+              <Route path="/certificate/:certificateId" element={<CertificatePage />} />
+              <Route path="/verify-certificate" element={<VerifyCertificatePage />} />
+              <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+              <Route path="/reset-password" element={<ResetPasswordPage />} />
+              <Route path="/payment/callback" element={<PaymentCallbackPage />} />
+              <Route path="/payment/cancel" element={<PaymentCancelPage />} />
+              <Route path="/pay/:invoiceId" element={<CustomCheckoutPage />} />
+              <Route path="/vibe-coding" element={<CourseLandingPage />} />
+              <Route path="/courses/:slug" element={<CourseLandingPage />} />
 
-            {/* LMS routes */}
-            <Route path="/admin/login" element={<AdminLoginPage />} />
-            <Route path="/student/login" element={<StudentLoginPage />} />
-            <Route path="/teacher/login" element={<TeacherLoginPage />} />
-            <Route path="/auth" element={<StudentLoginPage />} />
-            <Route path="/dashboard" element={<DashboardPage />} />
-
-            <Route path="/admin" element={<AdminDashboard />} />
-            <Route path="/student" element={<StudentDashboard />} />
-            <Route path="/student/course/:courseId" element={<CourseViewerPage />} />
-            <Route path="/teacher" element={<TeacherDashboard />} />
-            <Route path="/my-certificates" element={<MyCertificatesPage />} />
-            <Route path="/certificate/:certificateId" element={<CertificatePage />} />
-            <Route path="/verify-certificate" element={<VerifyCertificatePage />} />
-            <Route path="/forgot-password" element={<ForgotPasswordPage />} />
-            <Route path="/reset-password" element={<ResetPasswordPage />} />
-            <Route path="/payment/callback" element={<PaymentCallbackPage />} />
-            <Route path="/payment/cancel" element={<PaymentCancelPage />} />
-            <Route path="/pay/:invoiceId" element={<CustomCheckoutPage />} />
-            <Route path="/vibe-coding" element={<CourseLandingPage />} />
-            <Route path="/courses/:slug" element={<CourseLandingPage />} />
-
-
-            <Route path="*" element={<NotFound />} />
-          </Routes>
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </Suspense>
         </motion.div>
       </AnimatePresence>
       </SiteScopeProvider>

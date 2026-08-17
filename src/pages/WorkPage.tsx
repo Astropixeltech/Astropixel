@@ -234,7 +234,9 @@ const WorkPage = () => {
                           {thumb ? (
                             <img
                               src={thumb}
-                              alt={project.title}
+                              alt={`AstroPixel Showcase Project — ${project.title}`}
+                              width={400}
+                              height={300}
                               loading="lazy"
                               decoding="async"
                               referrerPolicy="no-referrer"
@@ -296,7 +298,8 @@ const WorkPage = () => {
             </button>
             <div className="flex flex-col items-center max-w-4xl w-full" onClick={(e) => e.stopPropagation()}>
               <img
-                src={lightboxImage.url} alt={lightboxImage.title}
+                src={lightboxImage.url} alt={`AstroPixel Project Showcase Lightbox — ${lightboxImage.title}`}
+                width={800} height={600} loading="lazy" decoding="async"
                 className="max-w-full max-h-[70vh] object-contain rounded-xl cursor-default" />
               <div className="mt-6 text-center max-w-lg">
                 <p className="text-white/90 text-lg font-display font-semibold">{lightboxImage.title}</p>

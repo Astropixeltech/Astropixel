@@ -101,7 +101,9 @@ const ServicesPage = () => {
         {/* Uploaded background image — only top half */}
         <img
           src={servicesHeroBg.url}
-          alt=""
+          alt="AstroPixel Creative Design Services Hero Background"
+          width={1920}
+          height={1080}
           loading="eager"
           fetchPriority="high"
           decoding="async"
@@ -263,9 +265,12 @@ const ServicesPage = () => {
                       {customImage ? (
                         <img
                           src={customImage}
-                          alt={service.title}
-                          className="absolute inset-0 w-full h-full object-cover"
+                          alt={`AstroPixel Creative Service — ${service.title}`}
+                          width={600}
+                          height={720}
                           loading="lazy"
+                          decoding="async"
+                          className="absolute inset-0 w-full h-full object-cover"
                         />
                       ) : (
                         <>

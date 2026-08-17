@@ -77,7 +77,9 @@ const AboutPage = () => {
         {/* Uploaded background image */}
         <img
           src={servicesHeroBg.url}
-          alt=""
+          alt="AstroPixel About Us Hero Background"
+          width={1920}
+          height={1080}
           loading="eager"
           fetchPriority="high"
           decoding="async"
@@ -124,7 +126,11 @@ const AboutPage = () => {
               >
                 <motion.img
                   src={journeyLogo}
-                  alt="AstroPixel"
+                  alt="AstroPixel Creative Design Agency Brand Mark"
+                  width={360}
+                  height={80}
+                  loading="lazy"
+                  decoding="async"
                   className="w-full max-w-md object-contain"
                   style={{ filter: "brightness(0)" }}
                   initial={{ scale: 0.85, opacity: 0 }}

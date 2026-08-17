@@ -45,7 +45,9 @@ const Card = ({ item }: { item: Item }) => {
     <div className="group relative shrink-0 h-full w-auto rounded-lg overflow-hidden mx-1 md:mx-1.5 [transform:translateZ(0)] [backface-visibility:hidden]">
       <img
         src={item.image_url || "/placeholder.svg"}
-        alt={item.title}
+        alt={`AstroPixel Portfolio Project — ${item.title}`}
+        width={360}
+        height={240}
         loading="lazy"
         decoding="async"
         referrerPolicy="no-referrer"

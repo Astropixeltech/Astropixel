@@ -72,7 +72,11 @@ const Footer = () => {
               <Link to="/" className="inline-block mb-6">
               <img
                 src={logo}
-                alt="Astropixel"
+                alt="AstroPixel Creative Design Agency Logo"
+                width={180}
+                height={36}
+                loading="lazy"
+                decoding="async"
                 className="h-9 w-auto"
               />
               </Link>

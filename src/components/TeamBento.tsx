@@ -45,8 +45,11 @@ function SmallCard({ member, index, reverse = false }: { member: any; index: num
       <div className={`relative w-2/5 aspect-square shrink-0 overflow-hidden bg-primary/10 ${reverse ? "order-last" : ""}`}>
         <img
           src={member.image_url || "/placeholder.svg"}
-          alt={member.name}
+          alt={`AstroPixel Team Member — ${member.name}`}
+          width={300}
+          height={300}
           loading="lazy"
+          decoding="async"
           referrerPolicy="no-referrer"
           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
         />
@@ -90,8 +93,11 @@ function FeaturedCard({ member }: { member: any }) {
     >
       <img
         src={member.image_url || "/placeholder.svg"}
-        alt={member.name}
+        alt={`AstroPixel Featured Leader — ${member.name}`}
+        width={600}
+        height={800}
         loading="lazy"
+        decoding="async"
         referrerPolicy="no-referrer"
         className="absolute inset-0 w-full h-full object-cover object-[center_20%] group-hover:scale-105 transition-transform duration-700"
       />
