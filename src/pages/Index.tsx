@@ -735,7 +735,7 @@ const Index = () => {
         <section className="py-10 lg:py-16 relative">
           <div className="container mx-auto px-6">
             <MarqueeLogoScroller
-              title="Smarter Design, Supercharged by AI"
+              title={"Smarter Design,\nSupercharged by AI"}
               description="From wireframes to launch, we blend AI tools with strategy to deliver faster, sharper, and data-led design results."
               logos={aiDesignTools}
               speed="normal"

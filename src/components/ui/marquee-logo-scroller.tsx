@@ -57,7 +57,7 @@ const MarqueeLogoScroller = React.forwardRef<HTMLDivElement, MarqueeLogoScroller
           {/* Header Section */}
           <div className="p-6 md:p-8 lg:p-10">
             <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 pb-6 md:pb-8 border-b border-border/40">
-              <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight font-display text-balance max-w-xl">
+              <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold tracking-tight font-display max-w-md leading-tight whitespace-pre-line">
                 {title}
               </h2>
               <p className="text-muted-foreground text-sm sm:text-base leading-relaxed max-w-lg lg:text-right">
