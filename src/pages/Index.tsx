@@ -428,6 +428,51 @@ const Index = () => {
       gradient: { from: '#67F0D1', via: '#10A37F', to: '#0B654E' },
     },
     {
+      src: 'https://upload.wikimedia.org/wikipedia/commons/7/78/Anthropic_logo.svg',
+      alt: 'Claude AI / Anthropic',
+      gradient: { from: '#FFD79E', via: '#D97757', to: '#8B3E2B' },
+    },
+    {
+      src: 'https://svgl.app/library/adobe.svg',
+      alt: 'Adobe Firefly',
+      gradient: { from: '#FF6666', via: '#FF0000', to: '#990000' },
+    },
+    {
+      src: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="none"><rect width="100" height="100" rx="20" fill="%23FF1493"/><path d="M50 74s-24-16-24-30a14 14 0 0 1 24-9.2A14 14 0 0 1 74 44c0 14-24 30-24 30z" fill="white"/></svg>',
+      alt: 'Lovable',
+      gradient: { from: '#FF80BF', via: '#FF1493', to: '#C71585' },
+    },
+    {
+      src: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="none"><rect width="100" height="100" rx="20" fill="%2310B981"/><circle cx="50" cy="50" r="20" stroke="white" stroke-width="7"/><path d="M50 18v12M50 70v12M18 50h12M70 50h12" stroke="white" stroke-width="7" stroke-linecap="round"/></svg>',
+      alt: 'Antigravity',
+      gradient: { from: '#A7F3D0', via: '#10B981', to: '#047857' },
+    },
+    {
+      src: 'https://svgl.app/library/supabase.svg',
+      alt: 'Supabase',
+      gradient: { from: '#6EE7B7', via: '#3ECF8E', to: '#059669' },
+    },
+    {
+      src: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="none"><rect width="100" height="100" rx="20" fill="%23FFD000"/><path d="M22 25l16 50 14-36 14 36 12-50" stroke="%23050038" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+      alt: 'Miro',
+      gradient: { from: '#FDE047', via: '#FFD000', to: '#CA8A04' },
+    },
+    {
+      src: 'https://svgl.app/library/n8n.svg',
+      alt: 'n8n',
+      gradient: { from: '#FCA5A5', via: '#FF6D5A', to: '#DC2626' },
+    },
+    {
+      src: 'https://svgl.app/library/vercel.svg',
+      alt: 'Vercel',
+      gradient: { from: '#E2E8F0', via: '#64748B', to: '#0F172A' },
+    },
+    {
+      src: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="none"><rect width="100" height="100" rx="20" fill="%23000000"/><path d="M30 25h24a18 18 0 0 1 0 36H30V25zm0 36h20l16 22" stroke="%2346E3B7" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+      alt: 'Render',
+      gradient: { from: '#A7F3D0', via: '#46E3B7', to: '#0D9488' },
+    },
+    {
       src: 'https://svgl.app/library/midjourney.svg',
       alt: 'Midjourney',
       gradient: { from: '#668CFF', via: '#0049FF', to: '#003199' },
@@ -436,11 +481,6 @@ const Index = () => {
       src: 'https://svgl.app/library/framer.svg',
       alt: 'Framer',
       gradient: { from: '#FF66A1', via: '#0055FF', to: '#000000' },
-    },
-    {
-      src: 'https://upload.wikimedia.org/wikipedia/commons/7/78/Anthropic_logo.svg',
-      alt: 'Claude AI / Anthropic',
-      gradient: { from: '#FFD79E', via: '#D97757', to: '#8B3E2B' },
     },
     {
       src: 'https://svgl.app/library/shopify.svg',
