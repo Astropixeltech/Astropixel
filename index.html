@@ -89,7 +89,8 @@
     <meta name="geo.placename" content="Rajshahi, Bangladesh" />
     <meta name="geo.position" content="24.3745;88.6042" />
     <meta name="ICBM" content="24.3745, 88.6042" />
-    <meta name="language" content="English, Bengali" />
+    <meta name="language" content="en" />
+    <meta http-equiv="content-language" content="en" />
     <meta name="revisit-after" content="3 days" />
     <meta name="rating" content="general" />
     <meta name="distribution" content="global" />
@@ -108,35 +109,27 @@
     <link rel="alternate" hreflang="bn" href="https://astropixel.tech/" />
     <link rel="alternate" hreflang="x-default" href="https://astropixel.tech/" />
     
-    <!-- JSON-LD Structured Data - Organization -->
+    <!-- Structured Data: Organization (JSON-LD) -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
-      "@type": "Organization",
-      "@id": "https://astropixel.tech/#organization",
+      "@type": "DesignAgency",
       "name": "AstroPixel",
-      "legalName": "AstroPixel",
-      "alternateName": ["AstroPixel BD", "AstroPixel Bangladesh", "AstroPixel Agency", "AstroPixel Design Studio"],
-      "url": "https://astropixel.tech",
-      "logo": "https://astropixel.tech/favicon.png",
-      "description": "AstroPixel is a creative design agency based in Rajshahi, Bangladesh, founded by Sofiullah Ahammad. We help startups and small businesses build strong visual identities through logo design, branding, UI/UX design, web design, and social media design.",
-      "slogan": "From zero to impact",
+      "alternateName": "AstroPixel Creative Agency",
+      "url": "https://astropixel.tech/",
+      "logo": "https://astropixel.tech/logo-full.png",
+      "image": "https://astropixel.tech/og-image.png",
+      "description": "AstroPixel is a creative design agency in Rajshahi, Bangladesh, founded by Sofiullah Ahammad. Specializing in logo design, branding, UI/UX, web design & development.",
+      "foundingDate": "2024",
       "founder": {
         "@type": "Person",
-        "@id": "https://astropixel.tech/#founder",
         "name": "Sofiullah Ahammad",
         "jobTitle": "Founder & Creative Director",
-        "url": "https://astropixel.tech/about",
-        "sameAs": [
-          "https://www.linkedin.com/in/sofiullah-ahammad/",
-          "https://www.facebook.com/AtikAhmedPeradox",
-          "https://www.instagram.com/sofiullahahammad"
-        ]
+        "url": "https://astropixel.tech/about"
       },
       "address": {
         "@type": "PostalAddress",
         "addressLocality": "Rajshahi",
-        "addressRegion": "Rajshahi Division",
         "addressCountry": "BD"
       },
       "geo": {
@@ -144,12 +137,13 @@
         "latitude": 24.3745,
         "longitude": 88.6042
       },
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "contactType": "customer service",
+        "email": "hello@astropixel.tech",
+        "availableLanguage": ["English", "Bengali"]
+      },
       "sameAs": [
-        "https://www.facebook.com/alphazero.online",
-        "https://www.instagram.com/alphazero_online",
-        "https://twitter.com/alphazero_online",
-        "https://www.behance.net",
-        "https://dribbble.com"
       ]
     }
     </script>
@@ -269,7 +263,76 @@
   </head>
 
   <body>
-    <div id="root"></div>
+    <div id="root">
+      <header>
+        <nav aria-label="Main Navigation">
+          <a href="/">Home</a>
+          <a href="/about">About Us</a>
+          <a href="/services">Our Services</a>
+          <a href="/work">Portfolio Work</a>
+          <a href="/contact">Contact Us</a>
+          <a href="/courses">Courses</a>
+        </nav>
+      </header>
+      <main>
+        <article>
+          <h1>AstroPixel — Creative Design Agency in Rajshahi, Bangladesh</h1>
+          <p>
+            AstroPixel is a premier creative design agency in Rajshahi, Bangladesh, founded by Sofiullah Ahammad. 
+            We specialize in logo design, brand identity, UI/UX design, web design, web development, and social media graphics. From zero to impact.
+          </p>
+          
+          <section>
+            <h2>Our Core Design Services</h2>
+            <p>
+              We craft high-converting, visually stunning digital experiences for startups, enterprise brands, and global businesses worldwide.
+            </p>
+            <ul>
+              <li><a href="/services/logo-brand-identity">Logo & Brand Identity Design</a></li>
+              <li><a href="/services/branding">Branding Strategy & Visual System</a></li>
+              <li><a href="/services/ui-ux-design">UI/UX Interface & Experience Design</a></li>
+              <li><a href="/services/web-design-development">Web Design & Modern Web Development</a></li>
+              <li><a href="/services/social-media-design">Social Media & Marketing Graphics</a></li>
+            </ul>
+          </section>
+
+          <section>
+            <h2>Selected Portfolio Work</h2>
+            <p>
+              Explore our recent branding, UI/UX design, and web development projects delivered for clients worldwide.
+            </p>
+            <a href="/work">View Portfolio Projects</a>
+          </section>
+
+          <section>
+            <h2>About AstroPixel & Founder Sofiullah Ahammad</h2>
+            <p>
+              Based in Rajshahi, Bangladesh, AstroPixel combines strategy, art, and technology to elevate brands into market leaders.
+            </p>
+            <a href="/about">Learn More About Our Agency & Team</a>
+          </section>
+
+          <section>
+            <h2>Get In Touch</h2>
+            <p>
+              Ready to start your next design project? Reach out to AstroPixel creative agency today.
+            </p>
+            <p>Email: <a href="mailto:hello@astropixel.tech">hello@astropixel.tech</a></p>
+            <p>Phone: <a href="tel:+8801410190019">+880 1410-190019</a></p>
+            <a href="/contact">Contact AstroPixel Agency</a>
+          </section>
+        </article>
+      </main>
+      <footer>
+        <p>© 2026 AstroPixel — All rights reserved.</p>
+        <div>
+          <a href="https://www.facebook.com/share/1Zm7yMhPtk/" target="_blank" rel="noopener noreferrer">Facebook</a>
+          <a href="https://x.com/AgencyAlphazero" target="_blank" rel="noopener noreferrer">Twitter</a>
+          <a href="https://www.linkedin.com/company/alphazeroagency/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+          <a href="https://www.instagram.com/alphazero.online" target="_blank" rel="noopener noreferrer">Instagram</a>
+        </div>
+      </footer>
+    </div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
