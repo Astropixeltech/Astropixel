@@ -8,7 +8,6 @@ import { AnimatePresence, motion } from "framer-motion";
 import { ThemeProvider } from "next-themes";
 import { LanguageProvider } from "@/contexts/LanguageContext";
 import { AuthProvider } from "@/contexts/AuthContext";
-import Preloader from "@/components/Preloader";
 import ScrollToTop from "@/components/ScrollToTop";
 import SmoothScroll from "@/components/SmoothScroll";
 import ScrollReveal from "@/components/ScrollReveal";
@@ -80,30 +79,13 @@ const LMS_ROUTES = [
 
 function AppContent() {
   const location = useLocation();
-  const [isLoading, setIsLoading] = useState(true);
-  const [preloaderShown, setPreloaderShown] = useState(false);
-  
-  const handlePreloaderComplete = useCallback(() => {
-    setIsLoading(false);
-    setPreloaderShown(true);
-  }, []);
 
   // Check if current route is an LMS route
   const isLmsRoute = LMS_ROUTES.some(route => location.pathname.startsWith(route));
   const isWorkRoute = location.pathname === "/work";
 
-  // Skip preloader for LMS routes or if already shown
-  useEffect(() => {
-    if (isLmsRoute || preloaderShown) {
-      setIsLoading(false);
-    }
-  }, [isLmsRoute, preloaderShown]);
-
-  const showPreloader = isLoading && !isLmsRoute && !preloaderShown;
-
   return (
     <>
-      {showPreloader && <Preloader onComplete={handlePreloaderComplete} />}
       {!isLmsRoute && !isWorkRoute && <SmoothScroll />}
       {!isLmsRoute && !isWorkRoute && <ScrollReveal />}
       <ScrollToTop />
