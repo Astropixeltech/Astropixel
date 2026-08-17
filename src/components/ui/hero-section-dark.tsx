@@ -95,8 +95,8 @@ const HeroSection = React.forwardRef<HTMLDivElement, HeroSectionProps>(
         <div className="relative z-10 max-w-5xl mx-auto px-4 space-y-6 md:space-y-8">
           {/* Main Headline */}
           <h1 className="text-[31px] md:text-[52px] lg:text-[70px] font-bold tracking-tight text-white leading-[1.2]">
-            <span className="block"><span className="font-serif italic font-normal text-white">Vision</span> Into <span className="font-serif italic font-normal text-white">Reality.</span></span>
-            <span className="block">Pixel by Pixel.</span>
+            <span className="block">Vision Into <span className="font-serif italic font-normal text-white">Reality.</span></span>
+            <span className="block"><span className="font-serif italic font-normal text-white">Pixel</span> by Pixel.</span>
           </h1>
 
           {/* Description */}
