@@ -133,7 +133,7 @@ export const FinalCTAInquirySection = () => {
                 <div className="w-32 h-32 sm:w-36 sm:h-36 rounded-xl overflow-hidden bg-gradient-to-tr from-purple-100 via-purple-50 to-indigo-100 border border-purple-200/60 p-0.5 mb-2.5 shadow-sm">
                   <img
                     src="https://res.cloudinary.com/de348sqlb/image/upload/v1784725025/alphazero-assets/instructors/sofiullah.png"
-                    alt="Abdullah Al Noman — COO & Co-founder"
+                    alt="Sofiullah Ahammad — Founder & CEO"
                     width={144}
                     height={144}
                     loading="lazy"
@@ -143,10 +143,10 @@ export const FinalCTAInquirySection = () => {
 
                 <div className="space-y-0.5">
                   <h4 className="font-bold text-base text-slate-900">
-                    Abdullah Al Noman
+                    Sofiullah Ahammad
                   </h4>
                   <p className="text-[11px] text-slate-500 font-medium">
-                    COO & Co-founder
+                    Founder & CEO
                   </p>
                 </div>
               </div>
