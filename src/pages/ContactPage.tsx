@@ -274,8 +274,9 @@ const ContactPage = () => {
                     <MapPin size={14} /> Open in Maps
                   </a>
                   <a href={`mailto:${email}`}
-                    className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-white text-black font-semibold text-sm hover:bg-cyan-300 transition-colors">
-                    Say hello <ArrowUpRight size={16} />
+                    className="relative group inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-gradient-to-r from-[#6D28D9] via-[#7C3AED] to-[#9333EA] text-white font-bold text-sm shadow-[0_6px_22px_-2px_rgba(124,58,237,0.6)] hover:shadow-[0_10px_30px_rgba(168,85,247,0.85)] border border-white/30 hover:border-white/50 transition-all overflow-hidden">
+                    <div aria-hidden className="absolute top-0 right-0 w-14 h-14 bg-[radial-gradient(ellipse_at_top_right,rgba(255,255,255,0.45),transparent_70%)] pointer-events-none rounded-tr-xl" />
+                    <span className="relative z-10">Say hello</span> <ArrowUpRight size={16} className="relative z-10 text-white group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
                   </a>
                 </div>
               </div>

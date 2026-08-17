@@ -6,21 +6,21 @@ import { Link } from "react-router-dom";
 import { cn } from "@/lib/utils";
 
 const animationProps: AnimationProps = {
-  initial: { "--x": "100%", scale: 0.8 },
+  initial: { "--x": "100%", scale: 1 },
   animate: { "--x": "-100%", scale: 1 },
-  whileTap: { scale: 0.95 },
+  whileTap: { scale: 0.96 },
   transition: {
     repeat: Infinity,
     repeatType: "loop",
-    repeatDelay: 1,
+    repeatDelay: 1.5,
     type: "spring",
     stiffness: 20,
     damping: 15,
     mass: 2,
     scale: {
       type: "spring",
-      stiffness: 200,
-      damping: 5,
+      stiffness: 300,
+      damping: 15,
       mass: 0.5,
     },
   },
@@ -47,21 +47,19 @@ export const ShinyButton: React.FC<ShinyButtonProps> = ({
       {...props}
       onClick={onClick}
       className={cn(
-        "relative rounded-full px-6 py-2.5 font-medium backdrop-blur-xl transition-all duration-300 ease-in-out cursor-pointer inline-flex items-center justify-center bg-gradient-to-r from-cyan-500 via-cyan-600 to-blue-600 text-white shadow-[0_0_25px_rgba(6,182,212,0.5)] hover:shadow-[0_0_35px_rgba(6,182,212,0.85)] border border-cyan-300/40 hover:border-cyan-200 overflow-hidden",
+        "group relative rounded-xl px-6 py-3 font-semibold transition-all duration-300 ease-out cursor-pointer inline-flex items-center justify-center gap-2 bg-gradient-to-r from-[#6D28D9] via-[#7C3AED] to-[#9333EA] text-white shadow-[0_8px_25px_-4px_rgba(124,58,237,0.55)] hover:shadow-[0_12px_35px_rgba(168,85,247,0.85)] hover:scale-[1.02] active:scale-[0.97] border border-white/30 hover:border-white/50 overflow-hidden",
         className
       )}
     >
-      <span
-        className="relative block size-full text-sm font-semibold tracking-wide uppercase text-white drop-shadow-sm"
-        style={{
-          maskImage:
-            "linear-gradient(-75deg,hsl(var(--primary)) calc(var(--x) + 20%),transparent calc(var(--x) + 30%),hsl(var(--primary)) calc(var(--x) + 100%))",
-          WebkitMaskImage:
-            "linear-gradient(-75deg,hsl(var(--primary)) calc(var(--x) + 20%),transparent calc(var(--x) + 30%),hsl(var(--primary)) calc(var(--x) + 100%))",
-        }}
-      >
+      {/* Top-right glossy flare overlay matching user's reference image */}
+      <div aria-hidden className="absolute top-0 right-0 w-20 h-20 bg-[radial-gradient(ellipse_at_top_right,rgba(255,255,255,0.45),transparent_70%)] pointer-events-none rounded-tr-xl" />
+
+      {/* Button Children text & icon */}
+      <span className="relative z-10 flex items-center justify-center gap-2 text-sm font-bold text-white tracking-wide drop-shadow-sm">
         {children}
       </span>
+
+      {/* Animated shimmer border overlay */}
       <span
         style={{
           mask: "linear-gradient(rgb(0,0,0), rgb(0,0,0)) content-box,linear-gradient(rgb(0,0,0), rgb(0,0,0))",
@@ -69,8 +67,8 @@ export const ShinyButton: React.FC<ShinyButtonProps> = ({
           maskComposite: "exclude",
           WebkitMaskComposite: "xor",
         }}
-        className="absolute inset-0 z-10 block rounded-[inherit] bg-[linear-gradient(-75deg,rgba(255,255,255,0.3)_calc(var(--x)+20%),rgba(255,255,255,0.95)_calc(var(--x)+25%),rgba(255,255,255,0.3)_calc(var(--x)+100%))] p-px pointer-events-none"
-      ></span>
+        className="absolute inset-0 z-20 block rounded-[inherit] bg-[linear-gradient(-75deg,rgba(255,255,255,0.25)_calc(var(--x)+20%),rgba(255,255,255,0.95)_calc(var(--x)+25%),rgba(255,255,255,0.25)_calc(var(--x)+100%))] p-px pointer-events-none"
+      />
     </motion.button>
   );
 

@@ -190,19 +190,13 @@ const Navbar = () => {
             <div className="hidden lg:flex items-center gap-1.5 ml-2">
               <Link
                 to="/contact"
-                className="group relative flex items-center gap-2 px-6 py-2.5 rounded-full overflow-hidden transition-all duration-300 active:scale-95"
+                className="group relative flex items-center gap-2 px-6 py-2.5 rounded-xl overflow-hidden transition-all duration-300 active:scale-95 bg-gradient-to-r from-[#6D28D9] via-[#7C3AED] to-[#9333EA] text-white shadow-[0_6px_22px_-2px_rgba(124,58,237,0.6)] hover:shadow-[0_10px_30px_rgba(168,85,247,0.85)] border border-white/30 hover:border-white/50"
               >
-                {/* Satin gradient base */}
-                <div className="absolute inset-0 bg-gradient-to-br from-cyan-400 via-cyan-500 to-blue-600" />
-                {/* Internal lighting overlay */}
-                <div className="absolute inset-0 bg-gradient-to-b from-white/25 via-transparent to-black/15 opacity-60" />
-                {/* Inner highlight edge */}
-                <div className="absolute inset-[1px] rounded-full border-t border-white/40 pointer-events-none" />
-                {/* Outer bloom on hover */}
-                <div className="absolute inset-0 rounded-full shadow-[0_6px_24px_rgba(6,182,212,0.5)] opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                {/* Top-right glossy flare overlay */}
+                <div aria-hidden className="absolute top-0 right-0 w-16 h-16 bg-[radial-gradient(ellipse_at_top_right,rgba(255,255,255,0.45),transparent_70%)] pointer-events-none rounded-tr-xl" />
 
-                <span className="relative z-10 text-sm font-semibold text-white tracking-wide">{t("nav.startProject")}</span>
-                <ArrowUpRight size={14} className="relative z-10 text-white group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+                <span className="relative z-10 text-sm font-bold text-white tracking-wide">{t("nav.startProject")}</span>
+                <ArrowUpRight size={15} className="relative z-10 text-white group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
               </Link>
             </div>
 

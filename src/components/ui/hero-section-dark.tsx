@@ -114,12 +114,13 @@ const HeroSection = React.forwardRef<HTMLDivElement, HeroSectionProps>(
               {/* Original Hero CTA Button */}
               <a
                 href={ctaHref}
-                className="group relative flex items-center gap-2 bg-neutral-950 text-white px-5 py-2.5 rounded-full text-sm font-medium transition-all hover:bg-neutral-800"
+                className="group relative flex items-center gap-2.5 bg-gradient-to-r from-[#6D28D9] via-[#7C3AED] to-[#9333EA] text-white px-6 py-3 rounded-xl text-base font-bold transition-all duration-300 shadow-[0_8px_25px_-4px_rgba(124,58,237,0.6)] hover:shadow-[0_12px_35px_rgba(168,85,247,0.85)] hover:scale-[1.03] active:scale-[0.97] border border-white/30 hover:border-white/50 overflow-hidden"
               >
-                <span>{ctaText}</span>
-                <div className="bg-white text-neutral-950 p-1 rounded-full transition-transform group-hover:rotate-45">
-                  <ArrowUpRight size={14} strokeWidth={2.5} />
-                </div>
+                {/* Top-right glossy flare overlay */}
+                <div aria-hidden className="absolute top-0 right-0 w-16 h-16 bg-[radial-gradient(ellipse_at_top_right,rgba(255,255,255,0.45),transparent_70%)] pointer-events-none rounded-tr-xl" />
+
+                <span className="relative z-10">{ctaText}</span>
+                <ArrowUpRight size={18} strokeWidth={2.5} className="relative z-10 text-white transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
               </a>
 
               {/* User Avatars and Stars */}
