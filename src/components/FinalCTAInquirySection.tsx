@@ -132,7 +132,7 @@ export const FinalCTAInquirySection = () => {
               <div className="pt-1">
                 <div className="w-32 h-32 sm:w-36 sm:h-36 rounded-xl overflow-hidden bg-gradient-to-tr from-purple-100 via-purple-50 to-indigo-100 border border-purple-200/60 p-0.5 mb-2.5 shadow-sm">
                   <img
-                    src="https://res.cloudinary.com/de348sqlb/image/upload/v1784725025/alphazero-assets/instructors/sofiullah.png"
+                    src="https://ayqbpqgahtycrncbknvj.supabase.co/storage/v1/object/public/media-uploads/instructors/sofiullah-learn.png"
                     alt="Sofiullah Ahammad — Founder & CEO"
                     width={144}
                     height={144}
