@@ -468,11 +468,6 @@ const Index = () => {
       gradient: { from: '#E2E8F0', via: '#64748B', to: '#0F172A' },
     },
     {
-      src: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="none"><rect width="100" height="100" rx="20" fill="%23000000"/><path d="M30 25h24a18 18 0 0 1 0 36H30V25zm0 36h20l16 22" stroke="%2346E3B7" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/></svg>',
-      alt: 'Render',
-      gradient: { from: '#A7F3D0', via: '#46E3B7', to: '#0D9488' },
-    },
-    {
       src: 'https://svgl.app/library/midjourney.svg',
       alt: 'Midjourney',
       gradient: { from: '#668CFF', via: '#0049FF', to: '#003199' },
