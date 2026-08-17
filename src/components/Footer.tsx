@@ -59,7 +59,8 @@ const Footer = () => {
     { name: "Digital Marketing", href: "/services" },
   ];
 
-  const email = getContent('email') || 'hello@astropixel.tech';
+  const rawEmail = getContent('email');
+  const email = (!rawEmail || rawEmail.includes('alphazero') || rawEmail.includes('contact@')) ? 'hello@astropixel.tech' : rawEmail;
   const address = getContent('address') || 'Rajshahi, Bangladesh';
   const description = getContent('description') || 'Astropixel is a creative studio blending strategy, design and technology to craft standout digital experiences.';
 

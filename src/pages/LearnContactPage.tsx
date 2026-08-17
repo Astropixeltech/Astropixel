@@ -31,7 +31,8 @@ const LearnContactPage = () => {
     return c.content_en;
   };
   const phone = getPageContent("learn.phone") || getFooterContent("phone") || "+880 1344-497808";
-  const email = (getPageContent("learn.email") || "hello@astropixel.tech").trim();
+  const rawEmail = (getPageContent("learn.email") || "hello@astropixel.tech").trim();
+  const email = (!rawEmail || rawEmail.includes("alphazero") || rawEmail.includes("contact@") || rawEmail.includes("support@learn")) ? "hello@astropixel.tech" : rawEmail;
   const address = cms("learn.address", "learn.address.en", "ঢাকা, বাংলাদেশ", "Dhaka, Bangladesh");
   const waNumber = phone.replace(/\D/g, "");
 
