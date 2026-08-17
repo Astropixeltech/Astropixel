@@ -10,8 +10,9 @@ function ClientFeedback() {
       opacity: 1,
       filter: "blur(0px)",
       transition: {
-        delay: i * 0.12,
-        duration: 0.45,
+        delay: i * 0.35,
+        duration: 0.5,
+        ease: "easeOut",
       },
     }),
     hidden: {
@@ -52,7 +53,7 @@ function ClientFeedback() {
               animationNum={0}
               customVariants={revealVariants}
               timelineRef={testimonialRef}
-              className="lg:flex-[7] flex-[6] flex flex-col justify-between relative bg-white text-slate-900 overflow-hidden rounded-xl border border-gray-200 p-5 shadow-sm min-h-[220px]"
+              className="lg:flex-[7] flex-[6] flex flex-col justify-between relative bg-white text-slate-900 overflow-hidden rounded-xl border border-gray-200 p-5 shadow-sm min-h-[220px] group transition-all duration-300 hover:-translate-y-1 hover:shadow-md"
             >
               <div className="absolute inset-0 bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f2e_1px,transparent_1px)] bg-[size:45px_48px] [mask-image:radial-gradient(ellipse_80%_50%_at_50%_0%,#000_70%,transparent_110%)] pointer-events-none" />
               <article className="relative z-10 mt-auto pt-10">
@@ -69,7 +70,7 @@ function ClientFeedback() {
                     alt="Guillermo Rauch"
                     loading="eager"
                     decoding="sync"
-                    className="w-12 h-12 rounded-xl object-cover border border-gray-200 shadow-sm shrink-0"
+                    className="w-12 h-12 rounded-xl object-cover border border-gray-200 shadow-sm shrink-0 group-hover:scale-105 transition-transform duration-300"
                   />
                 </div>
               </article>
@@ -79,7 +80,7 @@ function ClientFeedback() {
               animationNum={1}
               customVariants={revealVariants}
               timelineRef={testimonialRef}
-              className="lg:flex-[3] flex-[4] flex flex-col justify-between relative bg-[#1b64f2] text-white overflow-hidden rounded-xl border border-blue-500 p-5 shadow-md"
+              className="lg:flex-[3] flex-[4] flex flex-col justify-between relative bg-[#1b64f2] text-white overflow-hidden rounded-xl border border-blue-500 p-5 shadow-md group transition-all duration-300 hover:-translate-y-1 hover:shadow-lg"
             >
               <article className="relative z-10 mt-auto">
                 <p className="text-blue-50 text-xs sm:text-sm leading-relaxed mb-3">
@@ -95,7 +96,7 @@ function ClientFeedback() {
                     alt="Rika Shinoda"
                     loading="eager"
                     decoding="sync"
-                    className="w-12 h-12 rounded-xl object-cover border border-blue-400/50 shadow-sm shrink-0"
+                    className="w-12 h-12 rounded-xl object-cover border border-blue-400/50 shadow-sm shrink-0 group-hover:scale-105 transition-transform duration-300"
                   />
                 </div>
               </article>
@@ -108,7 +109,7 @@ function ClientFeedback() {
               animationNum={2}
               customVariants={revealVariants}
               timelineRef={testimonialRef}
-              className="flex flex-col justify-between relative bg-[#111111] text-white overflow-hidden rounded-xl border border-gray-800 p-5 shadow-md"
+              className="flex flex-col justify-between relative bg-[#111111] text-white overflow-hidden rounded-xl border border-gray-800 p-5 shadow-md group transition-all duration-300 hover:-translate-y-1 hover:shadow-lg"
             >
               <article className="relative z-10 mt-auto">
                 <p className="text-slate-200 text-xs sm:text-sm leading-relaxed mb-3">
@@ -124,7 +125,7 @@ function ClientFeedback() {
                     alt="Reacher"
                     loading="eager"
                     decoding="sync"
-                    className="w-12 h-12 rounded-xl object-cover border border-gray-700 shadow-sm shrink-0"
+                    className="w-12 h-12 rounded-xl object-cover border border-gray-700 shadow-sm shrink-0 group-hover:scale-105 transition-transform duration-300"
                   />
                 </div>
               </article>
@@ -134,7 +135,7 @@ function ClientFeedback() {
               animationNum={3}
               customVariants={revealVariants}
               timelineRef={testimonialRef}
-              className="flex flex-col justify-between relative bg-[#111111] text-white overflow-hidden rounded-xl border border-gray-800 p-5 shadow-md"
+              className="flex flex-col justify-between relative bg-[#111111] text-white overflow-hidden rounded-xl border border-gray-800 p-5 shadow-md group transition-all duration-300 hover:-translate-y-1 hover:shadow-lg"
             >
               <article className="relative z-10 mt-auto">
                 <p className="text-slate-200 text-xs sm:text-sm leading-relaxed mb-3">
@@ -150,7 +151,7 @@ function ClientFeedback() {
                     alt="John"
                     loading="eager"
                     decoding="sync"
-                    className="w-12 h-12 rounded-xl object-cover border border-gray-700 shadow-sm shrink-0"
+                    className="w-12 h-12 rounded-xl object-cover border border-gray-700 shadow-sm shrink-0 group-hover:scale-105 transition-transform duration-300"
                   />
                 </div>
               </article>
@@ -160,7 +161,7 @@ function ClientFeedback() {
               animationNum={4}
               customVariants={revealVariants}
               timelineRef={testimonialRef}
-              className="flex flex-col justify-between relative bg-[#111111] text-white overflow-hidden rounded-xl border border-gray-800 p-5 shadow-md"
+              className="flex flex-col justify-between relative bg-[#111111] text-white overflow-hidden rounded-xl border border-gray-800 p-5 shadow-md group transition-all duration-300 hover:-translate-y-1 hover:shadow-lg"
             >
               <article className="relative z-10 mt-auto">
                 <p className="text-slate-200 text-xs sm:text-sm leading-relaxed mb-3">
@@ -176,7 +177,7 @@ function ClientFeedback() {
                     alt="Steven Sunny"
                     loading="eager"
                     decoding="sync"
-                    className="w-12 h-12 rounded-xl object-cover border border-gray-700 shadow-sm shrink-0"
+                    className="w-12 h-12 rounded-xl object-cover border border-gray-700 shadow-sm shrink-0 group-hover:scale-105 transition-transform duration-300"
                   />
                 </div>
               </article>
@@ -189,7 +190,7 @@ function ClientFeedback() {
               animationNum={5}
               customVariants={revealVariants}
               timelineRef={testimonialRef}
-              className="lg:flex-[3] flex-[4] flex flex-col justify-between relative bg-[#1b64f2] text-white overflow-hidden rounded-xl border border-blue-500 p-5 shadow-md"
+              className="lg:flex-[3] flex-[4] flex flex-col justify-between relative bg-[#1b64f2] text-white overflow-hidden rounded-xl border border-blue-500 p-5 shadow-md group transition-all duration-300 hover:-translate-y-1 hover:shadow-lg"
             >
               <article className="relative z-10 mt-auto">
                 <p className="text-blue-50 text-xs sm:text-sm leading-relaxed mb-3">
@@ -205,7 +206,7 @@ function ClientFeedback() {
                     alt="Guillermo Rauch"
                     loading="eager"
                     decoding="sync"
-                    className="w-12 h-12 rounded-xl object-cover border border-blue-400/50 shadow-sm shrink-0"
+                    className="w-12 h-12 rounded-xl object-cover border border-blue-400/50 shadow-sm shrink-0 group-hover:scale-105 transition-transform duration-300"
                   />
                 </div>
               </article>
@@ -215,7 +216,7 @@ function ClientFeedback() {
               animationNum={6}
               customVariants={revealVariants}
               timelineRef={testimonialRef}
-              className="lg:flex-[7] flex-[6] flex flex-col justify-between relative bg-white text-slate-900 overflow-hidden rounded-xl border border-gray-200 p-5 shadow-sm min-h-[220px]"
+              className="lg:flex-[7] flex-[6] flex flex-col justify-between relative bg-white text-slate-900 overflow-hidden rounded-xl border border-gray-200 p-5 shadow-sm min-h-[220px] group transition-all duration-300 hover:-translate-y-1 hover:shadow-md"
             >
               <div className="absolute inset-0 bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f2e_1px,transparent_1px)] bg-[size:45px_48px] [mask-image:radial-gradient(ellipse_80%_50%_at_50%_0%,#000_70%,transparent_110%)] pointer-events-none" />
               <article className="relative z-10 mt-auto pt-10">
@@ -232,7 +233,7 @@ function ClientFeedback() {
                     alt="Paul Brauch"
                     loading="eager"
                     decoding="sync"
-                    className="w-12 h-12 rounded-xl object-cover border border-gray-200 shadow-sm shrink-0"
+                    className="w-12 h-12 rounded-xl object-cover border border-gray-200 shadow-sm shrink-0 group-hover:scale-105 transition-transform duration-300"
                   />
                 </div>
               </article>
