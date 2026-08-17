@@ -428,7 +428,7 @@ const Index = () => {
       gradient: { from: '#67F0D1', via: '#10A37F', to: '#0B654E' },
     },
     {
-      src: 'https://cdn.brandfetch.io/domain/github.com/fallback/lettermark/theme/dark/h/400/w/400/icon?c=1bfwsmEH20zzEfSNTed',
+      src: 'https://cdn.brandfetch.io/domain/github.com',
       alt: 'GitHub',
       gradient: { from: '#6E7681', via: '#24292F', to: '#0D1117' },
     },
