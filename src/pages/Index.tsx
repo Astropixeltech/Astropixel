@@ -34,6 +34,7 @@ import { Link } from "react-router-dom";
 import LayoutComponent from "@/components/Layout";
 import FinalCTAInquirySection from "@/components/FinalCTAInquirySection";
 import { MarqueeLogoScroller } from "@/components/ui/marquee-logo-scroller";
+import ClientFeedback from "@/components/ui/testimonial";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Pagination } from "swiper/modules";
 import "swiper/css";
@@ -743,56 +744,11 @@ const Index = () => {
         </section>
 
         {/* ══════════ TESTIMONIALS ══════════ */}
-        <section className="py-12 lg:py-16 relative">
-
-        <div className="container mx-auto px-6">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-center mb-16"
-          >
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-primary/20 bg-primary/[0.06] mb-6">
-              <MessageSquare size={14} className="text-primary" />
-              <span className="text-xs font-bold tracking-[0.2em] uppercase text-primary">{c("testimonials", "home.testimonials")}</span>
-            </div>
-            <h2 className="text-3xl lg:text-5xl xl:text-6xl font-display font-bold">
-              {c("whatClientsSay", "home.whatClientsSay")} <span className="font-serif italic font-normal gradient-text">{c("say", "home.say")}</span>
-            </h2>
-          </motion.div>
-
-          <div className="relative max-w-7xl mx-auto overflow-hidden testimonials-marquee">
-            <div className="flex w-max gap-5 testimonials-track">
-              {[...testimonials, ...testimonials, ...testimonials, ...testimonials].map((testimonial, idx) => (
-                <div key={`${testimonial.name}-${idx}`} className="shrink-0 w-[320px] sm:w-[360px]">
-                  <div className="group relative p-7 rounded-2xl glass-card overflow-hidden h-full">
-                    <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-primary/40 via-primary/60 to-primary/40 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-
-                    <Quote size={28} className="text-primary/15 mb-5" />
-                    <p className="text-foreground mb-6 leading-relaxed text-sm">{testimonial.content}</p>
-
-                    <div className="flex items-center gap-1 mb-4">
-                      {[...Array(testimonial.rating)].map((_, i) => (
-                        <Star key={i} size={13} className="text-[hsl(45,100%,50%)] fill-[hsl(45,100%,50%)]" />
-                      ))}
-                    </div>
-
-                    <div className="flex items-center gap-3 pt-4 border-t border-border/40">
-                      <div className="w-10 h-10 rounded-full bg-gradient-to-br from-primary/20 to-primary/5 flex items-center justify-center text-sm font-bold text-primary">
-                        {testimonial.name.charAt(0)}
-                      </div>
-                      <div>
-                        <p className="font-display font-bold text-sm">{testimonial.name}</p>
-                        <p className="text-xs text-muted-foreground">{testimonial.role}</p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
+        <section className="py-10 lg:py-16 relative">
+          <div className="container mx-auto px-4 sm:px-6">
+            <ClientFeedback />
           </div>
-        </div>
-      </section>
+        </section>
       </div>
 
       {/* ══════════ FINAL CTA + INQUIRY SECTION ══════════ */}
