@@ -423,8 +423,8 @@ const Index = () => {
       gradient: { from: '#C4C2FF', via: '#9896FF', to: '#5B4DCC' },
     },
     {
-      src: 'https://svgl.app/library/chatgpt.svg',
-      alt: 'ChatGPT & AI Tools',
+      src: 'https://svgl.app/library/openai.svg',
+      alt: 'ChatGPT & OpenAI',
       gradient: { from: '#67F0D1', via: '#10A37F', to: '#0B654E' },
     },
     {
@@ -438,8 +438,8 @@ const Index = () => {
       gradient: { from: '#FF66A1', via: '#0055FF', to: '#000000' },
     },
     {
-      src: 'https://svgl.app/library/claude-ai.svg',
-      alt: 'Claude AI',
+      src: 'https://upload.wikimedia.org/wikipedia/commons/7/78/Anthropic_logo.svg',
+      alt: 'Claude AI / Anthropic',
       gradient: { from: '#FFD79E', via: '#D97757', to: '#8B3E2B' },
     },
     {
