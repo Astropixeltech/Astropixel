@@ -32,6 +32,7 @@ import { BackgroundBeams } from "@/components/ui/background-beams";
 import { Sparkles as SparklesFx } from "@/components/ui/sparkles";
 import { Link } from "react-router-dom";
 import LayoutComponent from "@/components/Layout";
+import FinalCTAInquirySection from "@/components/FinalCTAInquirySection";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Pagination } from "swiper/modules";
 import "swiper/css";
@@ -699,6 +700,9 @@ const Index = () => {
         </div>
       </section>
       </div>
+
+      {/* ══════════ FINAL CTA + INQUIRY SECTION ══════════ */}
+      <FinalCTAInquirySection />
     </LayoutComponent>
   );
 };
