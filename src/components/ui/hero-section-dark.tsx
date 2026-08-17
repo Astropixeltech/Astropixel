@@ -103,7 +103,7 @@ const HeroSection = React.forwardRef<HTMLDivElement, HeroSectionProps>(
           <TextReveal
             preset="slide"
             delay={0.5}
-            className="max-w-xl mx-auto text-sm sm:text-base md:text-lg text-white/70 font-roboto leading-relaxed tracking-wide"
+            className="max-w-xl mx-auto -mt-3 md:-mt-5 text-sm sm:text-base md:text-lg text-white/70 font-roboto leading-relaxed tracking-wide"
             style={{ fontFamily: "'Roboto', sans-serif" }}
           >
             {typeof description === 'string' ? description : (description as any)?.props?.children || ''}
