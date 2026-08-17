@@ -448,7 +448,7 @@ const Index = () => {
       gradient: { from: '#FF6666', via: '#FF0000', to: '#990000' },
     },
     {
-      src: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="none"><rect width="100" height="100" rx="20" fill="%23FF1493"/><path d="M50 74s-24-16-24-30a14 14 0 0 1 24-9.2A14 14 0 0 1 74 44c0 14-24 30-24 30z" fill="white"/></svg>',
+      src: 'https://cdn.brandfetch.io/domain/lovable.dev',
       alt: 'Lovable',
       gradient: { from: '#FF80BF', via: '#FF1493', to: '#C71585' },
     },
