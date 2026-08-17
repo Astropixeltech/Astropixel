@@ -33,15 +33,12 @@ const Footer = () => {
 
   const socialLinks = footerLinks?.filter(link => link.link_type === 'social') || [];
   const defaultSocialLinks = [
-    { name: "Website", url: "https://www.astropixel.tech", icon: "Globe" },
-    { name: "Email", url: "mailto:hello@astropixel.tech", icon: "Mail" },
-    { name: "Discord", url: "https://discord.gg/uerwPXFf5", icon: "Discord" },
-    { name: "YouTube", url: "https://youtube.com", icon: "Youtube" },
-    { name: "X (Twitter)", url: "https://x.com/astropixel_tech", icon: "Twitter" },
-    { name: "Instagram", url: "https://www.instagram.com/astropixel.tech", icon: "Instagram" },
-    { name: "LinkedIn", url: "https://www.linkedin.com/company/astropixel-tech/", icon: "Linkedin" },
     { name: "Facebook", url: "https://www.facebook.com/share/1Zm7yMhPtk/", icon: "Facebook" },
+    { name: "Instagram", url: "https://www.instagram.com/astropixel.tech", icon: "Instagram" },
+    { name: "X (Twitter)", url: "https://x.com/astropixel_tech", icon: "Twitter" },
     { name: "WhatsApp", url: "https://wa.me/8801846484200", icon: "MessageCircle" },
+    { name: "Discord", url: "https://discord.gg/uerwPXFf5", icon: "Discord" },
+    { name: "Email", url: "mailto:hello@astropixel.tech", icon: "Mail" },
   ];
   const displaySocialLinks = socialLinks.length > 0 ? socialLinks : defaultSocialLinks;
 
@@ -61,12 +58,12 @@ const Footer = () => {
 
   const rawEmail = getContent('email');
   const email = (!rawEmail || rawEmail.includes('alphazero') || rawEmail.includes('contact@')) ? 'hello@astropixel.tech' : rawEmail;
-  const address = getContent('address') || 'Rajshahi, Bangladesh';
-  const description = getContent('description') || 'Astropixel is a creative studio blending strategy, design and technology to craft standout digital experiences.';
+  const address = getContent('address') || 'Hi-Tech Park,Rajshahi,Bangladesh';
+  const description = getContent('description') || 'We are a creative agency specializing in graphics design, video editing, web development, and digital marketing.';
 
   return (
-    <footer className="relative bg-foreground text-background">
-      <div className="container mx-auto px-6 sm:px-8 pt-16 sm:pt-24 pb-10">
+    <footer className="relative bg-[#0D111A] text-background">
+      <div className="container mx-auto px-6 sm:px-8 pt-16 sm:pt-20 pb-10">
         <div className="max-w-7xl mx-auto">
           {/* Top grid: Brand | Explore | Services | Office */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 lg:gap-12">
@@ -91,12 +88,12 @@ const Footer = () => {
             {/* Explore */}
             <div>
               <div className="flex items-center gap-2 mb-6">
-                <span className="w-1.5 h-1.5 rounded-full bg-primary" />
-                <h4 className="text-xs font-semibold tracking-[0.2em] uppercase text-background">
-                  Explore
+                <span className="w-1.5 h-1.5 rounded-full bg-[#00D8F6]" />
+                <h4 className="text-xs font-bold tracking-[0.2em] uppercase text-background">
+                  EXPLORE
                 </h4>
               </div>
-              <ul className="space-y-3 text-sm">
+              <ul className="space-y-3 text-sm font-medium">
                 {explore.map((item) => (
                   <li key={item.name}>
                     <Link
@@ -113,12 +110,12 @@ const Footer = () => {
             {/* Services */}
             <div>
               <div className="flex items-center gap-2 mb-6">
-                <span className="w-1.5 h-1.5 rounded-full bg-primary" />
-                <h4 className="text-xs font-semibold tracking-[0.2em] uppercase text-background">
-                  Services
+                <span className="w-1.5 h-1.5 rounded-full bg-[#00D8F6]" />
+                <h4 className="text-xs font-bold tracking-[0.2em] uppercase text-background">
+                  SERVICES
                 </h4>
               </div>
-              <ul className="space-y-3 text-sm">
+              <ul className="space-y-3 text-sm font-medium">
                 {services.map((item) => (
                   <li key={item.name}>
                     <Link
@@ -135,12 +132,12 @@ const Footer = () => {
             {/* Office */}
             <div>
               <div className="flex items-center gap-2 mb-6">
-                <span className="w-1.5 h-1.5 rounded-full bg-primary" />
-                <h4 className="text-xs font-semibold tracking-[0.2em] uppercase text-background">
-                  Office
+                <span className="w-1.5 h-1.5 rounded-full bg-[#00D8F6]" />
+                <h4 className="text-xs font-bold tracking-[0.2em] uppercase text-background">
+                  OFFICE
                 </h4>
               </div>
-              <div className="space-y-3 text-sm text-background/70">
+              <div className="space-y-3 text-sm font-medium text-background/70">
                 <p>{address}</p>
                 <a
                   href={`mailto:${email}`}
@@ -154,8 +151,8 @@ const Footer = () => {
 
           {/* Social Links Bar */}
           <div className="mt-14 pt-8 border-t border-background/10 flex flex-wrap items-center justify-between gap-4">
-            <span className="text-xs tracking-wider uppercase text-background/40 font-medium">
-              Connect With Us
+            <span className="text-xs font-bold tracking-wider uppercase text-background/40">
+              CONNECT WITH US
             </span>
             <div className="flex items-center gap-3">
               {displaySocialLinks.map((item) => {
@@ -167,9 +164,9 @@ const Footer = () => {
                     target="_blank"
                     rel="noopener noreferrer"
                     aria-label={item.name}
-                    className="w-10 h-10 rounded-full border border-background/15 flex items-center justify-center text-background/70 hover:text-background hover:border-background/40 hover:scale-105 transition-all duration-300"
+                    className="w-9 h-9 rounded-full border border-background/20 flex items-center justify-center text-background/70 hover:text-background hover:border-background/60 hover:scale-105 transition-all duration-300"
                   >
-                    <Icon size={18} />
+                    <Icon size={16} />
                   </a>
                 );
               })}
