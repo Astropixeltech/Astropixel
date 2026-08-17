@@ -176,15 +176,81 @@ const Footer = () => {
             </div>
           </div>
 
-          {/* Bottom */}
-          <div className="mt-10 pt-6 border-t border-background/10 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-background/50">
-            <span>© {new Date().getFullYear()} Astropixel — {t("footer.rights") || "All rights reserved."}</span>
-            <a
-              href={`mailto:${email}`}
-              className="hover:text-background transition-colors"
-            >
-              {email}
-            </a>
+          {/* Partner & Review Badges Row (as shown in reference design) */}
+          <div className="mt-12 py-7 border-t border-b border-background/10 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-6 items-center text-center justify-center">
+            {/* Framer */}
+            <div className="flex flex-col items-center justify-center gap-1 group cursor-pointer">
+              <span className="flex items-center gap-1.5 font-bold text-base tracking-tight text-white group-hover:scale-105 transition-transform">
+                <svg className="w-4 h-4 text-[#0055FF]" viewBox="0 0 24 24" fill="currentColor"><path d="M4 0h16v8h-8zM4 8h8l8 8H4zM4 16h8v8z"/></svg>
+                <span>Framer</span>
+              </span>
+              <span className="text-[11px] font-medium text-background/40 tracking-wider">Professional Partner</span>
+            </div>
+
+            {/* Webflow */}
+            <div className="flex flex-col items-center justify-center gap-1 group cursor-pointer">
+              <span className="flex items-center gap-1.5 font-bold text-base tracking-tight text-[#146EF5] group-hover:scale-105 transition-transform">
+                <svg className="w-4 h-3.5" viewBox="0 0 100 60" fill="currentColor"><path d="M72 0L54 40L45 23L55 5C56 3 55 1 54 0C52 -1 50 -1 48 0L22 13C20 14 19 16 19 18C19 20 20 22 22 23L36 30L20 60C19 62 19 64 21 65C22 66 24 67 26 66L72 43C74 42 75 40 75 38C75 36 74 34 72 33L59 27L72 0Z"/></svg>
+                <span className="text-white">Webflow</span>
+              </span>
+              <span className="text-[11px] font-medium text-background/40 tracking-wider">Professional Partner</span>
+            </div>
+
+            {/* Behance */}
+            <div className="flex flex-col items-center justify-center gap-1 group cursor-pointer">
+              <span className="font-bold text-lg tracking-tight text-[#0057FF] group-hover:scale-105 transition-transform">
+                Bēhance
+              </span>
+              <span className="text-[11px] font-medium text-background/40 tracking-wider">Top Team On Behance</span>
+            </div>
+
+            {/* Dribbble */}
+            <div className="flex flex-col items-center justify-center gap-1 group cursor-pointer">
+              <span className="font-bold text-lg tracking-tight text-[#EA4C89] font-serif italic group-hover:scale-105 transition-transform">
+                dribbble
+              </span>
+              <span className="text-[11px] font-medium text-background/40 tracking-wider">Top Team On Dribbble</span>
+            </div>
+
+            {/* Clutch */}
+            <div className="flex flex-col items-center justify-center gap-1 group cursor-pointer">
+              <span className="font-bold text-base tracking-tight text-white group-hover:scale-105 transition-transform flex items-center gap-0.5">
+                Clutch<span className="text-[#DA291C]">•</span>
+              </span>
+              <span className="text-[11px] font-medium text-background/40 tracking-wider flex items-center gap-1">
+                <span>Reviewed On</span>
+                <span className="flex text-amber-400 text-[10px]">★★★★★</span>
+              </span>
+            </div>
+
+            {/* Google */}
+            <div className="flex flex-col items-center justify-center gap-1 group cursor-pointer">
+              <span className="font-bold text-base tracking-tight flex items-center justify-center gap-0.5 group-hover:scale-105 transition-transform">
+                <span className="text-[#4285F4]">G</span>
+                <span className="text-[#EA4335]">o</span>
+                <span className="text-[#FBBC05]">o</span>
+                <span className="text-[#4285F4]">g</span>
+                <span className="text-[#34A853]">l</span>
+                <span className="text-[#EA4335]">e</span>
+              </span>
+              <span className="text-[11px] font-medium text-background/40 tracking-wider flex items-center gap-1">
+                <span>Reviewed On</span>
+                <span className="flex text-amber-400 text-[10px]">★★★★★</span>
+              </span>
+            </div>
+          </div>
+
+          {/* Bottom Copyright Bar matching reference image */}
+          <div className="py-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs font-semibold text-background/60">
+            <Link to="/terms" className="hover:text-background transition-colors">
+              Terms & Conditions
+            </Link>
+            <span className="text-center">
+              © {new Date().getFullYear()}, AstroPixel Agency, All Rights Reserved.
+            </span>
+            <Link to="/privacy" className="hover:text-background transition-colors">
+              Privacy Policy
+            </Link>
           </div>
         </div>
       </div>
