@@ -36,4 +36,4 @@ Disallow: /passcode
 Sitemap: https://astropixel.tech/sitemap.xml
 
 # Host directive for canonical domain
-Host: https://astropixel.tech
+Host: astropixel.tech
