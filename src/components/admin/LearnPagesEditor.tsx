@@ -100,7 +100,7 @@ const SECTIONS: Section[] = [
       { key: "cta.subtitle.bn", label: "📝 Subtitle (BN)", type: "textarea", fallback: "নতুন স্কিল শিখুন, দক্ষতা তৈরি করুন এবং ইন্ডাস্ট্রিতে জায়গা করে নিন।" },
       { key: "cta.subtitle.en", label: "📝 Subtitle (EN)", type: "textarea", fallback: "Learn new skills, build expertise and stand out in the industry." },
       { key: "cta.phone", label: "📞 Phone", fallback: "+880 1776-965533" },
-      { key: "cta.email", label: "📧 Email", fallback: "learn@astropixel.tech" },
+      { key: "cta.email", label: "📧 Email", fallback: "hello@astropixel.tech" },
     ],
   },
 
@@ -252,7 +252,7 @@ const SECTIONS: Section[] = [
     gradient: "from-emerald-500 to-teal-600",
     fields: [
       { key: "learn.phone", label: "📞 Phone", fallback: "+880 1344-497808" },
-      { key: "learn.email", label: "📧 Email", fallback: "support@learn.astropixel.tech" },
+      { key: "learn.email", label: "📧 Email", fallback: "hello@astropixel.tech" },
       { key: "learn.address", label: "📍 Address (BN)", fallback: "ঢাকা, বাংলাদেশ" },
       { key: "learn.address.en", label: "📍 Address (EN)", fallback: "Dhaka, Bangladesh" },
       { key: "info.hours.bn", label: "🕒 Support Hours (BN)", fallback: "শনি — বৃহস্পতি, ১০টা — ১০টা" },

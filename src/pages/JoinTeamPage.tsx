@@ -139,7 +139,7 @@ const JoinTeamPage = () => {
       `Applicant has agreed to all terms and conditions of the Team Member Agreement.`
     );
 
-    window.location.href = `mailto:agency.alphazero@gmail.com?subject=${subject}&body=${body}`;
+    window.location.href = `mailto:hello@astropixel.tech?subject=${subject}&body=${body}`;
 
     setTimeout(() => {
       setIsSubmitting(false);
@@ -415,7 +415,7 @@ const JoinTeamPage = () => {
               </Button>
 
               <p className="text-center text-sm text-muted-foreground">
-                Your application will be sent to <strong>agency.alphazero@gmail.com</strong>
+                Your application will be sent to <strong>hello@astropixel.tech</strong>
               </p>
             </motion.form>
           </div>

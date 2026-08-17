@@ -26,7 +26,7 @@ const CoursesFooter = () => {
     { icon: Instagram, url: "https://www.instagram.com/alphazero.online", label: "Instagram" },
     { icon: Youtube, url: "https://youtube.com/@alphazero", label: "YouTube" },
     { icon: MessageCircle, url: "https://wa.me/8801776965533", label: "WhatsApp" },
-    { icon: Mail, url: "mailto:learn@astropixel.tech", label: "Email" },
+    { icon: Mail, url: "mailto:hello@astropixel.tech", label: "Email" },
   ];
 
   return (
@@ -98,8 +98,8 @@ const CoursesFooter = () => {
               <a href="tel:+8801776965533" className="flex items-center gap-2 text-foreground hover:text-primary transition-colors">
                 <Phone size={14} /> +880 1776-965533
               </a>
-              <a href="mailto:learn@astropixel.tech" className="flex items-center gap-2 text-foreground hover:text-primary transition-colors break-all">
-                <Mail size={14} /> learn@astropixel.tech
+              <a href="mailto:hello@astropixel.tech" className="flex items-center gap-2 text-foreground hover:text-primary transition-colors break-all">
+                <Mail size={14} /> hello@astropixel.tech
               </a>
               <a
                 href="https://astropixel.tech"
