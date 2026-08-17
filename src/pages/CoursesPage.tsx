@@ -530,8 +530,8 @@ const CoursesPage = () => {
           "description": "Astropixel Academy — Bangla online learning platform teaching graphic design, web development, vibe coding, digital marketing, AI automation, prompt engineering, motion graphics, Figma, Fiverr freelancing and digital products.",
           "sameAs": [
             "https://astropixel.tech",
-            "https://www.facebook.com/alphazero.online",
-            "https://www.youtube.com/@alphazero.online"
+            "https://www.facebook.com/share/1Zm7yMhPtk/",
+            "https://www.youtube.com/@astropixel_tech"
           ],
           "areaServed": "BD",
           "inLanguage": ["bn", "en"],

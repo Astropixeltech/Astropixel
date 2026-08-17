@@ -23,8 +23,8 @@ const CoursesFooter = () => {
 
   const socials = [
     { icon: Facebook, url: "https://www.facebook.com/share/1Zm7yMhPtk/", label: "Facebook" },
-    { icon: Instagram, url: "https://www.instagram.com/alphazero.online", label: "Instagram" },
-    { icon: Youtube, url: "https://youtube.com/@alphazero", label: "YouTube" },
+    { icon: Instagram, url: "https://www.instagram.com/astropixel.tech", label: "Instagram" },
+    { icon: Youtube, url: "https://youtube.com/@astropixel_tech", label: "YouTube" },
     { icon: MessageCircle, url: "https://wa.me/8801776965533", label: "WhatsApp" },
     { icon: Mail, url: "mailto:hello@astropixel.tech", label: "Email" },
   ];

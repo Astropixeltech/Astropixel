@@ -37,9 +37,9 @@ const Footer = () => {
     { name: "Email", url: "mailto:hello@astropixel.tech", icon: "Mail" },
     { name: "Discord", url: "https://discord.gg/uerwPXFf5", icon: "Discord" },
     { name: "YouTube", url: "https://youtube.com", icon: "Youtube" },
-    { name: "X (Twitter)", url: "https://x.com/AgencyAlphazero", icon: "Twitter" },
-    { name: "Instagram", url: "https://www.instagram.com/alphazero.online", icon: "Instagram" },
-    { name: "LinkedIn", url: "https://www.linkedin.com/company/alphazeroagency/", icon: "Linkedin" },
+    { name: "X (Twitter)", url: "https://x.com/astropixel_tech", icon: "Twitter" },
+    { name: "Instagram", url: "https://www.instagram.com/astropixel.tech", icon: "Instagram" },
+    { name: "LinkedIn", url: "https://www.linkedin.com/company/astropixel-tech/", icon: "Linkedin" },
     { name: "Facebook", url: "https://www.facebook.com/share/1Zm7yMhPtk/", icon: "Facebook" },
     { name: "WhatsApp", url: "https://wa.me/8801846484200", icon: "MessageCircle" },
   ];

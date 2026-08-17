@@ -38,11 +38,11 @@ const ContactPage = () => {
     `https://wa.me/${normalizePhoneForWhatsApp(phone)}`;
 
   const socials = [
-    { name: "Facebook", handle: "@alphazero", url: "https://www.facebook.com/share/1Zm7yMhPtk/", icon: Facebook, brand: "#1877F2" },
+    { name: "Facebook", handle: "@astropixel", url: "https://www.facebook.com/share/1Zm7yMhPtk/", icon: Facebook, brand: "#1877F2" },
     { name: "WhatsApp", handle: "Chat now", url: whatsappLink, icon: MessageCircle, brand: "#25D366" },
-    { name: "Instagram", handle: "@astropixel.tech", url: "https://www.instagram.com/alphazero.online", icon: Instagram, brand: "#E4405F" },
-    { name: "LinkedIn", handle: "Astropixel Agency", url: "https://www.linkedin.com/company/alphazero-agency", icon: Linkedin, brand: "#0A66C2" },
-    { name: "X", handle: "@AgencyAlphazero", url: "https://x.com/AgencyAlphazero", icon: Twitter, brand: "#0F172A" },
+    { name: "Instagram", handle: "@astropixel.tech", url: "https://www.instagram.com/astropixel.tech", icon: Instagram, brand: "#E4405F" },
+    { name: "LinkedIn", handle: "Astropixel Agency", url: "https://www.linkedin.com/company/astropixel-tech/", icon: Linkedin, brand: "#0A66C2" },
+    { name: "X", handle: "@astropixel_tech", url: "https://x.com/astropixel_tech", icon: Twitter, brand: "#0F172A" },
     { name: "Discord", handle: "Join community", url: "https://discord.gg/uerwPXFf5", icon: DiscordIcon, brand: "#5865F2" },
   ];
 
