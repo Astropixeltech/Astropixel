@@ -26,8 +26,8 @@ function ClientFeedback() {
       <section className="relative h-full container mx-auto" ref={testimonialRef}>
         <article className="max-w-screen-md mx-auto text-center space-y-3 mb-10 md:mb-14">
           <TimelineContent
-            as="h1"
-            className="xl:text-4xl text-3xl font-display font-bold tracking-tight text-slate-900"
+            as="h2"
+            className="text-2xl sm:text-3xl font-display font-bold tracking-tight text-slate-900 max-w-xl mx-auto"
             animationNum={0}
             customVariants={revealVariants}
             timelineRef={testimonialRef}
