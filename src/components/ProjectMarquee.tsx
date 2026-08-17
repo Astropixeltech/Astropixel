@@ -38,7 +38,15 @@ const extras: Item[] = [
   { id: "ex-poster-trend", image_url: posterTrend.url, title: "Poster Design Trend 2026" },
 ];
 
-const HERO_CTA_GAP_PX = 80;
+// Instantly preload images in browser memory upfront when module evaluates
+if (typeof window !== "undefined") {
+  extras.forEach((item) => {
+    if (item.image_url && item.image_url !== "/placeholder.svg") {
+      const img = new Image();
+      img.src = item.image_url;
+    }
+  });
+}
 
 const Card = ({ item }: { item: Item }) => {
   return (
@@ -48,8 +56,9 @@ const Card = ({ item }: { item: Item }) => {
         alt={`AstroPixel Portfolio Project — ${item.title}`}
         width={360}
         height={240}
-        loading="lazy"
-        decoding="async"
+        loading="eager"
+        fetchPriority="high"
+        decoding="sync"
         referrerPolicy="no-referrer"
         draggable={false}
         className="block h-full w-auto object-contain transition-transform duration-700 group-hover:scale-105 select-none pointer-events-none [transform:translateZ(0)]"
@@ -63,6 +72,7 @@ const Card = ({ item }: { item: Item }) => {
 export default function ProjectMarquee() {
   const { data: works } = useWorks();
   const sectionRef = useRef<HTMLElement>(null);
+
   const items = useMemo<Item[]>(() => {
     const g = (works || []).filter(isGraphics).map((w) => ({
       id: String(w.id),
@@ -84,6 +94,18 @@ export default function ProjectMarquee() {
       .map((x) => x.it);
     return seeded.length ? seeded : extras;
   }, [works]);
+
+  // Preload any dynamic DB works images as soon as items list updates
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      items.forEach((item) => {
+        if (item.image_url && item.image_url !== "/placeholder.svg") {
+          const img = new Image();
+          img.src = item.image_url;
+        }
+      });
+    }
+  }, [items]);
 
   const row1: Item[] = [];
   const row2: Item[] = [];
@@ -114,6 +136,5 @@ export default function ProjectMarquee() {
         </div>
       </div>
     </section>
-
   );
 }
