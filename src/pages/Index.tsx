@@ -428,9 +428,19 @@ const Index = () => {
       gradient: { from: '#67F0D1', via: '#10A37F', to: '#0B654E' },
     },
     {
-      src: 'https://upload.wikimedia.org/wikipedia/commons/7/78/Anthropic_logo.svg',
-      alt: 'Claude AI / Anthropic',
+      src: 'https://cdn.brandfetch.io/domain/github.com/fallback/lettermark/theme/dark/h/400/w/400/icon?c=1bfwsmEH20zzEfSNTed',
+      alt: 'GitHub',
+      gradient: { from: '#6E7681', via: '#24292F', to: '#0D1117' },
+    },
+    {
+      src: 'https://cdn.prod.website-files.com/672a72b52eb5f37692d645a9/6a5810149e88d3358ac95b41_Frame%202147238893.avif',
+      alt: 'Claude AI',
       gradient: { from: '#FFD79E', via: '#D97757', to: '#8B3E2B' },
+    },
+    {
+      src: 'https://cdn.prod.website-files.com/672a72b52eb5f37692d645a9/6a58a6a2cb044ee3817c8f32_Frame%202147238892.png',
+      alt: 'Miro',
+      gradient: { from: '#FDE047', via: '#FFD000', to: '#CA8A04' },
     },
     {
       src: 'https://svgl.app/library/adobe.svg',
@@ -451,11 +461,6 @@ const Index = () => {
       src: 'https://svgl.app/library/supabase.svg',
       alt: 'Supabase',
       gradient: { from: '#6EE7B7', via: '#3ECF8E', to: '#059669' },
-    },
-    {
-      src: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="none"><rect width="100" height="100" rx="20" fill="%23FFD000"/><path d="M22 25l16 50 14-36 14 36 12-50" stroke="%23050038" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/></svg>',
-      alt: 'Miro',
-      gradient: { from: '#FDE047', via: '#FFD000', to: '#CA8A04' },
     },
     {
       src: 'https://svgl.app/library/n8n.svg',
