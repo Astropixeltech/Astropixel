@@ -251,6 +251,19 @@
       ]
     }
     </script>
+    <!-- Inline Responsive Media Queries for SEO Crawlers -->
+    <style id="seo-responsive-css">
+      @media only screen and (max-width: 768px) {
+        html, body { width: 100%; overflow-x: hidden; }
+        #root { width: 100%; }
+      }
+      @media only screen and (min-width: 769px) and (max-width: 1024px) {
+        html, body { width: 100%; }
+      }
+      @media only screen and (min-width: 1025px) {
+        html, body { max-width: 100%; }
+      }
+    </style>
   </head>
 
   <body>
