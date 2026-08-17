@@ -10,8 +10,8 @@ function ClientFeedback() {
       opacity: 1,
       filter: "blur(0px)",
       transition: {
-        delay: i * 0.15,
-        duration: 0.5,
+        delay: i * 0.12,
+        duration: 0.45,
       },
     }),
     hidden: {
@@ -22,9 +22,9 @@ function ClientFeedback() {
   };
 
   return (
-    <main className="w-full bg-white text-black py-8 md:py-14 rounded-3xl overflow-hidden">
-      <section className="relative h-full container mx-auto" ref={testimonialRef}>
-        <article className="max-w-screen-md mx-auto text-center space-y-3 mb-10 md:mb-14">
+    <main className="w-full bg-white text-black py-6 md:py-10 rounded-3xl overflow-hidden">
+      <section className="relative h-full container mx-auto max-w-6xl" ref={testimonialRef}>
+        <article className="max-w-screen-md mx-auto text-center space-y-2 mb-8 md:mb-10">
           <TimelineContent
             as="h2"
             className="text-2xl sm:text-3xl font-display font-bold tracking-tight text-slate-900 max-w-xl mx-auto"
@@ -32,44 +32,44 @@ function ClientFeedback() {
             customVariants={revealVariants}
             timelineRef={testimonialRef}
           >
-            Trusted by Startups & World's Leading Brands
+            Trusted by Startups and the world's largest companies
           </TimelineContent>
           <TimelineContent
             as="p"
-            className="mx-auto text-slate-600 text-base sm:text-lg max-w-xl leading-relaxed"
+            className="mx-auto text-slate-500 text-sm sm:text-base max-w-lg leading-relaxed"
             animationNum={1}
             customVariants={revealVariants}
             timelineRef={testimonialRef}
           >
-            See how our partners accelerate their growth and craft iconic digital experiences with AstroPixel.
+            Let's hear how hypersphere client's feels about our service
           </TimelineContent>
         </article>
 
-        <div className="lg:grid lg:grid-cols-3 gap-4 flex flex-col w-full px-2 sm:px-4">
+        <div className="lg:grid lg:grid-cols-3 gap-3 flex flex-col w-full px-2 sm:px-4">
           {/* Column 1 */}
-          <div className="flex flex-col gap-4">
+          <div className="flex flex-col gap-3">
             <TimelineContent
               animationNum={0}
               customVariants={revealVariants}
               timelineRef={testimonialRef}
-              className="lg:flex-[7] flex-[6] flex flex-col justify-between relative bg-white text-slate-900 overflow-hidden rounded-2xl border border-gray-200 p-6 shadow-sm"
+              className="lg:flex-[7] flex-[6] flex flex-col justify-between relative bg-white text-slate-900 overflow-hidden rounded-xl border border-gray-200 p-5 shadow-sm min-h-[220px]"
             >
-              <div className="absolute bottom-0 left-0 right-0 top-0 bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f2e_1px,transparent_1px)] bg-[size:50px_56px] [mask-image:radial-gradient(ellipse_80%_50%_at_50%_0%,#000_70%,transparent_110%)] pointer-events-none" />
-              <article className="relative z-10 mt-auto flex flex-col justify-between h-full min-h-[220px]">
-                <p className="text-slate-800 text-sm sm:text-base leading-relaxed font-normal">
-                  "AstroPixel has been a game-changer for us. Their service is top-notch and their team is incredibly responsive."
+              <div className="absolute inset-0 bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f2e_1px,transparent_1px)] bg-[size:45px_48px] [mask-image:radial-gradient(ellipse_80%_50%_at_50%_0%,#000_70%,transparent_110%)] pointer-events-none" />
+              <article className="relative z-10 mt-auto pt-10">
+                <p className="text-slate-800 text-xs sm:text-sm leading-relaxed mb-3">
+                  "Hypersphere has been a game-changer for us. Their service is top-notch and their team is incredibly responsive."
                 </p>
-                <div className="flex justify-between items-center pt-5 border-t border-gray-100 mt-5">
+                <div className="flex justify-between items-center pt-3 border-t border-gray-100">
                   <div>
-                    <h3 className="font-semibold text-base sm:text-lg text-slate-900">Guillermo Rauch</h3>
-                    <p className="text-xs sm:text-sm text-slate-500">CEO of Enigma</p>
+                    <h3 className="font-semibold text-sm sm:text-base text-slate-900">Guillermo Rauch</h3>
+                    <p className="text-xs text-slate-500">CEO of Enigma</p>
                   </div>
                   <img
                     src="https://images.unsplash.com/photo-1599566150163-29194dcaad36?q=80&w=200&auto=format&fit=crop"
                     alt="Guillermo Rauch"
                     loading="eager"
                     decoding="sync"
-                    className="w-12 h-12 sm:w-14 sm:h-14 rounded-xl object-cover border border-gray-200 shadow-sm"
+                    className="w-12 h-12 rounded-xl object-cover border border-gray-200 shadow-sm shrink-0"
                   />
                 </div>
               </article>
@@ -79,23 +79,23 @@ function ClientFeedback() {
               animationNum={1}
               customVariants={revealVariants}
               timelineRef={testimonialRef}
-              className="flex-1 flex flex-col justify-between relative bg-blue-600 text-white overflow-hidden rounded-2xl border border-blue-500 p-6 shadow-xl"
+              className="lg:flex-[3] flex-[4] flex flex-col justify-between relative bg-[#1b64f2] text-white overflow-hidden rounded-xl border border-blue-500 p-5 shadow-md"
             >
-              <article className="relative z-10 mt-auto flex flex-col justify-between h-full min-h-[180px]">
-                <p className="text-blue-50 text-sm sm:text-base leading-relaxed">
-                  "We've seen incredible results with AstroPixel. Their deep expertise, dedication, and strategic design boosted our conversion."
+              <article className="relative z-10 mt-auto">
+                <p className="text-blue-50 text-xs sm:text-sm leading-relaxed mb-3">
+                  "We've seen incredible results with Hypersphere. Their expertise, dedication."
                 </p>
-                <div className="flex justify-between items-center pt-5 border-t border-blue-500/80 mt-5">
+                <div className="flex justify-between items-center pt-3 border-t border-blue-400/40">
                   <div>
-                    <h3 className="font-semibold text-base sm:text-lg text-white">Rika Shinoda</h3>
-                    <p className="text-xs sm:text-sm text-blue-200">CEO of Kintsugi</p>
+                    <h3 className="font-semibold text-sm sm:text-base text-white">Rika Shinoda</h3>
+                    <p className="text-xs text-blue-200">CEO of Kintsugi</p>
                   </div>
                   <img
                     src="https://images.unsplash.com/photo-1512485694743-9c9538b4e6e0?q=80&w=200&auto=format&fit=crop"
                     alt="Rika Shinoda"
                     loading="eager"
                     decoding="sync"
-                    className="w-12 h-12 sm:w-14 sm:h-14 rounded-xl object-cover border border-blue-400 shadow-md"
+                    className="w-12 h-12 rounded-xl object-cover border border-blue-400/50 shadow-sm shrink-0"
                   />
                 </div>
               </article>
@@ -103,28 +103,28 @@ function ClientFeedback() {
           </div>
 
           {/* Column 2 */}
-          <div className="flex flex-col gap-4">
+          <div className="flex flex-col gap-3">
             <TimelineContent
               animationNum={2}
               customVariants={revealVariants}
               timelineRef={testimonialRef}
-              className="flex flex-col justify-between relative bg-slate-900 text-white overflow-hidden rounded-2xl border border-slate-800 p-6 shadow-xl"
+              className="flex flex-col justify-between relative bg-[#111111] text-white overflow-hidden rounded-xl border border-gray-800 p-5 shadow-md"
             >
               <article className="relative z-10 mt-auto">
-                <p className="text-slate-200 text-sm sm:text-base leading-relaxed">
-                  "Their team is highly professional, and their innovative AI-powered design solutions have truly transformed how we launch products."
+                <p className="text-slate-200 text-xs sm:text-sm leading-relaxed mb-3">
+                  "Their team is highly professional, and their innovative solutions have truly transformed the way we operate."
                 </p>
-                <div className="flex justify-between items-center pt-5 border-t border-slate-800 mt-5">
+                <div className="flex justify-between items-center pt-3 border-t border-gray-800">
                   <div>
-                    <h3 className="font-semibold text-base sm:text-lg text-white">Reacher</h3>
-                    <p className="text-xs sm:text-sm text-slate-400">CEO of OdeaoLabs</p>
+                    <h3 className="font-semibold text-sm sm:text-base text-white">Reacher</h3>
+                    <p className="text-xs text-slate-400">CEO of OdeaoLabs</p>
                   </div>
                   <img
                     src="https://images.unsplash.com/photo-1566753323558-f4e0952af115?q=80&w=200&auto=format&fit=crop"
                     alt="Reacher"
                     loading="eager"
                     decoding="sync"
-                    className="w-12 h-12 rounded-xl object-cover border border-slate-700 shadow-md"
+                    className="w-12 h-12 rounded-xl object-cover border border-gray-700 shadow-sm shrink-0"
                   />
                 </div>
               </article>
@@ -134,23 +134,23 @@ function ClientFeedback() {
               animationNum={3}
               customVariants={revealVariants}
               timelineRef={testimonialRef}
-              className="flex flex-col justify-between relative bg-slate-900 text-white overflow-hidden rounded-2xl border border-slate-800 p-6 shadow-xl"
+              className="flex flex-col justify-between relative bg-[#111111] text-white overflow-hidden rounded-xl border border-gray-800 p-5 shadow-md"
             >
               <article className="relative z-10 mt-auto">
-                <p className="text-slate-200 text-sm sm:text-base leading-relaxed">
-                  "We're extremely satisfied with AstroPixel. Their design quality and execution speed have exceeded all our expectations."
+                <p className="text-slate-200 text-xs sm:text-sm leading-relaxed mb-3">
+                  "We're extremely satisfied with Hypersphere. Their expertise and dedication have exceeded our expectations."
                 </p>
-                <div className="flex justify-between items-center pt-5 border-t border-slate-800 mt-5">
+                <div className="flex justify-between items-center pt-3 border-t border-gray-800">
                   <div>
-                    <h3 className="font-semibold text-base sm:text-lg text-white">John Davis</h3>
-                    <p className="text-xs sm:text-sm text-slate-400">CEO of Labsbo</p>
+                    <h3 className="font-semibold text-sm sm:text-base text-white">John</h3>
+                    <p className="text-xs text-slate-400">CEO of Labsbo</p>
                   </div>
                   <img
                     src="https://images.unsplash.com/photo-1615109398623-88346a601842?q=80&w=200&auto=format&fit=crop"
-                    alt="John Davis"
+                    alt="John"
                     loading="eager"
                     decoding="sync"
-                    className="w-12 h-12 rounded-xl object-cover border border-slate-700 shadow-md"
+                    className="w-12 h-12 rounded-xl object-cover border border-gray-700 shadow-sm shrink-0"
                   />
                 </div>
               </article>
@@ -160,23 +160,23 @@ function ClientFeedback() {
               animationNum={4}
               customVariants={revealVariants}
               timelineRef={testimonialRef}
-              className="flex flex-col justify-between relative bg-slate-900 text-white overflow-hidden rounded-2xl border border-slate-800 p-6 shadow-xl"
+              className="flex flex-col justify-between relative bg-[#111111] text-white overflow-hidden rounded-xl border border-gray-800 p-5 shadow-md"
             >
               <article className="relative z-10 mt-auto">
-                <p className="text-slate-200 text-sm sm:text-base leading-relaxed">
-                  "Their customer communication and execution is absolutely exceptional. Always available and incredibly helpful."
+                <p className="text-slate-200 text-xs sm:text-sm leading-relaxed mb-3">
+                  "Their customer support is absolutely exceptional. They are always available, incredibly helpful."
                 </p>
-                <div className="flex justify-between items-center pt-5 border-t border-slate-800 mt-5">
+                <div className="flex justify-between items-center pt-3 border-t border-gray-800">
                   <div>
-                    <h3 className="font-semibold text-base sm:text-lg text-white">Steven Sunny</h3>
-                    <p className="text-xs sm:text-sm text-slate-400">CEO of Boxefi</p>
+                    <h3 className="font-semibold text-sm sm:text-base text-white">Steven Sunny</h3>
+                    <p className="text-xs text-slate-400">CEO of boxefi</p>
                   </div>
                   <img
                     src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=200&auto=format&fit=crop"
                     alt="Steven Sunny"
                     loading="eager"
                     decoding="sync"
-                    className="w-12 h-12 rounded-xl object-cover border border-slate-700 shadow-md"
+                    className="w-12 h-12 rounded-xl object-cover border border-gray-700 shadow-sm shrink-0"
                   />
                 </div>
               </article>
@@ -184,28 +184,28 @@ function ClientFeedback() {
           </div>
 
           {/* Column 3 */}
-          <div className="flex flex-col gap-4">
+          <div className="flex flex-col gap-3">
             <TimelineContent
               animationNum={5}
               customVariants={revealVariants}
               timelineRef={testimonialRef}
-              className="flex-1 flex flex-col justify-between relative bg-blue-600 text-white overflow-hidden rounded-2xl border border-blue-500 p-6 shadow-xl"
+              className="lg:flex-[3] flex-[4] flex flex-col justify-between relative bg-[#1b64f2] text-white overflow-hidden rounded-xl border border-blue-500 p-5 shadow-md"
             >
-              <article className="relative z-10 mt-auto flex flex-col justify-between h-full min-h-[180px]">
-                <p className="text-blue-50 text-sm sm:text-base leading-relaxed">
-                  "AstroPixel has been a key strategic design partner in our journey from early stage startup to Series B scaleup."
+              <article className="relative z-10 mt-auto">
+                <p className="text-blue-50 text-xs sm:text-sm leading-relaxed mb-3">
+                  "Hypersphere has been a key partner in our growth journey."
                 </p>
-                <div className="flex justify-between items-center pt-5 border-t border-blue-500/80 mt-5">
+                <div className="flex justify-between items-center pt-3 border-t border-blue-400/40">
                   <div>
-                    <h3 className="font-semibold text-base sm:text-lg text-white">Alex Mercer</h3>
-                    <p className="text-xs sm:text-sm text-blue-200">Founder of OdeaoLabs</p>
+                    <h3 className="font-semibold text-sm sm:text-base text-white">Guillermo Rauch</h3>
+                    <p className="text-xs text-blue-200">CEO of OdeaoLabs</p>
                   </div>
                   <img
                     src="https://images.unsplash.com/photo-1563237023-b1e970526dcb?q=80&w=200&auto=format&fit=crop"
-                    alt="Alex Mercer"
+                    alt="Guillermo Rauch"
                     loading="eager"
                     decoding="sync"
-                    className="w-12 h-12 sm:w-14 sm:h-14 rounded-xl object-cover border border-blue-400 shadow-md"
+                    className="w-12 h-12 rounded-xl object-cover border border-blue-400/50 shadow-sm shrink-0"
                   />
                 </div>
               </article>
@@ -215,24 +215,24 @@ function ClientFeedback() {
               animationNum={6}
               customVariants={revealVariants}
               timelineRef={testimonialRef}
-              className="lg:flex-[7] flex-[6] flex flex-col justify-between relative bg-white text-slate-900 overflow-hidden rounded-2xl border border-gray-200 p-6 shadow-sm"
+              className="lg:flex-[7] flex-[6] flex flex-col justify-between relative bg-white text-slate-900 overflow-hidden rounded-xl border border-gray-200 p-5 shadow-sm min-h-[220px]"
             >
-              <div className="absolute bottom-0 left-0 right-0 top-0 bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f2e_1px,transparent_1px)] bg-[size:50px_56px] [mask-image:radial-gradient(ellipse_80%_50%_at_50%_0%,#000_70%,transparent_110%)] pointer-events-none" />
-              <article className="relative z-10 mt-auto flex flex-col justify-between h-full min-h-[220px]">
-                <p className="text-slate-800 text-sm sm:text-base leading-relaxed">
-                  "AstroPixel has been a true partner for us. Their design craftsmanship, combined with deep technical strategy, has transformed our business."
+              <div className="absolute inset-0 bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f2e_1px,transparent_1px)] bg-[size:45px_48px] [mask-image:radial-gradient(ellipse_80%_50%_at_50%_0%,#000_70%,transparent_110%)] pointer-events-none" />
+              <article className="relative z-10 mt-auto pt-10">
+                <p className="text-slate-800 text-xs sm:text-sm leading-relaxed mb-3">
+                  "Hypersphere has been a true game-changer for us. Their exceptional service, combined with their deep expertise and commitment to excellence, has made a significant impact on our business."
                 </p>
-                <div className="flex justify-between items-center pt-5 border-t border-gray-100 mt-5">
+                <div className="flex justify-between items-center pt-3 border-t border-gray-100">
                   <div>
-                    <h3 className="font-semibold text-base sm:text-lg text-slate-900">Paul Brauch</h3>
-                    <p className="text-xs sm:text-sm text-slate-500">CTO of Spectrum</p>
+                    <h3 className="font-semibold text-sm sm:text-base text-slate-900">Paul Brauch</h3>
+                    <p className="text-xs text-slate-500">CTO of Spectrum</p>
                   </div>
                   <img
                     src="https://images.unsplash.com/photo-1590086782957-93c06ef21604?q=80&w=200&auto=format&fit=crop"
                     alt="Paul Brauch"
                     loading="eager"
                     decoding="sync"
-                    className="w-12 h-12 sm:w-14 sm:h-14 rounded-xl object-cover border border-gray-200 shadow-sm"
+                    className="w-12 h-12 rounded-xl object-cover border border-gray-200 shadow-sm shrink-0"
                   />
                 </div>
               </article>
