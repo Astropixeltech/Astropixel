@@ -47,7 +47,7 @@
     <meta name="msapplication-TileImage" content="/mstile-150x150.png" />
     
     <!-- Preload critical assets for faster LCP -->
-    <link rel="preload" href="/__l5e/assets-v1/f4cbaa39-fd13-48b2-925b-22e69139c241/astropixel-logo.png" as="image" type="image/png" fetchpriority="high" />
+    <link rel="preload" href="/src/assets/hero-bg-custom.webp" as="image" type="image/webp" fetchpriority="high" />
     <link rel="preconnect" href="https://fonts.bunny.net" crossorigin />
     
     <!-- Primary Meta Tags -->
@@ -144,74 +144,63 @@
         "availableLanguage": ["English", "Bengali"]
       },
       "sameAs": [
-      ]
-    }
-    </script>
-    
-    <!-- JSON-LD Structured Data - Local Business -->
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "LocalBusiness",
-      "@id": "https://astropixel.tech/#localbusiness",
-      "name": "AstroPixel Creative Agency",
-      "image": "https://astropixel.tech/favicon.png",
-      "url": "https://astropixel.tech",
-      "priceRange": "$$",
-      "address": {
-        "@type": "PostalAddress",
-        "addressLocality": "Rajshahi",
-        "addressRegion": "Rajshahi Division",
-        "addressCountry": "BD"
-      },
-      "geo": {
-        "@type": "GeoCoordinates",
-        "latitude": 24.3745,
-        "longitude": 88.6042
-      },
-      "areaServed": ["Rajshahi", "Bangladesh", "Worldwide"]
-    }
-    </script>
-    
-    <!-- JSON-LD Structured Data - Professional Service -->
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "ProfessionalService",
-      "name": "AstroPixel Design Services",
-      "url": "https://astropixel.tech/services",
-      "description": "Creative design services including logo design, brand identity, UI/UX design, web design & development, and social media design.",
-      "provider": {
-        "@type": "Organization",
-        "name": "AstroPixel"
-      },
-      "serviceType": [
-        "Logo & Brand Identity Design",
-        "Branding & Brand Strategy",
-        "UI/UX Design",
-        "Web Design & Development",
-        "Social Media Design"
+        "https://www.facebook.com/share/1Zm7yMhPtk/",
+        "https://www.instagram.com/alphazero.online",
+        "https://youtube.com/@alphazero",
+        "https://x.com/AgencyAlphazero",
+        "https://www.linkedin.com/company/alphazeroagency/"
       ],
-      "areaServed": "Worldwide"
+      "priceRange": "$$",
+      "areaServed": "Worldwide",
+      "hasOfferCatalog": {
+        "@type": "OfferCatalog",
+        "name": "Design Services",
+        "itemListElement": [
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Logo & Brand Identity Design",
+              "description": "Custom logo design, visual identity systems, and brand guidelines."
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "UI/UX Design",
+              "description": "User interface & experience design for web and mobile applications."
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Web Design & Development",
+              "description": "Modern responsive website design and web application development."
+            }
+          }
+        ]
+      }
     }
     </script>
     
-    <!-- JSON-LD Structured Data - WebSite -->
+    <!-- Structured Data: WebSite (JSON-LD) for Sitelinks Search Box -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
       "@type": "WebSite",
       "name": "AstroPixel",
-      "url": "https://astropixel.tech",
-      "description": "AstroPixel — Creative Design Agency in Rajshahi, Bangladesh",
-      "publisher": {
-        "@type": "Organization",
-        "name": "AstroPixel"
+      "url": "https://astropixel.tech/",
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": "https://astropixel.tech/work?search={search_term_string}",
+        "query-input": "required name=search_term_string"
       }
     }
     </script>
 
-    <!-- JSON-LD Structured Data - GEO & AI Search FAQPage (Section 13) -->
+    <!-- Structured Data: FAQPage (JSON-LD) -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -219,10 +208,18 @@
       "mainEntity": [
         {
           "@type": "Question",
-          "name": "What does AstroPixel do?",
+          "name": "What is AstroPixel?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "AstroPixel is a creative design agency based in Rajshahi, Bangladesh, offering logo design, brand identity, UI/UX design, web design & development, and social media design for startups and small businesses worldwide."
+            "text": "AstroPixel is a creative design agency based in Rajshahi, Bangladesh, founded by Sofiullah Ahammad. We craft logos, brand identities, UI/UX designs, websites, and digital products."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What services does AstroPixel offer?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "AstroPixel offers five core service clusters: (1) Logo & Brand Identity Design, (2) Branding & Brand Strategy, (3) UI/UX Design, (4) Web Design & Development, and (5) Social Media Design."
           }
         },
         {
@@ -243,18 +240,10 @@
         },
         {
           "@type": "Question",
-          "name": "What services does AstroPixel offer?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "AstroPixel offers five core service clusters: (1) Logo & Brand Identity Design, (2) Branding & Brand Strategy, (3) UI/UX Design, (4) Web Design & Development, and (5) Social Media Design."
-          }
-        },
-        {
-          "@type": "Question",
           "name": "How can I contact AstroPixel?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "You can contact AstroPixel through the official website at astropixel.tech, email at contact@astropixel.tech, or via WhatsApp and social channels."
+            "text": "You can contact AstroPixel through the official website at astropixel.tech, email at hello@astropixel.tech, or via WhatsApp and social channels."
           }
         }
       ]
@@ -263,7 +252,9 @@
   </head>
 
   <body>
-    <div id="root">
+    <div id="root"></div>
+    <!-- Hidden SEO Fallback Markup for Search Engine Crawlers -->
+    <div style="display: none;" aria-hidden="true">
       <header>
         <nav aria-label="Main Navigation">
           <a href="/">Home</a>
