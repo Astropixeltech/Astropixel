@@ -33,6 +33,7 @@ import { Sparkles as SparklesFx } from "@/components/ui/sparkles";
 import { Link } from "react-router-dom";
 import LayoutComponent from "@/components/Layout";
 import FinalCTAInquirySection from "@/components/FinalCTAInquirySection";
+import { MarqueeLogoScroller } from "@/components/ui/marquee-logo-scroller";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Pagination } from "swiper/modules";
 import "swiper/css";
@@ -415,6 +416,49 @@ const Index = () => {
     { value: "100%", label: c("stats.satisfaction_label", "home.stats.satisfaction") || "Satisfaction" },
   ];
 
+  const aiDesignTools = [
+    {
+      src: 'https://svgl.app/library/figma.svg',
+      alt: 'Figma',
+      gradient: { from: '#C4C2FF', via: '#9896FF', to: '#5B4DCC' },
+    },
+    {
+      src: 'https://svgl.app/library/chatgpt.svg',
+      alt: 'ChatGPT & AI Tools',
+      gradient: { from: '#67F0D1', via: '#10A37F', to: '#0B654E' },
+    },
+    {
+      src: 'https://svgl.app/library/midjourney.svg',
+      alt: 'Midjourney',
+      gradient: { from: '#668CFF', via: '#0049FF', to: '#003199' },
+    },
+    {
+      src: 'https://svgl.app/library/framer.svg',
+      alt: 'Framer',
+      gradient: { from: '#FF66A1', via: '#0055FF', to: '#000000' },
+    },
+    {
+      src: 'https://svgl.app/library/claude-ai.svg',
+      alt: 'Claude AI',
+      gradient: { from: '#FFD79E', via: '#D97757', to: '#8B3E2B' },
+    },
+    {
+      src: 'https://svgl.app/library/shopify.svg',
+      alt: 'Shopify',
+      gradient: { from: '#D9FF5A', via: '#95BF47', to: '#5E8E3E' },
+    },
+    {
+      src: 'https://svgl.app/library/lottielab.svg',
+      alt: 'Lottie Animations',
+      gradient: { from: '#FFE766', via: '#FFCE00', to: '#B38F00' },
+    },
+    {
+      src: 'https://svgl.app/library/google-cloud.svg',
+      alt: 'Google Cloud',
+      gradient: { from: '#8AA7FF', via: '#4285F4', to: '#1A73E8' },
+    },
+  ];
+
   const testimonials = [
     { name: c("testimonial1.name", "home.testimonial1.name"), role: c("testimonial1.role", "home.testimonial1.role"), content: c("testimonial1.content", "home.testimonial1.content"), rating: 5 },
     { name: c("testimonial2.name", "home.testimonial2.name"), role: c("testimonial2.role", "home.testimonial2.role"), content: c("testimonial2.content", "home.testimonial2.content"), rating: 5 },
@@ -646,8 +690,18 @@ const Index = () => {
       {/* Start of White Background Content */}
       <div className="relative z-10 bg-white rounded-t-[40px] md:rounded-t-[80px]">
 
-        {/* OUR TEAM or OTHER SECTIONS would go here if they exist */}
-        
+        {/* ══════════ AI-POWERED DESIGN MARQUEE ══════════ */}
+        <section className="py-10 lg:py-16 relative">
+          <div className="container mx-auto px-6">
+            <MarqueeLogoScroller
+              title="Smarter Design, Supercharged by AI"
+              description="From wireframes to launch, we blend AI tools with strategy to deliver faster, sharper, and data-led design results."
+              logos={aiDesignTools}
+              speed="normal"
+            />
+          </div>
+        </section>
+
         {/* ══════════ TESTIMONIALS ══════════ */}
         <section className="py-12 lg:py-16 relative">
 
