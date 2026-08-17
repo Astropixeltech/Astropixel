@@ -25,7 +25,7 @@ const ContactPage = () => {
   const getPreferred = (pk: string, fk: string, fb: string) => getPageContent(pk) || getFooterContent(fk) || fb;
 
   const phone = getPreferred("info.phone", "phone", "+880 1344-497808");
-  const email = getPreferred("info.email", "email", "contact@astropixel.tech").trim();
+  const email = getPreferred("info.email", "email", "hello@astropixel.tech").trim();
   const address = getPreferred("info.address", "address", t("contact.locationValue"));
   const whatsappValue = getPageContent("info.whatsapp")?.trim();
   const whatsappLink =

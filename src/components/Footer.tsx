@@ -29,10 +29,12 @@ const Footer = () => {
     return content?.content_en ?? null;
   };
 
+  const getIcon = (name: string) => ICON_MAP[name] || Globe;
+
   const socialLinks = footerLinks?.filter(link => link.link_type === 'social') || [];
   const defaultSocialLinks = [
     { name: "Website", url: "https://www.astropixel.tech", icon: "Globe" },
-    { name: "Email", url: "mailto:agency.alphazero@gmail.com", icon: "Mail" },
+    { name: "Email", url: "mailto:hello@astropixel.tech", icon: "Mail" },
     { name: "Discord", url: "https://discord.gg/uerwPXFf5", icon: "Discord" },
     { name: "YouTube", url: "https://youtube.com", icon: "Youtube" },
     { name: "X (Twitter)", url: "https://x.com/AgencyAlphazero", icon: "Twitter" },
@@ -57,7 +59,7 @@ const Footer = () => {
     { name: "Digital Marketing", href: "/services" },
   ];
 
-  const email = getContent('email') || 'agency.alphazero@gmail.com';
+  const email = getContent('email') || 'hello@astropixel.tech';
   const address = getContent('address') || 'Rajshahi, Bangladesh';
   const description = getContent('description') || 'Astropixel is a creative studio blending strategy, design and technology to craft standout digital experiences.';
 
@@ -93,12 +95,12 @@ const Footer = () => {
                   Explore
                 </h4>
               </div>
-              <ul className="space-y-3.5">
+              <ul className="space-y-3 text-sm">
                 {explore.map((item) => (
                   <li key={item.name}>
                     <Link
                       to={item.href}
-                      className="text-[15px] text-background/75 hover:text-background transition-colors"
+                      className="text-background/70 hover:text-background transition-colors"
                     >
                       {item.name}
                     </Link>
@@ -115,13 +117,12 @@ const Footer = () => {
                   Services
                 </h4>
               </div>
-              <ul className="space-y-3.5">
-                {services.map((item, i) => (
-                  <li key={i} className="flex items-center gap-2.5">
-                    <span className="w-1 h-1 rounded-full bg-background/40" />
+              <ul className="space-y-3 text-sm">
+                {services.map((item) => (
+                  <li key={item.name}>
                     <Link
                       to={item.href}
-                      className="text-[15px] text-background/75 hover:text-background transition-colors"
+                      className="text-background/70 hover:text-background transition-colors"
                     >
                       {item.name}
                     </Link>
@@ -138,46 +139,47 @@ const Footer = () => {
                   Office
                 </h4>
               </div>
-              <p className="text-[15px] text-background/75 leading-relaxed mb-5 whitespace-pre-line">
-                {address}
-              </p>
-              <Link
-                to="/contact"
-                className="inline-flex items-center gap-2 rounded-full bg-primary text-primary-foreground px-5 py-2.5 text-sm font-medium hover:opacity-90 transition-opacity"
-              >
-                Get in touch
-                <ArrowUpRight size={16} />
-              </Link>
+              <div className="space-y-3 text-sm text-background/70">
+                <p>{address}</p>
+                <a
+                  href={`mailto:${email}`}
+                  className="block hover:text-background transition-colors"
+                >
+                  {email}
+                </a>
+              </div>
             </div>
           </div>
 
-          {/* Divider */}
-          <div className="my-10 sm:my-12 h-px w-full bg-background/10" />
-
-          {/* Social row */}
-          <div className="flex flex-wrap items-center justify-center gap-3">
-            {displaySocialLinks.map((social) => {
-              const Icon = ICON_MAP[social.icon] || Globe;
-              return (
-                <a
-                  key={social.name}
-                  href={social.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label={social.name}
-                  className="w-11 h-11 rounded-xl bg-background/5 hover:bg-background/10 border border-background/10 flex items-center justify-center text-background/70 hover:text-background transition-all"
-                >
-                  <Icon size={18} />
-                </a>
-              );
-            })}
+          {/* Social Links Bar */}
+          <div className="mt-14 pt-8 border-t border-background/10 flex flex-wrap items-center justify-between gap-4">
+            <span className="text-xs tracking-wider uppercase text-background/40 font-medium">
+              Connect With Us
+            </span>
+            <div className="flex items-center gap-3">
+              {displaySocialLinks.map((item) => {
+                const Icon = getIcon(item.icon);
+                return (
+                  <a
+                    key={item.name}
+                    href={item.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={item.name}
+                    className="w-10 h-10 rounded-full border border-background/15 flex items-center justify-center text-background/70 hover:text-background hover:border-background/40 hover:scale-105 transition-all duration-300"
+                  >
+                    <Icon size={18} />
+                  </a>
+                );
+              })}
+            </div>
           </div>
 
           {/* Bottom */}
           <div className="mt-10 pt-6 border-t border-background/10 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-background/50">
             <span>© {new Date().getFullYear()} Astropixel — {t("footer.rights") || "All rights reserved."}</span>
             <a
-              href="mailto:agency.alphazero@gmail.com"
+              href={`mailto:${email}`}
               className="hover:text-background transition-colors"
             >
               {email}
