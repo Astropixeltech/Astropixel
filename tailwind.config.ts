@@ -16,6 +16,7 @@ export default {
       fontFamily: {
         display: ['Poppins', 'sans-serif'],
         body: ['Poppins', 'sans-serif'],
+        serif: ['Playfair Display', 'Cormorant Garamond', 'Instrument Serif', 'Georgia', 'serif'],
         'display-bn': ['SabinaShorolipi', 'MahinRafid', 'sans-serif'],
         'subtitle-bn': ['MahinRafid', 'Aloka', 'sans-serif'],
         'body-bn': ['Aloka', 'Hind Siliguri', 'sans-serif'],

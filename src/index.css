@@ -1,5 +1,5 @@
 /* Font loading optimized with display=swap for better FCP/LCP */
-@import url('https://fonts.bunny.net/css?family=poppins:300,400,500,600,700,800,900|hind-siliguri:400,500,600,700|mea-culpa:400|caveat:400,500,600,700|playfair-display:400,500,600,700,800,900|roboto:400,500,700,900&display=swap');
+@import url('https://fonts.bunny.net/css?family=poppins:300,400,500,600,700,800,900|playfair-display:400,400i,600,600i,700,700i,900,900i|instrument-serif:400,400i|cormorant-garamond:400,400i,600,600i,700,700i|hind-siliguri:400,500,600,700|mea-culpa:400|caveat:400,500,600,700|roboto:400,500,700,900&display=swap');
 
 @tailwind base;
 @tailwind components;

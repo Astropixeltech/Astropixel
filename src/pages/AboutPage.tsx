@@ -152,7 +152,7 @@ const AboutPage = () => {
                 </div>
                 <h2 className="text-4xl sm:text-5xl lg:text-6xl font-display font-bold leading-[1.05] tracking-tight mb-8">
                   {c("story.title", "about.story.title")}{" "}
-                  <span className="gradient-text">Astropixel</span>{" "}
+                  <span className="font-serif italic font-normal gradient-text">Astropixel</span>{" "}
                   {c("story.title2", "about.story.title2")}
                 </h2>
                 <div className="space-y-5 text-muted-foreground text-base lg:text-lg leading-relaxed max-w-xl mb-10">
@@ -184,7 +184,7 @@ const AboutPage = () => {
               <div className="inline-flex items-center gap-3 mb-5 text-[10px] font-bold tracking-[0.3em] uppercase text-muted-foreground">
                 <span>›</span><span>Team</span><span>‹</span>
               </div>
-              <h2 className="text-4xl lg:text-6xl font-display font-bold tracking-tight">People behind the work</h2>
+              <h2 className="text-4xl lg:text-6xl font-display font-bold tracking-tight">People <span className="font-serif italic font-normal">behind</span> the work</h2>
             </motion.div>
             <TeamBento />
           </div>

@@ -27,7 +27,7 @@ const HomeTeamSection = () => {
           </div>
           <h2 className="text-3xl lg:text-5xl xl:text-6xl font-display font-bold">
             {t("team.title") || "Meet the"}{" "}
-            <span className="gradient-text">{t("team.title2") || "Team"}</span>
+            <span className="font-serif italic font-normal gradient-text">{t("team.title2") || "Team"}</span>
           </h2>
         </motion.div>
 

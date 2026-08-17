@@ -129,7 +129,7 @@ const WorkPage = () => {
                   return (
                     <>
                       <span>{parts[0]}</span>
-                      <span className="gradient-text">{parts[1]}</span>
+                      <span className="font-serif italic font-normal gradient-text">{parts[1]}</span>
                       <span>{parts.slice(2).join("|")}</span>
                     </>
                   );

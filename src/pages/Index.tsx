@@ -492,7 +492,7 @@ const Index = () => {
                 {/* Centered headline */}
                 <div className="text-center max-w-3xl mx-auto mb-8 lg:mb-10">
                   <h2 className="text-2xl sm:text-3xl lg:text-4xl font-display font-semibold tracking-[-0.02em] text-foreground leading-[1.2]">
-                    Trusted by <span className="text-primary">26+</span> brands
+                    Trusted by <span className="font-serif italic font-normal text-primary">26+</span> brands
                   </h2>
                 </div>
 
@@ -522,7 +522,7 @@ const Index = () => {
             className="text-center mb-10 lg:mb-28"
           >
             <h2 className="text-3xl lg:text-5xl xl:text-6xl font-display font-bold mb-4">
-              {c("whatWeDo", "home.whatWeDo")} <span className="gradient-text">{c("do", "home.do")}</span>
+              {c("whatWeDo", "home.whatWeDo")} <span className="font-serif italic font-normal gradient-text">{c("do", "home.do")}</span>
             </h2>
             <p className="text-muted-foreground max-w-xl mx-auto text-base lg:text-lg">
               We craft designs, websites & brand visuals that stand out.
@@ -662,7 +662,7 @@ const Index = () => {
               <span className="text-xs font-bold tracking-[0.2em] uppercase text-primary">{c("testimonials", "home.testimonials")}</span>
             </div>
             <h2 className="text-3xl lg:text-5xl xl:text-6xl font-display font-bold">
-              {c("whatClientsSay", "home.whatClientsSay")} <span className="gradient-text">{c("say", "home.say")}</span>
+              {c("whatClientsSay", "home.whatClientsSay")} <span className="font-serif italic font-normal gradient-text">{c("say", "home.say")}</span>
             </h2>
           </motion.div>
 
@@ -751,8 +751,8 @@ const TrustedByExperts = () => {
           viewport={{ once: true }}
           className="font-display text-2xl font-medium leading-[1.25] text-[#cfd6ff] md:text-[28px]"
         >
-          <span className="block">Trusted by experts.</span>
-          <span className="block text-[#f5f3ff]">Used by the leaders.</span>
+          <span className="block">Trusted by <span className="font-serif italic font-normal text-white">experts.</span></span>
+          <span className="block text-[#f5f3ff]">Used by <span className="font-serif italic font-normal text-white">leaders.</span></span>
         </motion.h2>
 
         <motion.div

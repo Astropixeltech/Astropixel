@@ -141,7 +141,7 @@ const ServicesPage = () => {
               {hero("hero.title2", t("services.title2"))}
               <br />
               {hero("hero.title3", t("services.title3"))}{" "}
-              <span>{hero("hero.title4", "Matter")}</span>
+              <span className="font-serif italic font-normal text-white">{hero("hero.title4", "Matter")}</span>
             </motion.h1>
 
             <motion.p

@@ -92,7 +92,7 @@ const ContactPage = () => {
                 <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse" /> Available for new projects
               </div>
               <h1 className="text-[15vw] sm:text-[11vw] lg:text-[9rem] font-display font-bold leading-[0.9] tracking-[-0.03em] text-white">
-                Let's talk.
+                Let's <span className="font-serif italic font-normal text-white">talk.</span>
               </h1>
               <p className="mt-6 text-base lg:text-xl text-white/80 max-w-xl leading-relaxed">
                 Tell us about your idea. Whether it's a rebrand, a launch, or a full digital product — we reply within 24 hours.
@@ -132,7 +132,7 @@ const ContactPage = () => {
               <div className="sticky top-28">
                 <div className="text-xs uppercase tracking-[0.2em] text-neutral-500 mb-4">Get in touch</div>
                 <h2 className="text-4xl lg:text-5xl font-display font-bold leading-[1.05] tracking-tight text-black mb-5">
-                  Every great project<br />starts with a hello.
+                  Every <span className="font-serif italic font-normal">great project</span><br />starts with a <span className="font-serif italic font-normal text-primary">hello.</span>
                 </h2>
                 <p className="text-neutral-600 leading-relaxed">
                   Pick the channel that suits you best — our team is spread across time zones so someone is always around.
