@@ -150,21 +150,6 @@ export const FinalCTAInquirySection = () => {
                   <p className="text-xs text-slate-500 font-medium">
                     COO & Co-founder
                   </p>
-
-                  <div className="pt-2 space-y-1 text-xs">
-                    <div className="flex items-center gap-2 text-slate-600">
-                      <MessageCircle size={14} className="text-purple-600" />
-                      <span>+880 1846-484200</span>
-                    </div>
-                    <a
-                      href="https://wa.me/8801846484200"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-block text-purple-600 hover:text-purple-700 font-semibold text-xs sm:text-sm transition-colors"
-                    >
-                      Book a Call Directly
-                    </a>
-                  </div>
                 </div>
               </div>
 
@@ -285,40 +270,6 @@ export const FinalCTAInquirySection = () => {
 
           </div>
         </motion.div>
-
-        {/* ══════════ BOTTOM LIME TRUST STRIP ══════════ */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.2 }}
-          className="mt-8 sm:mt-10 max-w-4xl mx-auto rounded-full bg-[#CEF834] text-slate-950 font-semibold text-xs sm:text-sm py-3.5 px-6 flex flex-col sm:flex-row items-center justify-between gap-3 shadow-xl shadow-lime-500/20 border border-lime-400"
-        >
-          {/* Avatars */}
-          <div className="flex items-center gap-3">
-            <div className="flex -space-x-2">
-              {[1, 2, 3, 4].map((i) => (
-                <img
-                  key={i}
-                  src={`https://i.pravatar.cc/100?img=${i + 20}`}
-                  alt="Client avatar"
-                  width={30}
-                  height={30}
-                  className="w-7 h-7 sm:w-8 sm:h-8 rounded-full border-2 border-[#CEF834] object-cover"
-                />
-              ))}
-              <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-slate-900 text-white text-[10px] sm:text-xs font-bold flex items-center justify-center border-2 border-[#CEF834]">
-                40+
-              </div>
-            </div>
-          </div>
-
-          {/* Guarantee Statement */}
-          <div className="text-center sm:text-right text-slate-950 font-medium leading-tight">
-            Get 100% Value And Guarantee. Don’t Miss Out - Secure Your <span className="font-serif italic font-bold">Brand’s Future Today</span>
-          </div>
-        </motion.div>
-
       </div>
     </section>
   );
