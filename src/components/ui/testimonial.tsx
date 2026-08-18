@@ -20,7 +20,7 @@ function ClientFeedback() {
       y: -20,
       opacity: 0,
     },
-  };
+  } as any;
 
   return (
     <main className="w-full bg-white text-black py-6 md:py-10 rounded-3xl overflow-hidden">
