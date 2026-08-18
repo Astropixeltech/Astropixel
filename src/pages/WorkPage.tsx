@@ -293,32 +293,12 @@ const WorkPage = () => {
                                   )}
                                 </div>
 
-                                {/* Tags & Action */}
-                                <div className="pt-4 mt-4 border-t border-slate-100 flex items-center justify-between gap-3">
-                                  <div className="flex flex-wrap items-center gap-1.5 min-w-0">
-                                    {project.tags && project.tags.length > 0 ? (
-                                      project.tags.slice(0, 3).map((tag, idx) => (
-                                        <span
-                                          key={idx}
-                                          className="px-2 py-0.5 rounded-md bg-slate-100 text-slate-600 text-[11px] font-medium truncate"
-                                        >
-                                          {tag}
-                                        </span>
-                                      ))
-                                    ) : (
-                                      <span className="px-2 py-0.5 rounded-md bg-slate-100 text-slate-500 text-[11px] font-medium">
-                                        Portfolio
-                                      </span>
-                                    )}
-                                  </div>
-
-                                  <button
-                                    type="button"
-                                    className="shrink-0 flex items-center gap-1 text-xs font-bold text-[#6D28D9] group-hover:text-[#9333EA] transition-colors py-1 px-2 rounded-lg group-hover:bg-purple-50"
-                                  >
+                                {/* Compact View Action */}
+                                <div className="flex items-center justify-end mt-4">
+                                  <span className="inline-flex items-center gap-1 text-xs font-bold text-[#6D28D9] bg-purple-50 group-hover:bg-[#6D28D9] group-hover:text-white px-3 py-1.5 rounded-full transition-all duration-300 shadow-xs">
                                     <span>View</span>
-                                    <ArrowUpRight size={14} className="transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-                                  </button>
+                                    <ArrowUpRight size={13} className="transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                                  </span>
                                 </div>
                               </div>
                             </div>
