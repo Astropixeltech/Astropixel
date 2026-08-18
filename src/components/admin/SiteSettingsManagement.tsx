@@ -8,9 +8,13 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Switch } from "@/components/ui/switch";
 import { toast } from "sonner";
 import { Settings, Image, Type, Save, Loader2 } from "lucide-react";
+type SiteSetting = { id: string; setting_key: string; setting_value: string | null; setting_type: string; site_scope: string };
+
+const PAYMENT_KEYS = new Set<string>(['bkash_enabled','nagad_enabled','bkash_number','nagad_number','payment_instructions','uddoktapay_enabled']);
+
 const SiteSettingsManagement = ({ filter }: { filter?: 'general' | 'payment' } = {}) => {
   const queryClient = useQueryClient();
-  const scope = "agency";
+  const scope: string = "agency";
   const [editedSettings, setEditedSettings] = useState<Record<string, string>>({});
 
   const { data: settings, isLoading } = useQuery({
@@ -156,7 +160,6 @@ const SiteSettingsManagement = ({ filter }: { filter?: 'general' | 'payment' } =
             </p>
           </div>
         </div>
-        <AdminSiteScopeSwitcher />
       </div>
 
 

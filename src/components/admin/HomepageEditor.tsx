@@ -110,7 +110,7 @@ const getSchema = (key: string): SectionSchema =>
 /* --------------------------------- Root ---------------------------------- */
 
 const HomepageEditor = () => {
-  const { scope } = useAdminScope();
+  const scope = "agency";
   const { data: sections, isLoading } = useHomepageSections(scope);
   const [selectedPage, setSelectedPage] = useState<"home" | null>(null);
   const [selectedSectionId, setSelectedSectionId] = useState<string | null>(null);
@@ -469,6 +469,11 @@ const SectionItemsEditor = ({
       await createItem.mutateAsync({
         section_id: sectionId,
         title: "",
+        subtitle: null,
+        description: null,
+        image_url: null,
+        image_url_2: null,
+        url: null,
         order_index: nextOrder,
         is_active: true,
       });
