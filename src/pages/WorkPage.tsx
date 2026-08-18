@@ -270,9 +270,9 @@ const WorkPage = () => {
                                   <div className="w-full h-full flex items-center justify-center text-slate-400 text-sm">No preview</div>
                                 )}
 
-                                {/* Floating Bottom-Right View Button on Image */}
+                                {/* Floating Bottom-Right Frosted Glass View Button on Image */}
                                 <div className="absolute bottom-2.5 right-2.5 z-10">
-                                  <span className="inline-flex items-center gap-1 text-[11px] font-bold text-[#6D28D9] bg-white/95 backdrop-blur-md group-hover:bg-[#6D28D9] group-hover:text-white px-2.5 py-1 rounded-full transition-all duration-300 shadow-md border border-white/50">
+                                  <span className="inline-flex items-center gap-1 text-[11px] font-bold text-slate-900 bg-white/40 backdrop-blur-md border border-white/60 group-hover:bg-[#6D28D9] group-hover:border-[#6D28D9] group-hover:text-white px-3 py-1.5 rounded-full transition-all duration-300 shadow-[0_4px_15px_rgba(0,0,0,0.15)]">
                                     <span>View</span>
                                     <ArrowUpRight size={12} className="transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
                                   </span>
