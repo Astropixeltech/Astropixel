@@ -223,23 +223,13 @@ const WorkPage = () => {
                   className="scroll-mt-28 md:scroll-mt-36"
                 >
                   {/* Category Section Header */}
-                  <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8 md:mb-10 pt-4">
-                    <div>
-                      <div className="flex items-center gap-2 mb-2">
-                        <span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-bold border ${categorySection.badgeColor}`}>
-                          0{sectionIdx + 1}. {categorySection.title}
-                        </span>
-                        <span className="text-xs font-semibold text-slate-400 bg-slate-100 px-2.5 py-1 rounded-full">
-                          {categoryProjects.length} Projects
-                        </span>
-                      </div>
-                      <h2 className="text-2xl sm:text-3xl lg:text-4xl font-display font-bold text-[#083344] tracking-tight">
-                        {categorySection.title}
-                      </h2>
-                      <p className="text-slate-500 text-sm sm:text-base max-w-2xl mt-1.5 leading-relaxed">
-                        {categorySection.subtitle}
-                      </p>
-                    </div>
+                  <div className="mb-8 md:mb-10 pt-4">
+                    <h2 className="text-2xl sm:text-3xl lg:text-4xl font-display font-bold text-[#083344] tracking-tight">
+                      {categorySection.title}
+                    </h2>
+                    <p className="text-slate-500 text-sm sm:text-base max-w-2xl mt-1.5 leading-relaxed">
+                      {categorySection.subtitle}
+                    </p>
                   </div>
 
                   {/* Category Project Grid */}
