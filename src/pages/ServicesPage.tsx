@@ -16,6 +16,7 @@ import {
   PenTool,
   Code,
   Zap,
+  Rocket,
   CheckCircle,
   Video,
   TrendingUp,
@@ -72,13 +73,13 @@ const ServicesPage = () => {
   const { data: allServices, isLoading } = useServices();
 
   // Show all active services
-  const services = (allServices || []).slice(0, 4);
+  const services = allServices || [];
 
   const processSteps = [
     { step: "01", titleKey: "services.process.discover", descKey: "services.process.discoverDesc", icon: Search },
     { step: "02", titleKey: "services.process.design", descKey: "services.process.designDesc", icon: PenTool },
     { step: "03", titleKey: "services.process.develop", descKey: "services.process.developDesc", icon: Code },
-    { step: "04", titleKey: "services.process.deliver", descKey: "services.process.deliverDesc", icon: Zap },
+    { step: "04", titleKey: "services.process.deliver", descKey: "services.process.deliverDesc", icon: Rocket },
   ];
 
   const getIcon = (iconName: string | null) => {
@@ -90,8 +91,8 @@ const ServicesPage = () => {
   return (
     <LayoutComponent>
       <SEO 
-        title="Creative Design Services — Logo, Branding, UI/UX, Web Design | AstroPixel" 
-        description="Explore AstroPixel design services: Logo & Brand Identity, Branding Strategy, UI/UX Design, Web Design & Development, and Social Media Design." 
+        title="Creative Services — Logo, Branding, UI/UX, Web Dev | AstroPixel" 
+        description="Explore AstroPixel design services: Logo & Brand Identity, UI/UX Design, Web Development, SaaS, and Digital Marketing." 
         canonical="https://astropixel.tech/services" 
       />
       {/* Hero */}
@@ -111,46 +112,24 @@ const ServicesPage = () => {
           style={{ filter: "blur(16px)" }}
         />
 
-
-
-
-
-
-
-        {/* Left decorative image slot — add your image here */}
-        <div className="absolute -left-10 top-24 lg:left-4 lg:top-32 w-32 h-32 lg:w-56 lg:h-56 pointer-events-none z-[5]">
-          {/* <img src="/your-left-image.png" alt="" className="w-full h-full object-contain" /> */}
-        </div>
-
-        {/* Right decorative image slot — add your image here */}
-        <div className="absolute -right-10 -top-4 lg:right-6 lg:top-10 w-36 h-36 lg:w-64 lg:h-64 pointer-events-none z-[5]">
-          {/* <img src="/your-right-image.png" alt="" className="w-full h-full object-contain" /> */}
-        </div>
-
-
         <div className="container mx-auto px-6 relative z-10">
           <div className="max-w-4xl mx-auto text-center">
-
             <motion.h1
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.1 }}
-              className="text-4xl sm:text-5xl lg:text-7xl font-bold leading-[1.05] text-white mb-6"
+              className="text-4xl sm:text-5xl lg:text-7xl font-bold leading-[1.05] text-white mb-4"
             >
-              {hero("hero.title", t("services.title"))}{" "}
-              {hero("hero.title2", t("services.title2"))}
-              <br />
-              {hero("hero.title3", t("services.title3"))}{" "}
-              <span className="font-serif italic font-normal text-white">{hero("hero.title4", "Matter")}</span>
+              Our Creative <span className="font-serif italic font-normal text-white">Services</span>
             </motion.h1>
 
             <motion.p
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2 }}
-              className="text-base lg:text-lg text-white/60 max-w-2xl mx-auto"
+              className="text-base lg:text-lg text-white/60 max-w-xl mx-auto"
             >
-              {hero("hero.description", t("services.description"))}
+              Comprehensive design, branding, web development, and marketing solutions built to scale your business.
             </motion.p>
           </div>
         </div>
