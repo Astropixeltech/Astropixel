@@ -30,8 +30,6 @@ import {
   Phone,
   MapPin
 } from "lucide-react";
-import { useAdminScope } from "@/contexts/AdminSiteScopeContext";
-import AdminSiteScopeSwitcher from "@/components/admin/AdminSiteScopeSwitcher";
 
 interface FooterLink {
   id: string;
@@ -65,7 +63,7 @@ const ICON_OPTIONS = [
 
 const FooterManagement = () => {
   const queryClient = useQueryClient();
-  const { scope } = useAdminScope();
+  const scope = "agency";
   const [activeTab, setActiveTab] = useState("links");
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
   const [editingLink, setEditingLink] = useState<FooterLink | null>(null);

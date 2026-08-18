@@ -13,7 +13,6 @@ import {
   ExternalLink, GripVertical, ImagePlus, Eye, EyeOff, MousePointerClick,
   MessageSquare, PhoneCall,
 } from "lucide-react";
-import { useAdminScope } from "@/contexts/AdminSiteScopeContext";
 import ImageUploader from "@/components/admin/ImageUploader";
 import {
   useHomepageSections,

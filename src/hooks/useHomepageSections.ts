@@ -1,7 +1,7 @@
 import { useQuery, useQueryClient, useMutation } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useEffect } from "react";
-import { useSiteScope, SiteScope } from "@/contexts/SiteScopeContext";
+import { toast } from "sonner";
 
 export interface HomepageSection {
   id: string;
@@ -34,140 +34,171 @@ export interface HomepageSectionItem {
   is_active: boolean;
 }
 
-
 export const useHomepageSections = (
-  scopeOverride?: SiteScope,
+  scopeOverride?: string,
   pageKey: string = "home"
 ) => {
-  const qc = useQueryClient();
-  const detected = useSiteScope();
-  const scope = scopeOverride ?? detected;
+  const queryClient = useQueryClient();
+  const scope = scopeOverride ?? "agency";
 
   useEffect(() => {
-    const ch = supabase
-      .channel(`hp-sections-${scope}-${pageKey}`)
+    const channel = supabase
+      .channel(`hp-sec-${scope}-${pageKey}`)
       .on(
-        "postgres_changes",
-        { event: "*", schema: "public", table: "homepage_sections" },
-        () => qc.invalidateQueries({ queryKey: ["hp-sections", scope, pageKey] })
+        'postgres_changes',
+        { event: '*', schema: 'public', table: 'homepage_sections' },
+        () => {
+          queryClient.invalidateQueries({ queryKey: ['homepage-sections', scope, pageKey] });
+        }
       )
       .subscribe();
+
     return () => {
-      supabase.removeChannel(ch);
+      supabase.removeChannel(channel);
     };
-  }, [qc, scope, pageKey]);
+  }, [queryClient, scope, pageKey]);
 
   return useQuery({
-    queryKey: ["hp-sections", scope, pageKey],
+    queryKey: ['homepage-sections', scope, pageKey],
     queryFn: async () => {
       const { data, error } = await supabase
-        .from("homepage_sections" as any)
-        .select("*")
-        .eq("site_scope", scope)
-        .eq("page_key", pageKey)
-        .order("order_index");
+        .from('homepage_sections')
+        .select('*')
+        .eq('site_scope', scope)
+        .eq('page_key', pageKey)
+        .order('order_index');
+
       if (error) throw error;
-      return (data ?? []) as unknown as HomepageSection[];
+      return (data || []) as HomepageSection[];
     },
   });
 };
 
 export const useHomepageSection = (
   sectionKey: string,
-  scopeOverride?: SiteScope,
+  scopeOverride?: string,
   pageKey: string = "home"
 ) => {
-  const { data: sections, ...rest } = useHomepageSections(scopeOverride, pageKey);
-  const section = sections?.find((s) => s.section_key === sectionKey) ?? null;
-  return { section, ...rest };
+  const { data: sections, isLoading } = useHomepageSections(scopeOverride, pageKey);
+  const section = sections?.find((s) => s.section_key === sectionKey);
+  return { section, isLoading };
 };
 
-export const useHomepageSectionItems = (sectionId: string | null | undefined) => {
-  const qc = useQueryClient();
+export const useHomepageSectionItems = (sectionId?: string) => {
+  const queryClient = useQueryClient();
 
   useEffect(() => {
     if (!sectionId) return;
-    const ch = supabase
+    const channel = supabase
       .channel(`hp-items-${sectionId}`)
       .on(
-        "postgres_changes",
-        { event: "*", schema: "public", table: "homepage_section_items", filter: `section_id=eq.${sectionId}` },
-        () => qc.invalidateQueries({ queryKey: ["hp-items", sectionId] })
+        'postgres_changes',
+        { event: '*', schema: 'public', table: 'homepage_section_items' },
+        () => {
+          queryClient.invalidateQueries({ queryKey: ['homepage-section-items', sectionId] });
+        }
       )
       .subscribe();
+
     return () => {
-      supabase.removeChannel(ch);
+      supabase.removeChannel(channel);
     };
-  }, [qc, sectionId]);
+  }, [queryClient, sectionId]);
 
   return useQuery({
-    queryKey: ["hp-items", sectionId],
-    enabled: !!sectionId,
+    queryKey: ['homepage-section-items', sectionId],
     queryFn: async () => {
+      if (!sectionId) return [];
       const { data, error } = await supabase
-        .from("homepage_section_items" as any)
-        .select("*")
-        .eq("section_id", sectionId!)
-        .order("order_index");
+        .from('homepage_section_items')
+        .select('*')
+        .eq('section_id', sectionId)
+        .order('order_index');
+
       if (error) throw error;
-      return (data ?? []) as unknown as HomepageSectionItem[];
+      return (data || []) as HomepageSectionItem[];
     },
+    enabled: !!sectionId,
   });
 };
 
 export const useUpdateSection = () => {
-  const qc = useQueryClient();
+  const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: async (payload: Partial<HomepageSection> & { id: string }) => {
-      const { id, ...patch } = payload;
-      const { error } = await supabase
-        .from("homepage_sections" as any)
-        .update(patch as any)
-        .eq("id", id);
+    mutationFn: async (section: Partial<HomepageSection> & { id: string }) => {
+      const { data, error } = await supabase
+        .from('homepage_sections')
+        .update(section)
+        .eq('id', section.id)
+        .select()
+        .single();
       if (error) throw error;
+      return data;
     },
-    onSuccess: () => qc.invalidateQueries({ queryKey: ["hp-sections"] }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['homepage-sections'] });
+      toast.success('Section saved');
+    },
+    onError: (err: Error) => {
+      toast.error(err.message || 'Failed to update section');
+    },
   });
 };
 
 export const useCreateSectionItem = () => {
-  const qc = useQueryClient();
+  const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: async (payload: Partial<HomepageSectionItem> & { section_id: string }) => {
-      const { error } = await supabase
-        .from("homepage_section_items" as any)
-        .insert(payload as any);
+    mutationFn: async (item: Omit<HomepageSectionItem, 'id'>) => {
+      const { data, error } = await supabase
+        .from('homepage_section_items')
+        .insert([item])
+        .select()
+        .single();
       if (error) throw error;
+      return data;
     },
-    onSuccess: (_d, v) => qc.invalidateQueries({ queryKey: ["hp-items", v.section_id] }),
+    onSuccess: (_, variables) => {
+      queryClient.invalidateQueries({ queryKey: ['homepage-section-items', variables.section_id] });
+      toast.success('Item added');
+    },
   });
 };
 
 export const useUpdateSectionItem = () => {
-  const qc = useQueryClient();
+  const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: async (payload: Partial<HomepageSectionItem> & { id: string }) => {
-      const { id, ...patch } = payload;
-      const { error } = await supabase
-        .from("homepage_section_items" as any)
-        .update(patch as any)
-        .eq("id", id);
+    mutationFn: async (item: Partial<HomepageSectionItem> & { id: string }) => {
+      const { data, error } = await supabase
+        .from('homepage_section_items')
+        .update(item)
+        .eq('id', item.id)
+        .select()
+        .single();
       if (error) throw error;
+      return data;
     },
-    onSuccess: () => qc.invalidateQueries({ queryKey: ["hp-items"] }),
+    onSuccess: (data) => {
+      if (data) {
+        queryClient.invalidateQueries({ queryKey: ['homepage-section-items', data.section_id] });
+      }
+      toast.success('Item saved');
+    },
   });
 };
 
 export const useDeleteSectionItem = () => {
-  const qc = useQueryClient();
+  const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async (id: string) => {
       const { error } = await supabase
-        .from("homepage_section_items" as any)
+        .from('homepage_section_items')
         .delete()
-        .eq("id", id);
+        .eq('id', id);
       if (error) throw error;
     },
-    onSuccess: () => qc.invalidateQueries({ queryKey: ["hp-items"] }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['homepage-section-items'] });
+      toast.success('Item deleted');
+    },
   });
 };
