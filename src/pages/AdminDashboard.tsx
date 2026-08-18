@@ -1010,7 +1010,7 @@ function AdminDashboardInner() {
                   {language === 'bn' ? 'স্বাগতম' : 'Welcome'}, {profile?.full_name?.split(' ')[0]}
                 </h1>
                 <Badge variant="secondary" className="text-[10px] uppercase tracking-wider">
-                  {scope === 'learn' ? (language === 'bn' ? 'লার্ন সাইট' : 'Learn Site') : (language === 'bn' ? 'এজেন্সি সাইট' : 'Agency Site')}
+                  {language === 'bn' ? 'এজেন্সি সাইট' : 'Agency Site'}
                 </Badge>
               </div>
               <p className="text-sm text-muted-foreground">
@@ -1055,7 +1055,7 @@ function AdminDashboardInner() {
           </div>
 
           {/* Quick Stats - Minimal Cards (Learn scope only) */}
-          {scope === 'learn' && (
+          {(scope as string) === 'learn' && (
             <div className="grid grid-cols-2 lg:grid-cols-5 gap-3">
               {[
                 { icon: BookOpen, value: courses.length, label: language === 'bn' ? 'Course' : 'Courses', color: 'text-sky-500' },
