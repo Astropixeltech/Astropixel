@@ -313,13 +313,6 @@ const WorkPage = () => {
                                   <div className="w-full h-full flex items-center justify-center text-slate-400 text-sm">No preview</div>
                                 )}
 
-                                {/* Category Badge */}
-                                <div className="absolute top-3 left-3 z-10">
-                                  <span className={`inline-flex items-center px-2.5 py-1 rounded-md text-[11px] font-bold border backdrop-blur-md shadow-sm ${categorySection.badgeColor}`}>
-                                    {categorySection.title}
-                                  </span>
-                                </div>
-
                                 {/* Video Play Overlay */}
                                 {isVid && (
                                   <div className="absolute inset-0 flex items-center justify-center pointer-events-none bg-black/20 group-hover:bg-black/10 transition-colors">
