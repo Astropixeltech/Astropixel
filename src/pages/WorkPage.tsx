@@ -270,9 +270,9 @@ const WorkPage = () => {
                                   <div className="w-full h-full flex items-center justify-center text-slate-400 text-sm">No preview</div>
                                 )}
 
-                                {/* Floating Bottom-Right Minimalist Purple View Text & Arrow (No Container) */}
+                                {/* Floating Bottom-Right Minimalist White View Text & Arrow (No Container) */}
                                 <div className="absolute bottom-3 right-3 z-10">
-                                  <span className="inline-flex items-center gap-1 text-xs font-bold text-[#6D28D9] group-hover:text-[#9333EA] transition-colors duration-300">
+                                  <span className="inline-flex items-center gap-1 text-xs font-bold text-white drop-shadow-[0_1px_4px_rgba(0,0,0,0.7)] group-hover:text-purple-200 transition-colors duration-300">
                                     <span>View</span>
                                     <ArrowUpRight size={14} className="transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
                                   </span>
