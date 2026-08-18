@@ -1,5 +1,5 @@
 import { useMemo, useState, useEffect, useCallback } from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import aboutHeroBg from "@/assets/about-hero-blue-orb.jpg.asset.json";
 import { X, Play, ArrowUpRight, Plus, Minus } from "lucide-react";
 import Layout from "@/components/Layout";
@@ -7,17 +7,21 @@ import SEO from "@/components/SEO";
 import { useWorks, type Work } from "@/hooks/useWorks";
 import { usePageHero } from "@/hooks/usePageHero";
 
-
 /* ─── Category helpers ─── */
 const isGraphics = (w: Work) => {
+  if (!w || !w.category) return false;
   const c = w.category;
   return c === "design" || c === "graphics" || c.startsWith("graphics_");
 };
+
 const isWeb = (w: Work) => {
+  if (!w || !w.category) return false;
   const c = w.category;
   return c === "web" || c.startsWith("web_");
 };
+
 const isVideo = (w: Work) => {
+  if (!w || !w.category) return false;
   const c = w.category;
   return c === "video" || c.startsWith("video_");
 };
@@ -64,6 +68,22 @@ const WorkPage = () => {
   const [lightboxImage, setLightboxImage] = useState<{ url: string; title: string; description?: string | null } | null>(null);
   const [activeVideo, setActiveVideo] = useState<Work | null>(null);
 
+  // Preload images to eliminate loading jank/delay on tab switch
+  useEffect(() => {
+    if (!works || works.length === 0) return;
+    works.forEach((project) => {
+      const vid = isVideo(project);
+      const thumbUrl = vid
+        ? getYouTubeThumbnail(project.project_url) || getYouTubeThumbnail(project.image_url) || project.image_url
+        : project.image_url;
+
+      if (thumbUrl) {
+        const img = new Image();
+        img.src = thumbUrl;
+      }
+    });
+  }, [works]);
+
   const filtered = useMemo(() => {
     if (!works) return [];
     if (filter === "all") return works;
@@ -72,15 +92,32 @@ const WorkPage = () => {
     return works.filter(isVideo);
   }, [works, filter]);
 
+  // Handle body overflow & ESC key for modals safely
   useEffect(() => {
     const open = !!lightboxImage || !!activeVideo;
     document.body.style.overflow = open ? "hidden" : "";
-    return () => { document.body.style.overflow = ""; };
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        setLightboxImage(null);
+        setActiveVideo(null);
+      }
+    };
+
+    if (open) {
+      window.addEventListener("keydown", handleKeyDown);
+    }
+    return () => {
+      document.body.style.overflow = "";
+      window.removeEventListener("keydown", handleKeyDown);
+    };
   }, [lightboxImage, activeVideo]);
 
   const handleCardClick = useCallback((w: Work) => {
+    if (!w) return;
     if (isVideo(w)) {
-      if (getVideoEmbed(findVideoUrl(w))) setActiveVideo(w);
+      const vUrl = findVideoUrl(w);
+      if (getVideoEmbed(vUrl)) setActiveVideo(w);
       else if (w.project_url) window.open(w.project_url, "_blank");
       return;
     }
@@ -89,7 +126,7 @@ const WorkPage = () => {
       return;
     }
     if (w.image_url && !getVideoEmbed(w.image_url)) {
-      setLightboxImage({ url: w.image_url, title: w.title, description: w.description });
+      setLightboxImage({ url: w.image_url, title: w.title || "Project Showcase", description: w.description });
     }
   }, []);
 
@@ -100,15 +137,16 @@ const WorkPage = () => {
         description="Browse AstroPixel's design portfolio featuring logo design, brand identity, UI/UX projects, web development, and social media graphics." 
         canonical="https://astropixel.tech/work" 
       />
+      
       {/* Hero — About style */}
       <section id="site-hero" className="relative overflow-hidden -mt-20 pt-32 pb-14 lg:pt-36 lg:pb-18 rounded-b-[2.5rem]">
-        {/* Uploaded background image from About page */}
+        {/* Background image */}
         <img
           src={aboutHeroBg.url}
           alt=""
           loading="eager"
           fetchPriority="high"
-          decoding="async"
+          decoding="sync"
           className="absolute inset-0 w-full h-full object-cover object-bottom"
           style={{ filter: "blur(4px)", transform: "scale(1.08)" }}
         />
@@ -119,7 +157,7 @@ const WorkPage = () => {
             <motion.h1 
               initial={{ opacity: 0, y: 30 }} 
               animate={{ opacity: 1, y: 0 }} 
-              transition={{ delay: 0.1 }}
+              transition={{ delay: 0.1, duration: 0.5 }}
               className="text-4xl sm:text-5xl lg:text-7xl font-display font-bold leading-[1.05] text-white mb-6"
             >
               {(() => {
@@ -140,7 +178,7 @@ const WorkPage = () => {
             <motion.p 
               initial={{ opacity: 0, y: 20 }} 
               animate={{ opacity: 1, y: 0 }} 
-              transition={{ delay: 0.2 }}
+              transition={{ delay: 0.2, duration: 0.5 }}
               className="text-base lg:text-lg text-white/60 max-w-2xl mx-auto"
             >
               {hero("hero.description", "Discover our finest graphic designs, web projects, and video productions — all crafted with precision and passion.")}
@@ -148,7 +186,6 @@ const WorkPage = () => {
           </div>
         </div>
       </section>
-
 
       {/* Filter pill bar */}
       <section className="relative pt-12 lg:pt-16 z-20">
@@ -212,23 +249,29 @@ const WorkPage = () => {
           ) : filtered.length === 0 ? (
             <div className="text-center py-24 text-[#164E63]">No projects in this category yet.</div>
           ) : (
-            <div
+            <motion.div
+              layout
               className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8 max-w-7xl mx-auto"
             >
-              {filtered.map((project) => {
-
+              <AnimatePresence mode="popLayout">
+                {filtered.map((project) => {
                   const vid = isVideo(project);
                   const thumb = vid
                     ? getYouTubeThumbnail(project.project_url) || getYouTubeThumbnail(project.image_url) || project.image_url
                     : project.image_url;
 
                   return (
-                    <article
+                    <motion.article
                       key={project.id}
+                      layout
+                      initial={{ opacity: 0, scale: 0.95 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      exit={{ opacity: 0, scale: 0.95 }}
+                      transition={{ duration: 0.3, ease: "easeOut" }}
                       className="group cursor-pointer"
                       onClick={() => handleCardClick(project)}
                     >
-                      <div className="rounded-[28px] bg-white border border-[#EEF0FF] shadow-[0_10px_40px_-20px_rgba(76,29,149,0.12)] overflow-hidden">
+                      <div className="rounded-[28px] bg-white border border-[#EEF0FF] shadow-[0_10px_40px_-20px_rgba(76,29,149,0.12)] overflow-hidden transition-all duration-300 group-hover:-translate-y-1 group-hover:shadow-[0_20px_50px_-20px_rgba(76,29,149,0.22)]">
                         {/* Image */}
                         <div className="relative aspect-[4/3] overflow-hidden mx-3 mt-3 rounded-2xl" style={{ background: "linear-gradient(180deg, #F4F5FC 0%, #E9EBF7 100%)" }}>
                           {thumb ? (
@@ -237,10 +280,11 @@ const WorkPage = () => {
                               alt={`AstroPixel Showcase Project — ${project.title}`}
                               width={400}
                               height={300}
-                              loading="lazy"
-                              decoding="async"
+                              loading="eager"
+                              fetchPriority="high"
+                              decoding="sync"
                               referrerPolicy="no-referrer"
-                              className="w-full h-full object-cover"
+                              className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                               onError={(e) => { e.currentTarget.src = "/placeholder.svg"; }}
                             />
                           ) : (
@@ -248,7 +292,7 @@ const WorkPage = () => {
                           )}
                           {vid && (
                             <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                              <div className="w-14 h-14 rounded-full bg-white/95 shadow-xl flex items-center justify-center">
+                              <div className="w-14 h-14 rounded-full bg-white/95 shadow-xl flex items-center justify-center transition-transform group-hover:scale-110">
                                 <Play size={22} className="text-[#0891B2] ml-0.5" fill="currentColor" />
                               </div>
                             </div>
@@ -273,12 +317,11 @@ const WorkPage = () => {
                           </span>
                         </div>
                       </div>
-                    </article>
+                    </motion.article>
                   );
-
                 })}
-            </div>
-
+              </AnimatePresence>
+            </motion.div>
           )}
         </div>
       </section>
@@ -286,56 +329,92 @@ const WorkPage = () => {
       {/* FAQ */}
       <FaqSection />
 
-
       {/* Image lightbox */}
-      {lightboxImage && (
-          <div
-            className="fixed inset-0 z-[100] bg-black/95 flex items-center justify-center p-4 md:p-8 cursor-pointer"
-            onClick={() => setLightboxImage(null)}>
-            <button onClick={() => setLightboxImage(null)}
-              className="absolute top-6 right-6 z-10 w-11 h-11 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-all">
+      <AnimatePresence>
+        {lightboxImage && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[100] bg-black/95 flex items-center justify-center p-4 md:p-8 cursor-pointer backdrop-blur-sm"
+            onClick={() => setLightboxImage(null)}
+          >
+            <button
+              onClick={() => setLightboxImage(null)}
+              className="absolute top-6 right-6 z-10 w-11 h-11 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-all"
+            >
               <X size={22} className="text-white" />
             </button>
-            <div className="flex flex-col items-center max-w-4xl w-full" onClick={(e) => e.stopPropagation()}>
+            <motion.div 
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              className="flex flex-col items-center max-w-4xl w-full" 
+              onClick={(e) => e.stopPropagation()}
+            >
               <img
-                src={lightboxImage.url} alt={`AstroPixel Project Showcase Lightbox — ${lightboxImage.title}`}
-                width={800} height={600} loading="lazy" decoding="async"
-                className="max-w-full max-h-[70vh] object-contain rounded-xl cursor-default" />
+                src={lightboxImage.url} 
+                alt={`AstroPixel Project Showcase Lightbox — ${lightboxImage.title}`}
+                width={800} 
+                height={600} 
+                loading="eager" 
+                decoding="sync"
+                className="max-w-full max-h-[75vh] object-contain rounded-xl cursor-default shadow-2xl" 
+                onError={(e) => { e.currentTarget.src = "/placeholder.svg"; }}
+              />
               <div className="mt-6 text-center max-w-lg">
                 <p className="text-white/90 text-lg font-display font-semibold">{lightboxImage.title}</p>
                 {lightboxImage.description && (
                   <p className="text-white/60 text-sm mt-2 leading-relaxed">{lightboxImage.description}</p>
                 )}
-                <p className="text-white/40 text-xs mt-3">Designed by Alpha Zero</p>
+                <p className="text-white/40 text-xs mt-3">Designed by AstroPixel Agency</p>
               </div>
-            </div>
-          </div>
+            </motion.div>
+          </motion.div>
         )}
+      </AnimatePresence>
 
       {/* Video modal */}
-      {activeVideo && (() => {
+      <AnimatePresence>
+        {activeVideo && (() => {
           const embed = getVideoEmbed(findVideoUrl(activeVideo));
           if (!embed) return null;
           return (
-            <div
-              className="fixed inset-0 z-[100] bg-black/95 flex items-center justify-center p-4 md:p-8"
-              onClick={() => setActiveVideo(null)}>
-              <button onClick={() => setActiveVideo(null)}
-                className="absolute top-6 right-6 z-10 w-11 h-11 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-all">
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="fixed inset-0 z-[100] bg-black/95 flex items-center justify-center p-4 md:p-8 backdrop-blur-sm"
+              onClick={() => setActiveVideo(null)}
+            >
+              <button 
+                onClick={() => setActiveVideo(null)}
+                className="absolute top-6 right-6 z-10 w-11 h-11 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-all"
+              >
                 <X size={22} className="text-white" />
               </button>
-              <div
-                className="w-full max-w-5xl" onClick={(e) => e.stopPropagation()}>
-                <div className="relative w-full rounded-2xl overflow-hidden" style={{ paddingBottom: "56.25%" }}>
-                  <iframe src={embed} className="absolute inset-0 w-full h-full"
+              <motion.div
+                initial={{ scale: 0.9, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                exit={{ scale: 0.9, opacity: 0 }}
+                className="w-full max-w-5xl" 
+                onClick={(e) => e.stopPropagation()}
+              >
+                <div className="relative w-full rounded-2xl overflow-hidden shadow-2xl" style={{ paddingBottom: "56.25%" }}>
+                  <iframe 
+                    src={embed} 
+                    className="absolute inset-0 w-full h-full"
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    allowFullScreen title={activeVideo.title} />
+                    allowFullScreen 
+                    title={activeVideo.title} 
+                  />
                 </div>
                 <p className="text-white/80 text-center mt-4 font-display font-semibold">{activeVideo.title}</p>
-              </div>
-            </div>
+              </motion.div>
+            </motion.div>
           );
         })()}
+      </AnimatePresence>
     </Layout>
   );
 };
@@ -367,7 +446,6 @@ const FaqSection = () => {
               <h2 className="font-display font-bold text-[#083344] text-4xl md:text-5xl lg:text-6xl leading-[1.05] tracking-tight">
                 Frequently<br />Asked Question
               </h2>
-              {/* lime scribble */}
             </div>
             <div className="flex flex-col gap-6">
               <p className="text-[#155E75] text-base md:text-[17px] leading-relaxed max-w-md">
