@@ -195,7 +195,7 @@ const Footer = () => {
 
             {/* Behance */}
             <a 
-              href="https://www.behance.net/astropixel" 
+              href="https://www.behance.net/astropixels" 
               target="_blank" 
               rel="noopener noreferrer"
               className="flex flex-col items-center justify-center gap-1.5 group cursor-pointer"
