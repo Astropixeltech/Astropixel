@@ -153,6 +153,13 @@ const WorkPage = () => {
     return [];
   };
 
+  const activeCategories = useMemo(() => {
+    return STACKED_CATEGORIES.filter((categorySection) => {
+      const projects = getCategoryProjects(categorySection.id);
+      return projects.length > 0;
+    });
+  }, [webProjects, graphicsProjects, brandingProjects, photographyProjects, motionProjects]);
+
   return (
     <Layout flushTop>
       <SEO 
@@ -203,7 +210,7 @@ const WorkPage = () => {
               transition={{ delay: 0.2, duration: 0.5 }}
               className="text-base lg:text-lg text-white/60 max-w-2xl mx-auto"
             >
-              {hero("hero.description", "Explore our portfolio organized by creative discipline — Web Apps, Graphic Art, Branding Systems, Photography, and 3D Motion.")}
+              {hero("hero.description", "Explore our portfolio organized by creative discipline — Web Apps, Graphic Art, Branding Systems, and 3D Motion.")}
             </motion.p>
           </div>
         </div>
@@ -217,13 +224,13 @@ const WorkPage = () => {
               <span className="text-xs font-bold text-slate-400 uppercase tracking-wider px-2 shrink-0 hidden sm:inline">
                 Jump To:
               </span>
-              {STACKED_CATEGORIES.map((cat) => (
+              {activeCategories.map((cat, idx) => (
                 <button
                   key={cat.id}
                   onClick={() => scrollToCategory(cat.id)}
                   className="shrink-0 px-4 py-2 rounded-full text-xs sm:text-sm font-semibold transition-all duration-300 bg-slate-100/80 text-slate-700 hover:bg-[#6D28D9] hover:text-white hover:shadow-md flex items-center gap-1.5"
                 >
-                  <span className="text-[10px] opacity-75 font-mono">{cat.num}</span>
+                  <span className="text-[10px] opacity-75 font-mono">0{idx + 1}</span>
                   <span>{cat.title}</span>
                 </button>
               ))}
@@ -241,7 +248,7 @@ const WorkPage = () => {
               <p className="text-slate-400 text-sm font-medium">Loading creative portfolio sections...</p>
             </div>
           ) : (
-            STACKED_CATEGORIES.map((categorySection, sectionIdx) => {
+            activeCategories.map((categorySection, sectionIdx) => {
               const categoryProjects = getCategoryProjects(categorySection.id);
 
               return (
@@ -255,7 +262,7 @@ const WorkPage = () => {
                     <div>
                       <div className="flex items-center gap-2 mb-2">
                         <span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-bold border ${categorySection.badgeColor}`}>
-                          {categorySection.num}. {categorySection.title}
+                          0{sectionIdx + 1}. {categorySection.title}
                         </span>
                         <span className="text-xs font-semibold text-slate-400 bg-slate-100 px-2.5 py-1 rounded-full">
                           {categoryProjects.length} Projects
@@ -271,12 +278,7 @@ const WorkPage = () => {
                   </div>
 
                   {/* Category Project Grid */}
-                  {categoryProjects.length === 0 ? (
-                    <div className="p-8 rounded-2xl bg-white border border-slate-200/80 text-center text-slate-400 text-sm">
-                      No projects currently available in this category.
-                    </div>
-                  ) : (
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
                       {categoryProjects.map((project) => {
                         const isVid = project.category === "motion" || project.category.startsWith("video");
                         const thumb = isVid
@@ -369,10 +371,9 @@ const WorkPage = () => {
                         );
                       })}
                     </div>
-                  )}
 
                   {/* Section Separator Line */}
-                  {sectionIdx < STACKED_CATEGORIES.length - 1 && (
+                  {sectionIdx < activeCategories.length - 1 && (
                     <div className="my-14 md:my-20 border-t border-dashed border-slate-200/80" />
                   )}
                 </section>
