@@ -270,6 +270,14 @@ const WorkPage = () => {
                                   <div className="w-full h-full flex items-center justify-center text-slate-400 text-sm">No preview</div>
                                 )}
 
+                                {/* Floating Top-Right View Button */}
+                                <div className="absolute top-2.5 right-2.5 z-10">
+                                  <span className="inline-flex items-center gap-1 text-[11px] font-bold text-[#6D28D9] bg-white/95 backdrop-blur-md group-hover:bg-[#6D28D9] group-hover:text-white px-2.5 py-1 rounded-full transition-all duration-300 shadow-md border border-white/40">
+                                    <span>View</span>
+                                    <ArrowUpRight size={12} className="transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                                  </span>
+                                </div>
+
                                 {/* Video Play Overlay */}
                                 {isVid && (
                                   <div className="absolute inset-0 flex items-center justify-center pointer-events-none bg-black/20 group-hover:bg-black/10 transition-colors">
@@ -280,26 +288,16 @@ const WorkPage = () => {
                                 )}
                               </div>
 
-                              {/* Card Body */}
-                              <div className="flex flex-col flex-1 justify-between p-5 sm:p-6">
-                                <div>
-                                  <h3 className="font-display font-semibold text-[18px] text-[#083344] leading-snug group-hover:text-[#6D28D9] transition-colors line-clamp-1">
-                                    {project.title}
-                                  </h3>
-                                  {project.description && (
-                                    <p className="text-xs sm:text-sm text-slate-500 leading-relaxed mt-2 line-clamp-2">
-                                      {project.description}
-                                    </p>
-                                  )}
-                                </div>
-
-                                {/* Compact View Action */}
-                                <div className="flex items-center justify-end mt-4">
-                                  <span className="inline-flex items-center gap-1 text-xs font-bold text-[#6D28D9] bg-purple-50 group-hover:bg-[#6D28D9] group-hover:text-white px-3 py-1.5 rounded-full transition-all duration-300 shadow-xs">
-                                    <span>View</span>
-                                    <ArrowUpRight size={13} className="transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-                                  </span>
-                                </div>
+                              {/* Card Body — Compact Title + 2-Line Subtitle */}
+                              <div className="p-4 sm:p-5">
+                                <h3 className="font-display font-semibold text-[17px] text-[#083344] leading-snug group-hover:text-[#6D28D9] transition-colors line-clamp-1">
+                                  {project.title}
+                                </h3>
+                                {project.description && (
+                                  <p className="text-xs sm:text-sm text-slate-500 leading-relaxed mt-1.5 line-clamp-2">
+                                    {project.description}
+                                  </p>
+                                )}
                               </div>
                             </div>
                           </motion.article>
