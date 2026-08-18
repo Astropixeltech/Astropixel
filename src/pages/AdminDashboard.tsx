@@ -85,7 +85,7 @@ import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContai
 const CHART_COLORS = ['#0ea5e9', '#06b6d4', '#14b8a6', '#10b981', '#22c55e', '#84cc16', '#eab308', '#f97316', '#ef4444', '#ec4899'];
 
 function AdminDashboardInner() {
-  const scope = "agency";
+  const scope: 'agency' | 'learn' = 'agency';
   const { user, profile, signOut, isAdmin, isLoading: authLoading } = useAuth();
   const { language, setLanguage } = useLanguage();
   const { theme, setTheme } = useTheme();
@@ -921,9 +921,9 @@ function AdminDashboardInner() {
         <div className="p-3 md:p-4 border-b border-border/50">
           <div className="flex flex-col items-center gap-2 md:items-start">
             <img
-              src={scope === 'learn' ? learnLogo : alphazeroLogoAsset.url}
-              alt={scope === 'learn' ? 'Learn with Astropixel' : 'Astropixel Logo'}
-              className={`w-auto flex-shrink-0 ${scope === 'learn' ? 'h-9 brightness-0 dark:invert' : 'h-8 brightness-0 dark:invert'}`}
+              src={alphazeroLogoAsset.url}
+              alt="Astropixel Logo"
+              className="w-auto flex-shrink-0 h-8 brightness-0 dark:invert"
             />
             <div className="hidden md:block">
               <h1 className={`font-bold text-sm bg-gradient-to-r from-primary to-cyan-600 bg-clip-text text-transparent ${language === 'bn' ? 'font-[SabinaShorolipi]' : ''}`}>
@@ -1010,14 +1010,14 @@ function AdminDashboardInner() {
                   {language === 'bn' ? 'স্বাগতম' : 'Welcome'}, {profile?.full_name?.split(' ')[0]}
                 </h1>
                 <Badge variant="secondary" className="text-[10px] uppercase tracking-wider">
-                  {scope === 'learn' ? (language === 'bn' ? 'লার্ন সাইট' : 'Learn Site') : (language === 'bn' ? 'এজেন্সি সাইট' : 'Agency Site')}
+                  {language === 'bn' ? 'এজেন্সি সাইট' : 'Agency Site'}
                 </Badge>
               </div>
               <p className="text-sm text-muted-foreground">
                 {language === 'bn' ? 'আজ ' : 'Today is '}{new Date().toLocaleDateString(language === 'bn' ? 'bn-BD' : 'en-US', { weekday: 'long', day: 'numeric', month: 'long' })}
               </p>
             </div>
-            <AdminSiteScopeSwitcher />
+            
             <div className="flex items-center gap-2">
               {/* Alpha AI Button */}
               <button
@@ -1055,7 +1055,7 @@ function AdminDashboardInner() {
           </div>
 
           {/* Quick Stats - Minimal Cards (Learn scope only) */}
-          {scope === 'learn' && (
+          {(scope as string) === 'learn' && (
             <div className="grid grid-cols-2 lg:grid-cols-5 gap-3">
               {[
                 { icon: BookOpen, value: courses.length, label: language === 'bn' ? 'Course' : 'Courses', color: 'text-sky-500' },
@@ -1187,14 +1187,6 @@ function AdminDashboardInner() {
             )}
           </TabsContent>
 
-          {/* Courses Tab */}
-          <TabsContent value="courses" className="space-y-6">
-            <CourseManagement 
-              courses={courses}
-              coursesLoading={coursesLoading}
-              refetchCourses={refetchCourses}
-            />
-          </TabsContent>
 
           {/* Analytics Tab */}
           <TabsContent value="analytics" className="space-y-6">
@@ -1403,10 +1395,6 @@ function AdminDashboardInner() {
             </div>
           </TabsContent>
 
-          {/* Teachers Tab */}
-          <TabsContent value="teachers">
-            <TeacherManagement language={language} />
-          </TabsContent>
 
           {/* Requests Tab */}
           <TabsContent value="requests" className="space-y-6">
@@ -1852,10 +1840,6 @@ function AdminDashboardInner() {
             <HomepageEditor />
           </TabsContent>
 
-          {/* Learn Pages Editor */}
-          <TabsContent value="learnpages" className="space-y-6">
-            <LearnPagesEditor />
-          </TabsContent>
 
 
           {/* Contact Tab */}
@@ -1894,10 +1878,6 @@ function AdminDashboardInner() {
 
           {/* AI Assistant removed from tabs - now a persistent side panel */}
 
-          {/* Coupons Tab */}
-          <TabsContent value="coupons" className="space-y-6">
-            <CouponManagement />
-          </TabsContent>
 
           {/* Settings Hub */}
           <TabsContent value="settings" className="space-y-6">

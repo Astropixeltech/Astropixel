@@ -257,7 +257,7 @@ export function useWorks() {
           const matchedDefault = DEFAULT_PORTFOLIO_PROJECTS.find(d => d.id === item.id || d.title.toLowerCase() === item.title.toLowerCase());
           return {
             ...item,
-            tags: item.tags || matchedDefault?.tags || getCategoryTags(item.category),
+            tags: (item as any).tags || matchedDefault?.tags || getCategoryTags(item.category),
           };
         });
 

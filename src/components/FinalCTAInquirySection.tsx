@@ -34,7 +34,7 @@ export const FinalCTAInquirySection = () => {
 
     setIsSubmitting(true);
     try {
-      const { error } = await supabase.from("contact_submissions").insert({
+      const { error } = await (supabase as any).from("contact_submissions").insert({
         name: fullName.trim(),
         email: email.trim(),
         phone: phone.trim() || null,

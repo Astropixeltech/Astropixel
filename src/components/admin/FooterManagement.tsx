@@ -63,7 +63,7 @@ const ICON_OPTIONS = [
 
 const FooterManagement = () => {
   const queryClient = useQueryClient();
-  const scope = "agency";
+  const scope: string = "agency";
   const [activeTab, setActiveTab] = useState("links");
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
   const [editingLink, setEditingLink] = useState<FooterLink | null>(null);
@@ -265,7 +265,6 @@ const FooterManagement = () => {
             </p>
           </div>
         </div>
-        <AdminSiteScopeSwitcher />
       </div>
 
 

@@ -1,7 +1,9 @@
 "use client";
 
 import React from "react";
-import { motion, type AnimationProps } from "framer-motion";
+import { motion } from "framer-motion";
+
+type AnimationProps = any;
 import { Link } from "react-router-dom";
 import { cn } from "@/lib/utils";
 
