@@ -29,20 +29,6 @@ const STACKED_CATEGORIES = [
     subtitle: "Complete brand identity systems, minimalist vector logo marks, brand guidelines, and monograms.",
     badgeColor: "bg-amber-100 text-amber-800 border-amber-200",
   },
-  {
-    id: "photography",
-    num: "04",
-    title: "Photography",
-    subtitle: "Architectural urban photography, fine art wilderness landscapes, and studio fashion portraiture.",
-    badgeColor: "bg-emerald-100 text-emerald-800 border-emerald-200",
-  },
-  {
-    id: "motion",
-    num: "05",
-    title: "Motion / 3D",
-    subtitle: "Photorealistic 3D glass renders, procedural liquid chrome, kinetic product teasers, and 3D motion reels.",
-    badgeColor: "bg-blue-100 text-blue-700 border-blue-200",
-  },
 ] as const;
 
 function getVideoEmbed(url: string | null | undefined): string | null {
