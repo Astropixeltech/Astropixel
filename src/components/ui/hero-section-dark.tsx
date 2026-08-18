@@ -92,9 +92,9 @@ const HeroSection = React.forwardRef<HTMLDivElement, HeroSectionProps>(
         )}
         
         
-        <div className="relative z-10 max-w-5xl mx-auto px-4 space-y-6 md:space-y-8">
+        <div className="relative z-10 max-w-5xl mx-auto px-4 flex flex-col items-center">
           {/* Main Headline */}
-          <h1 className="text-[31px] md:text-[52px] lg:text-[70px] font-bold tracking-tight text-white leading-[1.2]">
+          <h1 className="text-[31px] md:text-[52px] lg:text-[70px] font-bold tracking-tight text-white leading-[1.1] mb-2 md:mb-3">
             <span className="block">Vision Into <span className="font-serif italic font-normal text-white">Reality.</span></span>
             <span className="block"><span className="font-serif italic font-normal text-white">Pixel</span> by Pixel.</span>
           </h1>
@@ -103,14 +103,14 @@ const HeroSection = React.forwardRef<HTMLDivElement, HeroSectionProps>(
           <TextReveal
             preset="slide"
             delay={0.5}
-            className="max-w-xl mx-auto -mt-3 md:-mt-5 text-sm sm:text-base md:text-lg text-white/70 font-roboto leading-relaxed tracking-wide"
+            className="max-w-xl mx-auto text-sm sm:text-base md:text-lg text-white/70 font-roboto leading-relaxed tracking-wide mb-6 md:mb-8"
             style={{ fontFamily: "'Roboto', sans-serif" }}
           >
             {typeof description === 'string' ? description : (description as any)?.props?.children || ''}
           </TextReveal>
 
           {/* CTA and Trust Elements */}
-          <div data-hero-cta className="flex flex-col items-center gap-8">
+          <div data-hero-cta className="flex flex-col items-center gap-6">
             <div className="flex flex-wrap items-center justify-center gap-6">
               {/* Original Hero CTA Button */}
               <a
