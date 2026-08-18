@@ -202,28 +202,7 @@ const WorkPage = () => {
         </div>
       </section>
 
-      {/* Quick Jump Category Navigation Bar */}
-      <section className="relative pt-10 lg:pt-14 z-20 sticky top-16 md:top-20">
-        <div className="container mx-auto px-4 sm:px-6">
-          <div className="max-w-5xl mx-auto">
-            <div className="flex items-center gap-2 overflow-x-auto no-scrollbar py-2.5 px-3 bg-white/90 backdrop-blur-xl rounded-2xl md:rounded-full border border-[#EEF0FF] shadow-[0_15px_45px_-15px_rgba(109,40,217,0.15)]">
-              <span className="text-xs font-bold text-slate-400 uppercase tracking-wider px-2 shrink-0 hidden sm:inline">
-                Jump To:
-              </span>
-              {activeCategories.map((cat, idx) => (
-                <button
-                  key={cat.id}
-                  onClick={() => scrollToCategory(cat.id)}
-                  className="shrink-0 px-4 py-2 rounded-full text-xs sm:text-sm font-semibold transition-all duration-300 bg-slate-100/80 text-slate-700 hover:bg-[#6D28D9] hover:text-white hover:shadow-md flex items-center gap-1.5"
-                >
-                  <span className="text-[10px] opacity-75 font-mono">0{idx + 1}</span>
-                  <span>{cat.title}</span>
-                </button>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
+
 
       {/* Stacked Portfolio Category Sections */}
       <div className="py-10 lg:py-16" style={{ background: "linear-gradient(180deg, #FFFFFF 0%, #F8F9FF 100%)" }}>
