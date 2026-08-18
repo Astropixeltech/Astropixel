@@ -131,7 +131,7 @@ const WorkPage = () => {
   }, []);
 
   return (
-    <Layout>
+    <Layout flushTop>
       <SEO 
         title="Portfolio — AstroPixel Design Work" 
         description="Browse AstroPixel's design portfolio featuring logo design, brand identity, UI/UX projects, web development, and social media graphics." 
@@ -139,7 +139,7 @@ const WorkPage = () => {
       />
       
       {/* Hero — About style */}
-      <section id="site-hero" className="relative overflow-hidden -mt-20 pt-32 pb-14 lg:pt-36 lg:pb-18 rounded-b-[2.5rem]">
+      <section id="site-hero" className="relative overflow-hidden pt-32 pb-14 lg:pt-36 lg:pb-18 rounded-b-[2.5rem]">
         {/* Background image */}
         <img
           src={aboutHeroBg.url}
