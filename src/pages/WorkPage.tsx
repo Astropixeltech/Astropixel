@@ -1,30 +1,49 @@
 import { useMemo, useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import aboutHeroBg from "@/assets/about-hero-blue-orb.jpg.asset.json";
-import { X, Play, ArrowUpRight, Plus, Minus, Tag, ExternalLink } from "lucide-react";
+import { X, Play, ArrowUpRight, Plus, Minus, ArrowDown } from "lucide-react";
 import Layout from "@/components/Layout";
 import SEO from "@/components/SEO";
-import { useWorks, PORTFOLIO_CATEGORIES, type Work } from "@/hooks/useWorks";
+import { useWorks, useWorksByCategory, type Work } from "@/hooks/useWorks";
 import { usePageHero } from "@/hooks/usePageHero";
 
-const categoryBadgeStyle: Record<string, { label: string; color: string }> = {
-  web: { label: "Web Design & Dev", color: "bg-purple-100 text-purple-700 border-purple-200" },
-  graphics: { label: "Graphic Design", color: "bg-cyan-100 text-cyan-700 border-cyan-200" },
-  design: { label: "Graphic Design", color: "bg-cyan-100 text-cyan-700 border-cyan-200" },
-  branding: { label: "Logo & Branding", color: "bg-amber-100 text-amber-800 border-amber-200" },
-  photography: { label: "Photography", color: "bg-emerald-100 text-emerald-800 border-emerald-200" },
-  motion: { label: "Motion / 3D", color: "bg-blue-100 text-blue-700 border-blue-200" },
-  video: { label: "Motion / 3D", color: "bg-blue-100 text-blue-700 border-blue-200" },
-};
-
-function getCategoryMeta(cat: string) {
-  if (cat.startsWith("web")) return categoryBadgeStyle.web;
-  if (cat.startsWith("graphics") || cat === "design") return categoryBadgeStyle.graphics;
-  if (cat.startsWith("branding")) return categoryBadgeStyle.branding;
-  if (cat.startsWith("photography")) return categoryBadgeStyle.photography;
-  if (cat.startsWith("motion") || cat.startsWith("video")) return categoryBadgeStyle.motion;
-  return { label: "Creative Project", color: "bg-slate-100 text-slate-700 border-slate-200" };
-}
+const STACKED_CATEGORIES = [
+  {
+    id: "web",
+    num: "01",
+    title: "Web Design & Development",
+    subtitle: "High-performance web applications, responsive dashboards, and custom headless e-commerce storefronts.",
+    badgeColor: "bg-purple-100 text-purple-700 border-purple-200",
+  },
+  {
+    id: "graphics",
+    num: "02",
+    title: "Graphic Design",
+    subtitle: "Editorial publication layouts, festival poster art, print typography grid systems, and product packaging.",
+    badgeColor: "bg-cyan-100 text-cyan-700 border-cyan-200",
+  },
+  {
+    id: "branding",
+    num: "03",
+    title: "Logo & Branding",
+    subtitle: "Complete brand identity systems, minimalist vector logo marks, brand guidelines, and monograms.",
+    badgeColor: "bg-amber-100 text-amber-800 border-amber-200",
+  },
+  {
+    id: "photography",
+    num: "04",
+    title: "Photography",
+    subtitle: "Architectural urban photography, fine art wilderness landscapes, and studio fashion portraiture.",
+    badgeColor: "bg-emerald-100 text-emerald-800 border-emerald-200",
+  },
+  {
+    id: "motion",
+    num: "05",
+    title: "Motion / 3D",
+    subtitle: "Photorealistic 3D glass renders, procedural liquid chrome, kinetic product teasers, and 3D motion reels.",
+    badgeColor: "bg-blue-100 text-blue-700 border-blue-200",
+  },
+] as const;
 
 function getVideoEmbed(url: string | null | undefined): string | null {
   if (!url) return null;
@@ -48,12 +67,12 @@ const findVideoUrl = (w: Work): string | null =>
 
 const WorkPage = () => {
   const { data: works, isLoading } = useWorks();
+  const { webProjects, graphicsProjects, brandingProjects, photographyProjects, motionProjects } = useWorksByCategory();
   const hero = usePageHero("work");
-  const [selectedCategory, setSelectedCategory] = useState<string>("all");
   const [lightboxImage, setLightboxImage] = useState<{ url: string; title: string; description?: string | null; tags?: string[] } | null>(null);
   const [activeVideo, setActiveVideo] = useState<Work | null>(null);
 
-  // Preload images to eliminate loading jank/delay on tab switch
+  // Preload images to eliminate loading jank/delay
   useEffect(() => {
     if (!works || works.length === 0) return;
     works.forEach((project) => {
@@ -68,21 +87,6 @@ const WorkPage = () => {
       }
     });
   }, [works]);
-
-  const filteredProjects = useMemo(() => {
-    if (!works) return [];
-    if (selectedCategory === "all") return works;
-
-    return works.filter((w) => {
-      const cat = w.category.toLowerCase();
-      if (selectedCategory === "web") return cat === "web" || cat.startsWith("web_");
-      if (selectedCategory === "graphics") return cat === "graphics" || cat === "design" || cat.startsWith("graphics_");
-      if (selectedCategory === "branding") return cat === "branding" || cat.startsWith("branding_");
-      if (selectedCategory === "photography") return cat === "photography" || cat.startsWith("photography_");
-      if (selectedCategory === "motion") return cat === "motion" || cat === "video" || cat.startsWith("video_");
-      return cat === selectedCategory;
-    });
-  }, [works, selectedCategory]);
 
   // Handle body overflow & ESC key for modals safely
   useEffect(() => {
@@ -133,11 +137,27 @@ const WorkPage = () => {
     }
   }, []);
 
+  const scrollToCategory = (catId: string) => {
+    const el = document.getElementById(`category-${catId}`);
+    if (el) {
+      el.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  };
+
+  const getCategoryProjects = (catId: string): Work[] => {
+    if (catId === "web") return webProjects;
+    if (catId === "graphics") return graphicsProjects;
+    if (catId === "branding") return brandingProjects;
+    if (catId === "photography") return photographyProjects;
+    if (catId === "motion") return motionProjects;
+    return [];
+  };
+
   return (
     <Layout flushTop>
       <SEO 
-        title="Portfolio & Projects — AstroPixel Creative Agency" 
-        description="Explore AstroPixel's creative portfolio across Web Design & Development, Graphic Design, Logo & Branding, Photography, and Motion / 3D." 
+        title="Portfolio & Work — AstroPixel Design Agency" 
+        description="Explore AstroPixel's work categorized into Web Design & Development, Graphic Design, Logo & Branding, Photography, and Motion / 3D." 
         canonical="https://astropixel.tech/work" 
       />
       
@@ -183,187 +203,196 @@ const WorkPage = () => {
               transition={{ delay: 0.2, duration: 0.5 }}
               className="text-base lg:text-lg text-white/60 max-w-2xl mx-auto"
             >
-              {hero("hero.description", "Discover our finest Web Applications, Graphic Art, Brand Identity Systems, Photography, and 3D Motion Graphics.")}
+              {hero("hero.description", "Explore our portfolio organized by creative discipline — Web Apps, Graphic Art, Branding Systems, Photography, and 3D Motion.")}
             </motion.p>
           </div>
         </div>
       </section>
 
-      {/* Category Navigation System */}
-      <section className="relative pt-10 lg:pt-14 z-20">
+      {/* Quick Jump Category Navigation Bar */}
+      <section className="relative pt-10 lg:pt-14 z-20 sticky top-16 md:top-20">
         <div className="container mx-auto px-4 sm:px-6">
           <div className="max-w-5xl mx-auto">
-            <div className="flex items-center gap-2 overflow-x-auto no-scrollbar py-2 px-2 bg-white/90 backdrop-blur-md rounded-2xl md:rounded-full border border-[#EEF0FF] shadow-[0_15px_45px_-15px_rgba(109,40,217,0.12)]">
-              {PORTFOLIO_CATEGORIES.map((cat) => {
-                const isActive = selectedCategory === cat.id;
-                return (
-                  <button
-                    key={cat.id}
-                    onClick={() => setSelectedCategory(cat.id)}
-                    className={`relative flex-1 shrink-0 min-w-fit px-4 lg:px-6 py-2.5 rounded-full text-xs sm:text-sm font-semibold transition-all duration-300 flex items-center justify-center gap-2 ${
-                      isActive
-                        ? "text-white shadow-[0_8px_25px_-6px_rgba(124,58,237,0.5)]"
-                        : "text-slate-600 hover:text-purple-600 hover:bg-purple-50/50"
-                    }`}
-                  >
-                    {isActive && (
-                      <motion.div
-                        layoutId="activeCategoryTab"
-                        className="absolute inset-0 rounded-full bg-gradient-to-r from-[#7C3AED] via-[#6D28D9] to-[#9333EA] z-0"
-                        transition={{ type: "spring", stiffness: 400, damping: 32 }}
-                      />
-                    )}
-                    <span className="relative z-10 flex items-center gap-1.5 whitespace-nowrap">
-                      <span
-                        className={`w-1.5 h-1.5 rounded-full transition-colors ${
-                          isActive ? "bg-[#C7F358]" : "bg-slate-300"
-                        }`}
-                      />
-                      {cat.label}
-                    </span>
-                  </button>
-                );
-              })}
+            <div className="flex items-center gap-2 overflow-x-auto no-scrollbar py-2.5 px-3 bg-white/90 backdrop-blur-xl rounded-2xl md:rounded-full border border-[#EEF0FF] shadow-[0_15px_45px_-15px_rgba(109,40,217,0.15)]">
+              <span className="text-xs font-bold text-slate-400 uppercase tracking-wider px-2 shrink-0 hidden sm:inline">
+                Jump To:
+              </span>
+              {STACKED_CATEGORIES.map((cat) => (
+                <button
+                  key={cat.id}
+                  onClick={() => scrollToCategory(cat.id)}
+                  className="shrink-0 px-4 py-2 rounded-full text-xs sm:text-sm font-semibold transition-all duration-300 bg-slate-100/80 text-slate-700 hover:bg-[#6D28D9] hover:text-white hover:shadow-md flex items-center gap-1.5"
+                >
+                  <span className="text-[10px] opacity-75 font-mono">{cat.num}</span>
+                  <span>{cat.title}</span>
+                </button>
+              ))}
             </div>
           </div>
         </div>
       </section>
 
-      {/* Project Grid */}
-      <section className="py-12 lg:py-18" style={{ background: "linear-gradient(180deg, #FFFFFF 0%, #F8F9FF 100%)" }}>
-        <div className="container mx-auto px-4 sm:px-6">
+      {/* Stacked Portfolio Category Sections */}
+      <div className="py-10 lg:py-16" style={{ background: "linear-gradient(180deg, #FFFFFF 0%, #F8F9FF 100%)" }}>
+        <div className="container mx-auto px-4 sm:px-6 max-w-7xl">
           {isLoading ? (
             <div className="flex flex-col items-center justify-center py-24 gap-3">
               <div className="w-9 h-9 border-3 border-[#6D28D9]/30 border-t-[#6D28D9] rounded-full animate-spin" />
-              <p className="text-slate-400 text-sm font-medium">Loading portfolio projects...</p>
-            </div>
-          ) : filteredProjects.length === 0 ? (
-            <div className="text-center py-24 text-slate-500 max-w-md mx-auto">
-              <p className="text-lg font-semibold text-slate-700">No projects found in this category</p>
-              <p className="text-sm text-slate-400 mt-1">Check back soon for new case studies and showcases.</p>
+              <p className="text-slate-400 text-sm font-medium">Loading creative portfolio sections...</p>
             </div>
           ) : (
-            <motion.div
-              layout
-              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8 max-w-7xl mx-auto"
-            >
-              <AnimatePresence mode="popLayout">
-                {filteredProjects.map((project) => {
-                  const isVid = project.category === "motion" || project.category.startsWith("video");
-                  const thumb = isVid
-                    ? getYouTubeThumbnail(project.project_url) || getYouTubeThumbnail(project.image_url) || project.image_url
-                    : project.image_url;
+            STACKED_CATEGORIES.map((categorySection, sectionIdx) => {
+              const categoryProjects = getCategoryProjects(categorySection.id);
 
-                  const meta = getCategoryMeta(project.category);
+              return (
+                <section
+                  key={categorySection.id}
+                  id={`category-${categorySection.id}`}
+                  className="scroll-mt-28 md:scroll-mt-36"
+                >
+                  {/* Category Section Header */}
+                  <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8 md:mb-10 pt-4">
+                    <div>
+                      <div className="flex items-center gap-2 mb-2">
+                        <span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-bold border ${categorySection.badgeColor}`}>
+                          {categorySection.num}. {categorySection.title}
+                        </span>
+                        <span className="text-xs font-semibold text-slate-400 bg-slate-100 px-2.5 py-1 rounded-full">
+                          {categoryProjects.length} Projects
+                        </span>
+                      </div>
+                      <h2 className="text-2xl sm:text-3xl lg:text-4xl font-display font-bold text-[#083344] tracking-tight">
+                        {categorySection.title}
+                      </h2>
+                      <p className="text-slate-500 text-sm sm:text-base max-w-2xl mt-1.5 leading-relaxed">
+                        {categorySection.subtitle}
+                      </p>
+                    </div>
+                  </div>
 
-                  return (
-                    <motion.article
-                      key={project.id}
-                      layout
-                      initial={{ opacity: 0, y: 20, scale: 0.96 }}
-                      animate={{ opacity: 1, y: 0, scale: 1 }}
-                      exit={{ opacity: 0, y: -20, scale: 0.96 }}
-                      transition={{ duration: 0.35, ease: "easeOut" }}
-                      className="group cursor-pointer flex flex-col h-full"
-                      onClick={() => handleCardClick(project)}
-                    >
-                      <div className="flex flex-col h-full rounded-[24px] bg-white border border-[#EEF0FF] shadow-[0_10px_35px_-18px_rgba(76,29,149,0.1)] overflow-hidden transition-all duration-300 group-hover:-translate-y-1.5 group-hover:shadow-[0_22px_50px_-20px_rgba(109,40,217,0.22)] group-hover:border-purple-200">
-                        {/* Project Thumbnail */}
-                        <div className="relative aspect-[16/10] overflow-hidden mx-3 mt-3 rounded-xl bg-slate-100">
-                          {thumb ? (
-                            <img
-                              src={thumb}
-                              alt={`AstroPixel Portfolio Project — ${project.title}`}
-                              width={500}
-                              height={312}
-                              loading="eager"
-                              fetchPriority="high"
-                              decoding="sync"
-                              referrerPolicy="no-referrer"
-                              className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                              onError={(e) => { e.currentTarget.src = "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=1000&auto=format&fit=crop"; }}
-                            />
-                          ) : (
-                            <div className="w-full h-full flex items-center justify-center text-slate-400 text-sm">No preview</div>
-                          )}
+                  {/* Category Project Grid */}
+                  {categoryProjects.length === 0 ? (
+                    <div className="p-8 rounded-2xl bg-white border border-slate-200/80 text-center text-slate-400 text-sm">
+                      No projects currently available in this category.
+                    </div>
+                  ) : (
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+                      {categoryProjects.map((project) => {
+                        const isVid = project.category === "motion" || project.category.startsWith("video");
+                        const thumb = isVid
+                          ? getYouTubeThumbnail(project.project_url) || getYouTubeThumbnail(project.image_url) || project.image_url
+                          : project.image_url;
 
-                          {/* Top-left category badge */}
-                          <div className="absolute top-3 left-3 z-10">
-                            <span className={`inline-flex items-center px-2.5 py-1 rounded-md text-[11px] font-bold border backdrop-blur-md shadow-sm ${meta.color}`}>
-                              {meta.label}
-                            </span>
-                          </div>
+                        return (
+                          <motion.article
+                            key={project.id}
+                            initial={{ opacity: 0, y: 20 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ duration: 0.4, ease: "easeOut" }}
+                            className="group cursor-pointer flex flex-col h-full"
+                            onClick={() => handleCardClick(project)}
+                          >
+                            <div className="flex flex-col h-full rounded-[24px] bg-white border border-[#EEF0FF] shadow-[0_10px_35px_-18px_rgba(76,29,149,0.1)] overflow-hidden transition-all duration-300 group-hover:-translate-y-1.5 group-hover:shadow-[0_22px_50px_-20px_rgba(109,40,217,0.22)] group-hover:border-purple-200">
+                              {/* Thumbnail */}
+                              <div className="relative aspect-[16/10] overflow-hidden mx-3 mt-3 rounded-xl bg-slate-100">
+                                {thumb ? (
+                                  <img
+                                    src={thumb}
+                                    alt={`AstroPixel Showcase — ${project.title}`}
+                                    width={500}
+                                    height={312}
+                                    loading="eager"
+                                    fetchPriority="high"
+                                    decoding="sync"
+                                    referrerPolicy="no-referrer"
+                                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                                    onError={(e) => { e.currentTarget.src = "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=1000&auto=format&fit=crop"; }}
+                                  />
+                                ) : (
+                                  <div className="w-full h-full flex items-center justify-center text-slate-400 text-sm">No preview</div>
+                                )}
 
-                          {/* Video Play Overlay */}
-                          {isVid && (
-                            <div className="absolute inset-0 flex items-center justify-center pointer-events-none bg-black/20 group-hover:bg-black/10 transition-colors">
-                              <div className="w-13 h-13 rounded-full bg-white/95 shadow-xl flex items-center justify-center transition-transform group-hover:scale-110">
-                                <Play size={20} className="text-[#6D28D9] ml-0.5" fill="currentColor" />
+                                {/* Category Badge */}
+                                <div className="absolute top-3 left-3 z-10">
+                                  <span className={`inline-flex items-center px-2.5 py-1 rounded-md text-[11px] font-bold border backdrop-blur-md shadow-sm ${categorySection.badgeColor}`}>
+                                    {categorySection.title}
+                                  </span>
+                                </div>
+
+                                {/* Video Play Overlay */}
+                                {isVid && (
+                                  <div className="absolute inset-0 flex items-center justify-center pointer-events-none bg-black/20 group-hover:bg-black/10 transition-colors">
+                                    <div className="w-13 h-13 rounded-full bg-white/95 shadow-xl flex items-center justify-center transition-transform group-hover:scale-110">
+                                      <Play size={20} className="text-[#6D28D9] ml-0.5" fill="currentColor" />
+                                    </div>
+                                  </div>
+                                )}
+                              </div>
+
+                              {/* Card Body */}
+                              <div className="flex flex-col flex-1 justify-between p-5 sm:p-6">
+                                <div>
+                                  <h3 className="font-display font-semibold text-[18px] text-[#083344] leading-snug group-hover:text-[#6D28D9] transition-colors line-clamp-1">
+                                    {project.title}
+                                  </h3>
+                                  {project.description && (
+                                    <p className="text-xs sm:text-sm text-slate-500 leading-relaxed mt-2 line-clamp-2">
+                                      {project.description}
+                                    </p>
+                                  )}
+                                </div>
+
+                                {/* Tags & Action */}
+                                <div className="pt-4 mt-4 border-t border-slate-100 flex items-center justify-between gap-3">
+                                  <div className="flex flex-wrap items-center gap-1.5 min-w-0">
+                                    {project.tags && project.tags.length > 0 ? (
+                                      project.tags.slice(0, 3).map((tag, idx) => (
+                                        <span
+                                          key={idx}
+                                          className="px-2 py-0.5 rounded-md bg-slate-100 text-slate-600 text-[11px] font-medium truncate"
+                                        >
+                                          {tag}
+                                        </span>
+                                      ))
+                                    ) : (
+                                      <span className="px-2 py-0.5 rounded-md bg-slate-100 text-slate-500 text-[11px] font-medium">
+                                        Portfolio
+                                      </span>
+                                    )}
+                                  </div>
+
+                                  <button
+                                    type="button"
+                                    className="shrink-0 flex items-center gap-1 text-xs font-bold text-[#6D28D9] group-hover:text-[#9333EA] transition-colors py-1 px-2 rounded-lg group-hover:bg-purple-50"
+                                  >
+                                    <span>View</span>
+                                    <ArrowUpRight size={14} className="transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                                  </button>
+                                </div>
                               </div>
                             </div>
-                          )}
-                        </div>
+                          </motion.article>
+                        );
+                      })}
+                    </div>
+                  )}
 
-                        {/* Card Content Body */}
-                        <div className="flex flex-col flex-1 justify-between p-5 sm:p-6">
-                          <div>
-                            {/* Project Title */}
-                            <h3 className="font-display font-semibold text-[18px] text-[#083344] leading-snug group-hover:text-[#6D28D9] transition-colors line-clamp-1">
-                              {project.title}
-                            </h3>
-
-                            {/* Short Description */}
-                            {project.description && (
-                              <p className="text-xs sm:text-sm text-slate-500 leading-relaxed mt-2 line-clamp-2">
-                                {project.description}
-                              </p>
-                            )}
-                          </div>
-
-                          {/* Bottom Tags & View Project Action Button */}
-                          <div className="pt-4 mt-4 border-t border-slate-100 flex items-center justify-between gap-3">
-                            {/* Tags pill badges */}
-                            <div className="flex flex-wrap items-center gap-1.5 min-w-0">
-                              {project.tags && project.tags.length > 0 ? (
-                                project.tags.slice(0, 3).map((tag, idx) => (
-                                  <span
-                                    key={idx}
-                                    className="px-2 py-0.5 rounded-md bg-slate-100 text-slate-600 text-[11px] font-medium truncate"
-                                  >
-                                    {tag}
-                                  </span>
-                                ))
-                              ) : (
-                                <span className="px-2 py-0.5 rounded-md bg-slate-100 text-slate-500 text-[11px] font-medium">
-                                  Portfolio
-                                </span>
-                              )}
-                            </div>
-
-                            {/* View Project / Case Study Button */}
-                            <button
-                              type="button"
-                              className="shrink-0 flex items-center gap-1 text-xs font-bold text-[#6D28D9] group-hover:text-[#9333EA] transition-colors py-1 px-2 rounded-lg group-hover:bg-purple-50"
-                            >
-                              <span>View</span>
-                              <ArrowUpRight size={14} className="transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-                            </button>
-                          </div>
-                        </div>
-                      </div>
-                    </motion.article>
-                  );
-                })}
-              </AnimatePresence>
-            </motion.div>
+                  {/* Section Separator Line */}
+                  {sectionIdx < STACKED_CATEGORIES.length - 1 && (
+                    <div className="my-14 md:my-20 border-t border-dashed border-slate-200/80" />
+                  )}
+                </section>
+              );
+            })
           )}
         </div>
-      </section>
+      </div>
 
       {/* FAQ Section */}
       <FaqSection />
 
-      {/* Image Lightbox */}
+      {/* Image Lightbox Modal */}
       <AnimatePresence>
         {lightboxImage && (
           <motion.div
