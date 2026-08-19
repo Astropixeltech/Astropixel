@@ -371,19 +371,6 @@ function AdminDashboardInner() {
     }
   };
 
-  // Prepare chart data for enrollment
-  const enrollmentChartData = courseEnrollmentStats.slice(0, 6).map(course => ({
-    name: course.title.length > 12 ? course.title.slice(0, 12) + '...' : course.title,
-    students: course.enrollmentCount,
-    sales: course.totalSales
-  }));
-
-  // Pie chart data for course distribution
-  const pieChartData = courseEnrollmentStats.filter(c => c.enrollmentCount > 0).map((course, index) => ({
-    name: course.title,
-    value: course.enrollmentCount,
-    color: CHART_COLORS[index % CHART_COLORS.length]
-  }));
 
   // Collapsible sidebar state
   const [expandedGroups, setExpandedGroups] = useState<Record<string, boolean>>({
@@ -414,7 +401,6 @@ function AdminDashboardInner() {
     { id: 'settings', icon: Settings, label: language === 'bn' ? 'Settings' : 'Settings', scopeTag: 'both' as const },
     { id: 'apikeys', icon: Key, label: language === 'bn' ? 'API Key' : 'API Keys', scopeTag: 'both' as const },
     { id: 'paymentapi', icon: Key, label: language === 'bn' ? 'Payment API' : 'Payment API', scopeTag: 'both' as const },
-    { id: 'analytics', icon: BarChart3, label: language === 'bn' ? 'Analytics' : 'Analytics', scopeTag: 'both' as const },
     { id: 'email', icon: Send, label: language === 'bn' ? 'Email' : 'Email', scopeTag: 'both' as const },
     { id: 'feedback', icon: FileText, label: language === 'bn' ? 'Feedback' : 'Feedback', scopeTag: 'both' as const },
     { id: 'profile', icon: User, label: language === 'bn' ? 'Admin' : 'Admins', scopeTag: 'both' as const },
@@ -445,12 +431,6 @@ function AdminDashboardInner() {
 
 
 
-  // Auto-expand group when its item is active
-  useEffect(() => {
-    if (lmsMoreItems.some(item => item.id === activeTab) && !expandedGroups.lms_more) {
-      setExpandedGroups(prev => ({ ...prev, lms_more: true }));
-    }
-  }, [activeTab]);
 
   // Render a nav button
   const renderNavButton = (item: { id: string; icon: any; label: string; badge?: number }, colorClass: string) => (
@@ -504,16 +484,6 @@ function AdminDashboardInner() {
           {/* Dashboard */}
           <div className="mb-2">
             {renderNavButton(dashboardItem as any, 'from-fuchsia-500 to-pink-500')}
-          </div>
-
-          {/* LMS Core */}
-          <div className="mb-2">
-            <p className="hidden md:block text-[10px] font-medium text-muted-foreground/60 uppercase tracking-widest px-2 mb-1.5">
-              {language === 'bn' ? 'এলএমএস' : 'LMS'}
-            </p>
-            <div className="space-y-0.5">
-              {lmsCoreItems.map((item) => renderNavButton(item, 'from-sky-500 to-cyan-500'))}
-            </div>
           </div>
 
 
@@ -616,35 +586,6 @@ function AdminDashboardInner() {
             </div>
           </div>
 
-          {/* Quick Stats - Minimal Cards (Learn scope only) */}
-          {(scope as string) === 'learn' && (
-            <div className="grid grid-cols-2 lg:grid-cols-5 gap-3">
-              {[
-                { icon: BookOpen, value: courses.length, label: language === 'bn' ? 'Course' : 'Courses', color: 'text-sky-500' },
-                { icon: Users, value: studentsList.length, label: language === 'bn' ? 'Student' : 'Students', color: 'text-emerald-500' },
-                { icon: GraduationCap, value: courses.filter(c => c.is_published).length, label: language === 'bn' ? 'প্রকাশিত' : 'Published', color: 'text-violet-500' },
-                { icon: Check, value: courses.filter(c => c.is_published).length, label: language === 'bn' ? 'প্রকাশিত' : 'Published', color: 'text-amber-500'}, { icon: Banknote, value: `৳${totalRevenue.toLocaleString(language === 'bn' ? 'bn-BD' : 'en-US')}`, label: language === 'bn' ? 'বিক্রি' : 'Revenue', color: 'text-rose-500' },
-              ].map((stat, index) => (
-                <div 
-                  key={index}
-                  className="bg-white dark:bg-slate-900 rounded-2xl p-4 border border-border/50 hover:border-border transition-colors group"
-                >
-                  <div className="flex items-start justify-between">
-                    <div>
-                      <p className={`text-2xl font-bold ${stat.color}`}>
-                        {stat.value}
-                      </p>
-                      <p className={`text-xs text-muted-foreground mt-0.5 ${language === 'bn' ? 'font-[MahinRafid]' : ''}`}>
-                        {stat.label}
-                      </p>
-                    </div>
-                    <stat.icon className={`w-5 h-5 ${stat.color} opacity-40 group-hover:opacity-100 transition-opacity`} />
-                  </div>
-                </div>
-              ))}
-            </div>
-          )}
-
         </div>
 
         {/* Content Area */}
@@ -739,216 +680,6 @@ function AdminDashboardInner() {
               </div>
             )}
           </TabsContent>
-
-
-          {/* Analytics Tab */}
-          <TabsContent value="analytics" className="space-y-6">
-            <div className="flex items-center justify-between">
-              <h2 className={`text-xl font-semibold ${language === 'bn' ? 'font-[Aloka]' : ''}`}>
-                {language === 'bn' ? 'Analytics ড্যাশবোর্ড' : 'Analytics Dashboard'}
-              </h2>
-            </div>
-
-            <div className="grid gap-6 md:grid-cols-2">
-              {/* Enrollment Bar Chart */}
-              <Card>
-                <CardHeader>
-                  <CardTitle className={`text-lg flex items-center gap-2 ${language === 'bn' ? 'font-[Aloka]' : ''}`}>
-                    <BarChart3 className="w-5 h-5 text-primary" />
-                    {language === 'bn' ? 'Course অনুযায়ী Student' : 'Students by Course'}
-                  </CardTitle>
-                  <CardDescription>
-                    {language === 'bn' ? 'প্রতিটি Courseে কতজন Student এনরোল করেছে' : 'Number of students enrolled in each course'}
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  {enrollmentChartData.length > 0 ? (
-                    <ResponsiveContainer width="100%" height={250}>
-                      <BarChart data={enrollmentChartData}>
-                        <CartesianGrid strokeDasharray="3 3" className="stroke-muted" />
-                        <XAxis 
-                          dataKey="name" 
-                          tick={{ fontSize: 10 }} 
-                          className="text-muted-foreground"
-                        />
-                        <YAxis tick={{ fontSize: 12 }} />
-                        <Tooltip 
-                          contentStyle={{ 
-                            backgroundColor: 'hsl(var(--card))', 
-                            border: '1px solid hsl(var(--border))',
-                            borderRadius: '8px'
-                          }}
-                        />
-                        <Bar dataKey="students" fill="hsl(var(--primary))" radius={[4, 4, 0, 0]} />
-                      </BarChart>
-                    </ResponsiveContainer>
-                  ) : (
-                    <div className="h-[250px] flex items-center justify-center text-muted-foreground">
-                      {language === 'bn' ? 'কোনো ডাটা নেই' : 'No data available'}
-                    </div>
-                  )}
-                </CardContent>
-              </Card>
-
-              {/* Course Distribution Pie Chart */}
-              <Card>
-                <CardHeader>
-                  <CardTitle className={`text-lg flex items-center gap-2 ${language === 'bn' ? 'font-[Aloka]' : ''}`}>
-                    <PieChart className="w-5 h-5 text-primary" />
-                    {language === 'bn' ? 'Student বন্টন' : 'Student Distribution'}
-                  </CardTitle>
-                  <CardDescription>
-                    {language === 'bn' ? 'কোন Courseে কত শতাংশ Student' : 'Percentage of students per course'}
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  {pieChartData.length > 0 ? (
-                    <ResponsiveContainer width="100%" height={250}>
-                      <RechartsPieChart>
-                        <Pie
-                          data={pieChartData}
-                          cx="50%"
-                          cy="50%"
-                          innerRadius={50}
-                          outerRadius={80}
-                          paddingAngle={3}
-                          dataKey="value"
-                        >
-                          {pieChartData.map((entry, index) => (
-                            <Cell key={`cell-${index}`} fill={entry.color} />
-                          ))}
-                        </Pie>
-                        <Tooltip 
-                          contentStyle={{ 
-                            backgroundColor: 'hsl(var(--card))', 
-                            border: '1px solid hsl(var(--border))',
-                            borderRadius: '8px'
-                          }}
-                          formatter={(value: number, name: string) => [
-                            `${value} ${language === 'bn' ? 'জন Student' : 'students'}`,
-                            name
-                          ]}
-                        />
-                      </RechartsPieChart>
-                    </ResponsiveContainer>
-                  ) : (
-                    <div className="h-[250px] flex items-center justify-center text-muted-foreground">
-                      {language === 'bn' ? 'কোনো ডাটা নেই' : 'No data available'}
-                    </div>
-                  )}
-                </CardContent>
-              </Card>
-
-              {/* Sales Bar Chart */}
-              <Card>
-                <CardHeader>
-                  <CardTitle className={`text-lg flex items-center gap-2 ${language === 'bn' ? 'font-[Aloka]' : ''}`}>
-                    <Banknote className="w-5 h-5 text-amber-500" />
-                    {language === 'bn' ? 'Course অনুযায়ী বিক্রি' : 'Sales by Course'}
-                  </CardTitle>
-                  <CardDescription>
-                    {language === 'bn' ? 'প্রতিটি Course থেকে কত টাকা আয় হয়েছে' : 'Revenue generated from each course'}
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  {enrollmentChartData.some(d => d.sales > 0) ? (
-                    <ResponsiveContainer width="100%" height={250}>
-                      <BarChart data={enrollmentChartData}>
-                        <CartesianGrid strokeDasharray="3 3" className="stroke-muted" />
-                        <XAxis 
-                          dataKey="name" 
-                          tick={{ fontSize: 10 }} 
-                          className="text-muted-foreground"
-                        />
-                        <YAxis tick={{ fontSize: 12 }} />
-                        <Tooltip 
-                          contentStyle={{ 
-                            backgroundColor: 'hsl(var(--card))', 
-                            border: '1px solid hsl(var(--border))',
-                            borderRadius: '8px'
-                          }}
-                          formatter={(value: number) => [`৳${value.toLocaleString()}`, language === 'bn' ? 'বিক্রি' : 'Sales']}
-                        />
-                        <Bar dataKey="sales" fill="#f59e0b" radius={[4, 4, 0, 0]} />
-                      </BarChart>
-                    </ResponsiveContainer>
-                  ) : (
-                    <div className="h-[250px] flex items-center justify-center text-muted-foreground flex-col gap-2">
-                      <Banknote className="w-12 h-12 opacity-50" />
-                      <p>{language === 'bn' ? 'এখনো কোনো বিক্রি নেই' : 'No sales yet'}</p>
-                      <p className='text-xs'>{language === 'bn' ? 'Courseে দাম সেট করুন এবং Student এনরোল করুন' : 'Set course prices and enroll students'}</p>
-                    </div>
-                  )}
-                </CardContent>
-              </Card>
-
-              {/* Quick Stats */}
-              <Card>
-                <CardHeader>
-                  <CardTitle className={`text-lg flex items-center gap-2 ${language === 'bn' ? 'font-[Aloka]' : ''}`}>
-                    <TrendingUp className="w-5 h-5 text-emerald-500" />
-                    {language === 'bn' ? 'দ্রুত পরিসংখ্যান' : 'Quick Stats'}
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="grid grid-cols-2 gap-4">
-                    <div className="bg-gradient-to-br from-primary/10 to-cyan-500/10 rounded-xl p-4 text-center">
-                      <p className="text-3xl font-bold text-primary">{studentsList.length}</p>
-                      <p className={`text-sm text-muted-foreground ${language === 'bn' ? 'font-[MahinRafid]' : ''}`}>
-                        {language === 'bn' ? 'মোট Student' : 'Total Students'}
-                      </p>
-                    </div>
-                    <div className="bg-gradient-to-br from-emerald-500/10 to-green-500/10 rounded-xl p-4 text-center">
-                      <p className="text-3xl font-bold text-emerald-600">{courses.filter(c => c.is_published).length}</p>
-                      <p className={`text-sm text-muted-foreground ${language === 'bn' ? 'font-[MahinRafid]' : ''}`}>
-                        {language === 'bn' ? 'প্রকাশিত Course' : 'Published Courses'}
-                      </p>
-                    </div>
-                    <div className="bg-gradient-to-br from-amber-500/10 to-orange-500/10 rounded-xl p-4 text-center">
-                      <p className="text-3xl font-bold text-amber-600">৳{totalRevenue.toLocaleString()}</p>
-                      <p className={`text-sm text-muted-foreground ${language === 'bn' ? 'font-[MahinRafid]' : ''}`}>
-                        {language === 'bn' ? 'মোট আয়' : 'Total Revenue'}
-                      </p>
-                    </div>
-                    <div className="bg-gradient-to-br from-violet-500/10 to-purple-500/10 rounded-xl p-4 text-center">
-                      <p className="text-3xl font-bold text-violet-600">
-                        {courses.length > 0 ? Math.round((studentsList.length / Math.max(courses.length, 1)) * 10) / 10 : 0}
-                      </p>
-                      <p className={`text-sm text-muted-foreground ${language === 'bn' ? 'font-[MahinRafid]' : ''}`}>
-                        {language === 'bn' ? 'গড় Student/Course' : 'Avg Students/Course'}
-                      </p>
-                    </div>
-                  </div>
-                  
-                  {/* Top Courses */}
-                  <div className="pt-4 border-t">
-                    <h4 className={`text-sm font-medium mb-3 ${language === 'bn' ? 'font-[Aloka]' : ''}`}>
-                      {language === 'bn' ? 'জনপ্রিয় Course' : 'Top Courses'}
-                    </h4>
-                    <div className="space-y-2">
-                      {courseEnrollmentStats.slice(0, 3).map((course, index) => (
-                        <div key={course.id} className="flex items-center justify-between p-2 bg-muted/50 rounded-lg">
-                          <div className="flex items-center gap-2">
-                            <span className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold ${
-                              index === 0 ? 'bg-amber-500 text-white' : 
-                              index === 1 ? 'bg-slate-400 text-white' : 
-                              'bg-amber-700 text-white'
-                            }`}>
-                              {index + 1}
-                            </span>
-                            <span className="text-sm truncate max-w-[150px]">{course.title}</span>
-                          </div>
-                          <Badge variant='secondary'>{course.enrollmentCount} {language === 'bn' ? 'জন' : ''}</Badge>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
-          </TabsContent>
-
-
 
           {/* Works Tab */}
           <TabsContent value="works" className="space-y-6">
@@ -1289,164 +1020,6 @@ function AdminDashboardInner() {
           </TabsContent>
         </Tabs>
       </main>
-
-      {/* Assign Course Dialog */}
-      <Dialog open={showAssignDialog} onOpenChange={setShowAssignDialog}>
-        <DialogContent className="max-w-2xl">
-          <DialogHeader>
-            <DialogTitle>{language === 'bn' ? 'Course যোগ করুন' : 'Add Course'}</DialogTitle>
-            <DialogDescription>
-              {language === 'bn' 
-                ? <><code className="font-mono bg-muted px-2 py-1 rounded">{assigningStudent?.full_name}</code> Select a course to assign below]</>
-                : <>Select a course to assign to <code className="font-mono bg-muted px-2 py-1 rounded">{assigningStudent?.full_name}</code></>
-              }
-            </DialogDescription>
-          </DialogHeader>
-          <div className="py-4">
-            {availableCoursesForAssign.length === 0 ? (
-              <div className="text-center py-8">
-                <BookOpen className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
-                <p className="text-muted-foreground">
-                  {language === 'bn' ? 'সব Course ইতিমধ্যে অ্যাসাইন করা হয়েছে' : 'All courses are already assigned'}
-                </p>
-              </div>
-            ) : (
-              <div className="flex flex-col gap-3 max-h-[400px] overflow-y-auto pr-1">
-                {availableCoursesForAssign.map((course) => (
-                  <div
-                    key={course.id}
-                    onClick={() => setSelectedCourseToAssign(course.id)}
-                    className={`flex items-center gap-4 p-3 rounded-lg border cursor-pointer transition-all w-full min-w-0 overflow-hidden ${
-                      selectedCourseToAssign === course.id 
-                        ? 'border-primary bg-primary/5 ring-2 ring-primary/20' 
-                        : 'border-border hover:bg-muted/50'
-                    }`}
-                  >
-                    <div className="w-16 h-12 rounded-md bg-muted overflow-hidden flex-shrink-0">
-                      {course.thumbnail_url ? (
-                        <img 
-                          src={course.thumbnail_url} 
-                          alt={course.title}
-                          className="w-full h-full object-cover"
-                        />
-                      ) : (
-                        <div className="w-full h-full flex items-center justify-center">
-                          <BookOpen className="w-6 h-6 text-muted-foreground" />
-                        </div>
-                      )}
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <p className="font-medium truncate">{course.title}</p>
-                      {course.description && (
-                        <p className="text-xs text-muted-foreground line-clamp-1">{course.description}</p>
-                      )}
-                    </div>
-                    <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${
-                      selectedCourseToAssign === course.id 
-                        ? 'border-primary bg-primary' 
-                        : 'border-muted-foreground'
-                    }`}>
-                      {selectedCourseToAssign === course.id && (
-                        <Check className="w-3 h-3 text-primary-foreground" />
-                      )}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
-          <DialogFooter>
-            <Button variant="outline" onClick={() => setShowAssignDialog(false)}>
-              {language === 'bn' ? 'বাতিল' : 'Cancel'}
-            </Button>
-            <Button onClick={handleAssignCourse} disabled={!selectedCourseToAssign}>
-              {language === 'bn' ? 'যোগ করুন' : 'Add'}
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
-
-      {/* Add Student Dialog */}
-      <Dialog open={showAddStudentDialog} onOpenChange={setShowAddStudentDialog}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle className="flex items-center gap-2">
-              <UserPlus className="w-5 h-5" />
-              {language === 'bn' ? 'নতুন Student যোগ করুন' : 'Add New Student'}
-            </DialogTitle>
-            <DialogDescription>
-              {language === 'bn' ? 'Studentের তথ্য দিন' : 'Enter student details'}
-            </DialogDescription>
-          </DialogHeader>
-          <div className="space-y-4 py-4">
-            <div className="space-y-2">
-              <Label htmlFor='student-name'>{language === 'bn' ? 'পুরো নাম' : 'Full Name'}</Label>
-              <div className="relative">
-                <User className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                <Input
-                  id="student-name"
-                  value={newStudentName}
-                  onChange={(e) => setNewStudentName(e.target.value)}
-                  placeholder={language === 'bn' ? 'Studentের নাম' : 'Student name'}
-                  className="pl-10"
-                />
-              </div>
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor='student-email'>{language === 'bn' ? 'Email' : 'Email'}</Label>
-              <div className="relative">
-                <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                <Input
-                  id="student-email"
-                  type="email"
-                  value={newStudentEmail}
-                  onChange={(e) => setNewStudentEmail(e.target.value)}
-                  placeholder="student@email.com"
-                  className="pl-10"
-                />
-              </div>
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor='student-password'>{language === 'bn' ? 'পাসওয়ার্ড' : 'Password'}</Label>
-              <div className="relative">
-                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                <Input
-                  id="student-password"
-                  type="password"
-                  value={newStudentPassword}
-                  onChange={(e) => setNewStudentPassword(e.target.value)}
-                  placeholder={language === 'bn' ? 'কমপক্ষে ৬ অক্ষর' : 'At least 6 characters'}
-                  className="pl-10"
-                />
-              </div>
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor='student-passcode'>{language === 'bn' ? 'ফোন নম্বর (ঐচ্ছিক)' : 'Phone Number (Optional)'}</Label>
-              <div className="relative">
-                <Key className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                <Input
-                  id="student-passcode"
-                  value={newStudentPhone}
-                  onChange={(e) => setNewStudentPhone(e.target.value)}
-                  placeholder={language === 'bn' ? 'ফোন নম্বর' : 'Phone number'}
-                  className="pl-10 font-mono"
-                />
-              </div>
-              <p className="text-xs text-muted-foreground">
-                {language === 'bn' ? 'ফোন নম্বর দিলে Student সেটার সাথে লিংক হবে' : 'Enter student phone number'}
-              </p>
-            </div>
-          </div>
-          <DialogFooter>
-            <Button variant="outline" onClick={() => setShowAddStudentDialog(false)}>
-              {language === 'bn' ? 'বাতিল' : 'Cancel'}
-            </Button>
-            <Button onClick={handleAddStudent} disabled={addingStudent}>
-              {addingStudent ? (language === 'bn' ? 'যোগ হচ্ছে...' : 'Adding...') : (language === 'bn' ? 'Student যোগ করুন' : 'Add Student')}
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
 
       {/* Password Change Dialog */}
       <Dialog open={showPasswordDialog} onOpenChange={setShowPasswordDialog}>
