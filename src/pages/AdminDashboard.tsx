@@ -660,25 +660,7 @@ function AdminDashboardInner() {
                   </button>
                 </div>
               </div>
-            ) : (
-              <div className="space-y-4">
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-                  ].map((card) => (
-                    <button
-                      key={card.id}
-                      onClick={() => setActiveTab(card.id)}
-                      className="group text-left bg-white dark:bg-slate-900 rounded-2xl p-4 border border-border/50 hover:border-transparent hover:shadow-lg hover:shadow-black/5 transition-all duration-300 hover:-translate-y-0.5"
-                    >
-                      <div className={`w-10 h-10 rounded-xl bg-gradient-to-br ${card.gradient} flex items-center justify-center mb-3 shadow-md group-hover:scale-110 transition-transform`}>
-                        <card.icon className="w-5 h-5 text-white" />
-                      </div>
-                      <p className="text-sm font-semibold text-foreground">{card.label}</p>
-                      <p className="text-xs text-muted-foreground mt-0.5">{card.desc}</p>
-                    </button>
-                  ))}
-                </div>
-              </div>
-            )}
+            ) : null}
           </TabsContent>
 
           {/* Works Tab */}
