@@ -72,9 +72,7 @@ import FooterManagement from '@/components/admin/FooterManagement';
 import EmailManagement from '@/components/admin/EmailManagement';
 import ApiKeyManagement from '@/components/admin/ApiKeyManagement';
 import PaymentApiManagement from '@/components/admin/PaymentApiManagement';
-import LandingPageManagement from '@/components/admin/LandingPageManagement';
 import FeedbackViewer from '@/components/admin/FeedbackViewer';
-import CommentManagement from '@/components/admin/CommentManagement';
 import AdminAssistant from '@/components/admin/AdminAssistant';
 
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar, PieChart as RechartsPieChart, Pie, Cell } from 'recharts';
@@ -87,60 +85,10 @@ function AdminDashboardInner() {
   const { user, profile, signOut, isAdmin, isLoading: authLoading } = useAuth();
   const { language, setLanguage } = useLanguage();
   const { theme, setTheme } = useTheme();
-  const courses: any[] = [];
-  const coursesLoading = false;
-  const refetchCourses = () => {};
-
-  const studentsList: any[] = [];
-  const studentsLoading = false;
-  const refetchStudents = () => {};
-  const assignCourseToStudent = async () => ({ error: null });
-  const removeCourseFromStudent = async () => ({ error: null });
   
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('dashboard');
 
-  // Assign course dialog
-  const [showAssignDialog, setShowAssignDialog] = useState(false);
-  const [assigningStudent, setAssigningStudent] = useState<StudentWithCourses | null>(null);
-  const [selectedCourseToAssign, setSelectedCourseToAssign] = useState('');
-
-  // Add student form state
-  const [showAddStudentDialog, setShowAddStudentDialog] = useState(false);
-  const [newStudentName, setNewStudentName] = useState('');
-  const [newStudentEmail, setNewStudentEmail] = useState('');
-  const [newStudentPassword, setNewStudentPassword] = useState('');
-  const [newStudentPhone, setNewStudentPhone] = useState('');
-  const [addingStudent, setAddingStudent] = useState(false);
-
-  // Admin profile state
-  const [showProfileDialog, setShowProfileDialog] = useState(false);
-  const [showPasswordDialog, setShowPasswordDialog] = useState(false);
-  const [newPassword, setNewPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const [changingPassword, setChangingPassword] = useState(false);
-
-  // Add admin state
-  const [showAddAdminDialog, setShowAddAdminDialog] = useState(false);
-  const [newAdminName, setNewAdminName] = useState('');
-  const [newAdminEmail, setNewAdminEmail] = useState('');
-  const [newAdminPassword, setNewAdminPassword] = useState('');
-  const [addingAdmin, setAddingAdmin] = useState(false);
-
-  // Edit profile state
-  const [showEditProfileDialog, setShowEditProfileDialog] = useState(false);
-  const [editName, setEditName] = useState('');
-  const [editEmail, setEditEmail] = useState('');
-  const [updatingProfile, setUpdatingProfile] = useState(false);
-  const [uploadingAvatar, setUploadingAvatar] = useState(false);
-
-  // Search state
-  const [studentSearch, setStudentSearch] = useState('');
-
-  // Delete students state
-  const [selectedStudents, setSelectedStudents] = useState<string[]>([]);
-  const [deletingStudents, setDeletingStudents] = useState(false);
-  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
 
   // Admin list state
   const [admins, setAdmins] = useState<Array<{
@@ -153,22 +101,6 @@ function AdminDashboardInner() {
   }>>([]);
   const [loadingAdmins, setLoadingAdmins] = useState(false);
 
-  // Enrollment requests state
-  const [enrollmentRequests, setEnrollmentRequests] = useState<Array<{
-    id: string;
-    user_id: string;
-    course_id: string;
-    student_name: string;
-    student_email: string;
-    status: string;
-    message: string | null;
-    phone_number: string | null;
-    payment_method: string | null;
-    transaction_id: string | null;
-    created_at: string;
-    course?: { title: string };
-  }>>([]);
-  const [loadingRequests, setLoadingRequests] = useState(false);
 
   // Fetch all admins
   const fetchAdmins = async () => {
@@ -211,187 +143,7 @@ function AdminDashboardInner() {
     }
   };
 
-  // Fetch enrollment requests
-  const fetchEnrollmentRequests = async () => {
-    setLoadingRequests(true);
-    try {
-      const { data, error } = await supabase
-        .from('enrollment_requests')
-        .select(`
-          *,
-          course:courses(title)
-        `)
-        .order('created_at', { ascending: false });
 
-      if (!error) {
-        setEnrollmentRequests((data || []) as any);
-      }
-    } catch (error) {
-      console.error('Error fetching enrollment requests:', error);
-    } finally {
-      setLoadingRequests(false);
-    }
-  };
-
-  // Approve enrollment request
-  const approveEnrollment = async (request: typeof enrollmentRequests[0]) => {
-    try {
-      toast.loading(language === 'bn' ? 'Approving...' : 'Approving...', { id: 'approve' });
-      
-      // Call approve-enrollment edge function
-      const { data, error } = await supabase.functions.invoke('approve-enrollment', {
-        body: { enrollment_id: request.id }
-      });
-
-      if (error) {
-        console.error('Approve error:', error);
-        toast.error(language === 'bn' ? 'Failed to approve' : 'Error approving enrollment', { id: 'approve' });
-        return;
-      }
-
-      if (data?.error) {
-        toast.error(data.error, { id: 'approve' });
-        return;
-      }
-
-      // Delete the request after successful approval
-      await supabase
-        .from('enrollment_requests')
-        .delete()
-        .eq('id', request.id);
-
-      toast.success(language === 'bn' ? 'Approved! Student account created.' : 'Approved! Student account created.', { id: 'approve' });
-      fetchEnrollmentRequests();
-      refetchStudents();
-    } catch (error) {
-      console.error('Error approving enrollment:', error);
-      toast.error(language === 'bn' ? 'Something went wrong' : 'Error approving enrollment', { id: 'approve' });
-    }
-  };
-
-  // Reject enrollment request - delete instead of updating status
-  const rejectEnrollment = async (requestId: string) => {
-    const { error } = await supabase
-      .from('enrollment_requests')
-      .delete()
-      .eq('id', requestId);
-
-    if (error) {
-      toast.error('Error rejecting request');
-    } else {
-      toast.success(language === 'bn' ? 'Rejected' : 'Request rejected');
-      fetchEnrollmentRequests();
-    }
-  };
-
-  // Refund UddoktaPay payment
-  const refundPayment = async (request: typeof enrollmentRequests[0]) => {
-    if (!request.transaction_id || request.payment_method !== 'uddoktapay') {
-      toast.error(language === 'bn' ? 'Refund not possible' : 'Cannot refund this payment');
-      return;
-    }
-
-    const confirmed = window.confirm(
-      language === 'bn' 
-        ? `Are you sure you want to refund ${request.student_name}?`
-        : `Are you sure you want to refund ${request.student_name}?`
-    );
-    if (!confirmed) return;
-
-    toast.loading(language === 'bn' ? 'Refunding...' : 'Processing refund...', { id: 'refund' });
-
-    try {
-      // Extract amount from message (format: "Amount: ৳XXX")
-      const amountMatch = request.message?.match(/Amount:\s*৳?([\d,.]+)/);
-      const amount = amountMatch ? amountMatch[1].replace(',', '') : '0';
-      // Extract payment method from message
-      const methodMatch = request.message?.match(/Method:\s*([^\s,]+)/);
-      const paymentMethodName = methodMatch ? methodMatch[1] : 'unknown';
-
-      const { data, error } = await supabase.functions.invoke('uddoktapay-refund', {
-        body: {
-          transaction_id: request.transaction_id,
-          payment_method: paymentMethodName,
-          amount: amount,
-          product_name: (request as any).course?.title || 'Course',
-          reason: 'Admin initiated refund',
-        },
-      });
-
-      if (error || !data?.success) {
-        toast.error(language === 'bn' ? 'Refund failed' : 'Refund failed', { id: 'refund' });
-        return;
-      }
-
-      // Delete the enrollment request after refund
-      await supabase.from('enrollment_requests').delete().eq('id', request.id);
-
-      toast.success(language === 'bn' ? 'Refund successful!' : 'Refund successful!', { id: 'refund' });
-      fetchEnrollmentRequests();
-    } catch (err) {
-      console.error('Refund error:', err);
-      toast.error(language === 'bn' ? 'Failed to refund' : 'Error processing refund', { id: 'refund' });
-    }
-  };
-
-  // Fetch admins and enrollment requests on mount
-  useEffect(() => {
-    if (user && isAdmin) {
-      fetchAdmins();
-      fetchEnrollmentRequests();
-    }
-  }, [user, isAdmin]);
-
-  // Filter students by search
-  const filteredStudents = (studentsList || []).filter(s => {
-    if (!studentSearch.trim()) return true;
-    const searchLower = studentSearch.toLowerCase();
-    return (
-      s.full_name?.toLowerCase().includes(searchLower) ||
-      s.email?.toLowerCase().includes(searchLower) ||
-      (s.phone_number && s.phone_number.toLowerCase().includes(searchLower))
-    );
-  });
-
-  const formatDateTime = (value: string | null | undefined) => {
-    if (!value) return '';
-    const locale = language === 'bn' ? 'bn-BD' : 'en-US';
-    return new Date(value).toLocaleString(locale, {
-      year: 'numeric',
-      month: 'short',
-      day: '2-digit',
-      hour: '2-digit',
-      minute: '2-digit',
-    });
-  };
-
-  const isRecent = (value: string | null | undefined) => {
-    if (!value) return false;
-    const created = new Date(value).getTime();
-    if (Number.isNaN(created)) return false;
-    return Date.now() - created < 24 * 60 * 60 * 1000;
-  };
-
-  const unassignedStudents = filteredStudents.filter(s => s.courses?.length === 0);
-  const assignedStudents = filteredStudents.filter(s => s.courses?.length > 0);
-
-  // Calculate course enrollment stats with sales
-  const courseEnrollmentStats = (courses || []).map(course => {
-    const enrollmentCount = (studentsList || []).filter(s => 
-      s.courses?.some((c: any) => c.id === course.id)
-    ).length;
-    const coursePrice = (course as any).price || 0;
-    const totalSales = enrollmentCount * coursePrice;
-    return {
-      ...course,
-      enrollmentCount,
-      price: coursePrice,
-      totalSales
-    };
-  }).sort((a, b) => b.enrollmentCount - a.enrollmentCount);
-
-  // Calculate total revenue
-  const totalRevenue = courseEnrollmentStats.reduce((sum, course) => sum + course.totalSales, 0);
 
   // 2.5s safety fallback timer for auth loading
   const [authTimeout, setAuthTimeout] = useState(false);
@@ -427,181 +179,6 @@ function AdminDashboardInner() {
     navigate('/');
   };
 
-  // Student course assignment handlers
-  const openStudentAssignDialog = (student: StudentWithCourses) => {
-    setAssigningStudent(student);
-    setSelectedCourseToAssign('');
-    setShowAssignDialog(true);
-  };
-
-  const handleAssignCourse = async () => {
-    if (!assigningStudent || !selectedCourseToAssign) return;
-
-    const result = await assignCourseToStudent(assigningStudent.user_id, selectedCourseToAssign);
-    if (result.error) {
-      toast.error(result.error);
-      return;
-    }
-    toast.success('Course added');
-    setShowAssignDialog(false);
-  };
-
-  const handleRemoveCourseFromStudent = async (userId: string, courseId: string) => {
-    const result = await removeCourseFromStudent(userId, courseId);
-    if (result.error) {
-      toast.error(result.error);
-      return;
-    }
-    toast.success('Course removed');
-  };
-
-  const availableCoursesForAssign = assigningStudent 
-    ? courses.filter(c => !assigningStudent.courses.some(ac => ac.id === c.id))
-    : [];
-
-  // Delete single student
-  const handleDeleteStudent = async (profileId: string, studentName: string) => {
-    if (!confirm(language === 'bn' 
-      ? `Delete "${studentName}"? This cannot be undone.` 
-      : `Delete "${studentName}"? This cannot be undone.`)) {
-      return;
-    }
-
-    try {
-      toast.loading(language === 'bn' ? 'Deleting...' : 'Deleting...', { id: 'delete-student' });
-      
-      const { data, error } = await supabase.functions.invoke('delete-student', {
-        body: { student_ids: [profileId] }
-      });
-
-      if (error) {
-        toast.error(error.message || 'Error deleting student', { id: 'delete-student' });
-        return;
-      }
-
-      if (data?.deleted_count > 0) {
-        toast.success(language === 'bn' ? 'Successfully deleted' : 'Successfully deleted', { id: 'delete-student' });
-        refetchStudents();
-      } else {
-        toast.error(data?.errors?.[0] || 'Failed to delete', { id: 'delete-student' });
-      }
-    } catch (error) {
-      console.error('Delete error:', error);
-      toast.error(language === 'bn' ? 'Something went wrong' : 'Error occurred', { id: 'delete-student' });
-    }
-  };
-
-  // Bulk delete students
-  const handleBulkDeleteStudents = async () => {
-    if (selectedStudents.length === 0) return;
-    
-    setDeletingStudents(true);
-    try {
-      toast.loading(
-        language === 'bn' 
-          ? `Deleting ${selectedStudents.length} students...` 
-          : `Deleting ${selectedStudents.length} students...`, 
-        { id: 'bulk-delete' }
-      );
-
-      const { data, error } = await supabase.functions.invoke('delete-student', {
-        body: { student_ids: selectedStudents }
-      });
-
-      if (error) {
-        toast.error(error.message || 'Error deleting students', { id: 'bulk-delete' });
-        return;
-      }
-
-      toast.success(
-        language === 'bn' 
-          ? `${data?.deleted_count || 0} students deleted` 
-          : `${data?.deleted_count || 0} students deleted`, 
-        { id: 'bulk-delete' }
-      );
-      
-      setSelectedStudents([]);
-      setShowDeleteConfirm(false);
-      refetchStudents();
-    } catch (error) {
-      console.error('Bulk delete error:', error);
-      toast.error(language === 'bn' ? 'Something went wrong' : 'Error occurred', { id: 'bulk-delete' });
-    } finally {
-      setDeletingStudents(false);
-    }
-  };
-
-  // Toggle student selection for bulk delete
-  const toggleStudentSelection = (profileId: string) => {
-    setSelectedStudents(prev => 
-      prev.includes(profileId) 
-        ? prev.filter(id => id !== profileId)
-        : [...prev, profileId]
-    );
-  };
-
-  // Select all visible students
-  const selectAllStudents = () => {
-    const allProfileIds = filteredStudents.map(s => s.id);
-    
-    if (selectedStudents.length === allProfileIds.length) {
-      setSelectedStudents([]);
-    } else {
-      setSelectedStudents(allProfileIds);
-    }
-  };
-
-  // Add student handler - using Edge Function to avoid session switch
-  const handleAddStudent = async () => {
-    if (!newStudentName.trim() || !newStudentEmail.trim() || !newStudentPassword.trim()) {
-      toast.error('Provide all information');
-      return;
-    }
-
-    if (newStudentPassword.length < 6) {
-      toast.error('Password must be at least 6 characters');
-      return;
-    }
-
-    setAddingStudent(true);
-
-    try {
-      // Use Edge Function to create student without affecting admin session
-      const { data, error } = await supabase.functions.invoke('create-student', {
-        body: {
-          full_name: newStudentName.trim(),
-          email: newStudentEmail.trim(),
-          password: newStudentPassword,
-          phone_number: newStudentPhone.trim() || undefined,
-        },
-      });
-
-      if (error) {
-        toast.error(error.message || 'Failed to create student');
-        setAddingStudent(false);
-        return;
-      }
-
-      if (data?.error) {
-        toast.error(data.error);
-        setAddingStudent(false);
-        return;
-      }
-
-      toast.success('Student added successfully!');
-      setShowAddStudentDialog(false);
-      setNewStudentName('');
-      setNewStudentEmail('');
-      setNewStudentPassword('');
-      setNewStudentPhone('');
-      refetchStudents();
-    } catch (error) {
-      console.error('Add student error:', error);
-      toast.error('Something went wrong');
-    } finally {
-      setAddingStudent(false);
-    }
-  };
 
   // Change password handler
   const handleChangePassword = async () => {
@@ -822,24 +399,14 @@ function AdminDashboardInner() {
 
   // Navigation items - grouped logically
   // scopeTag: 'learn' | 'agency' | 'both' — controls visibility per selected site scope
-  const lmsCoreItemsAll = [
-    { id: 'courses', icon: BookOpen, label: language === 'bn' ? 'Course' : 'Courses', scopeTag: 'learn' as const },
-    { id: 'students', icon: Users, label: language === 'bn' ? 'Student' : 'Students', scopeTag: 'learn' as const },
-    { id: 'teachers', icon: GraduationCap, label: language === 'bn' ? 'Teacher' : 'Teachers', scopeTag: 'learn' as const },
-    { id: 'requests', icon: Mail, label: language === 'bn' ? 'Request' : 'Requests', badge: enrollmentRequests.filter(r => r.status === 'pending').length, scopeTag: 'learn' as const },
-  ];
-
-  const lmsMoreItemsAll: any[] = [];
 
   const cmsItemsAll = [
     { id: 'homepage', icon: Home, label: language === 'bn' ? 'Homepage' : 'Homepage', scopeTag: 'both' as const },
-    { id: 'learnpages', icon: GraduationCap, label: language === 'bn' ? 'Learn Pages' : 'Learn Pages', scopeTag: 'learn' as const },
     { id: 'about', icon: Info, label: 'About', scopeTag: 'both' as const },
     { id: 'services', icon: Wrench, label: language === 'bn' ? 'Service' : 'Services', scopeTag: 'agency' as const },
     { id: 'works', icon: Briefcase, label: language === 'bn' ? 'Works' : 'Works', scopeTag: 'agency' as const },
     { id: 'team', icon: UsersRound, label: language === 'bn' ? 'Team' : 'Team', scopeTag: 'agency' as const },
     { id: 'contact', icon: Phone, label: 'Contact', scopeTag: 'both' as const },
-    { id: 'landing', icon: Sparkles, label: language === 'bn' ? 'Landing Page' : 'Landing Page', scopeTag: 'learn' as const },
     { id: 'footer', icon: Link2, label: language === 'bn' ? 'Footer' : 'Footer', scopeTag: 'both' as const },
   ];
 
@@ -850,14 +417,10 @@ function AdminDashboardInner() {
     { id: 'analytics', icon: BarChart3, label: language === 'bn' ? 'Analytics' : 'Analytics', scopeTag: 'both' as const },
     { id: 'email', icon: Send, label: language === 'bn' ? 'Email' : 'Email', scopeTag: 'both' as const },
     { id: 'feedback', icon: FileText, label: language === 'bn' ? 'Feedback' : 'Feedback', scopeTag: 'both' as const },
-    { id: 'comments', icon: FileText, label: language === 'bn' ? 'Comment' : 'Comments', scopeTag: 'learn' as const },
-    { id: 'coupons', icon: Ticket, label: language === 'bn' ? 'Coupon' : 'Coupons', scopeTag: 'learn' as const },
     { id: 'profile', icon: User, label: language === 'bn' ? 'Admin' : 'Admins', scopeTag: 'both' as const },
   ];
 
   const inScope = (t: 'learn' | 'agency' | 'both') => t === 'both' || t === scope;
-  const lmsCoreItems = lmsCoreItemsAll.filter(i => inScope(i.scopeTag));
-  const lmsMoreItems = lmsMoreItemsAll.filter(i => inScope(i.scopeTag));
   const cmsItems = cmsItemsAll.filter(i => inScope(i.scopeTag));
   const settingsItems = settingsItemsAll.filter(i => inScope(i.scopeTag));
 
@@ -870,7 +433,7 @@ function AdminDashboardInner() {
     { id: 'sitesettings', icon: Settings, label: 'Site Settings' },
     { id: 'paymentmethod', icon: Banknote, label: 'Payment Method' },
   ];
-  const allNavItems = [dashboardItem, ...lmsCoreItems, ...lmsMoreItems, ...cmsItems, ...settingsItems, ...settingsHubChildren];
+  const allNavItems = [dashboardItem, ...cmsItems, ...settingsItems, ...settingsHubChildren];
 
   // If active tab isn't visible in current scope, switch to dashboard
   useEffect(() => {
@@ -1159,15 +722,6 @@ function AdminDashboardInner() {
             ) : (
               <div className="space-y-4">
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-                  {[
-                    { id: 'courses', icon: BookOpen, label: 'Courses', desc: 'Manage courses', gradient: 'from-sky-500 to-cyan-500' },
-                    { id: 'students', icon: Users, label: 'Students', desc: 'Enrolled users', gradient: 'from-emerald-500 to-teal-500' },
-                    { id: 'teachers', icon: GraduationCap, label: 'Teachers', desc: 'Instructors', gradient: 'from-violet-500 to-purple-500' },
-                    { id: 'requests', icon: Mail, label: 'Requests', desc: 'Enrollment queue', gradient: 'from-amber-500 to-orange-500' },
-                    { id: 'analytics', icon: BarChart3, label: 'Analytics', desc: 'Traffic & sales', gradient: 'from-rose-500 to-pink-500' },
-                    { id: 'email', icon: Send, label: 'Email', desc: 'Outbound mail', gradient: 'from-indigo-500 to-blue-500' },
-                    { id: 'landing', icon: Sparkles, label: 'Landing', desc: 'Learn landing page', gradient: 'from-fuchsia-500 to-pink-500' },
-                    { id: 'settings', icon: Settings, label: 'Settings', desc: 'Site config', gradient: 'from-slate-500 to-slate-700' },
                   ].map((card) => (
                     <button
                       key={card.id}
@@ -1395,429 +949,6 @@ function AdminDashboardInner() {
           </TabsContent>
 
 
-          {/* Requests Tab */}
-          <TabsContent value="requests" className="space-y-6">
-            <div className="flex items-center justify-between">
-              <h2 className={`text-xl font-semibold ${language === 'bn' ? 'font-[Aloka]' : ''}`}>
-                {language === 'bn' ? 'এনরোলমেন্ট Request' : 'Enrollment Requests'}
-              </h2>
-              <Button 
-                variant="outline" 
-                size="sm" 
-                onClick={fetchEnrollmentRequests}
-                disabled={loadingRequests}
-                className="gap-2"
-              >
-                {loadingRequests ? (
-                  <div className="animate-spin rounded-full h-4 w-4 border-2 border-primary border-t-transparent" />
-                ) : (
-                  <TrendingUp className="w-4 h-4" />
-                )}
-                {language === 'bn' ? 'রিফ্রেশ' : 'Refresh'}
-              </Button>
-            </div>
-
-            {loadingRequests ? (
-              <div className="flex items-center justify-center py-12">
-                <div className="animate-spin rounded-full h-8 w-8 border-2 border-primary border-t-transparent" />
-              </div>
-            ) : enrollmentRequests.length === 0 ? (
-              <Card className="border-dashed">
-                <CardContent className="py-12 text-center">
-                  <Mail className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
-                  <p className='text-muted-foreground'>{language === 'bn' ? 'কোনো Request নেই' : 'No enrollment requests'}</p>
-                </CardContent>
-              </Card>
-            ) : (
-              <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-                {enrollmentRequests.map((request) => (
-                  <Card key={request.id} className={`overflow-hidden ${request.status === 'pending' ? 'border-amber-500/50' : request.status === 'approved' ? 'border-green-500/50' : 'border-red-500/50'}`}>
-                    <CardHeader className="pb-2">
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-3">
-                          <div className={`w-10 h-10 rounded-full flex items-center justify-center ${
-                            request.status === 'pending' ? 'bg-amber-500/20' : 
-                            request.status === 'approved' ? 'bg-green-500/20' : 'bg-red-500/20'
-                          }`}>
-                            <span className={`font-bold ${
-                              request.status === 'pending' ? 'text-amber-600' : 
-                              request.status === 'approved' ? 'text-green-600' : 'text-red-600'
-                            }`}>
-                              {request.student_name?.charAt(0).toUpperCase()}
-                            </span>
-                          </div>
-                          <div className="flex-1 min-w-0">
-                            <CardTitle className="text-base truncate">{request.student_name}</CardTitle>
-                            <CardDescription className="truncate">{request.student_email}</CardDescription>
-                          </div>
-                        </div>
-                        <Badge variant={request.status === 'pending' ? 'secondary' : request.status === 'approved' ? 'default' : 'destructive'}>
-                          {request.status === 'pending' ? (language === 'bn' ? 'পেন্ডিং' : 'Pending') : 
-                           request.status === 'approved' ? (language === 'bn' ? 'অনুমোদিত' : 'Approved') : 
-                           (language === 'bn' ? 'প্রত্যাখ্যাত' : 'Rejected')}
-                        </Badge>
-                      </div>
-                    </CardHeader>
-                    <CardContent className="pt-0 space-y-3">
-                      {/* Course Info */}
-                      <div className="flex items-center gap-2 text-sm">
-                        <BookOpen className="w-4 h-4 text-primary" />
-                        <span className='truncate'>{request.course?.title || 'Unknown Course'}</span>
-                      </div>
-
-                      {/* Phone Number */}
-                      {request.phone_number && (
-                        <div className="flex items-center gap-2 text-sm">
-                          <Mail className="w-4 h-4 text-muted-foreground" />
-                          <span className='font-medium'>{language === 'bn' ? 'ফোন:' : 'Phone:'}</span>
-                          <span>{request.phone_number}</span>
-                        </div>
-                      )}
-
-                      {/* Payment Method */}
-                      {request.payment_method && (
-                        <div className="flex items-center gap-2 text-sm">
-                          <Banknote className="w-4 h-4 text-muted-foreground" />
-                          <span className='font-medium'>{language === 'bn' ? 'পেমেন্ট:' : 'Payment:'}</span>
-                          <Badge variant="outline" className="text-xs">
-                            {request.payment_method === 'bkash' ? 'বিকাশ' : 'নগদ'}
-                          </Badge>
-                        </div>
-                      )}
-
-                      {/* Transaction ID */}
-                      {request.transaction_id && (
-                        <div className="flex items-center gap-2 text-sm bg-muted/50 p-2 rounded-lg">
-                          <span className='font-medium text-primary'>{language === 'bn' ? 'TxID:' : 'TxID:'}</span>
-                          <code className="text-xs font-mono flex-1">{request.transaction_id}</code>
-                          <Button
-                            variant="ghost"
-                            size="sm"
-                            className="h-6 w-6 p-0"
-                            onClick={() => {
-                              navigator.clipboard.writeText(request.transaction_id || '');
-                              toast.success(language === 'bn' ? 'কপি হয়েছে' : 'Copied!');
-                            }}
-                          >
-                            <Copy className="w-3 h-3" />
-                          </Button>
-                        </div>
-                      )}
-
-                      {/* Payment Type Message */}
-                      {request.message && (
-                        <p className="text-xs text-muted-foreground bg-secondary/50 p-2 rounded">
-                          {request.message}
-                        </p>
-                      )}
-
-                      {/* Date */}
-                      <p className="text-xs text-muted-foreground">
-                        {language === 'bn' ? 'তারিখ:' : 'Date:'} {formatDateTime(request.created_at)}
-                      </p>
-
-                      {/* Action Buttons */}
-                      {request.status === 'pending' && (
-                        <div className="flex gap-2 pt-2 flex-wrap">
-                          <Button 
-                            size="sm" 
-                            className="flex-1 gap-1"
-                            onClick={() => approveEnrollment(request)}
-                          >
-                            <Check className="w-3 h-3" />
-                            {language === 'bn' ? 'অনুমোদন' : 'Approve'}
-                          </Button>
-                          <Button 
-                            size="sm" 
-                            variant="destructive"
-                            className="flex-1 gap-1"
-                            onClick={() => rejectEnrollment(request.id)}
-                          >
-                            <X className="w-3 h-3" />
-                            {language === 'bn' ? 'প্রত্যাখ্যান' : 'Reject'}
-                          </Button>
-                          {request.payment_method === 'uddoktapay' && request.transaction_id && (
-                            <Button 
-                              size="sm" 
-                              variant="outline"
-                              className="flex-1 gap-1 border-orange-500 text-orange-600 hover:bg-orange-50 dark:hover:bg-orange-950/30"
-                              onClick={() => refundPayment(request)}
-                            >
-                              <RotateCcw className="w-3 h-3" />
-                              {language === 'bn' ? 'রিফান্ড' : 'Refund'}
-                            </Button>
-                          )}
-                        </div>
-                      )}
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
-            )}
-          </TabsContent>
-
-          {/* Pass Codes Tab - Removed */}
-
-          {/* Students Tab */}
-          <TabsContent value="students" className="space-y-6">
-            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-              <h2 className={`text-xl font-semibold ${language === 'bn' ? 'font-[Aloka]' : ''}`}>
-                {language === 'bn' ? 'Student তালিকা' : 'Student List'}
-              </h2>
-              <div className="flex items-center gap-3 w-full sm:w-auto flex-wrap">
-                <div className="relative flex-1 sm:flex-initial">
-                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                  <Input
-                    placeholder={language === 'bn' ? 'নাম, Email বা ফোন...' : 'Name, email or phone...'}
-                    value={studentSearch}
-                    onChange={(e) => setStudentSearch(e.target.value)}
-                    className="pl-9 w-full sm:w-64"
-                  />
-                </div>
-                <Button onClick={() => setShowAddStudentDialog(true)} className="gap-2 whitespace-nowrap">
-                  <UserPlus className="w-4 h-4" />
-                  <span className='hidden sm:inline'>{language === 'bn' ? 'নতুন Student' : 'New Student'}</span>
-                </Button>
-              </div>
-            </div>
-
-            {/* Bulk Delete Controls */}
-            {filteredStudents.length > 0 && (
-              <div className="flex items-center gap-3 p-3 bg-muted/50 rounded-lg">
-                <input
-                  type="checkbox"
-                  checked={selectedStudents.length > 0 && selectedStudents.length === filteredStudents.length}
-                  onChange={selectAllStudents}
-                  className="rounded border-gray-300"
-                />
-                <span className="text-sm text-muted-foreground">
-                  {selectedStudents.length > 0 
-                    ? (language === 'bn' ? `${selectedStudents.length} selected` : `${selectedStudents.length} selected`)
-                    : (language === 'bn' ? 'সব সিলেক্ট করুন' : 'Select all')}
-                </span>
-                {selectedStudents.length > 0 && (
-                  <Button 
-                    variant="destructive" 
-                    size="sm" 
-                    className="gap-2 ml-auto"
-                    onClick={() => setShowDeleteConfirm(true)}
-                    disabled={deletingStudents}
-                  >
-                    <Trash2 className="w-4 h-4" />
-                    {language === 'bn' ? `Delete ${selectedStudents.length}` : `Delete ${selectedStudents.length}`}
-                  </Button>
-                )}
-              </div>
-            )}
-
-            {/* Bulk Delete Confirm Dialog */}
-            <Dialog open={showDeleteConfirm} onOpenChange={setShowDeleteConfirm}>
-              <DialogContent>
-                <DialogHeader>
-                  <DialogTitle className="text-destructive">
-                    {language === 'bn' ? '⚠️ নিশ্চিত করুন' : '⚠️ Confirm Deletion'}
-                  </DialogTitle>
-                  <DialogDescription>
-                    {language === 'bn' 
-                      ? `You are about to delete ${selectedStudents.length} students. This cannot be undone. All their data, progress, and certificates will be permanently removed.`
-                      : `You are about to delete ${selectedStudents.length} students. This cannot be undone. All their data, progress, and certificates will be permanently removed.`}
-                  </DialogDescription>
-                </DialogHeader>
-                <DialogFooter>
-                  <Button variant="outline" onClick={() => setShowDeleteConfirm(false)}>
-                    {language === 'bn' ? 'বাতিল' : 'Cancel'}
-                  </Button>
-                  <Button 
-                    variant="destructive" 
-                    onClick={handleBulkDeleteStudents}
-                    disabled={deletingStudents}
-                  >
-                    {deletingStudents 
-                      ? (language === 'bn' ? 'Deleting...' : 'Deleting...')
-                      : (language === 'bn' ? 'হ্যাঁ, মুছে ফেলুন' : 'Yes, Delete All')}
-                  </Button>
-                </DialogFooter>
-              </DialogContent>
-            </Dialog>
-
-
-            {/* Course Enrollment & Sales Stats */}
-            <Card className="bg-gradient-to-r from-primary/5 to-cyan-500/5 border-primary/20">
-              <CardHeader className="pb-3">
-                <div className="flex items-center justify-between">
-                  <CardTitle className={`text-base flex items-center gap-2 ${language === 'bn' ? 'font-[Aloka]' : ''}`}>
-                    <TrendingUp className="w-5 h-5 text-primary" />
-                    {language === 'bn' ? 'Course এনরোলমেন্ট ও বিক্রি' : 'Course Enrollment & Sales'}
-                  </CardTitle>
-                  <div className="flex items-center gap-2 text-sm">
-                    <Banknote className="w-4 h-4 text-amber-500" />
-                    <span className="font-semibold text-amber-600">
-                      {`Total: ৳${totalRevenue.toLocaleString()}`}
-                    </span>
-                  </div>
-                </div>
-              </CardHeader>
-              <CardContent>
-                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
-                  {courseEnrollmentStats.slice(0, 10).map((course) => (
-                    <div 
-                      key={course.id} 
-                      className="bg-white dark:bg-slate-800 rounded-xl p-3 border border-border hover:border-primary/50 transition-colors"
-                    >
-                      <div className="flex items-center justify-between mb-1">
-                        <p className="text-2xl font-bold text-primary">{course.enrollmentCount}</p>
-                        {course.price > 0 && (
-                          <Badge variant="outline" className="text-xs text-amber-600 border-amber-300">
-                            ৳{course.price}
-                          </Badge>
-                        )}
-                      </div>
-                      <p className="text-xs text-muted-foreground truncate" title={course.title}>
-                        {course.title}
-                      </p>
-                      {course.totalSales > 0 && (
-                        <p className="text-xs font-medium text-amber-600 mt-1">
-                          {language === 'bn'? `Sales: ৳${course.totalSales.toLocaleString('bn-BD')}` : `Sales: ৳${course.totalSales.toLocaleString()}`}
-                        </p>
-                      )}
-                    </div>
-                  ))}
-                </div>
-                {courseEnrollmentStats.length === 0 && (
-                  <p className="text-sm text-muted-foreground text-center py-4">
-                    {language === 'bn' ? 'কোনো Course নেই' : 'No courses'}
-                  </p>
-                )}
-              </CardContent>
-            </Card>
-            
-            {filteredStudents.length === 0 ? (
-              <Card className="border-dashed">
-                <CardContent className="py-12 text-center">
-                  <Users className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
-                  <p className="text-muted-foreground">
-                    {studentSearch
-                      ? (language === 'bn' ? 'কোনো Student পাওয়া যায়নি' : 'No students found')
-                      : (language === 'bn' ? 'কোনো Student নেই' : 'No students')}
-                  </p>
-                  {!studentSearch && (
-                    <Button onClick={() => setShowAddStudentDialog(true)} className="mt-4 gap-2">
-                      <UserPlus className="w-4 h-4" />
-                      {language === 'bn' ? 'প্রথম Student যোগ করুন' : 'Add First Student'}
-                    </Button>
-                  )}
-                </CardContent>
-              </Card>
-            ) : (
-              <div className="space-y-6">
-                {studentSearch && (
-                  <p className="text-sm text-muted-foreground">
-                    {language === 'bn'? `${filteredStudents.length} Students found`
-                      : `${filteredStudents.length} students found`}
-                  </p>
-                )}
-
-                {/* New / Unassigned */}
-                {!studentSearch && unassignedStudents.length > 0 && (
-                  <div className="space-y-3">
-                    <div className="flex items-center justify-between">
-                      <h3 className={`text-sm font-semibold ${language === 'bn' ? 'font-[Aloka]' : ''}`}>{language === 'bn' ? 'নতুন / Course দেওয়া হয়নি' : 'New / Unassigned'}</h3>
-                      <Badge variant="outline">{unassignedStudents.length}</Badge>
-                    </div>
-                    <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-                      {unassignedStudents.map((student) => (
-                        <Card key={student.id} className={`overflow-hidden ring-1 ring-primary/15 bg-primary/5 hover:border-primary/50 transition-colors ${selectedStudents.includes(student.id) ? 'ring-2 ring-destructive' : ''}`}>
-                          <CardHeader className="pb-2">
-                            <div className="flex items-center gap-3">
-                              <input type="checkbox" checked={selectedStudents.includes(student.id)} onChange={() => toggleStudentSelection(student.id)} className="rounded border-gray-300" onClick={(e) => e.stopPropagation()} />
-                              <div className="w-12 h-12 rounded-full bg-gradient-to-br from-primary to-cyan-600 flex items-center justify-center">
-                                <span className="text-white font-bold text-lg">{student.full_name?.charAt(0).toUpperCase()}</span>
-                              </div>
-                              <div className="flex-1 min-w-0">
-                                <div className="flex items-center gap-2">
-                                  <CardTitle className="text-base truncate">{student.full_name}</CardTitle>
-                                  {isRecent(student.created_at) && <Badge variant='secondary' className='text-xs'>{language === 'bn' ? 'নতুন' : 'New'}</Badge>}
-                                </div>
-                                <CardDescription className="truncate">{student.email}</CardDescription>
-                              </div>
-                              <Button variant="ghost" size="sm" className="text-destructive hover:text-destructive hover:bg-destructive/10" onClick={() => handleDeleteStudent(student.id, student.full_name)}>
-                                <Trash2 className="w-4 h-4" />
-                              </Button>
-                            </div>
-                          </CardHeader>
-                          <CardContent className="pt-0 space-y-3">
-                            {student.phone_number && <p className="text-xs text-muted-foreground flex items-center gap-1"><Phone className="w-3 h-3" /> {student.phone_number}</p>}
-                            <div className="flex items-center justify-between text-sm">
-                              <Badge variant='outline' className='text-xs'>{language === 'bn' ? 'Course নেই' : 'No course'}</Badge>
-                              <Button variant="outline" size="sm" className="h-6 text-xs gap-1" onClick={() => openStudentAssignDialog(student)}>
-                                <Plus className='w-3 h-3' />{language === 'bn' ? 'Course যোগ' : 'Add Course'}
-                              </Button>
-                            </div>
-                            <p className='text-xs text-muted-foreground'>{language === 'bn' ? 'তৈরি:' : 'Created:'} {formatDateTime(student.created_at)}</p>
-                          </CardContent>
-                        </Card>
-                      ))}
-                    </div>
-                  </div>
-                )}
-
-                {/* Assigned */}
-                <div className="space-y-3">
-                  {!studentSearch && (
-                    <div className="flex items-center justify-between">
-                      <h3 className={`text-sm font-semibold ${language === 'bn' ? 'font-[Aloka]' : ''}`}>{language === 'bn' ? 'Course দেওয়া আছে' : 'Assigned'}</h3>
-                      <Badge variant="outline">{assignedStudents.length}</Badge>
-                    </div>
-                  )}
-                  <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-                    {(studentSearch ? filteredStudents : assignedStudents).map((student) => (
-                      <Card key={student.id} className={`overflow-hidden hover:border-primary/50 transition-colors ${selectedStudents.includes(student.id) ? 'ring-2 ring-destructive' : ''}`}>
-                        <CardHeader className="pb-2">
-                          <div className="flex items-center gap-3">
-                            <input type="checkbox" checked={selectedStudents.includes(student.id)} onChange={() => toggleStudentSelection(student.id)} className="rounded border-gray-300" onClick={(e) => e.stopPropagation()} />
-                            <div className="w-12 h-12 rounded-full bg-gradient-to-br from-primary to-cyan-600 flex items-center justify-center">
-                              <span className="text-white font-bold text-lg">{student.full_name?.charAt(0).toUpperCase()}</span>
-                            </div>
-                            <div className="flex-1 min-w-0">
-                              <div className="flex items-center gap-2">
-                                <CardTitle className="text-base truncate">{student.full_name}</CardTitle>
-                                {isRecent(student.created_at) && <Badge variant='secondary' className='text-xs'>{language === 'bn' ? 'নতুন' : 'New'}</Badge>}
-                              </div>
-                              <CardDescription className="truncate">{student.email}</CardDescription>
-                            </div>
-                            <Button variant="ghost" size="sm" className="text-destructive hover:text-destructive hover:bg-destructive/10" onClick={() => handleDeleteStudent(student.id, student.full_name)}>
-                              <Trash2 className="w-4 h-4" />
-                            </Button>
-                          </div>
-                        </CardHeader>
-                        <CardContent className="pt-0 space-y-3">
-                          {student.phone_number && <p className="text-xs text-muted-foreground flex items-center gap-1"><Phone className="w-3 h-3" /> {student.phone_number}</p>}
-                          <div className="flex items-center justify-between text-sm">
-                            <span className='text-muted-foreground'>{student.courses.length} {language === 'bn' ? 'Course' : 'courses'}</span>
-                            <Button variant="outline" size="sm" className="h-6 text-xs gap-1" onClick={() => openStudentAssignDialog(student)}>
-                              <Plus className='w-3 h-3' />{language === 'bn' ? 'Course যোগ' : 'Add Course'}
-                            </Button>
-                          </div>
-                          {student.courses.length > 0 && (
-                            <div className="flex flex-wrap gap-1">
-                              {student.courses.slice(0, 3).map((course) => (
-                                <Badge key={course.id} variant="outline" className="text-xs gap-1">
-                                  {course.title.length > 15 ? course.title.slice(0, 15) + '...' : course.title}
-                                  <button onClick={() => handleRemoveCourseFromStudent(student.user_id, course.id)} className="ml-0.5 hover:text-destructive"><X className="w-3 h-3" /></button>
-                                </Badge>
-                              ))}
-                              {student.courses.length > 3 && <Badge variant="outline" className="text-xs">+{student.courses.length - 3}</Badge>}
-                            </div>
-                          )}
-                          <p className='text-xs text-muted-foreground'>{language === 'bn' ? 'তৈরি:' : 'Created:'} {formatDateTime(student.created_at)}</p>
-                        </CardContent>
-                      </Card>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            )}
-          </TabsContent>
 
           {/* Works Tab */}
           <TabsContent value="works" className="space-y-6">
@@ -1870,10 +1001,6 @@ function AdminDashboardInner() {
           </TabsContent>
 
 
-          {/* Comments Tab */}
-          <TabsContent value="comments" className="space-y-6">
-            <CommentManagement />
-          </TabsContent>
 
           {/* AI Assistant removed from tabs - now a persistent side panel */}
 
@@ -1950,9 +1077,6 @@ function AdminDashboardInner() {
             <ApiKeyManagement />
           </TabsContent>
 
-          <TabsContent value="landing" className="space-y-6">
-            <LandingPageManagement />
-          </TabsContent>
 
 
 
