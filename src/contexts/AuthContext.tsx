@@ -1,7 +1,21 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { User, Session } from '@supabase/supabase-js';
 import { supabase } from '@/integrations/supabase/client';
-import { AppRole, Profile } from '@/types/lms';
+export type AppRole = 'admin' | 'student' | 'teacher';
+
+export interface Profile {
+  id: string;
+  user_id: string;
+  full_name: string;
+  email: string;
+  avatar_url: string | null;
+  is_active: boolean;
+  phone_number: string | null;
+  bio: string | null;
+  created_at: string;
+  updated_at: string;
+  [key: string]: any;
+}
 
 interface AuthContextType {
   user: User | null;
