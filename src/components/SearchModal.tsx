@@ -113,16 +113,6 @@ const staticPages: SearchItem[] = [
     category: "page"
   },
   {
-    title: "Courses",
-    titleBn: "কোর্সসমূহ",
-    description: "Learn design and development skills - Graphic Design, Web Development courses",
-    descriptionBn: "ডিজাইন এবং ডেভেলপমেন্ট শিখুন - গ্রাফিক ডিজাইন, ওয়েব ডেভেলপমেন্ট কোর্স",
-    path: "/courses",
-    icon: BookOpen,
-    keywords: ["courses", "course", "training", "learn", "learning", "class", "tutorial", "education", "skill", "study", "enroll", "admission", "certificate", "কোর্স", "ট্রেনিং", "শিখুন", "শেখা", "ক্লাস", "টিউটোরিয়াল", "শিক্ষা", "ভর্তি", "সার্টিফিকেট", "photoshop", "illustrator", "figma", "canva"],
-    category: "page"
-  },
-  {
     title: "Contact Us",
     titleBn: "যোগাযোগ করুন",
     description: "Get in touch - Email: contact@astropixel.tech, Phone: +880 1779-277603",
@@ -140,26 +130,6 @@ const staticPages: SearchItem[] = [
     path: "/join-team",
     icon: Users,
     keywords: ["join", "career", "job", "jobs", "apply", "hiring", "work", "opportunity", "vacancy", "recruitment", "যোগ", "চাকরি", "আবেদন", "নিয়োগ", "ক্যারিয়ার", "সুযোগ"],
-    category: "page"
-  },
-  {
-    title: "Student Login",
-    titleBn: "স্টুডেন্ট লগইন",
-    description: "Login to access your courses and dashboard",
-    descriptionBn: "আপনার কোর্স এবং ড্যাশবোর্ড অ্যাক্সেস করতে লগইন করুন",
-    path: "/student-login",
-    icon: BookOpen,
-    keywords: ["student", "login", "signin", "sign", "account", "dashboard", "my", "courses", "স্টুডেন্ট", "লগইন", "একাউন্ট", "ড্যাশবোর্ড", "আমার"],
-    category: "page"
-  },
-  {
-    title: "Verify Certificate",
-    titleBn: "সার্টিফিকেট যাচাই",
-    description: "Verify your Astropixel certificate authenticity",
-    descriptionBn: "আপনার Astropixel সার্টিফিকেটের সত্যতা যাচাই করুন",
-    path: "/verify-certificate",
-    icon: BookOpen,
-    keywords: ["verify", "certificate", "check", "validate", "authenticity", "সার্টিফিকেট", "যাচাই", "চেক", "ভেরিফাই"],
     category: "page"
   },
 ];
@@ -193,32 +163,11 @@ const SearchModal = ({ isOpen, onClose }: SearchModalProps) => {
   const navigate = useNavigate();
   const { language } = useLanguage();
 
-  // Load courses from database and combine with team members
+  // Load team members into search index
   useEffect(() => {
     const loadDynamicData = async () => {
       try {
-        const { data: courses } = await supabase
-          .from('courses')
-          .select('id, title, description')
-          .eq('is_published', true);
-
         const dynamicItems: SearchItem[] = [];
-
-        // Add courses
-        if (courses) {
-          courses.forEach(course => {
-            dynamicItems.push({
-              title: course.title,
-              titleBn: course.title,
-              description: course.description || "Learn with Astropixel",
-              descriptionBn: course.description || "Astropixel-এর সাথে শিখুন",
-              path: "/courses",
-              icon: GraduationCap,
-              keywords: [course.title.toLowerCase(), "course", "কোর্স", "training", "ট্রেনিং"],
-              category: "course"
-            });
-          });
-        }
 
         // Add team members
         teamMembers.forEach(member => {

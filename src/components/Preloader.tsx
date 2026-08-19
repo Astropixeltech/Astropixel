@@ -6,7 +6,7 @@ import agencyLogoJson from "@/assets/astropixel-logo.png.asset.json";
 
 const learnIcon = learnIconJson.url;
 const agencyLogo = logoFullPng || agencyLogoJson.url;
-const LEARN_ROUTES = ["/courses", "/instructors", "/learn-about", "/learn-contact"];
+const LEARN_ROUTES: string[] = [];
 
 const Preloader = memo(({ onComplete }: { onComplete: () => void }) => {
   const isLearn = typeof window !== "undefined" && (
