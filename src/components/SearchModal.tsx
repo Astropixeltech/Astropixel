@@ -163,6 +163,11 @@ const SearchModal = ({ isOpen, onClose }: SearchModalProps) => {
   const navigate = useNavigate();
   const { language } = useLanguage();
 
+  // Load team members into search index
+  useEffect(() => {
+    const loadDynamicData = async () => {
+      try {
+        const dynamicItems: SearchItem[] = [];
 
         // Add team members
         teamMembers.forEach(member => {
