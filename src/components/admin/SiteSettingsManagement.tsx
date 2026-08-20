@@ -30,7 +30,7 @@ const SiteSettingsManagement = ({ filter }: { filter?: 'general' | 'payment' } =
 
       if (scope === 'learn') {
         // Ensure the same keys as agency are visible for editing (so admin can create learn overrides)
-        const { data: agencyRows } = await supabase
+        const { data: agencyRows } = await (supabase as any)
           .from('site_settings')
           .select('*')
           .eq('site_scope', 'agency')
@@ -49,17 +49,17 @@ const SiteSettingsManagement = ({ filter }: { filter?: 'general' | 'payment' } =
   const updateMutation = useMutation({
     mutationFn: async ({ key, value, type }: { key: string; value: string; type: string }) => {
       // upsert scoped row
-      const { data: existing } = await supabase
+      const { data: existing } = await (supabase as any)
         .from('site_settings')
         .select('id')
         .eq('setting_key', key)
         .eq('site_scope', scope)
         .maybeSingle();
       if (existing?.id) {
-        const { error } = await supabase.from('site_settings').update({ setting_value: value }).eq('id', existing.id);
+        const { error } = await (supabase as any).from('site_settings').update({ setting_value: value }).eq('id', existing.id);
         if (error) throw error;
       } else {
-        const { error } = await supabase.from('site_settings').insert([{ setting_key: key, setting_value: value, setting_type: type, site_scope: scope }]);
+        const { error } = await (supabase as any).from('site_settings').insert([{ setting_key: key, setting_value: value, setting_type: type, site_scope: scope }]);
         if (error) throw error;
       }
     },

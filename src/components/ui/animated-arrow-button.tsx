@@ -1,5 +1,7 @@
+'use client';
+
 import React from 'react';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 
 interface Button04Props {
   text?: string;
@@ -55,7 +57,7 @@ export const Button04 = ({ text = "Start Your Project", href = "/contact", class
   }
 
   return (
-    <Link to={href} onClick={onClick} className={`button04 w-inline-block ${className}`}>
+    <Link href={href} onClick={onClick} className={`button04 w-inline-block ${className}`}>
       <span className="button04_bg"></span>
       {content}
     </Link>

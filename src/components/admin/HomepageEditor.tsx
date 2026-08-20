@@ -231,7 +231,7 @@ const SectionGrid = ({
 const SectionCard = ({ section, onOpen }: { section: HomepageSection; onOpen: () => void }) => {
   const sch = getSchema(section.section_key);
   const Icon = sch.icon;
-  const { data: items } = useHomepageSectionItems(sch.itemsMode ? section.id : null);
+  const { data: items } = useHomepageSectionItems(sch.itemsMode ? section.id : undefined);
   const itemCount = items?.length ?? 0;
 
   return (

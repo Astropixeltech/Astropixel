@@ -253,8 +253,8 @@ export function useWorks() {
         }
 
         // Merge tags from default if missing in DB
-        const merged = data.map((item) => {
-          const matchedDefault = DEFAULT_PORTFOLIO_PROJECTS.find(d => d.id === item.id || d.title.toLowerCase() === item.title.toLowerCase());
+        const merged = (data as any[]).map((item: any) => {
+          const matchedDefault = DEFAULT_PORTFOLIO_PROJECTS.find((d: any) => d.id === item.id || d.title.toLowerCase() === item.title.toLowerCase());
           return {
             ...item,
             tags: (item as any).tags || matchedDefault?.tags || getCategoryTags(item.category),

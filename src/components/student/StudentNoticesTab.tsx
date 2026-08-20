@@ -57,7 +57,7 @@ export default function StudentNoticesTab({ language }: StudentNoticesTabProps) 
     if (!user?.id) return;
     
     try {
-      const { data, error } = await supabase
+      const { data, error } = await (supabase as any)
         .from('notices')
         .select(`
           *,
@@ -69,12 +69,12 @@ export default function StudentNoticesTab({ language }: StudentNoticesTabProps) 
       if (error) throw error;
       
       // Fetch read status
-      const { data: reads } = await supabase
+      const { data: reads } = await (supabase as any)
         .from('notice_reads')
         .select('notice_id')
         .eq('user_id', user.id);
       
-      const readIds = new Set(reads?.map(r => r.notice_id) || []);
+      const readIds = new Set((reads as any[])?.map(r => r.notice_id) || []);
       setReadNotices(readIds);
       
       setNotices(data || []);
@@ -113,7 +113,7 @@ export default function StudentNoticesTab({ language }: StudentNoticesTabProps) 
     if (!user?.id || readNotices.has(noticeId)) return;
     
     try {
-      await supabase
+      await (supabase as any)
         .from('notice_reads')
         .insert({
           notice_id: noticeId,

@@ -105,20 +105,20 @@ export default function StudentChatTab({ language }: StudentChatTabProps) {
     if (!user?.id) return;
     try {
       // 1. Get student's active enrolled course IDs
-      const { data: enrollments, error: enrErr } = await supabase
+      const { data: enrollments, error: enrErr } = await (supabase as any)
         .from('student_courses')
         .select('course_id')
         .eq('user_id', user.id)
         .eq('is_active', true);
       if (enrErr) throw enrErr;
-      const courseIds = [...new Set((enrollments || []).map((e) => e.course_id))];
+      const courseIds = [...new Set((enrollments || []).map((e: any) => e.course_id))];
       if (courseIds.length === 0) {
         setTeachers([]);
         return;
       }
 
       // 2. Owner teachers via courses.teacher_id
-      const { data: coursesData } = await supabase
+      const { data: coursesData } = await (supabase as any)
         .from('courses')
         .select('id, teacher_id')
         .in('id', courseIds);
@@ -127,7 +127,7 @@ export default function StudentChatTab({ language }: StudentChatTabProps) {
       ];
 
       // 3. Co-instructor teachers via course_instructors -> team_members -> profiles
-      const { data: ciRows } = await supabase
+      const { data: ciRows } = await (supabase as any)
         .from('course_instructors')
         .select('instructor_id')
         .in('course_id', courseIds);
@@ -137,7 +137,7 @@ export default function StudentChatTab({ language }: StudentChatTabProps) {
 
       let coProfileIds: string[] = [];
       if (teamMemberIds.length > 0) {
-        const { data: linkedProfiles } = await supabase
+        const { data: linkedProfiles } = await (supabase as any)
           .from('profiles')
           .select('id')
           .in('linked_team_member_id', teamMemberIds);
@@ -150,7 +150,7 @@ export default function StudentChatTab({ language }: StudentChatTabProps) {
         return;
       }
 
-      const { data: teacherProfiles, error: profErr } = await supabase
+      const { data: teacherProfiles, error: profErr } = await (supabase as any)
         .from('profiles')
         .select('id, user_id, full_name, avatar_url')
         .in('id', allProfileIds)
@@ -213,9 +213,9 @@ export default function StudentChatTab({ language }: StudentChatTabProps) {
           table: 'chat_messages',
           filter: `room_id=eq.${selectedRoom.id}`,
         },
-        async (payload) => {
+        async (payload: any) => {
           const newMsg = payload.new as ChatMessage;
-          const { data: senderProfile } = await supabase
+          const { data: senderProfile } = await (supabase as any)
             .from('profiles')
             .select('user_id, full_name, avatar_url')
             .eq('user_id', newMsg.sender_id)
@@ -235,20 +235,20 @@ export default function StudentChatTab({ language }: StudentChatTabProps) {
 
   const findDirectRoomWithUser = async (otherUserId: string) => {
     if (!user?.id) return null;
-    const { data: mine } = await supabase
+    const { data: mine } = await (supabase as any)
       .from('chat_room_members')
       .select('room_id')
       .eq('user_id', user.id);
     const myRoomIds = (mine || []).map((r: any) => r.room_id);
     if (!myRoomIds.length) return null;
-    const { data: shared } = await supabase
+    const { data: shared } = await (supabase as any)
       .from('chat_room_members')
       .select('room_id')
       .eq('user_id', otherUserId)
       .in('room_id', myRoomIds);
     const sharedIds = (shared || []).map((r: any) => r.room_id);
     if (!sharedIds.length) return null;
-    const { data: room } = await supabase
+    const { data: room } = await (supabase as any)
       .from('chat_rooms')
       .select('*')
       .in('id', sharedIds)
@@ -266,7 +266,7 @@ export default function StudentChatTab({ language }: StudentChatTabProps) {
     try {
       let room = await findDirectRoomWithUser(teacher.user_id);
       if (!room) {
-        const { data: newRoom, error: roomError } = await supabase
+        const { data: newRoom, error: roomError } = await (supabase as any)
           .from('chat_rooms')
           .insert({
             name: teacher.full_name,
@@ -279,7 +279,7 @@ export default function StudentChatTab({ language }: StudentChatTabProps) {
         room = newRoom as ChatRoom;
 
         // Add self
-        const { error: selfErr } = await supabase
+        const { error: selfErr } = await (supabase as any)
           .from('chat_room_members')
           .upsert(
             { room_id: room.id, user_id: user.id },
@@ -288,7 +288,7 @@ export default function StudentChatTab({ language }: StudentChatTabProps) {
         if (selfErr) throw selfErr;
 
         // Add teacher
-        const { error: teacherErr } = await supabase
+        const { error: teacherErr } = await (supabase as any)
           .from('chat_room_members')
           .upsert(
             { room_id: room.id, user_id: teacher.user_id },
@@ -312,7 +312,7 @@ export default function StudentChatTab({ language }: StudentChatTabProps) {
   const sendMessage = async () => {
     if (!user?.id || !selectedRoom || !newMessage.trim()) return;
     try {
-      const { error } = await supabase.from('chat_messages').insert({
+      const { error } = await (supabase as any).from('chat_messages').insert({
         room_id: selectedRoom.id,
         sender_id: user.id,
         message: newMessage.trim(),

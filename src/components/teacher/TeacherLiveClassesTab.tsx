@@ -64,7 +64,7 @@ export default function TeacherLiveClassesTab({ courses, language }: Props) {
     const vid = parseYoutubeId(recordUrl);
     if (!vid) { toast.error(t('সঠিক YouTube URL দিন', 'Enter a valid YouTube URL')); return; }
     setRecordSaving(true);
-    const { error } = await supabase.from('recorded_classes').upsert({
+    const { error } = await (supabase as any).from('recorded_classes').upsert({
       course_id: recordOf.course_id,
       live_class_id: recordOf.id,
       title: recordOf.title,

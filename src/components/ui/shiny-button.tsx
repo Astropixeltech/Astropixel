@@ -4,7 +4,7 @@ import React from "react";
 import { motion } from "framer-motion";
 
 type AnimationProps = any;
-import { Link } from "react-router-dom";
+import Link from "next/link";
 import { cn } from "@/lib/utils";
 
 const animationProps: AnimationProps = {
@@ -83,7 +83,7 @@ export const ShinyButton: React.FC<ShinyButtonProps> = ({
       );
     }
     return (
-      <Link to={href} className="inline-block no-underline">
+      <Link href={href} className="inline-block no-underline">
         {buttonContent}
       </Link>
     );

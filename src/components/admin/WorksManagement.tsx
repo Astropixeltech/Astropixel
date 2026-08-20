@@ -55,7 +55,7 @@ export const WorksManagement = () => {
   const saveMutation = useMutation({
     mutationFn: async (data: typeof formData & { id?: string }) => {
       if (data.id) {
-        const { error } = await supabase
+        const { error } = await (supabase as any)
           .from("works")
           .update({
             title: data.title,
@@ -69,7 +69,7 @@ export const WorksManagement = () => {
           .eq("id", data.id);
         if (error) throw error;
       } else {
-        const { error } = await supabase.from("works").insert({
+        const { error } = await (supabase as any).from("works").insert({
           title: data.title,
           description: data.description || null,
           category: data.category,
@@ -94,7 +94,7 @@ export const WorksManagement = () => {
 
   const deleteMutation = useMutation({
     mutationFn: async (id: string) => {
-      const { error } = await supabase.from("works").delete().eq("id", id);
+      const { error } = await (supabase as any).from("works").delete().eq("id", id);
       if (error) throw error;
     },
     onSuccess: () => {

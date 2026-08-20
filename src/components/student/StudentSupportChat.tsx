@@ -59,35 +59,35 @@ export default function StudentSupportChat({ language }: Props) {
     if (!user?.id) return;
     (async () => {
       setLoading(true);
-      const { data: enrolls } = await supabase
+      const { data: enrolls } = await (supabase as any)
         .from('student_courses')
         .select('course_id')
         .eq('user_id', user.id)
         .eq('is_active', true);
-      const courseIds = enrolls?.map(e => e.course_id) || [];
+      const courseIds = (enrolls as any[])?.map(e => e.course_id) || [];
       if (!courseIds.length) { setTeachers([]); setLoading(false); return; }
 
-      const { data: courses } = await supabase
+      const { data: courses } = await (supabase as any)
         .from('courses')
         .select('id, title, teacher_id')
         .in('id', courseIds);
-      const teacherProfileIds = [...new Set((courses || []).map(c => c.teacher_id).filter(Boolean))] as string[];
+      const teacherProfileIds = [...new Set(((courses as any[]) || []).map(c => c.teacher_id).filter(Boolean))] as string[];
       if (!teacherProfileIds.length) { setTeachers([]); setLoading(false); return; }
 
-      const { data: profs } = await supabase
+      const { data: profs } = await (supabase as any)
         .from('profiles')
         .select('id, user_id, full_name, avatar_url')
         .in('id', teacherProfileIds);
 
       const map = new Map<string, TeacherContact>();
-      (profs || []).forEach(p => {
+      ((profs as any[]) || []).forEach(p => {
         map.set(p.id, {
           profile_id: p.id, user_id: p.user_id,
           full_name: p.full_name, avatar_url: p.avatar_url,
           courses: [],
         });
       });
-      (courses || []).forEach(c => {
+      ((courses as any[]) || []).forEach((c: any) => {
         const tt = map.get(c.teacher_id as string);
         if (tt) tt.courses.push(c.title);
       });
@@ -107,21 +107,21 @@ export default function StudentSupportChat({ language }: Props) {
     setRoomId(null);
 
     // Rooms I'm a member of
-    const { data: myMemberships, error: mmErr } = await supabase
+    const { data: myMemberships, error: mmErr } = await (supabase as any)
       .from('chat_room_members').select('room_id').eq('user_id', user.id);
     if (mmErr) console.error('memberships err', mmErr);
-    const myRoomIds = (myMemberships || []).map(m => m.room_id);
+    const myRoomIds = ((myMemberships as any[]) || []).map(m => m.room_id);
 
     let existingId: string | null = null;
     if (myRoomIds.length) {
-      const { data: shared } = await supabase
+      const { data: shared } = await (supabase as any)
         .from('chat_room_members').select('room_id')
         .eq('user_id', teacher.user_id).in('room_id', myRoomIds);
-      const candidates = (shared || []).map(s => s.room_id);
+      const candidates = ((shared as any[]) || []).map(s => s.room_id);
       if (candidates.length) {
-        const { data: directs } = await supabase
+        const { data: directs } = await (supabase as any)
           .from('chat_rooms').select('id').in('id', candidates).eq('room_type', 'direct');
-        if (directs && directs.length) existingId = directs[0].id;
+        if (directs && directs.length) existingId = (directs as any[])[0].id;
       }
     }
 
@@ -131,7 +131,7 @@ export default function StudentSupportChat({ language }: Props) {
     }
 
     // Create new
-    const { data: newRoom, error: cErr } = await supabase
+    const { data: newRoom, error: cErr } = await (supabase as any)
       .from('chat_rooms').insert({
         name: teacher.full_name,
         room_type: 'direct',
@@ -144,7 +144,7 @@ export default function StudentSupportChat({ language }: Props) {
     }
 
     // Add self first
-    const { error: m1 } = await supabase.from('chat_room_members').upsert({
+    const { error: m1 } = await (supabase as any).from('chat_room_members').upsert({
       room_id: newRoom.id, user_id: user.id,
     }, { onConflict: 'room_id,user_id' });
     if (m1) {
@@ -154,7 +154,7 @@ export default function StudentSupportChat({ language }: Props) {
     }
 
     // Add teacher
-    const { error: m2 } = await supabase.from('chat_room_members').upsert({
+    const { error: m2 } = await (supabase as any).from('chat_room_members').upsert({
       room_id: newRoom.id, user_id: teacher.user_id,
     }, { onConflict: 'room_id,user_id' });
     if (m2) {
@@ -179,7 +179,7 @@ export default function StudentSupportChat({ language }: Props) {
     const channel = supabase
       .channel(`support:${roomId}`)
       .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'chat_messages', filter: `room_id=eq.${roomId}` },
-        (payload) => setMessages(prev => [...prev, payload.new as ChatMessage]))
+        (payload: any) => setMessages(prev => [...prev, payload.new as ChatMessage]))
       .subscribe();
     return () => { supabase.removeChannel(channel); };
   }, [roomId]);
@@ -192,7 +192,7 @@ export default function StudentSupportChat({ language }: Props) {
     if (!input.trim()) return;
     const msg = input.trim();
     setInput('');
-    const { error } = await supabase.from('chat_messages').insert({
+    const { error } = await (supabase as any).from('chat_messages').insert({
       room_id: roomId, sender_id: user.id, message: msg,
     });
     if (error) {

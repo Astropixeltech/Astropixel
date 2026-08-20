@@ -1,8 +1,10 @@
+'use client';
+
 import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, Send, Loader2, Sparkles, MessageCircle, Image, Video, Paperclip, Play, Mic, MicOff, Square } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useRouter, usePathname } from "next/navigation";
 import { supabase } from "@/integrations/supabase/client";
 import logoAssetJson from "@/assets/logo.png.asset.json";
 const logo = logoAssetJson.url;
@@ -59,8 +61,8 @@ const AIChatbot = () => {
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const { language } = useLanguage();
-  const navigate = useNavigate();
-  const location = useLocation();
+  const router = useRouter();
+  const pathname = usePathname();
 
   const handleFileSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
@@ -215,7 +217,7 @@ const AIChatbot = () => {
           <button
             key={index}
             onClick={() => {
-              navigate(part);
+              router.push(part);
               setIsOpen(false);
             }}
             className="text-primary underline hover:text-primary/80 font-medium"
@@ -239,11 +241,13 @@ const AIChatbot = () => {
     let assistantContent = "";
 
     try {
-      const response = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/ai-assistant`, {
+      const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.VITE_SUPABASE_URL;
+      const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || process.env.VITE_SUPABASE_PUBLISHABLE_KEY;
+      const response = await fetch(`${supabaseUrl}/functions/v1/ai-assistant`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY}`,
+          Authorization: `Bearer ${supabaseKey}`,
         },
         body: JSON.stringify({ 
           messages: [...messages, userMsg] 

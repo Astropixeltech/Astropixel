@@ -86,7 +86,7 @@ export const TeamManagement = () => {
   const { data: members, isLoading } = useQuery({
     queryKey: ["admin-team-members"],
     queryFn: async () => {
-      const { data, error } = await supabase
+      const { data, error } = await (supabase as any)
         .from("team_members")
         .select("*")
         .order("order_index", { ascending: true });
@@ -99,7 +99,7 @@ export const TeamManagement = () => {
     mutationFn: async (data: typeof formData & { id?: string }) => {
       let memberId = data.id;
       if (data.id) {
-        const { error } = await supabase
+        const { error } = await (supabase as any)
           .from("team_members")
           .update({
             name: data.name,
@@ -121,7 +121,7 @@ export const TeamManagement = () => {
           .eq("id", data.id);
         if (error) throw error;
       } else {
-        const { data: newMember, error } = await supabase.from("team_members").insert({
+        const { data: newMember, error } = await (supabase as any).from("team_members").insert({
           name: data.name,
           role: data.role,
           bio: data.bio || null,
@@ -146,7 +146,7 @@ export const TeamManagement = () => {
       // Save custom links
       if (memberId) {
         // Delete existing custom links
-        await supabase.from("team_member_custom_links").delete().eq("team_member_id", memberId);
+        await (supabase as any).from("team_member_custom_links").delete().eq("team_member_id", memberId);
         
         // Insert new custom links
         if (customLinks.length > 0) {
@@ -158,7 +158,7 @@ export const TeamManagement = () => {
             order_index: idx,
           }));
           if (linksToInsert.length > 0) {
-            await supabase.from("team_member_custom_links").insert(linksToInsert);
+            await (supabase as any).from("team_member_custom_links").insert(linksToInsert);
           }
         }
       }
@@ -175,7 +175,7 @@ export const TeamManagement = () => {
 
   const deleteMutation = useMutation({
     mutationFn: async (id: string) => {
-      const { error } = await supabase.from("team_members").delete().eq("id", id);
+      const { error } = await (supabase as any).from("team_members").delete().eq("id", id);
       if (error) throw error;
     },
     onSuccess: () => {
@@ -231,13 +231,13 @@ export const TeamManagement = () => {
     });
     
     // Load custom links
-    const { data: links } = await supabase
+    const { data: links } = await (supabase as any)
       .from("team_member_custom_links")
       .select("*")
       .eq("team_member_id", member.id)
       .order("order_index");
     
-    setCustomLinks((links || []).map(l => ({ id: l.id, label: l.label, url: l.url, icon_url: l.icon_url || '' })));
+    setCustomLinks((links || []).map((l: any) => ({ id: l.id, label: l.label, url: l.url, icon_url: l.icon_url || '' })));
     setIsDialogOpen(true);
   };
 

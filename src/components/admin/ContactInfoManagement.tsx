@@ -118,9 +118,9 @@ export default function ContactInfoManagement() {
         content_key: f.key,
         content_en: values[f.key] ?? "",
       }));
-      const { error } = await supabase
+      const { error } = await (supabase as any)
         .from("page_content")
-        .upsert(rows, { onConflict: "page_name,content_key" });
+        .upsert(rows as any, { onConflict: "page_name,content_key" });
       if (error) throw error;
     },
     onSuccess: () => {

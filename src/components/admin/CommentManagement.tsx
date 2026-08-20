@@ -35,7 +35,7 @@ export default function CommentManagement() {
   const fetchComments = async () => {
     setLoading(true);
     // Fetch top-level comments only
-    const { data, error } = await supabase
+    const { data, error } = await (supabase as any)
       .from('lesson_comments')
       .select('*')
       .is('parent_id', null)
@@ -93,7 +93,7 @@ export default function CommentManagement() {
   const handleReply = async (comment: CommentRow) => {
     if (!replyText.trim() || !user) return;
     setSending(true);
-    const { error } = await supabase.from('lesson_comments').insert({
+    const { error } = await (supabase as any).from('lesson_comments').insert({
       user_id: user.id,
       video_id: comment.video_id,
       course_id: comment.course_id,
@@ -106,14 +106,14 @@ export default function CommentManagement() {
       setReplyText('');
       setReplyingTo(null);
       // Mark as read
-      await supabase.from('lesson_comments').update({ is_read: true }).eq('id', comment.id);
+      await (supabase as any).from('lesson_comments').update({ is_read: true }).eq('id', comment.id);
       fetchComments();
     }
     setSending(false);
   };
 
   const handleDelete = async (id: string) => {
-    const { error } = await supabase.from('lesson_comments').delete().eq('id', id);
+    const { error } = await (supabase as any).from('lesson_comments').delete().eq('id', id);
     if (error) toast.error('Delete failed');
     else {
       toast.success('Comment deleted');

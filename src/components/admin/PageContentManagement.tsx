@@ -175,7 +175,7 @@ const PageContentManagement = ({ lockedPage }: { lockedPage?: string } = {}) => 
 
   const addMutation = useMutation({
     mutationFn: async (data: Omit<PageContent, 'id'>) => {
-      const { error } = await supabase.from('page_content').insert([{ ...data, site_scope: scope }]);
+      const { error } = await (supabase as any).from('page_content').insert([{ ...data, site_scope: scope }]);
       if (error) throw error;
     },
     onSuccess: () => {
@@ -190,7 +190,7 @@ const PageContentManagement = ({ lockedPage }: { lockedPage?: string } = {}) => 
 
   const updateMutation = useMutation({
     mutationFn: async ({ id, content_en }: { id: string; content_en: string | null }) => {
-      const { error } = await supabase.from('page_content').update({ content_en }).eq('id', id);
+      const { error } = await (supabase as any).from('page_content').update({ content_en }).eq('id', id);
       if (error) throw error;
     },
 
@@ -204,7 +204,7 @@ const PageContentManagement = ({ lockedPage }: { lockedPage?: string } = {}) => 
 
   const deleteMutation = useMutation({
     mutationFn: async (id: string) => {
-      const { error } = await supabase.from('page_content').delete().eq('id', id);
+      const { error } = await (supabase as any).from('page_content').delete().eq('id', id);
       if (error) throw error;
     },
     onSuccess: () => {

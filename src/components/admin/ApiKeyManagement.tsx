@@ -113,13 +113,13 @@ const ApiKeyManagement = () => {
         .maybeSingle();
 
       if (existing) {
-        const { error } = await supabase
+        const { error } = await (supabase as any)
           .from('site_settings')
           .update({ setting_value: value, updated_at: new Date().toISOString() })
           .eq('setting_key', key);
         if (error) throw error;
       } else {
-        const { error } = await supabase
+        const { error } = await (supabase as any)
           .from('site_settings')
           .insert({ setting_key: key, setting_value: value, setting_type: 'api_key' });
         if (error) throw error;

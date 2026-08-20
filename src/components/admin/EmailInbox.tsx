@@ -128,7 +128,7 @@ export default function EmailInbox({ language }: EmailInboxProps) {
   const { data: threads = [], isLoading: threadsLoading, refetch: refetchThreads } = useQuery({
     queryKey: ['email-threads', statusFilter],
     queryFn: async () => {
-      let query = supabase
+      let query = (supabase as any)
         .from('email_threads')
         .select('*')
         .order('last_message_at', { ascending: false });
@@ -149,7 +149,7 @@ export default function EmailInbox({ language }: EmailInboxProps) {
     queryFn: async () => {
       if (!selectedThread) return [];
       
-      const { data, error } = await supabase
+      const { data, error } = await (supabase as any)
         .from('email_messages')
         .select('*')
         .eq('thread_id', selectedThread.id)
@@ -158,7 +158,7 @@ export default function EmailInbox({ language }: EmailInboxProps) {
       if (error) throw error;
 
       // Mark messages as read
-      await supabase
+      await (supabase as any)
         .from('email_messages')
         .update({ is_read: true })
         .eq('thread_id', selectedThread.id)
@@ -173,7 +173,7 @@ export default function EmailInbox({ language }: EmailInboxProps) {
   const { data: unreadCount = 0 } = useQuery({
     queryKey: ['unread-emails'],
     queryFn: async () => {
-      const { count, error } = await supabase
+      const { count, error } = await (supabase as any)
         .from('email_messages')
         .select('*', { count: 'exact', head: true })
         .eq('direction', 'inbound')
@@ -187,7 +187,7 @@ export default function EmailInbox({ language }: EmailInboxProps) {
   // Update thread status
   const updateStatusMutation = useMutation({
     mutationFn: async ({ threadId, status }: { threadId: string; status: string }) => {
-      const { error } = await supabase
+      const { error } = await (supabase as any)
         .from('email_threads')
         .update({ status })
         .eq('id', threadId);

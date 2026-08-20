@@ -1,7 +1,9 @@
+'use client';
+
 import { useState, useEffect, useMemo, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Search, X, ArrowRight, Layout, Users, Briefcase, Phone, BookOpen, Info, Sparkles, Loader2, GraduationCap, User } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { useRouter } from "next/navigation";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { supabase } from "@/integrations/supabase/client";
 
@@ -69,7 +71,7 @@ const staticPages: SearchItem[] = [
     descriptionBn: "Astropixel-এ স্বাগতম - ক্রিয়েটিভ ডিজাইন এজেন্সি",
     path: "/",
     icon: Layout,
-    keywords: ["home", "main", "landing", "welcome", "alphazero", "alpha", "zero", "agency", "এজেন্সি", "হোম", "প্রধান", "স্বাগতম", "আলফাজিরো", "আলফা"],
+    keywords: ["home", "main", "landing", "welcome", "agency", "এজেন্সি", "হোম", "প্রধান", "স্বাগতম"],
     category: "page"
   },
   {
@@ -79,7 +81,7 @@ const staticPages: SearchItem[] = [
     descriptionBn: "Astropixel-এর যাত্রা, মিশন, ভিশন এবং মূল্যবোধ সম্পর্কে জানুন",
     path: "/about",
     icon: Info,
-    keywords: ["about", "story", "values", "mission", "vision", "history", "company", "who", "we", "are", "journey", "আমাদের", "সম্পর্কে", "গল্প", "মিশন", "ভিশন", "কোম্পানি", "যাত্রা", "ইতিহাস"],
+    keywords: ["about", "story", "values", "mission", "vision", "history", "company", "who", "we", "are", "journey", "আমাদের", "সম্পর্কে", "গল্প"],
     category: "page"
   },
   {
@@ -89,7 +91,7 @@ const staticPages: SearchItem[] = [
     descriptionBn: "গ্রাফিক ডিজাইন, ওয়েব ডেভেলপমেন্ট, ভিডিও এডিটিং, ডিজিটাল মার্কেটিং, লোগো, ব্র্যান্ডিং",
     path: "/services",
     icon: Briefcase,
-    keywords: ["services", "service", "design", "web", "website", "seo", "marketing", "digital", "graphic", "video", "editing", "development", "developer", "logo", "branding", "brand", "poster", "banner", "flyer", "social", "media", "thumbnail", "youtube", "facebook", "instagram", "সেবা", "ডিজাইন", "ওয়েব", "ওয়েবসাইট", "মার্কেটিং", "লোগো", "ব্র্যান্ডিং", "গ্রাফিক", "ভিডিও", "এডিটিং", "ডেভেলপমেন্ট", "পোস্টার", "ব্যানার", "থাম্বনেইল", "ফেসবুক", "ইউটিউব", "motion", "animation", "ui", "ux", "app", "mobile", "responsive"],
+    keywords: ["services", "service", "design", "web", "website", "seo", "marketing", "digital", "graphic", "video", "editing", "development", "logo", "branding"],
     category: "page"
   },
   {
@@ -99,7 +101,7 @@ const staticPages: SearchItem[] = [
     descriptionBn: "আমাদের পোর্টফোলিও, সম্পন্ন প্রজেক্ট এবং কেস স্টাডি দেখুন",
     path: "/work",
     icon: Layout,
-    keywords: ["work", "portfolio", "projects", "project", "case", "study", "gallery", "showcase", "examples", "sample", "কাজ", "পোর্টফোলিও", "প্রজেক্ট", "গ্যালারি", "নমুনা", "উদাহরণ"],
+    keywords: ["work", "portfolio", "projects", "project", "case", "study", "gallery", "showcase", "examples", "sample", "কাজ", "পোর্টফোলিও"],
     category: "page"
   },
   {
@@ -109,27 +111,17 @@ const staticPages: SearchItem[] = [
     descriptionBn: "Astropixel-এর পেছনের ক্রিয়েটিভ মানুষদের সাথে পরিচিত হন",
     path: "/about#team",
     icon: Users,
-    keywords: ["team", "members", "people", "staff", "founder", "ceo", "designer", "developer", "employee", "crew", "join", "career", "টিম", "সদস্য", "মানুষ", "ফাউন্ডার", "ডিজাইনার", "ডেভেলপার", "কর্মী", "trainer", "instructor", "ট্রেইনার"],
-    category: "page"
-  },
-  {
-    title: "Courses",
-    titleBn: "কোর্সসমূহ",
-    description: "Learn design and development skills - Graphic Design, Web Development courses",
-    descriptionBn: "ডিজাইন এবং ডেভেলপমেন্ট শিখুন - গ্রাফিক ডিজাইন, ওয়েব ডেভেলপমেন্ট কোর্স",
-    path: "/courses",
-    icon: BookOpen,
-    keywords: ["courses", "course", "training", "learn", "learning", "class", "tutorial", "education", "skill", "study", "enroll", "admission", "certificate", "কোর্স", "ট্রেনিং", "শিখুন", "শেখা", "ক্লাস", "টিউটোরিয়াল", "শিক্ষা", "ভর্তি", "সার্টিফিকেট", "photoshop", "illustrator", "figma", "canva"],
+    keywords: ["team", "members", "people", "staff", "founder", "ceo", "designer", "developer", "টিম", "সদস্য"],
     category: "page"
   },
   {
     title: "Contact Us",
     titleBn: "যোগাযোগ করুন",
-    description: "Get in touch - Email: contact@astropixel.tech, Phone: +880 1779-277603",
-    descriptionBn: "যোগাযোগ করুন - ইমেইল, ফোন: +৮৮০ ১৭৭৯-২৭৭৬০৩, হোয়াটসঅ্যাপ",
+    description: "Get in touch - Email: hello@astropixel.tech",
+    descriptionBn: "যোগাযোগ করুন - ইমেইল: hello@astropixel.tech",
     path: "/contact",
     icon: Phone,
-    keywords: ["contact", "email", "phone", "whatsapp", "message", "call", "reach", "location", "address", "help", "support", "inquiry", "quote", "price", "যোগাযোগ", "ইমেইল", "ফোন", "হোয়াটসঅ্যাপ", "মেসেজ", "কল", "ঠিকানা", "লোকেশন", "সাহায্য", "দাম", "01779277603", "1779277603", "০১৭৭৯২৭৭৬০৩"],
+    keywords: ["contact", "email", "phone", "whatsapp", "message", "call", "reach", "location", "address", "help", "support", "যোগাযোগ"],
     category: "page"
   },
   {
@@ -139,27 +131,7 @@ const staticPages: SearchItem[] = [
     descriptionBn: "Astropixel-তে ক্যারিয়ারের সুযোগ - এখনই আবেদন করুন",
     path: "/join-team",
     icon: Users,
-    keywords: ["join", "career", "job", "jobs", "apply", "hiring", "work", "opportunity", "vacancy", "recruitment", "যোগ", "চাকরি", "আবেদন", "নিয়োগ", "ক্যারিয়ার", "সুযোগ"],
-    category: "page"
-  },
-  {
-    title: "Student Login",
-    titleBn: "স্টুডেন্ট লগইন",
-    description: "Login to access your courses and dashboard",
-    descriptionBn: "আপনার কোর্স এবং ড্যাশবোর্ড অ্যাক্সেস করতে লগইন করুন",
-    path: "/student-login",
-    icon: BookOpen,
-    keywords: ["student", "login", "signin", "sign", "account", "dashboard", "my", "courses", "স্টুডেন্ট", "লগইন", "একাউন্ট", "ড্যাশবোর্ড", "আমার"],
-    category: "page"
-  },
-  {
-    title: "Verify Certificate",
-    titleBn: "সার্টিফিকেট যাচাই",
-    description: "Verify your Astropixel certificate authenticity",
-    descriptionBn: "আপনার Astropixel সার্টিফিকেটের সত্যতা যাচাই করুন",
-    path: "/verify-certificate",
-    icon: BookOpen,
-    keywords: ["verify", "certificate", "check", "validate", "authenticity", "সার্টিফিকেট", "যাচাই", "চেক", "ভেরিফাই"],
+    keywords: ["join", "career", "job", "jobs", "apply", "hiring", "work", "opportunity", "যোগ", "চাকরি"],
     category: "page"
   },
 ];
@@ -190,35 +162,14 @@ const SearchModal = ({ isOpen, onClose }: SearchModalProps) => {
   const [aiSuggestion, setAiSuggestion] = useState<string | null>(null);
   const [isAiLoading, setIsAiLoading] = useState(false);
   const [dynamicData, setDynamicData] = useState<SearchItem[]>([]);
-  const navigate = useNavigate();
+  const router = useRouter();
   const { language } = useLanguage();
 
-  // Load courses from database and combine with team members
+  // Load team members dynamic data
   useEffect(() => {
     const loadDynamicData = async () => {
       try {
-        const { data: courses } = await supabase
-          .from('courses')
-          .select('id, title, description')
-          .eq('is_published', true);
-
         const dynamicItems: SearchItem[] = [];
-
-        // Add courses
-        if (courses) {
-          courses.forEach(course => {
-            dynamicItems.push({
-              title: course.title,
-              titleBn: course.title,
-              description: course.description || "Learn with Astropixel",
-              descriptionBn: course.description || "Astropixel-এর সাথে শিখুন",
-              path: "/courses",
-              icon: GraduationCap,
-              keywords: [course.title.toLowerCase(), "course", "কোর্স", "training", "ট্রেনিং"],
-              category: "course"
-            });
-          });
-        }
 
         // Add team members
         teamMembers.forEach(member => {
@@ -229,7 +180,7 @@ const SearchModal = ({ isOpen, onClose }: SearchModalProps) => {
             descriptionBn: member.roleBn,
             path: "/about#team",
             icon: User,
-            keywords: [...member.keywords, "team", "member", "trainer", "টিম", "ট্রেইনার", "মেম্বার"],
+            keywords: [...member.keywords, "team", "member", "টিম", "মেম্বার"],
             category: "team"
           });
         });
@@ -269,7 +220,7 @@ const SearchModal = ({ isOpen, onClose }: SearchModalProps) => {
   }, [query, allSearchData]);
 
   const handleSelect = (path: string) => {
-    navigate(path);
+    router.push(path);
     onClose();
     setQuery("");
     setAiSuggestion(null);

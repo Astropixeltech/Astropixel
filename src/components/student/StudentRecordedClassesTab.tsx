@@ -50,21 +50,21 @@ export default function StudentRecordedClassesTab({ language }: Props) {
     if (!user?.id) return;
     (async () => {
       setLoading(true);
-      const { data: enrolls } = await supabase
+      const { data: enrolls } = await (supabase as any)
         .from('student_courses').select('course_id')
         .eq('user_id', user.id).eq('is_active', true);
-      const courseIds = (enrolls || []).map(e => e.course_id);
+      const courseIds = ((enrolls as any[]) || []).map(e => e.course_id);
       if (!courseIds.length) { setFolders([]); setLoading(false); return; }
 
-      const { data: courses } = await supabase
+      const { data: courses } = await (supabase as any)
         .from('courses').select('id, title, thumbnail_url').in('id', courseIds);
-      const { data: recs } = await supabase
+      const { data: recs } = await (supabase as any)
         .from('recorded_classes').select('*').in('course_id', courseIds)
         .order('recorded_at', { ascending: false });
 
       const map = new Map<string, CourseFolder>();
-      (courses || []).forEach(c => map.set(c.id, { id: c.id, title: c.title, thumbnail_url: c.thumbnail_url, classes: [] }));
-      (recs || []).forEach(r => { map.get(r.course_id)?.classes.push(r as Recorded); });
+      ((courses as any[]) || []).forEach((c: any) => map.set(c.id, { id: c.id, title: c.title, thumbnail_url: c.thumbnail_url, classes: [] }));
+      ((recs as any[]) || []).forEach((r: any) => { map.get(r.course_id)?.classes.push(r as Recorded); });
       setFolders(Array.from(map.values()));
       setLoading(false);
     })();

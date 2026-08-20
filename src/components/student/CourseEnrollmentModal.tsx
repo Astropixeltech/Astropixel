@@ -124,7 +124,7 @@ export default function CourseEnrollmentModal({
       }
 
       // Directly assign course for free enrollment
-      const { error } = await supabase.from('student_courses').insert({
+      const { error } = await (supabase as any).from('student_courses').insert({
         user_id: userId,
         course_id: course.id,
         is_active: true,

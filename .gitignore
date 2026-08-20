@@ -19,6 +19,7 @@ lerna-debug.log*
 
 # Build & Dependency output
 node_modules
+.next
 dist
 dist-ssr
 

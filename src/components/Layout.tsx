@@ -1,3 +1,5 @@
+'use client';
+
 import { ReactNode } from "react";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
@@ -7,11 +9,11 @@ interface LayoutProps {
   flushTop?: boolean;
 }
 
-const Layout = ({ children, flushTop = false }: LayoutProps) => {
+const Layout = ({ children, flushTop = true }: LayoutProps) => {
   return (
     <div className="min-h-screen bg-background flex flex-col">
       <Navbar />
-      <main className={flushTop ? "flex-1" : "flex-1 pt-20"}>
+      <main className="flex-1">
         {children}
       </main>
       <Footer />

@@ -168,7 +168,7 @@ export default function AboutPageEditor() {
       }));
       const { error } = await supabase
         .from("page_content")
-        .upsert(rows, { onConflict: "page_name,content_key" });
+        .upsert(rows as any, { onConflict: "page_name,content_key" });
       if (error) throw error;
     },
     onSuccess: () => {

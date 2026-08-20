@@ -39,7 +39,7 @@ interface Payment {
   paid_at: string | null;
 }
 
-const PROJECT_REF = (import.meta.env.VITE_SUPABASE_PROJECT_ID as string) || 'ayqbpqgahtycrncbknvj';
+const PROJECT_REF = process.env.NEXT_PUBLIC_SUPABASE_PROJECT_ID || process.env.VITE_SUPABASE_PROJECT_ID || 'ayqbpqgahtycrncbknvj';
 const FN_BASE = `https://${PROJECT_REF}.functions.supabase.co`;
 
 function genKey() {
@@ -70,8 +70,8 @@ export default function PaymentApiManagement() {
   const load = async () => {
     setLoading(true);
     const [c, p] = await Promise.all([
-      supabase.from('api_clients').select('*').order('created_at', { ascending: false }),
-      supabase.from('api_payments').select('*').order('created_at', { ascending: false }).limit(100),
+      (supabase as any).from('api_clients').select('*').order('created_at', { ascending: false }),
+      (supabase as any).from('api_payments').select('*').order('created_at', { ascending: false }).limit(100),
     ]);
     setClients((c.data as any) || []);
     setPayments((p.data as any) || []);
@@ -88,7 +88,7 @@ export default function PaymentApiManagement() {
     const key = genKey();
     const hash = await sha256(key);
     const { data: { user } } = await supabase.auth.getUser();
-    const { error } = await supabase.from('api_clients').insert({
+    const { error } = await (supabase as any).from('api_clients').insert({
       name: form.name.trim(),
       owner_email: form.owner_email || null,
       website_url: form.website_url || null,
@@ -112,7 +112,7 @@ export default function PaymentApiManagement() {
 
   const saveWebhook = async () => {
     if (!editWebhook) return;
-    const { error } = await supabase.from('api_clients').update({
+    const { error } = await (supabase as any).from('api_clients').update({
       webhook_url: webhookForm.webhook_url || null,
       webhook_secret: webhookForm.webhook_secret || null,
     }).eq('id', editWebhook.id);
@@ -134,7 +134,7 @@ export default function PaymentApiManagement() {
 
   const saveBrand = async () => {
     if (!editBrand) return;
-    const { error } = await supabase.from('api_clients').update({
+    const { error } = await (supabase as any).from('api_clients').update({
       logo_url: brandForm.logo_url || null,
       brand_color: brandForm.brand_color || null,
       checkout_title: brandForm.checkout_title || null,
@@ -153,13 +153,13 @@ export default function PaymentApiManagement() {
   };
 
   const toggleActive = async (c: Client) => {
-    await supabase.from('api_clients').update({ is_active: !c.is_active }).eq('id', c.id);
+    await (supabase as any).from('api_clients').update({ is_active: !c.is_active }).eq('id', c.id);
     load();
   };
 
   const deleteClient = async (c: Client) => {
     if (!confirm(`Delete ${c.name}? All payment records remain but key stops working.`)) return;
-    await supabase.from('api_clients').delete().eq('id', c.id);
+    await (supabase as any).from('api_clients').delete().eq('id', c.id);
     load();
   };
 

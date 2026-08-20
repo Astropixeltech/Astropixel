@@ -41,7 +41,7 @@ export function useTeacherStats() {
       if (withdrawalsError) throw withdrawalsError;
 
       // Fetch enrolled students count for teacher's courses
-      const courseIds = courses?.map(c => c.id) || [];
+      const courseIds = ((courses as any[]) || []).map((c: any) => c.id);
       let totalStudents = 0;
 
       if (courseIds.length > 0) {
@@ -54,31 +54,31 @@ export function useTeacherStats() {
       }
 
       // Calculate stats
-      const recordedCourses = courses?.filter(c => c.course_type === 'recorded').length || 0;
-      const liveCourses = courses?.filter(c => c.course_type === 'live').length || 0;
-      const freeCourses = courses?.filter(c => c.course_type === 'free').length || 0;
+      const recordedCourses = ((courses as any[]) || []).filter((c: any) => c.course_type === 'recorded').length || 0;
+      const liveCourses = ((courses as any[]) || []).filter((c: any) => c.course_type === 'live').length || 0;
+      const freeCourses = ((courses as any[]) || []).filter((c: any) => c.course_type === 'free').length || 0;
 
-      const recordedEarnings = revenue
-        ?.filter(r => r.revenue_type === 'recorded_course')
-        .reduce((sum, r) => sum + (r.teacher_share || 0), 0) || 0;
+      const recordedEarnings = ((revenue as any[]) || [])
+        .filter((r: any) => r.revenue_type === 'recorded_course')
+        .reduce((sum: number, r: any) => sum + (r.teacher_share || 0), 0) || 0;
 
-      const liveEarnings = revenue
-        ?.filter(r => r.revenue_type === 'live_class')
-        .reduce((sum, r) => sum + (r.teacher_share || 0), 0) || 0;
+      const liveEarnings = ((revenue as any[]) || [])
+        .filter((r: any) => r.revenue_type === 'live_course')
+        .reduce((sum: number, r: any) => sum + (r.teacher_share || 0), 0) || 0;
 
-      const paidWorkEarnings = revenue
-        ?.filter(r => r.revenue_type === 'paid_work')
-        .reduce((sum, r) => sum + (r.teacher_share || 0), 0) || 0;
+      const paidWorkEarnings = ((revenue as any[]) || [])
+        .filter((r: any) => r.revenue_type === 'paid_work')
+        .reduce((sum: number, r: any) => sum + (r.teacher_share || 0), 0) || 0;
 
       const totalEarnings = recordedEarnings + liveEarnings + paidWorkEarnings;
 
-      const paidWithdrawals = withdrawals
-        ?.filter(w => w.status === 'paid')
-        .reduce((sum, w) => sum + (w.amount || 0), 0) || 0;
+      const paidWithdrawals = ((withdrawals as any[]) || [])
+        .filter((w: any) => w.status === 'paid')
+        .reduce((sum: number, w: any) => sum + (w.amount || 0), 0) || 0;
 
-      const pendingWithdrawal = withdrawals
-        ?.filter(w => w.status === 'pending')
-        .reduce((sum, w) => sum + (w.amount || 0), 0) || 0;
+      const pendingWithdrawal = ((withdrawals as any[]) || [])
+        .filter((w: any) => w.status === 'pending')
+        .reduce((sum: number, w: any) => sum + (w.amount || 0), 0) || 0;
 
       const availableBalance = totalEarnings - paidWithdrawals - pendingWithdrawal;
 
@@ -150,7 +150,7 @@ export function useTeacherCourses() {
 
       // Get enrolled students count for each course
       const coursesWithStats = await Promise.all(
-        (data || []).map(async (course) => {
+        ((data as any[]) || []).map(async (course: any) => {
           const { count } = await supabase
             .from('student_courses')
             .select('*', { count: 'exact', head: true })
@@ -164,7 +164,7 @@ export function useTeacherCourses() {
             .eq('teacher_id', profile.id)
             .eq('status', 'approved');
 
-          const totalRevenue = revenueData?.reduce((sum, r) => sum + (r.teacher_share || 0), 0) || 0;
+          const totalRevenue = ((revenueData as any[]) || []).reduce((sum: number, r: any) => sum + (r.teacher_share || 0), 0) || 0;
 
           return {
             ...course,
@@ -215,7 +215,7 @@ export function useTeacherStudents() {
         return;
       }
 
-      const courseIds = courses.map(c => c.id);
+      const courseIds = ((courses as any[]) || []).map((c: any) => c.id);
 
       // Get student course assignments
       const { data: studentAssignments } = await supabase
@@ -230,7 +230,7 @@ export function useTeacherStudents() {
       }
 
       // Get unique student user_ids
-      const studentUserIds = [...new Set(studentAssignments.map(sa => sa.user_id))];
+      const studentUserIds = [...new Set(((studentAssignments as any[]) || []).map((sa: any) => sa.user_id))];
 
       // Fetch profiles for these students
       const { data: studentProfiles } = await supabase
@@ -246,11 +246,11 @@ export function useTeacherStudents() {
       // Build student progress list
       const studentProgressList: StudentProgress[] = [];
 
-      for (const sa of studentAssignments) {
-        const student = studentProfiles.find(p => p.user_id === sa.user_id);
+      for (const sa of (studentAssignments as any[])) {
+        const student = (studentProfiles as any[]).find((p: any) => p.user_id === sa.user_id);
         if (!student) continue;
 
-        const course = courses.find(c => c.id === sa.course_id);
+        const course = (courses as any[]).find((c: any) => c.id === sa.course_id);
         if (!course) continue;
 
         // Get video count for course
@@ -260,15 +260,17 @@ export function useTeacherStudents() {
           .eq('course_id', sa.course_id);
 
         // Get completed videos for this student
+        const videoIdsResult = await supabase.from('videos').select('id').eq('course_id', sa.course_id);
+        const videoIds = ((videoIdsResult.data as any[]) || []).map((v: any) => v.id);
         const { data: progress } = await supabase
           .from('video_progress')
           .select('video_id, is_completed, last_watched_at')
           .eq('user_id', student.user_id)
-          .in('video_id', (await supabase.from('videos').select('id').eq('course_id', sa.course_id)).data?.map(v => v.id) || []);
+          .in('video_id', videoIds);
 
-        const completedVideos = progress?.filter(p => p.is_completed).length || 0;
+        const completedVideos = ((progress as any[]) || []).filter((p: any) => p.is_completed).length || 0;
         const progressPercent = totalVideos ? Math.round((completedVideos / totalVideos) * 100) : 0;
-        const lastWatched = progress?.sort((a, b) => 
+        const lastWatched = ((progress as any[]) || []).sort((a: any, b: any) =>
           new Date(b.last_watched_at || 0).getTime() - new Date(a.last_watched_at || 0).getTime()
         )[0]?.last_watched_at || null;
 

@@ -57,7 +57,7 @@ export const ServicesManagement = () => {
   const saveMutation = useMutation({
     mutationFn: async (data: typeof formData & { id?: string }) => {
       if (data.id) {
-        const { error } = await supabase
+        const { error } = await (supabase as any)
           .from("services")
           .update({
             title: data.title,
@@ -69,7 +69,7 @@ export const ServicesManagement = () => {
           .eq("id", data.id);
         if (error) throw error;
       } else {
-        const { error } = await supabase.from("services").insert({
+        const { error } = await (supabase as any).from("services").insert({
           title: data.title,
           description: data.description || null,
           icon: data.icon,
@@ -92,7 +92,7 @@ export const ServicesManagement = () => {
 
   const deleteMutation = useMutation({
     mutationFn: async (id: string) => {
-      const { error } = await supabase.from("services").delete().eq("id", id);
+      const { error } = await (supabase as any).from("services").delete().eq("id", id);
       if (error) throw error;
     },
     onSuccess: () => {

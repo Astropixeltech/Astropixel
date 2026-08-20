@@ -51,7 +51,7 @@ export default function ProfilePhotoUpload({ profile, onPhotoUpdated }: ProfileP
       const publicUrl = urlData.publicUrl;
 
       // Update profile
-      const { error: updateError } = await supabase
+      const { error: updateError } = await (supabase as any)
         .from('profiles')
         .update({ avatar_url: publicUrl })
         .eq('id', profile.id);

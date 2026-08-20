@@ -1,5 +1,7 @@
+'use client';
+
 import { useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import { usePathname } from "next/navigation";
 
 /**
  * Framer-like global scroll reveal.
@@ -7,7 +9,7 @@ import { useLocation } from "react-router-dom";
  * data-reveal when they enter the viewport. Runs once per element.
  */
 const ScrollReveal = () => {
-  const location = useLocation();
+  const pathname = usePathname();
 
   useEffect(() => {
     if (window.matchMedia?.("(prefers-reduced-motion: reduce)").matches) return;
@@ -64,7 +66,7 @@ const ScrollReveal = () => {
       window.clearTimeout(timer);
       io.disconnect();
     };
-  }, [location.pathname]);
+  }, [pathname]);
 
   return null;
 };

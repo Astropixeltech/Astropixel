@@ -85,7 +85,7 @@ const FooterManagement = () => {
   const { data: links, isLoading: linksLoading } = useQuery({
     queryKey: ['footer-links', scope],
     queryFn: async () => {
-      const { data, error } = await supabase
+      const { data, error } = await (supabase as any)
         .from('footer_links')
         .select('*')
         .eq('site_scope', scope)
@@ -99,7 +99,7 @@ const FooterManagement = () => {
   const { data: contents, isLoading: contentsLoading } = useQuery({
     queryKey: ['footer-content', scope],
     queryFn: async () => {
-      const { data, error } = await supabase
+      const { data, error } = await (supabase as any)
         .from('footer_content')
         .select('*')
         .eq('site_scope', scope)
@@ -111,7 +111,7 @@ const FooterManagement = () => {
 
   const addLinkMutation = useMutation({
     mutationFn: async (data: Omit<FooterLink, 'id' | 'is_active'>) => {
-      const { error } = await supabase.from('footer_links').insert([{ ...data, is_active: true, site_scope: scope }]);
+      const { error } = await (supabase as any).from('footer_links').insert([{ ...data, is_active: true, site_scope: scope }]);
       if (error) throw error;
     },
     onSuccess: () => {
@@ -126,7 +126,7 @@ const FooterManagement = () => {
 
   const updateLinkMutation = useMutation({
     mutationFn: async ({ id, ...data }: Partial<FooterLink> & { id: string }) => {
-      const { error } = await supabase.from('footer_links').update(data).eq('id', id);
+      const { error } = await (supabase as any).from('footer_links').update(data).eq('id', id);
       if (error) throw error;
     },
     onSuccess: () => {
@@ -140,7 +140,7 @@ const FooterManagement = () => {
 
   const deleteLinkMutation = useMutation({
     mutationFn: async (id: string) => {
-      const { error } = await supabase.from('footer_links').delete().eq('id', id);
+      const { error } = await (supabase as any).from('footer_links').delete().eq('id', id);
       if (error) throw error;
     },
     onSuccess: () => {
@@ -153,7 +153,7 @@ const FooterManagement = () => {
   // Content mutations
   const updateContentMutation = useMutation({
     mutationFn: async ({ id, content_en }: { id: string; content_en: string }) => {
-      const { error } = await supabase
+      const { error } = await (supabase as any)
         .from('footer_content')
         .update({ content_en })
         .eq('id', id);

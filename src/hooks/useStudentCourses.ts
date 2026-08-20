@@ -43,7 +43,7 @@ export function useStudentCourseManagement() {
         return;
       }
 
-      const studentUserIds = studentRoles.map(r => r.user_id);
+      const studentUserIds = ((studentRoles as any[]) || []).map((r: any) => r.user_id);
 
       // Fetch profiles for students
       const { data: profiles, error: profilesError } = await supabase

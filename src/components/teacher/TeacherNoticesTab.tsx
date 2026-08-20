@@ -92,7 +92,7 @@ export default function TeacherNoticesTab({ courses, language }: TeacherNoticesT
     if (!profile?.id) return;
     
     try {
-      const { data, error } = await supabase
+      const { data, error } = await (supabase as any)
         .from('notices')
         .select('*, course:courses(title)')
         .eq('teacher_id', profile.id)
@@ -132,7 +132,7 @@ export default function TeacherNoticesTab({ courses, language }: TeacherNoticesT
       };
 
       if (editingNotice) {
-        const { error } = await supabase
+        const { error } = await (supabase as any)
           .from('notices')
           .update(noticeData)
           .eq('id', editingNotice.id);
@@ -140,7 +140,7 @@ export default function TeacherNoticesTab({ courses, language }: TeacherNoticesT
         if (error) throw error;
         toast.success(t.updated);
       } else {
-        const { error } = await supabase
+        const { error } = await (supabase as any)
           .from('notices')
           .insert(noticeData);
         
@@ -158,7 +158,7 @@ export default function TeacherNoticesTab({ courses, language }: TeacherNoticesT
 
   const handleDelete = async (noticeId: string) => {
     try {
-      const { error } = await supabase
+      const { error } = await (supabase as any)
         .from('notices')
         .delete()
         .eq('id', noticeId);

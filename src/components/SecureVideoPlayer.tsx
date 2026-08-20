@@ -94,7 +94,7 @@ function YouTubeCustomPlayer({
   // Load progress from DB
   useEffect(() => {
     const loadProgress = async () => {
-      const { data } = await supabase
+      const { data } = await (supabase as any)
         .from('video_progress')
         .select('watched_seconds, last_position, is_completed')
         .eq('user_id', userId)
@@ -186,7 +186,7 @@ function YouTubeCustomPlayer({
   const saveProgress = useCallback(async (seconds: number, completed: boolean) => {
     const dur = playerRef.current?.getDuration?.() || duration;
     const percent = dur > 0 ? Math.round((seconds / dur) * 100) : 0;
-    await supabase.from('video_progress').upsert({
+    await (supabase as any).from('video_progress').upsert({
       user_id: userId, video_id: videoId,
       progress_percent: Math.min(percent, 100), is_completed: completed,
       last_watched_at: new Date().toISOString(),
@@ -434,7 +434,7 @@ export default function SecureVideoPlayer({
   // Load existing progress from DB
   useEffect(() => {
     const loadProgress = async () => {
-      const { data } = await supabase
+      const { data } = await (supabase as any)
         .from('video_progress')
         .select('watched_seconds, last_position, is_completed')
         .eq('user_id', userId)
@@ -473,7 +473,7 @@ export default function SecureVideoPlayer({
   // Save progress to DB
   const saveProgress = useCallback(async (seconds: number, completed: boolean) => {
     const percent = duration > 0 ? Math.round((seconds / duration) * 100) : 0;
-    await supabase.from('video_progress').upsert({
+    await (supabase as any).from('video_progress').upsert({
       user_id: userId,
       video_id: videoId,
       progress_percent: Math.min(percent, 100),

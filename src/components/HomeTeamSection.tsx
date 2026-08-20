@@ -1,6 +1,8 @@
+'use client';
+
 import { motion } from "framer-motion";
 import { ArrowRight, Users, Loader2 } from "lucide-react";
-import { Link } from "react-router-dom";
+import Link from "next/link";
 import { useTeamMembers } from "@/hooks/useTeamMembers";
 import { useLanguage } from "@/contexts/LanguageContext";
 
@@ -81,7 +83,7 @@ const HomeTeamSection = () => {
 
         <div className="text-center mt-12">
           <Link
-            to="/team"
+            href="/join-team"
             className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-primary text-primary-foreground font-semibold text-sm hover:shadow-xl hover:shadow-primary/30 transition-all duration-300 group"
           >
             View All Team

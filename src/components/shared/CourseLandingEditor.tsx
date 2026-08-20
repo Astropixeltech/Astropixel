@@ -61,7 +61,7 @@ export default function CourseLandingEditor({ courses, singleCourse, learnScopeO
 
   useEffect(() => {
     (async () => {
-      const { data } = await supabase
+      const { data } = await (supabase as any)
         .from('team_members')
         .select('id,name,role,image_url,site_scope,is_active')
         .eq('is_active', true)
@@ -112,7 +112,7 @@ export default function CourseLandingEditor({ courses, singleCourse, learnScopeO
     }
     setSaving(true);
     try {
-      const { error } = await supabase
+      const { error } = await (supabase as any)
         .from('courses')
         .update({
           title: form.title,
@@ -138,10 +138,10 @@ export default function CourseLandingEditor({ courses, singleCourse, learnScopeO
       if (error) throw error;
 
       // Replace instructors
-      const del = await supabase.from('course_instructors').delete().eq('course_id', form.id);
+      const del = await (supabase as any).from('course_instructors').delete().eq('course_id', form.id);
       if (del.error) throw del.error;
       if (instructors.length) {
-        const ins = await supabase.from('course_instructors').insert(
+        const ins = await (supabase as any).from('course_instructors').insert(
           instructors.map((r, idx) => ({
             course_id: form.id,
             instructor_id: r.instructor_id,
@@ -153,11 +153,11 @@ export default function CourseLandingEditor({ courses, singleCourse, learnScopeO
       }
 
       // Replace modules (delete-all + insert-all)
-      const delMods = await supabase.from('course_modules').delete().eq('course_id', form.id);
+      const delMods = await (supabase as any).from('course_modules').delete().eq('course_id', form.id);
       if (delMods.error) throw delMods.error;
       const cleanMods = modules.filter((m) => m.title.trim().length > 0);
       if (cleanMods.length) {
-        const insMods = await supabase.from('course_modules').insert(
+        const insMods = await (supabase as any).from('course_modules').insert(
           cleanMods.map((m, idx) => ({
             course_id: form.id,
             title: m.title,

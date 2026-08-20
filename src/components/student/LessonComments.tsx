@@ -63,8 +63,8 @@ export default function LessonComments({ videoId, courseId, userId, userName, us
         const profile = profileMap.get(c.user_id);
         const comment: Comment = {
           ...c,
-          user_name: profile?.name || 'Unknown',
-          user_avatar: profile?.avatar || '',
+          user_name: (profile as any)?.name || (profile as any)?.full_name || 'Unknown',
+          user_avatar: (profile as any)?.avatar || (profile as any)?.avatar_url || '',
           replies: [],
         };
         if (c.parent_id) {
@@ -101,7 +101,7 @@ export default function LessonComments({ videoId, courseId, userId, userName, us
   const postComment = async (parentId: string | null, text: string) => {
     if (!text.trim()) return;
     setSending(true);
-    const { error } = await supabase.from('lesson_comments').insert({
+    const { error } = await (supabase as any).from('lesson_comments').insert({
       user_id: userId,
       video_id: videoId,
       course_id: courseId,

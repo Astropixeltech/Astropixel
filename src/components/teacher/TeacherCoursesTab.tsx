@@ -140,7 +140,7 @@ export default function TeacherCoursesTab({ courses, isLoading, refetch, languag
       };
 
       if (editingCourse) {
-        const { error } = await supabase
+        const { error } = await (supabase as any)
           .from('courses')
           .update({
             title: formData.title,
@@ -155,7 +155,7 @@ export default function TeacherCoursesTab({ courses, isLoading, refetch, languag
         if (error) throw error;
         toast({ title: language === 'bn' ? 'কোর্স আপডেট হয়েছে' : 'Course updated' });
       } else {
-        const { error } = await supabase
+        const { error } = await (supabase as any)
           .from('courses')
           .insert(courseData);
 

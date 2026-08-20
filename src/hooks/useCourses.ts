@@ -110,7 +110,7 @@ export function useStudentCourses() {
         return;
       }
 
-      const courseIds = [...new Set(studentCourseData.map(sc => sc.course_id))];
+      const courseIds = [...new Set(((studentCourseData as any[]) || []).map((sc: any) => sc.course_id))];
 
       // Fetch courses with videos
       const { data: coursesData, error: coursesError } = await supabase

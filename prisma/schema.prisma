@@ -1,0 +1,192 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Profile {
+  id                    String      @id @default(uuid())
+  user_id               String      @unique
+  email                 String
+  full_name             String
+  avatar_url            String?
+  phone_number          String?
+  linked_team_member_id String?
+  created_at            DateTime    @default(now())
+  updated_at            DateTime    @updatedAt
+
+  roles                 UserRole[]
+
+  @@map("profiles")
+}
+
+model UserRole {
+  id         String   @id @default(uuid())
+  user_id    String
+  role       String
+  created_at DateTime @default(now())
+
+  profile    Profile  @relation(fields: [user_id], references: [user_id], onDelete: Cascade)
+
+  @@map("user_roles")
+}
+
+model Service {
+  id             String   @id @default(uuid())
+  title          String
+  title_bn       String?
+  title_en       String?
+  description    String
+  description_bn String?
+  description_en String?
+  icon           String?
+  is_active      Boolean  @default(true)
+  order_index    Int      @default(0)
+  features       Json?
+  created_at     DateTime @default(now())
+  updated_at     DateTime @updatedAt
+
+  @@map("services")
+}
+
+model Work {
+  id             String   @id @default(uuid())
+  title          String
+  title_bn       String?
+  title_en       String?
+  description    String?
+  description_bn String?
+  description_en String?
+  category       String?
+  image_url      String?
+  client         String?
+  completion_date String?
+  technologies   Json?
+  live_url       String?
+  is_featured    Boolean  @default(false)
+  is_published   Boolean  @default(true)
+  order_index    Int      @default(0)
+  created_at     DateTime @default(now())
+  updated_at     DateTime @updatedAt
+
+  @@map("works")
+}
+
+model TeamMember {
+  id             String                  @id @default(uuid())
+  name           String
+  name_bn        String?
+  name_en        String?
+  role           String?
+  role_bn        String?
+  role_en        String?
+  bio            String?
+  bio_bn         String?
+  bio_en         String?
+  image_url      String?
+  order_index    Int                     @default(0)
+  is_active      Boolean                 @default(true)
+  site_scope     String                  @default("agency")
+  created_at     DateTime                @default(now())
+  updated_at     DateTime                @updatedAt
+
+  custom_links   TeamMemberCustomLink[]
+
+  @@map("team_members")
+}
+
+model TeamMemberCustomLink {
+  id             String     @id @default(uuid())
+  team_member_id String
+  title          String
+  url            String
+  icon           String?
+  order_index    Int        @default(0)
+  created_at     DateTime   @default(now())
+
+  team_member    TeamMember @relation(fields: [team_member_id], references: [id], onDelete: Cascade)
+
+  @@map("team_member_custom_links")
+}
+
+model SiteSetting {
+  id          String   @id @default(uuid())
+  key         String   @unique
+  value       String?
+  description String?
+  site_scope  String   @default("agency")
+  created_at  DateTime @default(now())
+  updated_at  DateTime @updatedAt
+
+  @@map("site_settings")
+}
+
+model FooterContent {
+  id          String   @id @default(uuid())
+  content_key String   @unique
+  content_bn  String?
+  content_en  String?
+  order_index Int      @default(0)
+  site_scope  String   @default("agency")
+  created_at  DateTime @default(now())
+  updated_at  DateTime @updatedAt
+
+  @@map("footer_content")
+}
+
+model FooterLink {
+  id          String   @id @default(uuid())
+  link_type   String   @default("quick")
+  title_bn    String?
+  title_en    String?
+  url         String
+  icon        String?
+  order_index Int      @default(0)
+  site_scope  String   @default("agency")
+  created_at  DateTime @default(now())
+  updated_at  DateTime @updatedAt
+
+  @@map("footer_links")
+}
+
+model EmailMessage {
+  id           String        @id @default(uuid())
+  sender_name  String
+  sender_email String
+  subject      String?
+  message      String
+  status       String        @default("pending")
+  is_read      Boolean       @default(false)
+  created_at   DateTime      @default(now())
+
+  threads      EmailThread[]
+
+  @@map("email_messages")
+}
+
+model EmailThread {
+  id          String       @id @default(uuid())
+  message_id  String
+  sender_type String
+  message     String
+  created_at  DateTime     @default(now())
+
+  email       EmailMessage @relation(fields: [message_id], references: [id], onDelete: Cascade)
+
+  @@map("email_threads")
+}
+
+model ApiClient {
+  id          String   @id @default(uuid())
+  client_name String
+  api_key     String   @unique
+  secret_hash String?
+  permissions Json?
+  is_active   Boolean  @default(true)
+  created_at  DateTime @default(now())
+
+  @@map("api_clients")
+}

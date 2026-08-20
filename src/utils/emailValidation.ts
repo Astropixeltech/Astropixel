@@ -44,7 +44,7 @@ export async function fetchDisposableDomains(): Promise<string[]> {
       return cachedDomains;
     }
     
-    cachedDomains = data?.map(d => d.domain.toLowerCase()) || [];
+    cachedDomains = ((data as any[]) || []).map((d: any) => d.domain.toLowerCase());
     lastFetch = now;
     return cachedDomains;
   } catch (err) {

@@ -71,7 +71,7 @@ export default function TeacherVideoManager({ course, open, onOpenChange, onChan
     if (!course || !form.title.trim() || !form.url.trim()) return;
     setSaving(true);
     const durationSeconds = form.duration ? parseInt(form.duration) * 60 : 0;
-    const { error } = await supabase.from('videos').insert({
+    const { error } = await (supabase as any).from('videos').insert({
       course_id: course.id,
       title: form.title,
       video_url: form.url,
@@ -90,7 +90,7 @@ export default function TeacherVideoManager({ course, open, onOpenChange, onChan
 
   const remove = async (id: string) => {
     if (!confirm(tr.del)) return;
-    const { error } = await supabase.from('videos').delete().eq('id', id);
+    const { error } = await (supabase as any).from('videos').delete().eq('id', id);
     if (error) { toast({ title: tr.error, description: error.message, variant: 'destructive' }); return; }
     toast({ title: tr.deleted });
     await load();
