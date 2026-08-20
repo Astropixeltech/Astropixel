@@ -74,7 +74,6 @@ import FooterManagement from '@/components/admin/FooterManagement';
 import EmailManagement from '@/components/admin/EmailManagement';
 import ApiKeyManagement from '@/components/admin/ApiKeyManagement';
 import PaymentApiManagement from '@/components/admin/PaymentApiManagement';
-import LandingPageManagement from '@/components/admin/LandingPageManagement';
 import FeedbackViewer from '@/components/admin/FeedbackViewer';
 import CommentManagement from '@/components/admin/CommentManagement';
 import AdminAssistant from '@/components/admin/AdminAssistant';
@@ -1953,7 +1952,7 @@ function AdminDashboardInner() {
           </TabsContent>
 
           <TabsContent value="landing" className="space-y-6">
-            <LandingPageManagement />
+            <HomepageEditor />
           </TabsContent>
 
 
@@ -1987,7 +1986,7 @@ function AdminDashboardInner() {
                       {(profile as any)?.avatar_url ? (
                         <img 
                           src={(profile as any).avatar_url} 
-                          alt={profile?.full_name}
+                          alt={profile?.full_name || undefined}
                           className="w-24 h-24 rounded-full object-cover border-4 border-primary/20"
                         />
                       ) : (
@@ -2382,7 +2381,7 @@ function AdminDashboardInner() {
               {(profile as any)?.avatar_url ? (
                 <img 
                   src={(profile as any).avatar_url} 
-                  alt={profile?.full_name}
+                  alt={profile?.full_name || undefined}
                   className="w-20 h-20 rounded-full object-cover"
                 />
               ) : (

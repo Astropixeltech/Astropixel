@@ -72,7 +72,7 @@ export default function ProfilePhotoUpload({ profile, onPhotoUpdated }: ProfileP
     <div className="flex flex-col items-center gap-4">
       <div className="relative group">
         <Avatar className="w-28 h-28 border-4 border-primary/20">
-          <AvatarImage src={profile.avatar_url || ''} alt={profile.full_name} />
+          <AvatarImage src={profile.avatar_url || ''} alt={profile.full_name || undefined} />
           <AvatarFallback className="text-3xl bg-gradient-to-br from-primary to-purple-600 text-white">
             {profile.full_name?.charAt(0) || <User className="w-10 h-10" />}
           </AvatarFallback>

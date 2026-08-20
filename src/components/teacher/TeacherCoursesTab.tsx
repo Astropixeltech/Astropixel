@@ -115,7 +115,7 @@ export default function TeacherCoursesTab({ courses, isLoading, refetch, languag
       title_en: course.title_en || '',
       description: course.description || '',
       description_en: course.description_en || '',
-      price: course.price,
+      price: course.price ?? 0,
       course_type: course.course_type,
     });
     setIsDialogOpen(true);
