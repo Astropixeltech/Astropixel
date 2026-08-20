@@ -28,9 +28,6 @@ Crawl-delay: 2
 # Block private/admin routes from indexing
 Disallow: /admin
 Disallow: /admin/*
-Disallow: /student/dashboard
-Disallow: /teacher/dashboard
-Disallow: /passcode
 
 # Sitemap location (canonical non-www domain)
 Sitemap: https://astropixel.tech/sitemap.xml

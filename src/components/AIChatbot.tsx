@@ -26,27 +26,21 @@ const getFollowUpQuestions = (lastMessage: string, language: string): string[] =
   const lowerMsg = lastMessage.toLowerCase();
   
   if (language === "bn") {
-    if (lowerMsg.includes("কোর্স") || lowerMsg.includes("course")) {
-      return ["ভর্তি কিভাবে করবো?", "কোন কোর্স সবচেয়ে জনপ্রিয়?"];
-    }
     if (lowerMsg.includes("সার্ভিস") || lowerMsg.includes("service")) {
       return ["প্রাইসিং কেমন?", "কাজ দেখতে চাই"];
     }
     if (lowerMsg.includes("যোগাযোগ") || lowerMsg.includes("contact")) {
       return ["কাজের সময় কখন?", "অফিসের ঠিকানা কোথায়?"];
     }
-    return ["আপনাদের কোর্সগুলো কি কি?", "যোগাযোগ করতে চাই"];
+    return ["আপনাদের সার্ভিসগুলো কি কি?", "যোগাযোগ করতে চাই"];
   } else {
-    if (lowerMsg.includes("course")) {
-      return ["How to enroll?", "Which course is most popular?"];
-    }
     if (lowerMsg.includes("service")) {
       return ["What's the pricing?", "Show me your work"];
     }
     if (lowerMsg.includes("contact")) {
       return ["What are your working hours?", "Where is your office?"];
     }
-    return ["What courses do you offer?", "How to contact you?"];
+    return ["What services do you offer?", "How to contact you?"];
   }
 };
 
@@ -331,13 +325,13 @@ const AIChatbot = () => {
 
   const quickQuestions = language === "bn" 
     ? [
-        "আপনাদের কোর্সগুলো কি কি?",
-        "গ্রাফিক ডিজাইন কোর্সের দাম কত?",
+        "আপনাদের সার্ভিসগুলো কি কি?",
+        "একটা প্রজেক্টের খরচ কেমন?",
         "কিভাবে যোগাযোগ করবো?"
       ]
     : [
-        "What courses do you offer?",
-        "How much is Graphic Design course?",
+        "What services do you offer?",
+        "How much does a project cost?",
         "How can I contact you?"
       ];
 
