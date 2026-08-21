@@ -60,6 +60,13 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className="light" style={{ colorScheme: 'light' }}>
+      <head>
+        <link rel="canonical" href="https://astropixel.tech" />
+        <link rel="icon" href="/favicon.png" type="image/png" sizes="any" />
+        <link rel="icon" href="/favicon-32x32.png" type="image/png" sizes="32x32" />
+        <link rel="icon" href="/favicon-16x16.png" type="image/png" sizes="16x16" />
+        <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+      </head>
       <body className="min-h-screen bg-background font-sans antialiased">
         <Providers>{children}</Providers>
       </body>

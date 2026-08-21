@@ -131,7 +131,7 @@ const MockupCard = ({
       {variant === "image" && image ? (
         <img
           src={image}
-          alt={alt || "AstroPixel Agency Creative Design Portfolio Showcase"}
+          alt={alt && alt.trim().length > 0 ? alt : "AstroPixel Agency Creative Design Work Showcase Portfolio Preview"}
           loading="eager"
           fetchPriority={priority ? "high" : "auto"}
           decoding="async"
