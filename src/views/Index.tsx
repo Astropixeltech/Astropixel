@@ -94,6 +94,7 @@ const MockupCard = ({
   delay = 0,
   image,
   priority = false,
+  alt,
 }: {
   color: string;
   Icon: any;
@@ -102,6 +103,7 @@ const MockupCard = ({
   delay?: number;
   image?: string;
   priority?: boolean;
+  alt?: string;
 }) => {
   return (
     <motion.div
@@ -129,7 +131,7 @@ const MockupCard = ({
       {variant === "image" && image ? (
         <img
           src={image}
-          alt=""
+          alt={alt || "AstroPixel Agency Creative Design Portfolio Showcase"}
           loading="eager"
           fetchPriority={priority ? "high" : "auto"}
           decoding="async"
@@ -173,7 +175,18 @@ const MockupCard = ({
   );
 };
 
-const MemoMockupCard = memo(MockupCard);
+const MemoMockupCard = memo(
+  MockupCard,
+  (prev, next) =>
+    prev.color === next.color &&
+    prev.Icon === next.Icon &&
+    prev.variant === next.variant &&
+    prev.tilt === next.tilt &&
+    prev.delay === next.delay &&
+    prev.image === next.image &&
+    prev.priority === next.priority &&
+    prev.alt === next.alt
+);
 
 
 // Pair of tilted mockups (browser + phone) that reports itself active when centered
@@ -184,6 +197,7 @@ const ServicePair = ({
   primaryImage,
   secondaryImage,
   priority = false,
+  title = "Service Showcase",
 }: {
   index: number;
   color: string;
@@ -191,6 +205,7 @@ const ServicePair = ({
   primaryImage?: string;
   secondaryImage?: string;
   priority?: boolean;
+  title?: string;
 }) => {
   return (
     <div data-service-index={index} className="lg:min-h-[600px] flex items-center">
@@ -201,6 +216,7 @@ const ServicePair = ({
             Icon={Icon}
             variant={primaryImage ? "image" : "browser"}
             image={primaryImage}
+            alt={`AstroPixel Agency ${title} Desktop Work Showcase`}
             priority={priority}
             tilt={-3}
           />
@@ -211,13 +227,13 @@ const ServicePair = ({
             Icon={Icon}
             variant={secondaryImage ? "image" : "phone"}
             image={secondaryImage}
+            alt={`AstroPixel Agency ${title} Mobile Showcase`}
             priority={priority}
             tilt={4}
             delay={0.15}
           />
         </div>
       </div>
-
     </div>
   );
 };
@@ -651,6 +667,7 @@ const Index = () => {
                   </Link>
                   <MemoServicePair
                     index={i}
+                    title={s.title}
                     color={s.stripe}
                     Icon={Icon}
                     primaryImage={(s as any).primaryImage}
@@ -713,6 +730,7 @@ const Index = () => {
                   <MemoServicePair
                     key={s.title}
                     index={i}
+                    title={s.title}
                     color={s.stripe}
                     Icon={Icon}
                     primaryImage={(s as any).primaryImage}
