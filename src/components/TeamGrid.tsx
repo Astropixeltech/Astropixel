@@ -82,7 +82,7 @@ export default function TeamGrid() {
                   <span className="text-[9px] uppercase tracking-[0.15em] text-primary/80 font-semibold opacity-0 group-hover:opacity-100 transition-opacity duration-300">Active</span>
                 </div>
                 <div className="absolute right-3 top-1/2 -translate-y-1/2 flex flex-col gap-2 translate-x-12 group-hover:translate-x-0 transition-transform duration-500">
-                  {socials.slice(0, 5).map((s, idx) => (
+                  {socials.slice(0, 7).map((s, idx) => (
                     <motion.a key={idx} href={s.href} target={s.href.startsWith('mailto:') ? undefined : '_blank'} rel="noopener noreferrer"
                       className="w-8 h-8 rounded-full bg-white/10 backdrop-blur-md hover:bg-primary hover:text-primary-foreground text-white/80 flex items-center justify-center transition-all duration-300 border border-white/10"
                       title={s.label} style={{ transitionDelay: `${idx * 50}ms` }} whileHover={{ scale: 1.15 }}>

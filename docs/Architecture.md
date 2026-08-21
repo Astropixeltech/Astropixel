@@ -1,74 +1,69 @@
-# Architecture — AlphaZero BD
+# Architecture
 
-## Overall
-Decoupled SPA + BaaS.
+## Stack
+- **Frontend:** React 18 + Vite 5 + TypeScript 5 + Tailwind CSS v3 + shadcn/ui
+- **Backend:** Lovable Cloud (Supabase) — Postgres, Auth, Storage, Edge Functions, Realtime
+- **Deployment:** Frontend on Vercel/Netlify; backend persists independently on Supabase
+- **Payments:** UddoktaPay (GET return_type)
+- **Email:** Resend (transactional + inbound webhook)
+- **Notifications:** Telegram Bot API
+- **AI:** Lovable AI Gateway (Gemini for Alpha Assistant / vision metadata)
 
+## Decoupled Architecture
+Frontend deployment এবং Lovable subscription থেকে backend **independent** — subscription expire হলেও app চলবে।
+
+## Directory Structure
 ```
-   ┌────────────────────┐         ┌────────────────────────┐
-   │  React SPA (Vite)  │  HTTPS  │  Supabase (Lovable Cloud) │
-   │  Vercel / Netlify  │◀───────▶│  Postgres · Auth · Storage │
-   └────────────────────┘         │  Realtime · Edge Functions │
-            │                     └────────────────────────┘
-            │  Cloudinary (signed uploads for video/large media)
-            │  UddoktaPay (payments)  ·  Resend (email)  ·  Telegram (notify)
+src/
+  components/
+    admin/        # Admin dashboards
+    teacher/      # Teacher panels (TeacherChatTab, etc.)
+    student/      # Student LMS (StudentSupportChat, StudentRecordedClassesTab)
+    ui/           # shadcn primitives
+  pages/          # Route-level pages (CourseViewerPage, etc.)
+  integrations/
+    supabase/
+      client.ts   # AUTO-GEN — never edit
+      types.ts    # AUTO-GEN — never edit
+  hooks/
+  lib/
+supabase/
+  migrations/     # Timestamped SQL migrations
+  functions/      # Edge Functions (create-admin, delete-student, ensure-student-onboarding, student-enrollment-notify, etc.)
+  config.toml     # AUTO-GEN
+docs/             # PRD, DESIGN, ARCHITECTURE, RULES, MEMORY
 ```
 
-Frontend can be redeployed anywhere; backend persists independently (see `mem://technical/architecture-decoupling-v1`).
+## Database Hierarchy
+```
+Courses → Modules → Videos
+Courses ← enrollments → Students
+Courses ← course_trainers → Teachers
+Videos ← comments/qa, feedback, progress
+```
 
-## Frontend Architecture
-- `main.tsx` → `<App />` inside `QueryClientProvider`, `ThemeProvider`, `LanguageProvider`, `AuthProvider`, `TooltipProvider`, `BrowserRouter`.
-- `App.tsx` computes LMS-route flag, mounts Preloader / SmoothScroll / ScrollReveal only on marketing routes, wraps routes in `AnimatePresence` fade.
-- Route table lives in `App.tsx`. `/`, `/about`, `/contact` swap components when hostname starts with `learn.`.
+## Auth & Roles
+- `user_roles` table (separate) with enum `app_role: admin | teacher | student`
+- `has_role(uuid, app_role)` SECURITY DEFINER function
+- RLS everywhere; GRANT on every public table
+- Never store roles on `profiles`
 
-## Component Architecture
-- `components/ui/*` – primitive shadcn/Radix components (never edited to add business logic).
-- `components/admin|student|teacher|live/*` – feature modules mounted inside dashboard tabs.
-- Top-level `components/*` – shared shell (Navbar, Footer, Preloader, ScrollToTop, PageTransition, SecureVideoPlayer, SearchModal, AIChatbot).
+## Security
+- Strict RLS on `profiles`, `enrollments`, `chat_messages`, etc.
+- Admin-only Edge Functions for destructive ops (delete-student)
+- Teacher data isolation (only own students/courses)
+- Video: VideoJS anti-forward seek, `max_watched_time` enforced
+- CSP headers via Cloudflare Transform Rules
+- Passwords redacted from logs
 
-## State & Data
-- Server state → **@tanstack/react-query** via hooks in `src/hooks/`.
-- Auth session → `AuthContext` (subscribes to Supabase `onAuthStateChange`).
-- Language → `LanguageContext` (localStorage-persisted).
-- Site scope (main vs learn) → `SiteScopeContext` / `AdminSiteScopeContext`.
+## Realtime
+- Supabase channels for chat + onboarding
+- `ensure-student-onboarding` edge function on first login
 
-## Authentication Flow
-1. User submits phone + password / email OTP on `/student/login|/teacher/login|/admin/login`.
-2. Supabase Auth issues JWT → stored in browser via supabase-js.
-3. `AuthContext` fetches role from `public.user_roles` via `has_role()` SECURITY DEFINER function.
-4. Route guards redirect based on role hierarchy: **admin > teacher > student**.
-5. Cloudflare Turnstile validated on signup, phone required, disposable-email domains blocked.
+## Content Binding
+- CMS uses Bengali DB keys for dynamic content
+- Fallback hierarchy: DB key → site_settings → hardcoded default
+- API config strips trailing `/api`
 
-## Request Flow
-Client → supabase-js → PostgREST (RLS enforced) → Postgres. For custom logic → Edge Function → returns JSON. Server-only secrets never leave Edge Functions.
-
-## Database Flow
-See [`Database.md`](./Database.md). All 47 public tables have RLS + GRANTs. Role checks always via `has_role(auth.uid(), 'admin'|'teacher'|'student')`.
-
-## API Flow
-See [`API.md`](./API.md). 30 Edge Functions cover payments, OTP, uploads, admin ops, welcome emails, notifications, AI.
-
-## Caching
-- Browser: react-query with stale/gc defaults.
-- CDN: static assets on hosting CDN; Cloudinary edge caching for media.
-- No custom service-worker.
-
-## File Upload
-- Small (avatars, page images) → Supabase Storage via `ImageUploader`.
-- Large (course videos, up to 10 MB chunked) → **signed** Cloudinary uploads via `sign-upload` + `upload-video` Edge Functions.
-
-## Storage Buckets
-- `avatars` – public
-- `media-uploads` – public (used by AI chatbot, CMS images)
-
-## Error Handling
-- UI errors surfaced via `sonner` toasts.
-- Edge Functions return `{ error }` JSON with HTTP status; client hooks throw and react-query surfaces to toast.
-- Supabase auth errors handled in `AuthContext`.
-
-## Logging
-- Client console + GA4 events.
-- Edge Function logs viewable in Supabase → Edge Functions.
-- Telegram bot pings admin on new enrollment (`student-enrollment-notify`).
-
-## Deployment
-See [`Deployment.md`](./Deployment.md).
+## Search
+- Bilingual global search with AI edge function fallback

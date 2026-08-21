@@ -1,53 +1,40 @@
-# Design System — AlphaZero BD
+# Design System
 
-Aesthetic direction: **Premium Editorial Glassmorphism** — dark-first, high-contrast, magazine-style typography, translucent glass cards over a subtle mesh background. Never generic (no purple/indigo gradients, no default Inter).
+## Aesthetic Direction
+**Premium Editorial Glassmorphism** — glass-cards, mesh backgrounds, editorial typography। কোনো background stripes/glows নয়।
 
-## 1. Color System
-All colors are semantic HSL tokens defined in `src/index.css` (`--background`, `--foreground`, `--primary`, `--muted`, `--card`, `--border`, `--ring`, plus glass/mesh gradients). Components **must** use tokens (`bg-background`, `text-primary`) — never hex or `text-white`/`bg-black`.
+## Typography
+- **Headings:** Playfair Display (editorial serif)
+- **Bangla:** Hind Siliguri
+- **Body (English):** system-safe pairing with Playfair
+- Dual language display: বাংলা এবং English সম্পূর্ণ isolated — mix করা যাবে না।
 
-Theme handled by `next-themes`; `html.dark` set by default. Logos react to theme via CSS filters (see `mem://branding/logos`).
+## Color & Tokens
+- All colors defined as **semantic tokens** in `src/index.css` (HSL)
+- shadcn variants use these tokens
+- ❌ Never hardcode `text-white`, `bg-black`, `bg-[#xxx]` in components
+- Dark mode via theme tokens
 
-## 2. Typography
-- Headings: **Playfair Display** (editorial serif) — English titles
-- Body / UI: **Hind Siliguri** for Bangla, system-safe sans for English body
-- Loaded via `fonts.bunny.net` (`<link rel="preconnect">` in `index.html`)
-- Never use Inter, Poppins, or generic sans as brand fonts.
+## Components
+- shadcn/ui base
+- Glass card = `backdrop-blur` + subtle border + soft shadow
+- Buttons: primary (brand), secondary (glass), ghost
+- Forms: labeled inputs, inline validation
 
-## 3. Spacing & Grid
-- Tailwind spacing scale, container `mx-auto px-4 md:px-8`.
-- Section vertical padding `py-16 md:py-24`.
-- Responsive breakpoints: default Tailwind (`sm 640`, `md 768`, `lg 1024`, `xl 1280`, `2xl 1536`).
+## Layout Rules
+- Course Viewer: video fixed top, sidebar (class list) scrolls independently, body locked (`overflow-hidden` on root, `100dvh`)
+- Mobile: YouTube-style sticky video top
+- Cards use consistent radius (`--radius`)
 
-## 4. Components
-| Element | Style |
-|---|---|
-| Buttons | shadcn `Button` variants; primary uses `--primary` token, glass ghost variant common |
-| Cards | `.glass-card` utility — backdrop-blur, translucent bg, hairline border |
-| Forms | react-hook-form + shadcn inputs, zod validation, error states use `--destructive` |
-| Icons | `lucide-react` at 16/20/24 px |
-| Navbar | Sticky, translucent, language switch + login CTA |
-| Footer | CMS-driven, three-column, glass panel |
-| Hero | Full-viewport, mesh background, animated headline (framer-motion / Splide) |
+## Media
+- Logos: theme-aware CSS filters
+- Images: `no-referrer` + `crossOrigin` where needed
+- Uploads: reusable `ImageUploader` → `media-uploads` bucket
+- Video: Cloudinary HLS/DASH OR YouTube via VideoJS plugin
 
-## 5. Motion
-- Page transitions: `framer-motion` fade (0.35 s, custom easing) in `App.tsx`.
-- Scroll: Lenis smooth scroll + custom `ScrollReveal` on marketing routes.
-- Marquees: CSS `@keyframes marquee-left` (see courses page trainers strip).
-- Micro-interactions: GSAP for logo/hero; tsparticles for accents.
+## Motion
+- Subtle transitions (200-300ms)
+- No aggressive parallax or auto-playing distractions
 
-## 6. Glassmorphism Rules
-- Backdrop-blur `md`–`xl`
-- Border `1px solid hsl(var(--border)/0.6)`
-- Shadow: soft, low-elevation, no neon glow
-- No horizontal stripes or background glows — clean mesh only.
-
-## 7. Border Radius
-- Cards & panels: `rounded-2xl`
-- Buttons: `rounded-full` (pill) or `rounded-lg`
-- Media: `rounded-xl`
-
-## 8. Language-aware Display
-Language toggle (English ↔ Bangla) replaces text, font, and hero images entirely. Never mix scripts in one component; use `useLanguage()` from `@/contexts/LanguageContext`.
-
-## 9. Dark / Light
-Dark is primary. Light mode supported via `next-themes`; every token has a light variant. Test all new UI in both themes.
+## Iconography
+- Lucide-react only

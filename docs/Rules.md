@@ -1,84 +1,77 @@
 # Project Rules
 
-Hard rules. Violating any of these breaks the product, security, or theming.
+## Language & Communication
+- Platform bilingual (বাংলা + English), সম্পূর্ণ isolated switching
+- Never mix Bangla + English in the same UI string block
 
 ## Code
-- TypeScript strict — every new file typed.
-- Small, focused components — never dump multiple responsibilities in one file.
-- Reuse existing shadcn primitives; never duplicate.
-- Never hardcode strings that should be bilingual — use `LanguageContext`.
-- Never hardcode colors — use semantic tokens from `src/index.css`.
-- No `text-white`, `bg-black`, `bg-[#hex]` in components.
-- Never use Inter / Poppins / generic sans — Playfair Display + Hind Siliguri only.
-
-## Naming
-- Components: `PascalCase.tsx`.
-- Hooks: `useCamelCase.ts`.
-- Utilities: `camelCase.ts`.
-- Tables/columns: `snake_case`.
-- Route paths: `kebab-case`.
-
-## Folders
-- Feature admin/student/teacher components under `components/<role>/`.
-- Reusable primitives under `components/ui/`.
-- Business hooks under `hooks/`.
-- Never invent new top-level folders without a doc update.
+- React 18 + Vite + TS + Tailwind v3 only — no Next/Vue/Svelte
+- Never edit auto-generated files:
+  - `src/integrations/supabase/client.ts`
+  - `src/integrations/supabase/types.ts`
+  - `.env` (VITE_SUPABASE_*)
+  - `supabase/config.toml`
+- Use semantic design tokens — no hardcoded colors in components
+- Small focused components, prefer search-replace over rewrites
+- Use `lucide-react` for icons
 
 ## Backend / Database
-- Every new `public.<table>` migration must include: `CREATE TABLE` → `GRANT` → `ENABLE RLS` → `CREATE POLICY` — in that exact order.
-- Roles **only** in `user_roles`. Never on `profiles`.
-- Role checks always through `has_role()` SECURITY DEFINER (avoid recursive RLS).
-- Never edit auto-generated files (`src/integrations/supabase/client.ts`, `types.ts`).
-- Never `ALTER DATABASE postgres`.
-- No FKs to `auth.users` — reference `profiles.user_id` instead.
-- Do not touch schemas `auth`, `storage`, `realtime`, `supabase_functions`, `vault`.
+- Every `CREATE TABLE public.*` migration MUST include:
+  1. `GRANT` statements for `authenticated` / `service_role` (and `anon` only if truly public)
+  2. `ALTER TABLE ... ENABLE ROW LEVEL SECURITY`
+  3. `CREATE POLICY ...`
+- Roles ONLY in `user_roles` table — never on `profiles`
+- Use `has_role()` SECURITY DEFINER in policies to avoid recursion
+- Never touch schemas: `auth`, `storage`, `realtime`, `supabase_functions`, `vault`
+- SUPABASE_SERVICE_ROLE_KEY and DB password are NOT accessible on Lovable Cloud
 
 ## Auth
-- Phone mandatory on signup.
-- Email OTP + Cloudflare Turnstile required.
-- Disposable email domains blocked (`disposable_email_domains`).
-- No anonymous signups.
-- Teacher access requires `teacher_approved`.
+- Phone-mandatory signup
+- Email OTP + Google OAuth (configure Google provider same turn)
+- OAuth `redirect_uri` = `window.location.origin` or `/auth/callback` — never a protected route
+- No anonymous signup
+- No auto-confirm email unless asked
+- Admin > Teacher > Student hierarchy strictly enforced
 
-## LMS
-- Course Viewer layout locked (video fixed, sidebar scrolls).
-- Video: VideoJS + YouTube plugin only, anti-forward-seek, 90 % completion.
-- Chat: single room per teacher-student pair; teacher sees student profile name.
-- Pass-code enrollment permanently removed — do not re-introduce.
-- No floating AIChatbot inside student area.
+## LMS Rules
+- Direct DB enrollment (no pass-codes — do NOT re-add)
+- Video gallery module — do NOT re-add
+- Floating chatbot widget in student area — do NOT re-add
+- Video security: VideoJS YouTube plugin only, anti-forward seek, 90% completion threshold
+- Teachers see ONLY their assigned courses + own students
+- Certificates: separate logic for free vs paid
+
+## Chat
+- Single room per teacher-student pair — never open new room on every message
+- Teacher must see student profile name in chat list
+- Left sidebar = student list, right = active conversation
+
+## Course Viewer Layout
+- Video fixed at top (never scrolls with body)
+- Only class list sidebar scrolls
+- Root locked: `fixed inset-0 h-[100dvh] overflow-hidden`
+- Mobile YouTube-style sticky video
 
 ## Media
-- All uploads via `ImageUploader` (`media-uploads` bucket) or Cloudinary signed uploads.
-- Videos ≤ 10 MB chunked to Cloudinary.
-- Images use `no-referrer` + `crossOrigin`.
+- All uploads via reusable `ImageUploader` → `media-uploads` bucket
+- Cloudinary for large video (10MB chunked signed uploads)
+- Images: `no-referrer`, proper `crossOrigin`
 
-## API / Secrets
-- Publishable/anon keys allowed in code.
-- All private secrets in Supabase Vault; never in git.
-- Admin edge functions must re-verify `has_role(auth.uid(), 'admin')`.
-
-## Design
-- Every UI change goes through semantic tokens.
-- Dark mode is primary; light mode must be tested.
-- No horizontal stripes / neon glows in backgrounds.
-- Responsive from 320 px up; test at `sm/md/lg/xl`.
+## Payments
+- UddoktaPay: `return_type=GET`, structured metadata JSON
+- Revenue split formulas differ for Recorded / Live / Agency
 
 ## SEO
-- `<title>` < 60 chars, `<meta description>` < 160 chars.
-- Single `<h1>` per page. Semantic HTML. Alt text on all images.
-- JSON-LD (Organization + founder) on relevant pages.
-- Never leave placeholder "Lovable App" / "Lovable Generated Project".
+- Title <60 chars with keyword; meta description <160 chars
+- Single H1, semantic HTML, alt text
+- JSON-LD Founder identity schema
+- Canonical domain enforced
+- Responsive viewport
 
-## Performance
-- Lazy-load heavy pages/components where practical.
-- Preload only truly critical assets (logo).
-- Preloader skipped on LMS routes.
-- Use react-query cache instead of duplicate fetches.
-
-## Docs
-- Update `docs/*.md` and `mem://index.md` when a project decision changes.
-- Never leave a doc file with template placeholder text.
-
-## Commits (recommendation)
-- Conventional commits: `feat:`, `fix:`, `chore:`, `docs:`, `refactor:`.
-- One logical change per commit.
+## Never Do
+- Never say "Supabase" to user — say Lovable Cloud / backend / database
+- Never show Supabase project IDs, URLs, or dashboard links
+- Never expose service role key or fabricate placeholder for it
+- Never store roles on profile table (privilege escalation)
+- Never use client-side storage for admin checks
+- Never hardcode colors bypassing design tokens

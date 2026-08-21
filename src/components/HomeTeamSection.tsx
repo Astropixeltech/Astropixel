@@ -10,7 +10,7 @@ const HomeTeamSection = () => {
   const { data: teamMembers, isLoading } = useTeamMembers();
   const { t } = useLanguage();
 
-  const members = (teamMembers || []).slice(0, 6);
+  const members = teamMembers || [];
 
   return (
     <section className="py-24 lg:py-32 relative">
@@ -38,7 +38,7 @@ const HomeTeamSection = () => {
             <Loader2 className="w-8 h-8 animate-spin text-primary" />
           </div>
         ) : members.length === 0 ? null : (
-          <div className="max-w-7xl mx-auto grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4 sm:gap-6">
+          <div className="max-w-7xl mx-auto grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-7 gap-4 sm:gap-5">
             {members.map((member, index) => {
               const roles = member.role.split(",");
               return (
