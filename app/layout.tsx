@@ -62,8 +62,15 @@ export default function RootLayout({
     <html lang="en" className="light" style={{ colorScheme: 'light' }}>
       <head>
         <link rel="canonical" href="https://astropixel.tech" />
-        <link rel="icon" href="https://res.cloudinary.com/dzuex7n2u/image/upload/v1779254926/astropixel/site/favicon.png" type="image/png" sizes="any" />
-        <link rel="apple-touch-icon" href="https://res.cloudinary.com/dzuex7n2u/image/upload/v1779254926/astropixel/site/apple-touch-icon.png" />
+        <link rel="icon" href="/favicon.png" type="image/png" sizes="any" />
+        <link rel="icon" type="image/png" sizes="192x192" href="/android-chrome-192x192.png" />
+        <link rel="icon" type="image/png" sizes="512x512" href="/android-chrome-512x512.png" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+        <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+        <link rel="manifest" href="/site.webmanifest" />
+        <meta name="mobile-web-app-capable" content="yes" />
+        <meta name="theme-color" content="#000000" />
         <link rel="preload" href="/hero-bg-custom.webp" as="image" fetchPriority="high" />
         <link rel="preload" href="/marquee/badam.jpg" as="image" fetchPriority="high" />
         <link rel="preload" href="/marquee/coconuct.jpg" as="image" fetchPriority="high" />
