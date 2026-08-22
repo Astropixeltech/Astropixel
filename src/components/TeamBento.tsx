@@ -44,13 +44,16 @@ function SmallCard({ member, index, reverse = false }: { member: any; index: num
     >
       <div className={`relative w-2/5 aspect-square shrink-0 overflow-hidden bg-primary/10 ${reverse ? "order-last" : ""}`}>
         <img
-          src={member.image_url || "/placeholder.svg"}
+          src={member.image_url || "/sofiullah-ahammad.jpg"}
           alt={`AstroPixel Team Member — ${member.name}`}
           width={300}
           height={300}
           loading="lazy"
           decoding="async"
           referrerPolicy="no-referrer"
+          onError={(e) => {
+            (e.target as HTMLImageElement).src = member.name.toLowerCase().includes('sofiullah') ? '/sofiullah-ahammad.jpg' : '/team/adib.png';
+          }}
           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
         />
       </div>
@@ -92,13 +95,16 @@ function FeaturedCard({ member }: { member: any }) {
       className="group relative rounded-2xl overflow-hidden bg-primary/20 h-[520px] lg:h-full lg:min-h-[520px]"
     >
       <img
-        src={member.image_url || "/placeholder.svg"}
+        src={member.image_url || "/sofiullah-ahammad.jpg"}
         alt={`AstroPixel Featured Leader — ${member.name}`}
         width={600}
         height={800}
         loading="lazy"
         decoding="async"
         referrerPolicy="no-referrer"
+        onError={(e) => {
+          (e.target as HTMLImageElement).src = '/sofiullah-ahammad.jpg';
+        }}
         className="absolute inset-0 w-full h-full object-cover object-[center_20%] group-hover:scale-105 transition-transform duration-700"
       />
       <div className="absolute inset-x-3 bottom-3 rounded-xl bg-background/95 backdrop-blur-sm px-4 py-3 shadow-2xl">

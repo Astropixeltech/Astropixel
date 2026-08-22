@@ -54,11 +54,11 @@ const teamMembers = [
     keywords: ["shafiul", "haque", "shaurav", "web", "video", "editor", "cinematographer", "content", "শফিউল", "হক", "ভিডিও", "এডিটর"]
   },
   {
-    name: "Prantik Saha",
-    nameBn: "প্রান্তিক সাহা",
-    role: "Graphics Designer, Microsoft Office Expert, IT Support",
-    roleBn: "গ্রাফিক ডিজাইনার, মাইক্রোসফট অফিস এক্সপার্ট, আইটি সাপোর্ট",
-    keywords: ["prantik", "saha", "graphics", "it", "support", "প্রান্তিক", "সাহা", "আইটি", "সাপোর্ট"]
+    name: "Abdur Rohim",
+    nameBn: "আব্দুর রহিম",
+    role: "Administrator, Web Developer",
+    roleBn: "অ্যাডমিনিস্ট্রেটর, ওয়েব ডেভেলপার",
+    keywords: ["abdur", "rohim", "administrator", "web", "developer", "আব্দুর", "রহিম", "ওয়েব", "ডেভেলপার"]
   },
 ];
 

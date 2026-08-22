@@ -56,7 +56,7 @@ import clientBlackzen from "@/assets/clients/blackzen.png.asset.json";
 import clientDarkAura from "@/assets/clients/darkaura.png.asset.json";
 import clientAtix from "@/assets/clients/atix.png.asset.json";
 import clientSA from "@/assets/clients/sa.png.asset.json";
-const CLOUDINARY_BASE = "https://res.cloudinary.com/dzuex7n2u/image/upload/v1779254926/astropixel";
+const CLOUDINARY_BASE = "";
 const brandingStartio = { url: `${CLOUDINARY_BASE}/services/branding-startio.webp` };
 const brandingPhoneMockup = { url: `${CLOUDINARY_BASE}/services/branding-phone.webp` };
 const webDevDashboard = { url: `${CLOUDINARY_BASE}/services/web-dev-dashboard.webp` };
@@ -135,6 +135,9 @@ const MockupCard = ({
           loading="eager"
           fetchPriority={priority ? "high" : "auto"}
           decoding="async"
+          onError={(e) => {
+            (e.target as HTMLImageElement).src = "/services/web-dev-dashboard.webp";
+          }}
           className="absolute inset-0 w-full h-full object-cover"
         />
       ) : (
@@ -553,35 +556,37 @@ const Index = () => {
       <section className="pt-8 pb-6 lg:pt-12 lg:pb-8 bg-background relative z-[15] rounded-t-xl md:rounded-t-2xl -mt-2 sm:-mt-3">
         <div className="container mx-auto px-6">
           {(() => {
-            const defaultLogos: { src: string; alt: string; scale?: number }[] = [
-              { src: resolveLogoUrl(clientAlokchitra.url), alt: "Alokchitra", scale: 1.0 },
-              { src: resolveLogoUrl(clientAura.url), alt: "Aura Signature", scale: 3.8 },
-              { src: resolveLogoUrl(clientGreenpeak.url), alt: "GreenPeak", scale: 2.6 },
-              { src: resolveLogoUrl(clientBlackzen.url), alt: "BlackZen", scale: 3.2 },
-              { src: resolveLogoUrl(clientDarkAura.url), alt: "Dark Aura", scale: 3.2 },
-              { src: resolveLogoUrl(clientAtix.url), alt: "Atix", scale: 1.0 },
-              { src: resolveLogoUrl(clientSA.url), alt: "SA", scale: 1.35 },
-              { src: "https://res.cloudinary.com/de348sqlb/image/upload/v1784827651/alphazero-assets/brands/unavailable-attire.png", alt: "Unavailable Attire", scale: 1.05 },
-              { src: "https://res.cloudinary.com/dzuex7n2u/image/upload/v1779254926/amin-one/banners/p5rstcffeky3xd7arakc.png", alt: "Amin One", scale: 0.9 },
-              { src: "https://astropixel.tech/__l5e/assets-v1/0edf2ae9-ec96-4989-a03b-9449fbf1aaf6/brand-2.png", alt: "Static Vibes", scale: 1.35 },
-              { src: "https://maarifulquranacademy.com/wp-content/uploads/2025/09/final-logo-2048x401.png", alt: "Maariful Quran Academy", scale: 0.95 },
+            const defaultLogos: { src: string; alt: string }[] = [
+              { src: "/brands/alokchitra.png", alt: "Alokchitra (আলোকচিত্র)" },
+              { src: "/brands/dark-aura.png", alt: "Dark Aura" },
+              { src: "/brands/alpha-zero.png", alt: "Alpha Zero" },
+              { src: "/brands/aura-signature.png", alt: "Aura Signature" },
+              { src: "/brands/atix.png", alt: "Atix" },
+              { src: "/brands/frames-of-passion.png", alt: "Frames of Passion" },
+              { src: "/brands/maariful-quran-academy.png", alt: "মা'আরিফুল কুরআন একাডেমী" },
+              { src: "/brands/organichunt.png", alt: "Organic Hunt" },
+              { src: "/brands/sofiullah-ahammad-logo.png", alt: "Sofiullah Ahammad" },
+              { src: "/brands/static-vibes.png", alt: "Static Vibes" },
+              { src: "/brands/bepro-click.png", alt: "Bepro.click" },
+              { src: "/brands/startio.png", alt: "Startio" },
+              { src: "/brands/learn-with-alphazero.png", alt: "Learn with AlphaZero" },
+              { src: "/brands/bepro-click.png", alt: "Bepro.click" },
+              { src: "/brands/amin-one.png", alt: "Amin One" },
             ];
 
-            const activeItems = (brandItems ?? []).filter((it) => it.is_active && it.image_url);
-            const logos: { src: string; alt: string; scale?: number }[] = activeItems.length
-              ? activeItems.map((it) => ({ src: it.image_url as string, alt: it.title || "Brand" }))
-              : defaultLogos;
+            const row1Logos = defaultLogos.filter((_, i) => i % 2 === 0);
+            const row2Logos = defaultLogos.filter((_, i) => i % 2 !== 0);
 
-            const marqueeLogos = [...logos, ...logos, ...logos, ...logos];
+            const marqueeRow1 = [...row1Logos, ...row1Logos, ...row1Logos, ...row1Logos];
+            const marqueeRow2 = [...row2Logos, ...row2Logos, ...row2Logos, ...row2Logos];
 
-            const LogoItem = ({ logo }: { logo: { src: string; alt: string; scale?: number } }) => (
-              <div className="group flex items-center justify-center h-12 sm:h-14 lg:h-16 w-[160px] sm:w-[200px] lg:w-[240px] px-4 sm:px-6 shrink-0">
+            const LogoItem = ({ logo }: { logo: { src: string; alt: string } }) => (
+              <div className="group flex items-center justify-center h-8 sm:h-9 lg:h-10 w-[110px] sm:w-[130px] lg:w-[150px] px-3 sm:px-4 shrink-0">
                 <img
                   src={logo.src}
                   alt={logo.alt}
                   loading="lazy"
-                  style={{ transform: `scale(${logo.scale ?? 1})` }}
-                  className="max-h-12 lg:max-h-14 w-auto object-contain brightness-0 opacity-40 group-hover:opacity-100 transition-all duration-300 ease-out"
+                  className="max-h-6 sm:max-h-7 lg:max-h-7 max-w-[90px] sm:max-w-[110px] w-auto h-auto object-contain brightness-0 dark:invert opacity-75 group-hover:opacity-100 transition-all duration-300 ease-out"
                 />
               </div>
             );
@@ -594,19 +599,27 @@ const Index = () => {
                 transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
               >
                 {/* Centered headline */}
-                <div className="text-center max-w-3xl mx-auto mb-8 lg:mb-10">
+                <div className="text-center max-w-3xl mx-auto mb-6 lg:mb-8">
                   <h2 className="text-2xl sm:text-3xl lg:text-4xl font-display font-semibold tracking-[-0.02em] text-foreground leading-[1.2]">
                     Trusted by <span className="font-serif italic font-normal text-primary">26+</span> brands
                   </h2>
                 </div>
 
-                <div className="relative w-full overflow-hidden">
+                <div className="relative w-full overflow-hidden space-y-3">
                   <div className="absolute left-0 top-0 bottom-0 w-20 z-10 bg-gradient-to-r from-background via-background/40 to-transparent pointer-events-none" />
                   <div className="absolute right-0 top-0 bottom-0 w-20 z-10 bg-gradient-to-l from-background via-background/40 to-transparent pointer-events-none" />
                   
-                  <div className="flex w-max animate-marquee-brand py-4">
-                    {marqueeLogos.map((logo, i) => (
-                      <LogoItem key={`${logo.alt}-${i}`} logo={logo} />
+                  {/* Row 1 — Moving Left */}
+                  <div className="flex w-max animate-marquee-brand py-1">
+                    {marqueeRow1.map((logo, i) => (
+                      <LogoItem key={`r1-${logo.alt}-${i}`} logo={logo} />
+                    ))}
+                  </div>
+
+                  {/* Row 2 — Moving Right */}
+                  <div className="flex w-max animate-marquee-brand-reverse py-1">
+                    {marqueeRow2.map((logo, i) => (
+                      <LogoItem key={`r2-${logo.alt}-${i}`} logo={logo} />
                     ))}
                   </div>
                 </div>

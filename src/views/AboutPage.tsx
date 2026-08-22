@@ -113,21 +113,21 @@ const AboutPage = () => {
         <div className="container mx-auto px-6">
           <div className="max-w-6xl mx-auto">
             {/* Split editorial header */}
-            <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center mb-20 lg:mb-28">
-              {/* Left: Standalone Favicon Logo */}
+            <div className="grid grid-cols-1 lg:grid-cols-10 gap-8 lg:gap-12 items-center mb-20 lg:mb-28">
+              {/* Left: Standalone Favicon Logo (30% width) */}
               <motion.div
                 initial={{ opacity: 0, x: -30 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.8 }}
-                className="relative flex items-center justify-center min-h-[260px] lg:min-h-[340px]"
+                className="lg:col-span-3 relative flex items-center justify-center min-h-[200px] lg:min-h-[280px]"
               >
                 <motion.img
                   src="/fav-icon.png"
                   alt="AstroPixel Favicon Logo"
                   width={280}
                   height={280}
-                  className="w-48 h-48 sm:w-60 sm:h-60 md:w-72 md:h-72 object-contain drop-shadow-2xl hover:scale-105 transition-transform duration-500"
+                  className="w-40 h-40 sm:w-48 sm:h-48 md:w-56 md:h-56 object-contain drop-shadow-2xl hover:scale-105 transition-transform duration-500"
                   initial={{ scale: 0.85, opacity: 0 }}
                   whileInView={{ scale: 1, opacity: 1 }}
                   viewport={{ once: true }}
@@ -135,12 +135,13 @@ const AboutPage = () => {
                 />
               </motion.div>
 
-              {/* Right: label + heading + copy + button */}
+              {/* Right: label + heading + copy + button (70% width) */}
               <motion.div
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.7 }}
+                className="lg:col-span-7"
               >
                 <div className="text-sm text-muted-foreground tracking-wide mb-6">
                   / {(c("story.badge", "about.story.badge") || "about").toLowerCase()} /
@@ -150,7 +151,7 @@ const AboutPage = () => {
                   <span className="font-serif italic font-normal gradient-text">Astropixel</span>{" "}
                   {c("story.title2", "about.story.title2")}
                 </h2>
-                <div className="space-y-5 text-muted-foreground text-base lg:text-lg leading-relaxed max-w-xl mb-10">
+                <div className="space-y-5 text-muted-foreground text-base lg:text-lg leading-relaxed max-w-2xl mb-10">
                   <p>{c("story.card1.desc", "about.story.card1.desc")}</p>
                   <p>{c("story.card2.desc", "about.story.card2.desc")}</p>
                 </div>
@@ -234,15 +235,15 @@ const AboutPage = () => {
               const activeSister = (sisterItems ?? []).filter((it) => it.is_active && it.image_url);
               const sisterLogos = activeSister.length
                 ? activeSister.map((it, i) => ({
-                    src: it.image_url as string,
+                    src: (it.title?.toLowerCase().includes('wiki') || it.image_url?.includes('wiki')) ? '/brands/bepro-click.png' : (it.image_url as string),
                     alt: it.title || `Brand ${i + 1}`,
                     href: it.url || undefined,
                     invert: true,
                     large: i === activeSister.length - 1,
                   }))
                 : [
-                    { src: brand1.url, alt: "Astropixel", invert: true },
-                    { src: brand2.url, alt: "Sister Brand", invert: true },
+                    { src: "/brands/static-vibes.png", alt: "Static Vibes", invert: true },
+                    { src: "/brands/bepro-click.png", alt: "Bepro.click", href: "https://bepro.click", invert: true },
                     { src: brand3.url, alt: "Alpha Portfolio", href: "https://portfolio.astropixel.tech/", invert: true },
                     { src: brand4.url, alt: "Learn with Astropixel", invert: true, large: true },
                   ];

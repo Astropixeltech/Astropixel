@@ -28,7 +28,7 @@ export const DEFAULT_TEAM_MEMBERS: TeamMember[] = [
     name: "Sofiullah Ahammad",
     role: "CEO, Co-Founder",
     bio: "Creative founder with 3+ years of experience in graphics design, vibe coding, and freelance photography.",
-    image_url: "https://res.cloudinary.com/dzuex7n2u/image/upload/v1779254926/astropixel/sofiullah-learn.png",
+    image_url: "/sofiullah-ahammad.jpg",
     email: "atik.magicbox@gmail.com",
     facebook_url: "https://www.facebook.com/AtikAhmedPeradox",
     instagram_url: "https://www.instagram.com/atik_ahmed_69/",
@@ -47,7 +47,7 @@ export const DEFAULT_TEAM_MEMBERS: TeamMember[] = [
     name: "Adib Sarkar",
     role: "CO-Founder, Graphic Designer",
     bio: "Award-winning designer specializing in brand identity and visual communication.",
-    image_url: "https://res.cloudinary.com/dzuex7n2u/image/upload/v1779254926/astropixel/adib-sarkar-v2.png",
+    image_url: "/team/adib.png",
     email: "mdadibsarkar2005@gmail.com",
     facebook_url: "https://www.facebook.com/share/17kdvEbE5h/",
     instagram_url: "https://www.instagram.com/_og_gy?igsh=ZTkydWRrdnk0ZDIw",
@@ -66,7 +66,7 @@ export const DEFAULT_TEAM_MEMBERS: TeamMember[] = [
     name: "Rashadul Islam Naime",
     role: "Digital Marketer, SEO Expert",
     bio: "Expert in Digital Marketing, SEO, and Graphic Design. Elevates brands through innovative strategies and captivating visuals, maximizing each project's potential.",
-    image_url: "https://res.cloudinary.com/dzuex7n2u/image/upload/v1779254926/astropixel/rashadul-islam-naime.png",
+    image_url: "/team/rashadul.png",
     email: "rashadulnaime@gmail.com",
     facebook_url: "https://www.facebook.com/rashadulnaime",
     instagram_url: "https://www.instagram.com/rashadulnaime/",
@@ -85,7 +85,7 @@ export const DEFAULT_TEAM_MEMBERS: TeamMember[] = [
     name: "Md.Shafiul Haque",
     role: "Web Designer, Video Editor, Content Creator, Cinematographer",
     bio: "User experience specialist focused on creating intuitive and delightful interfaces.",
-    image_url: "https://res.cloudinary.com/dzuex7n2u/image/upload/v1779254926/astropixel/shafiul-haque-v2.png",
+    image_url: "/team/prantik.png",
     email: "myselfshauravofficial@gmail.com",
     facebook_url: "https://www.facebook.com/itzme.shaurav",
     instagram_url: "https://www.instagram.com/myself_shaurav?igsh=eWV3MjhuM29oeXpw",
@@ -101,10 +101,10 @@ export const DEFAULT_TEAM_MEMBERS: TeamMember[] = [
   },
   {
     id: "5",
-    name: "Prantik Saha",
-    role: "Graphic Designer, Microsoft Office Expert, IT Support Specialist",
-    bio: "Skilled graphics designer and IT support specialist with expertise in Microsoft Office solutions.",
-    image_url: "https://res.cloudinary.com/dzuex7n2u/image/upload/v1779254926/astropixel/prantik-saha-v2.png",
+    name: "Abdur Rohim",
+    role: "Administrator, Web Developer",
+    bio: "Administrator and web developer building high-performance web applications and digital solutions.",
+    image_url: "/team/abdur-rohim.png",
     email: "prantiksaha37@gmail.com",
     facebook_url: "https://www.facebook.com/share/175txVkBJq/",
     instagram_url: "https://www.instagram.com/spoide_kid_/?utm_source=qr&igsh=cWZhd21sN292OXdk#",
@@ -120,10 +120,10 @@ export const DEFAULT_TEAM_MEMBERS: TeamMember[] = [
   },
   {
     id: "6",
-    name: "Papiya Rahman",
+    name: "Papia Rahman",
     role: "Graphic Designer",
     bio: "Web designer blending aesthetics, usability, and performance into one smooth experience. Focused on building websites that look premium and work flawlessly.",
-    image_url: "https://res.cloudinary.com/dzuex7n2u/image/upload/v1779254926/astropixel/papiya.png",
+    image_url: "/team/papiya.jpg",
     email: "ramulas006@gmail.com",
     facebook_url: "https://www.facebook.com/abdur.rohim.819788",
     instagram_url: null,
@@ -142,7 +142,7 @@ export const DEFAULT_TEAM_MEMBERS: TeamMember[] = [
     name: "Md Nayeem Ahmed",
     role: "Digital Marketer, Facebook Marketing Specialist",
     bio: "Digital marketer specializing in data-driven growth and scroll-stopping strategy. Turning insights into smart campaigns that attract, engage, and convert — making brands impossible to ignore.",
-    image_url: "https://res.cloudinary.com/dzuex7n2u/image/upload/v1779254926/astropixel/nayeem-learn.png",
+    image_url: "/team/nayeem.png",
     email: "gat.nayeem@gmail.com",
     facebook_url: "https://www.facebook.com/share/18F2ivcd7p/",
     instagram_url: "https://www.instagram.com/mdnayeem119120?igsh=OWp5MTRhejR2OHdm",
@@ -198,7 +198,19 @@ export function useTeamMembers(scope: 'agency' | 'learn' | 'all' = 'agency') {
         if (error || !data || data.length === 0) {
           return DEFAULT_TEAM_MEMBERS;
         }
-        return data as TeamMember[];
+
+        const sanitized = (data as TeamMember[]).map((item) => {
+          const match = DEFAULT_TEAM_MEMBERS.find(
+            (d) => d.name.toLowerCase().trim() === item.name.toLowerCase().trim()
+          );
+          let url = match ? match.image_url : item.image_url;
+          if (item.name.toLowerCase().includes('sofiullah')) {
+            url = '/sofiullah-ahammad.jpg';
+          }
+          return { ...item, image_url: url || '/placeholder.svg' };
+        });
+
+        return sanitized as TeamMember[];
       } catch {
         return DEFAULT_TEAM_MEMBERS;
       }
