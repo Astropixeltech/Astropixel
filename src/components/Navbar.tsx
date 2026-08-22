@@ -213,9 +213,10 @@ const Navbar = () => {
             >
               <div className="rounded-2xl bg-white/[0.08] dark:bg-white/[0.06] backdrop-blur-2xl backdrop-saturate-150 border border-white/15 dark:border-white/10 shadow-[0_1px_0_0_rgba(255,255,255,0.35)_inset,0_-1px_0_0_rgba(0,0,0,0.06)_inset,0_10px_30px_-12px_rgba(0,0,0,0.25)] overflow-hidden" style={{ WebkitBackdropFilter: "blur(28px) saturate(160%)", backdropFilter: "blur(28px) saturate(160%)" }}>
                 <div className="grid grid-cols-2 gap-1 p-2">
-                  {navLinksWithIcons.map((link) => {
+                  {navLinksWithIcons.map((link, index) => {
                     const IconComp = link.icon;
                     const isActive = pathname === link.href;
+                    const isLastOdd = index === navLinksWithIcons.length - 1 && navLinksWithIcons.length % 2 !== 0;
                     const baseText = isOverHero ? "text-white/90 hover:bg-white/10" : "text-neutral-800 hover:bg-black/5";
                     const iconTone = isActive
                       ? "text-white"
@@ -223,6 +224,8 @@ const Navbar = () => {
                         ? "text-white/80"
                         : "text-cyan-600/80";
                     const cls = `flex items-center gap-2 px-3 py-2.5 rounded-xl text-sm transition-colors ${
+                      isLastOdd ? "col-span-2 justify-center" : ""
+                    } ${
                       isActive
                         ? "bg-gradient-to-br from-cyan-400 via-cyan-500 to-blue-600 text-white font-semibold shadow-[0_6px_20px_-6px_rgba(6,182,212,0.55)]"
                         : baseText
