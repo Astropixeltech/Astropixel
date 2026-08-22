@@ -4,7 +4,7 @@ import { ChevronRight, Star, ArrowUpRight } from "lucide-react"
 import { TextReveal } from "./text-reveal"
 import gsap from "gsap"
 import { ShinyButton } from "@/components/ui/shiny-button"
-import { Button } from "@/components/ui/button"
+import RainbowButton from "@/components/ui/button-ui"
 
 interface HeroSectionProps extends React.HTMLAttributes<HTMLDivElement> {
   title?: string
@@ -85,20 +85,12 @@ const HeroSection = React.forwardRef<HTMLDivElement, HeroSectionProps>(
             {typeof description === 'string' ? description : (description as any)?.props?.children || ''}
           </p>
 
-          {/* CTA Button — Particles animated button style */}
+          {/* CTA Button — Rotating Rainbow Border Button Style */}
           <div data-hero-cta className="flex flex-col items-center mb-5 sm:mb-6 md:mb-8">
-            <Button
-              render={<a href={ctaHref} />}
-              className="group not-disabled:inset-shadow-none mx-auto flex cursor-pointer items-center justify-center gap-0 rounded-full border-none bg-transparent px-0 py-2 font-normal shadow-none hover:bg-transparent [:hover,[data-pressed]]:bg-transparent"
-            >
-              <span className="rounded-full bg-gradient-to-r from-[#6D28D9] via-[#7C3AED] to-[#9333EA] px-6 py-3 text-white font-semibold text-xs sm:text-sm tracking-wide duration-500 ease-in-out group-hover:bg-[#7C3AED] group-hover:text-white group-hover:transition-colors shadow-[0_6px_22px_-4px_rgba(124,58,237,0.55)]">
-                {ctaText}
-              </span>
-              <div className="relative flex h-fit cursor-pointer items-center overflow-hidden rounded-full bg-gradient-to-r from-[#7C3AED] to-[#9333EA] p-3 sm:p-3.5 text-white duration-500 ease-in-out group-hover:bg-[#9333EA] group-hover:text-white group-hover:transition-colors shadow-[0_6px_22px_-4px_rgba(124,58,237,0.55)]">
-                <ArrowUpRight className="absolute h-4 w-4 sm:h-5 sm:w-5 -translate-x-1/2 transition-all duration-500 ease-in-out group-hover:translate-x-10" />
-                <ArrowUpRight className="absolute h-4 w-4 sm:h-5 sm:w-5 -translate-x-10 transition-all duration-500 ease-in-out group-hover:-translate-x-1/2" />
-              </div>
-            </Button>
+            <RainbowButton href={ctaHref}>
+              <span className="font-medium tracking-wide">{ctaText}</span>
+              <ArrowUpRight size={18} className="text-white shrink-0" />
+            </RainbowButton>
           </div>
         </div>
 
