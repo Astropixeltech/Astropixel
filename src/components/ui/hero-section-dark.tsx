@@ -4,6 +4,7 @@ import { ChevronRight, Star, ArrowUpRight } from "lucide-react"
 import { TextReveal } from "./text-reveal"
 import gsap from "gsap"
 import { ShinyButton } from "@/components/ui/shiny-button"
+import { Button } from "@/components/ui/button"
 
 interface HeroSectionProps extends React.HTMLAttributes<HTMLDivElement> {
   title?: string
@@ -84,18 +85,20 @@ const HeroSection = React.forwardRef<HTMLDivElement, HeroSectionProps>(
             {typeof description === 'string' ? description : (description as any)?.props?.children || ''}
           </p>
 
-          {/* CTA Button — Squarish Vibe matching Let's Connect button */}
+          {/* CTA Button — Particles animated button style */}
           <div data-hero-cta className="flex flex-col items-center mb-5 sm:mb-6 md:mb-8">
-            <a
-              href={ctaHref}
-              className="group relative flex items-center justify-center gap-2 bg-gradient-to-r from-[#6D28D9] via-[#7C3AED] to-[#9333EA] text-white px-6 py-2.5 sm:px-7 sm:py-3 rounded-xl text-xs sm:text-sm font-semibold transition-all duration-300 shadow-[0_6px_22px_-4px_rgba(124,58,237,0.55)] hover:shadow-[0_10px_28px_rgba(168,85,247,0.8)] hover:scale-[1.02] active:scale-[0.98] border border-white/30 hover:border-white/50 overflow-hidden cursor-pointer"
+            <Button
+              render={<a href={ctaHref} />}
+              className="group not-disabled:inset-shadow-none mx-auto flex cursor-pointer items-center justify-center gap-0 rounded-full border-none bg-transparent px-0 py-2 font-normal shadow-none hover:bg-transparent [:hover,[data-pressed]]:bg-transparent"
             >
-              {/* Top-right glossy flare overlay */}
-              <div aria-hidden className="absolute top-0 right-0 w-10 h-10 bg-[radial-gradient(ellipse_at_top_right,rgba(255,255,255,0.45),transparent_70%)] pointer-events-none rounded-tr-xl" />
-
-              <span className="relative z-10 font-semibold tracking-wide">{ctaText}</span>
-              <ArrowUpRight size={16} strokeWidth={2.5} className="relative z-10 text-white transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-            </a>
+              <span className="rounded-full bg-gradient-to-r from-[#6D28D9] via-[#7C3AED] to-[#9333EA] px-6 py-3 text-white font-semibold text-xs sm:text-sm tracking-wide duration-500 ease-in-out group-hover:bg-[#7C3AED] group-hover:text-white group-hover:transition-colors shadow-[0_6px_22px_-4px_rgba(124,58,237,0.55)]">
+                {ctaText}
+              </span>
+              <div className="relative flex h-fit cursor-pointer items-center overflow-hidden rounded-full bg-gradient-to-r from-[#7C3AED] to-[#9333EA] p-3 sm:p-3.5 text-white duration-500 ease-in-out group-hover:bg-[#9333EA] group-hover:text-white group-hover:transition-colors shadow-[0_6px_22px_-4px_rgba(124,58,237,0.55)]">
+                <ArrowUpRight className="absolute h-4 w-4 sm:h-5 sm:w-5 -translate-x-1/2 transition-all duration-500 ease-in-out group-hover:translate-x-10" />
+                <ArrowUpRight className="absolute h-4 w-4 sm:h-5 sm:w-5 -translate-x-10 transition-all duration-500 ease-in-out group-hover:-translate-x-1/2" />
+              </div>
+            </Button>
           </div>
         </div>
 
