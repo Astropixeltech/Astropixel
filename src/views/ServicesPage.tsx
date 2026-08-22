@@ -46,6 +46,8 @@ import {
   Plus,
   Minus
 } from "lucide-react";
+import ctaBlueWaves from "@/assets/about-cta-blue-waves.png.asset.json";
+import { useTeamMembers } from "@/hooks/useTeamMembers";
 import { useState } from "react";
 
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -370,72 +372,113 @@ const ServicesPage = () => {
         </div>
       </section>
 
-      <FaqSection />
+      <CtaSection />
     </>
   );
 };
 
-const FAQS = [
-  { q: "How Much Does A Design Project Cost?", a: "Project pricing depends on scope, complexity, and timeline. We share a clear quote after a short discovery call — no hidden costs, no surprises." },
-  { q: "How Long Does A Project Take?", a: "Most projects are completed within a few days to a couple of weeks, depending on the requirements and revisions." },
-  { q: "What Design Services Do You Offer?", a: "Brand identity, graphic design, web design & development, UI/UX, video & motion, and SEO / content marketing — all under one roof." },
-  { q: "Do You Offer Revisions?", a: "Yes — every package includes multiple rounds of revisions so we can refine the work until it feels exactly right." },
-  { q: "How Do We Get Started?", a: "Click Get Started, share a few details about your project, and we'll reach out within 24 hours to plan the next step." },
-];
+const CtaSection = () => {
+  const { data: teamMembers } = useTeamMembers();
+  const founder = teamMembers?.find(m => m.name.toLowerCase().includes('sofiullah') || m.role.toLowerCase().includes('founder'));
 
-const FaqSection = () => {
-  const [open, setOpen] = useState<number | null>(1);
   return (
-    <section className="px-4 md:px-8 pb-20 md:pb-28">
-      <div className="max-w-7xl mx-auto">
-        <div
-          className="relative rounded-[28px] md:rounded-[36px] p-8 md:p-14 lg:p-16 overflow-hidden"
-          style={{
-            background: "linear-gradient(180deg,#ECFEFF 0%,#D5F8FE 42%,#F5FEFF 78%,#FFFFFF 100%)",
-            boxShadow: "inset 0 -120px 110px -65px rgba(255,255,255,0.98)",
-          }}
+    <section className="py-16 lg:py-24 relative">
+      <div className="container mx-auto px-6">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="relative max-w-6xl mx-auto rounded-[2rem] overflow-hidden p-8 sm:p-12 lg:p-16"
         >
-          <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-b from-transparent via-white/75 to-white pointer-events-none" />
-          <div className="relative z-10 grid grid-cols-1 lg:grid-cols-[1.2fr_1fr] gap-8 lg:gap-12 items-start mb-10 md:mb-14">
-            <div className="relative">
-              <h2 className="font-display font-bold text-[#083344] text-4xl md:text-5xl lg:text-6xl leading-[1.05] tracking-tight">
-                Frequently<br />Asked Question
-              </h2>
-            </div>
-            <div className="flex flex-col gap-6">
-              <p className="text-[#155E75] text-base md:text-[17px] leading-relaxed max-w-md">
-                Have questions about our design services? Here are some common queries to help you understand how we work and what you can expect.
+          {/* Background image */}
+          <img
+            src={ctaBlueWaves.url}
+            alt=""
+            aria-hidden
+            className="absolute inset-0 w-full h-full object-cover"
+          />
+
+          <div className="relative grid lg:grid-cols-2 gap-10 items-center">
+            {/* Left: Heading + CTA */}
+            <div>
+              <p className="text-[11px] font-bold tracking-[0.25em] uppercase text-white/70 mb-5">
+                Let's build something great
               </p>
-              <Link href="/contact" className="inline-flex w-fit items-center justify-center px-7 py-3 rounded-full text-white font-semibold shadow-[0_10px_30px_-8px_rgba(8,145,178,0.55)] transition-transform hover:-translate-y-0.5" style={{ background: "linear-gradient(135deg,#06B6D4 0%,#0891B2 100%)" }}>
-                Get Started
+              <h2 className="text-4xl sm:text-5xl lg:text-6xl font-display font-bold leading-[1.05] text-white mb-8 drop-shadow-[0_2px_12px_rgba(0,0,0,0.15)]">
+                Ready to start<br />your next project?
+              </h2>
+              <Link
+                href="/contact"
+                className="inline-flex items-center gap-2 px-7 py-3 rounded-xl bg-white text-sm font-semibold shadow-[0_10px_30px_-10px_rgba(0,0,0,0.25)] hover:shadow-[0_14px_34px_-10px_rgba(0,0,0,0.3)] hover:scale-[1.02] transition-all"
+              >
+                <span className="bg-gradient-to-r from-[#22D3EE] to-[#2563EB] bg-clip-text text-transparent">
+                  Get started
+                </span>
               </Link>
             </div>
-          </div>
 
-          <div className="relative z-10 flex flex-col gap-4">
-            {FAQS.map((item, i) => {
-              const isOpen = open === i;
-              return (
-                <div key={i} className="bg-white rounded-2xl border border-white shadow-[0_10px_30px_-20px_rgba(8,145,178,0.15)] overflow-hidden">
-                  <button onClick={() => setOpen(isOpen ? null : i)} className="w-full flex items-center justify-between gap-6 px-6 md:px-8 py-5 md:py-6 text-left">
-                    <span className="font-display font-semibold text-[#083344] text-base md:text-lg">{item.q}</span>
-                    <span className={`flex-shrink-0 w-9 h-9 rounded-full flex items-center justify-center transition-colors ${isOpen ? "bg-[#0891B2] text-white" : "border border-[#A5F3FC] text-[#0891B2]"}`}>
-                      {isOpen ? <Minus size={18} /> : <Plus size={18} />}
-                    </span>
-                  </button>
-                  <motion.div
-                    initial={false}
-                    animate={{ height: isOpen ? "auto" : 0, opacity: isOpen ? 1 : 0 }}
-                    transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
-                    className="overflow-hidden"
-                  >
-                    <p className="px-6 md:px-8 pb-6 text-[#164E63] leading-relaxed">{item.a}</p>
-                  </motion.div>
+            {/* Right: Floating booking card */}
+            <div className="lg:justify-self-end w-full max-w-sm">
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.15 }}
+                className="relative bg-background rounded-2xl p-5 shadow-[0_20px_60px_-15px_rgba(0,0,0,0.25)] border border-border/60"
+              >
+                {/* Status */}
+                <div className="flex items-center gap-2 mb-4">
+                  <span className="relative flex h-2.5 w-2.5">
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-foreground opacity-40" />
+                    <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-foreground" />
+                  </span>
+                  <span className="text-[10px] font-bold tracking-[0.2em] uppercase text-foreground">
+                    Available for project
+                  </span>
                 </div>
-              );
-            })}
+
+                {/* Avatars */}
+                <div className="flex items-center gap-3 mb-4 relative">
+                  <div className="w-11 h-11 rounded-full overflow-hidden ring-2 ring-background shadow bg-muted">
+                    <img
+                      src={founder?.image_url || '/sofiullah-ahammad.jpg'}
+                      alt="Founder"
+                      className="w-full h-full object-cover object-top"
+                    />
+                  </div>
+                  <span className="text-muted-foreground text-lg font-light">+</span>
+                  <div className="relative w-11 h-11 rounded-full bg-foreground text-background flex items-center justify-center text-xs font-bold">
+                    You
+                    <motion.div
+                      aria-hidden
+                      className="absolute -top-3 -right-3 pointer-events-none"
+                      animate={{ y: [0, -6, 0] }}
+                      transition={{ duration: 1.2, repeat: Infinity, ease: "easeInOut" }}
+                    >
+                      <span className="flex items-center justify-center w-6 h-6 rounded-full bg-[#0EA5E9] text-white text-xs font-black shadow-[0_4px_12px_-2px_rgba(14,165,233,0.6)]">
+                        ?
+                      </span>
+                    </motion.div>
+                  </div>
+                </div>
+
+                <h3 className="text-lg font-display font-bold text-foreground mb-1">
+                  Quick 15-minute call
+                </h3>
+                <p className="text-sm text-muted-foreground mb-5">
+                  Pick a time that works for you.
+                </p>
+
+                <Link
+                  href="/contact"
+                  className="block w-full text-center py-3 rounded-xl bg-gradient-to-r from-[#7DD3FC] via-[#60A5FA] to-[#3B82F6] text-white text-sm font-semibold shadow-[0_8px_24px_-8px_rgba(96,165,250,0.6)] hover:shadow-[0_12px_28px_-8px_rgba(59,130,246,0.8)] hover:brightness-110 transition-all"
+                >
+                  Book a free call
+                </Link>
+              </motion.div>
+            </div>
           </div>
-        </div>
+        </motion.div>
       </div>
     </section>
   );
