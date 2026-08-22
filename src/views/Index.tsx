@@ -56,15 +56,15 @@ import clientBlackzen from "@/assets/clients/blackzen.png.asset.json";
 import clientDarkAura from "@/assets/clients/darkaura.png.asset.json";
 import clientAtix from "@/assets/clients/atix.png.asset.json";
 import clientSA from "@/assets/clients/sa.png.asset.json";
-const SERVICE_IMG = "/services";
-const brandingStartio = { url: `${SERVICE_IMG}/branding-startio.webp` };
-const brandingPhoneMockup = { url: `${SERVICE_IMG}/branding-phone.webp` };
-const webDevDashboard = { url: `${SERVICE_IMG}/web-dev-dashboard.webp` };
-const webDevTablet = { url: `${SERVICE_IMG}/web-dev-tablet.webp` };
-const uiuxDesktop = { url: `${SERVICE_IMG}/uiux-desktop.webp` };
-const uiuxPhone = { url: `${SERVICE_IMG}/uiux-phone.webp` };
-const seoMonitor = { url: `${SERVICE_IMG}/seo-monitor.webp` };
-const seoTablet = { url: `${SERVICE_IMG}/seo-tablet.webp` };
+const CLOUDINARY_BASE = "https://res.cloudinary.com/dzuex7n2u/image/upload/v1779254926/astropixel";
+const brandingStartio = { url: `${CLOUDINARY_BASE}/services/branding-startio.webp` };
+const brandingPhoneMockup = { url: `${CLOUDINARY_BASE}/services/branding-phone.webp` };
+const webDevDashboard = { url: `${CLOUDINARY_BASE}/services/web-dev-dashboard.webp` };
+const webDevTablet = { url: `${CLOUDINARY_BASE}/services/web-dev-tablet.webp` };
+const uiuxDesktop = { url: `${CLOUDINARY_BASE}/services/uiux-desktop.webp` };
+const uiuxPhone = { url: `${CLOUDINARY_BASE}/services/uiux-phone.webp` };
+const seoMonitor = { url: `${CLOUDINARY_BASE}/services/seo-monitor.webp` };
+const seoTablet = { url: `${CLOUDINARY_BASE}/services/seo-tablet.webp` };
 
 
 

@@ -31,7 +31,7 @@ export const metadata: Metadata = {
     siteName: 'AstroPixel',
     images: [
       {
-        url: 'https://astropixel.tech/og-image.png',
+        url: 'https://res.cloudinary.com/dzuex7n2u/image/upload/v1779254926/astropixel/site/og-image.png',
         width: 1200,
         height: 630,
         alt: 'AstroPixel Creative Design Agency',
@@ -42,7 +42,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'AstroPixel — Creative Design Agency in Rajshahi, Bangladesh',
     description: 'AstroPixel is a creative design agency in Rajshahi, Bangladesh by Sofiullah Ahammad. Specializing in logo design, branding, UI/UX & web development.',
-    images: ['https://astropixel.tech/og-image.png'],
+    images: ['https://res.cloudinary.com/dzuex7n2u/image/upload/v1779254926/astropixel/site/og-image.png'],
   },
 };
 
@@ -62,10 +62,8 @@ export default function RootLayout({
     <html lang="en" className="light" style={{ colorScheme: 'light' }}>
       <head>
         <link rel="canonical" href="https://astropixel.tech" />
-        <link rel="icon" href="/favicon.png" type="image/png" sizes="any" />
-        <link rel="icon" href="/favicon-32x32.png" type="image/png" sizes="32x32" />
-        <link rel="icon" href="/favicon-16x16.png" type="image/png" sizes="16x16" />
-        <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+        <link rel="icon" href="https://res.cloudinary.com/dzuex7n2u/image/upload/v1779254926/astropixel/site/favicon.png" type="image/png" sizes="any" />
+        <link rel="apple-touch-icon" href="https://res.cloudinary.com/dzuex7n2u/image/upload/v1779254926/astropixel/site/apple-touch-icon.png" />
       </head>
       <body className="min-h-screen bg-background font-sans antialiased">
         <Providers>{children}</Providers>
