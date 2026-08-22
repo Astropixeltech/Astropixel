@@ -54,9 +54,9 @@ const ScrollReveal = () => {
     const timer = window.setTimeout(() => {
       const els = document.querySelectorAll(selectors);
       els.forEach((el) => {
-        // Skip navbars, footers, and fixed/absolute layouts
+        // Skip hero sections, navbars, footers, and fixed/absolute layouts
         const node = el as HTMLElement;
-        if (node.closest("nav, header[role='banner']")) return;
+        if (node.id === "site-hero" || node.closest("#site-hero, nav, header[role='banner']")) return;
         prepare(node);
         io.observe(node);
       });

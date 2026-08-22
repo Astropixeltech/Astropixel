@@ -49,44 +49,21 @@ const HeroSection = React.forwardRef<HTMLDivElement, HeroSectionProps>(
     const innerRef = React.useRef<HTMLDivElement>(null);
     React.useImperativeHandle(ref, () => innerRef.current as HTMLDivElement);
 
-    React.useEffect(() => {
-      const root = innerRef.current;
-      if (!root) return;
-      if (window.matchMedia?.("(prefers-reduced-motion: reduce)").matches) return;
-
-      const ctx = gsap.context(() => {
-        const targets = ["[data-hero-title]", "[data-hero-desc]", "[data-hero-cta]"];
-        gsap.fromTo(
-          targets,
-          { y: 24, autoAlpha: 0 },
-          {
-            y: 0,
-            autoAlpha: 1,
-            duration: 0.7,
-            ease: "power3.out",
-            stagger: 0.12,
-            clearProps: "all",
-          }
-        );
-      }, root);
-      return () => ctx.revert();
-    }, []);
-
     return (
       <div className={cn("relative min-h-0 lg:min-h-[82vh] flex flex-col items-center justify-start pt-24 sm:pt-28 lg:pt-32 pb-4 sm:pb-6 px-0 text-center overflow-hidden bg-black text-white", className)} id="site-hero" ref={innerRef} {...props}>
         {/* Custom background image — 100% full clarity without black overlay */}
         {bottomImage && bottomImage.light && (
           <div className="absolute inset-0 z-0 opacity-100">
             <img 
-              src={typeof bottomImage.light === 'string' ? bottomImage.light : bottomImage.light.src} 
+              src={typeof bottomImage.light === 'string' ? bottomImage.light : (bottomImage.light as any)?.src || '/hero-bg-custom.webp'} 
               alt="AstroPixel Agency Creative Design Showcase Hero Background" 
               width={1920}
               height={1080}
               fetchPriority="high"
               loading="eager"
-              decoding="async"
+              decoding="sync"
               className="w-full h-full object-cover object-center"
-              onError={(e) => { (e.target as HTMLElement).style.display = "none"; }}
+              onError={(e) => { (e.target as HTMLImageElement).src = "/hero-bg-custom.webp"; }}
             />
           </div>
         )}
@@ -99,15 +76,13 @@ const HeroSection = React.forwardRef<HTMLDivElement, HeroSectionProps>(
             <span className="block"><span className="font-serif italic font-normal text-white">Pixel</span> by Pixel.</span>
           </h1>
 
-          {/* Description */}
-          <TextReveal
-            preset="slide"
-            delay={0.5}
+          {/* Description — Rendered instantly */}
+          <p
             className="max-w-xl mx-auto text-sm sm:text-base md:text-lg text-white/80 font-roboto leading-relaxed tracking-wide mb-5 sm:mb-6 md:mb-7"
             style={{ fontFamily: "'Roboto', sans-serif" }}
           >
             {typeof description === 'string' ? description : (description as any)?.props?.children || ''}
-          </TextReveal>
+          </p>
 
           {/* CTA Button — Squarish Vibe matching Let's Connect button */}
           <div data-hero-cta className="flex flex-col items-center mb-5 sm:mb-6 md:mb-8">

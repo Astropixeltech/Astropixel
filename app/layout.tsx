@@ -64,6 +64,7 @@ export default function RootLayout({
         <link rel="canonical" href="https://astropixel.tech" />
         <link rel="icon" href="https://res.cloudinary.com/dzuex7n2u/image/upload/v1779254926/astropixel/site/favicon.png" type="image/png" sizes="any" />
         <link rel="apple-touch-icon" href="https://res.cloudinary.com/dzuex7n2u/image/upload/v1779254926/astropixel/site/apple-touch-icon.png" />
+        <link rel="preload" href="/hero-bg-custom.webp" as="image" fetchPriority="high" />
       </head>
       <body className="min-h-screen bg-background font-sans antialiased">
         <Providers>{children}</Providers>

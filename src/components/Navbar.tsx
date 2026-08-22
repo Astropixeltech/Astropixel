@@ -111,10 +111,7 @@ const Navbar = () => {
       >
         <div className="container mx-auto px-4 sm:px-6">
           {/* Header container — transparent overlay at top (no box/border), original glass box on scroll */}
-          <motion.div
-            initial={{ y: -20, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ duration: 0.6, type: "spring", bounce: 0.3 }}
+          <div
             className={`relative flex items-center justify-between transition-all duration-500 ${
               isScrolled
                 ? "rounded-2xl px-4 sm:px-5 py-2.5 backdrop-blur-2xl backdrop-saturate-150 border border-white/20 bg-white/[0.08] dark:bg-white/[0.06] shadow-[0_1px_0_0_rgba(255,255,255,0.35)_inset,0_-1px_0_0_rgba(0,0,0,0.1)_inset,0_10px_30px_-12px_rgba(0,0,0,0.35)]"
@@ -201,7 +198,7 @@ const Navbar = () => {
                 {isMobileMenuOpen ? <X size={16} className="text-primary" /> : <Menu size={16} className="text-primary" />}
               </button>
             </div>
-          </motion.div>
+          </div>
         </div>
 
         {/* Mobile menu drawer */}
