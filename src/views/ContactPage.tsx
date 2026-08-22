@@ -39,8 +39,8 @@ const ContactPage = () => {
     { name: "WhatsApp", handle: "+880 1344-497808", url: "https://wa.me/8801344497808", icon: MessageCircle, brand: "#25D366" },
     { name: "Instagram", handle: "@astropixel.tech", url: "https://www.instagram.com/astropixel.tech/", icon: Instagram, brand: "#E4405F" },
     { name: "LinkedIn", handle: "AstroPixel Agency", url: "https://www.linkedin.com/company/astropixel/", icon: Linkedin, brand: "#0A66C2" },
-    { name: "YouTube", handle: "@Astropixel_tech", url: "https://www.youtube.com/@Astropixel_tech", icon: Youtube, brand: "#FF0000" },
-    { name: "Pinterest", handle: "@astropixel_tech", url: "https://www.pinterest.com/astropixel_tech/", icon: PinterestIcon, brand: "#E60023" },
+    { name: "YouTube", handle: "@astropixeltech", url: "https://www.youtube.com/@astropixeltech", icon: Youtube, brand: "#FF0000" },
+    { name: "Pinterest", handle: "@astropixeltech", url: "https://www.pinterest.com/astropixeltech/", icon: PinterestIcon, brand: "#E60023" },
   ];
 
   const contactCards = [

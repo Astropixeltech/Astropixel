@@ -45,8 +45,8 @@ const Footer = () => {
     { name: "Facebook", url: "https://www.facebook.com/astropixel.tech", icon: "Facebook" },
     { name: "Instagram", url: "https://www.instagram.com/astropixel.tech/", icon: "Instagram" },
     { name: "LinkedIn", url: "https://www.linkedin.com/company/astropixel/", icon: "Linkedin" },
-    { name: "YouTube", url: "https://www.youtube.com/@Astropixel_tech", icon: "Youtube" },
-    { name: "Pinterest", url: "https://www.pinterest.com/astropixel_tech/", icon: "Pinterest" },
+    { name: "YouTube", url: "https://www.youtube.com/@astropixeltech", icon: "Youtube" },
+    { name: "Pinterest", url: "https://www.pinterest.com/astropixeltech/", icon: "Pinterest" },
     { name: "WhatsApp", url: "https://wa.me/8801344497808", icon: "MessageCircle" },
     { name: "Email", url: "mailto:hello@astropixel.tech", icon: "Mail" },
   ];
