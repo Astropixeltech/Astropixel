@@ -48,7 +48,8 @@ import {
 } from "lucide-react";
 import ctaBlueWaves from "@/assets/about-cta-blue-waves.png.asset.json";
 import { useTeamMembers } from "@/hooks/useTeamMembers";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import CustomArrowIcon from "@/components/ui/CustomArrowIcon";
 
 import { useLanguage } from "@/contexts/LanguageContext";
 import { usePageHero } from "@/hooks/usePageHero";
@@ -409,11 +410,12 @@ const CtaSection = () => {
               </h2>
               <Link
                 href="/contact"
-                className="inline-flex items-center gap-2 px-7 py-3 rounded-xl bg-white text-sm font-semibold shadow-[0_10px_30px_-10px_rgba(0,0,0,0.25)] hover:shadow-[0_14px_34px_-10px_rgba(0,0,0,0.3)] hover:scale-[1.02] transition-all"
+                className="group inline-flex items-center gap-2 px-7 py-3 rounded-xl bg-white text-sm font-semibold shadow-[0_10px_30px_-10px_rgba(0,0,0,0.25)] hover:shadow-[0_14px_34px_-10px_rgba(0,0,0,0.3)] hover:scale-[1.02] transition-all"
               >
                 <span className="bg-gradient-to-r from-[#22D3EE] to-[#2563EB] bg-clip-text text-transparent">
                   Get started
                 </span>
+                <CustomArrowIcon className="w-4 h-4 text-[#2563EB] transition-transform group-hover:translate-x-1" />
               </Link>
             </div>
 

@@ -1,6 +1,6 @@
 import * as React from "react"
 import { cn } from "@/lib/utils"
-import { ChevronRight, Star, ArrowUpRight } from "lucide-react"
+import CustomArrowIcon from "@/components/ui/CustomArrowIcon"
 import { TextReveal } from "./text-reveal"
 import gsap from "gsap"
 import { ShinyButton } from "@/components/ui/shiny-button"
@@ -85,11 +85,11 @@ const HeroSection = React.forwardRef<HTMLDivElement, HeroSectionProps>(
             {typeof description === 'string' ? description : (description as any)?.props?.children || ''}
           </p>
 
-          {/* CTA Button — Rotating Rainbow Border Button Style */}
+          {/* CTA Button — Light Purple Boxy Rotating Rainbow Glow Style */}
           <div data-hero-cta className="flex flex-col items-center mb-5 sm:mb-6 md:mb-8">
             <RainbowButton href={ctaHref}>
-              <span className="font-medium tracking-wide">{ctaText}</span>
-              <ArrowUpRight size={18} className="text-white shrink-0" />
+              <span className="font-semibold tracking-wide">{ctaText}</span>
+              <CustomArrowIcon className="w-4 h-4 text-white transition-transform group-hover:translate-x-1" />
             </RainbowButton>
           </div>
         </div>

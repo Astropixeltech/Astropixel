@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from "react";
+import CustomArrowIcon from "@/components/ui/CustomArrowIcon";
 import { motion, AnimatePresence } from "framer-motion";
 import { 
   Menu, 
@@ -183,7 +184,7 @@ const Navbar = () => {
                 <div aria-hidden className="absolute top-0 right-0 w-12 h-12 bg-[radial-gradient(ellipse_at_top_right,rgba(255,255,255,0.45),transparent_70%)] pointer-events-none rounded-tr-xl" />
 
                 <span className="relative z-10 text-xs sm:text-[13px] font-bold text-white tracking-wide">{t("nav.startProject")}</span>
-                <ArrowUpRight size={14} className="relative z-10 text-white group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+                <CustomArrowIcon className="w-3.5 h-3.5 text-white relative z-10 transition-transform group-hover:translate-x-1" />
               </Link>
             </div>
 
