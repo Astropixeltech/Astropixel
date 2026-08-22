@@ -1,41 +1,27 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useWorks, type Work } from "@/hooks/useWorks";
 
-import badam from "@/assets/marquee/badam.jpg.asset.json";
-import coconut from "@/assets/marquee/coconuct.jpg.asset.json";
-import noodles from "@/assets/marquee/creativity-to-create.png.asset.json";
-import ghee from "@/assets/marquee/GHEE.jpg.asset.json";
-import khejur from "@/assets/marquee/khejur.jpg.asset.json";
-import moringa from "@/assets/marquee/moringa-poster.jpg.asset.json";
-import sorisa from "@/assets/marquee/sorisa.jpg.asset.json";
-import chatgptCircle from "@/assets/marquee/ChatGPT_Image_Jul_10_2026_11_09_35_PM-2.png.asset.json";
-import digitalMarketing from "@/assets/marquee/download_8.jpg.asset.json";
-import pizza1 from "@/assets/marquee/pp01.jpg.asset.json";
-import pizza2 from "@/assets/marquee/pp02.jpg.asset.json";
-import rome from "@/assets/marquee/My_new_design_Rome____.jpg.asset.json";
-import posterTrend from "@/assets/marquee/POSTER_DESIGN_INSPIRETION_trend_2026.jpg.asset.json";
+type Item = { id: string; image_url: string; title: string };
 
 function isGraphics(w: Work) {
   const c = w.category;
   return c === "design" || c === "graphics" || c.startsWith("graphics_");
 }
 
-type Item = { id: string; image_url: string; title: string };
-
 const extras: Item[] = [
-  { id: "ex-badam", image_url: badam.url, title: "Badam Poster" },
-  { id: "ex-coconut", image_url: coconut.url, title: "Coconut Oil" },
-  { id: "ex-noodles", image_url: noodles.url, title: "Mr Noodles" },
-  { id: "ex-ghee", image_url: ghee.url, title: "Ghee" },
-  { id: "ex-khejur", image_url: khejur.url, title: "Khejuri" },
-  { id: "ex-moringa", image_url: moringa.url, title: "Moringa Powder" },
-  { id: "ex-sorisa", image_url: sorisa.url, title: "Sorisha Oil" },
-  { id: "ex-chatgpt", image_url: chatgptCircle.url, title: "Creative Designs" },
-  { id: "ex-digital", image_url: digitalMarketing.url, title: "Digital Marketing" },
-  { id: "ex-pizza1", image_url: pizza1.url, title: "Pizza Hut - Last Slice" },
-  { id: "ex-pizza2", image_url: pizza2.url, title: "Pizza Hut - Hot Fresh" },
-  { id: "ex-rome", image_url: rome.url, title: "Rome" },
-  { id: "ex-poster-trend", image_url: posterTrend.url, title: "Poster Design Trend 2026" },
+  { id: "ex-badam", image_url: "/marquee/badam.jpg", title: "Badam Poster" },
+  { id: "ex-coconut", image_url: "/marquee/coconuct.jpg", title: "Coconut Oil" },
+  { id: "ex-noodles", image_url: "/marquee/creativity-to-create.png", title: "Mr Noodles" },
+  { id: "ex-ghee", image_url: "/marquee/GHEE.jpg", title: "Ghee" },
+  { id: "ex-khejur", image_url: "/marquee/khejur.jpg", title: "Khejuri" },
+  { id: "ex-moringa", image_url: "/marquee/moringa-poster.jpg", title: "Moringa Powder" },
+  { id: "ex-sorisa", image_url: "/marquee/sorisa.jpg", title: "Sorisha Oil" },
+  { id: "ex-chatgpt", image_url: "/marquee/ChatGPT_Image_Jul_10_2026_11_09_35_PM-2.png", title: "Creative Designs" },
+  { id: "ex-digital", image_url: "/marquee/download_8.jpg", title: "Digital Marketing" },
+  { id: "ex-pizza1", image_url: "/marquee/pp01.jpg", title: "Pizza Hut - Last Slice" },
+  { id: "ex-pizza2", image_url: "/marquee/pp02.jpg", title: "Pizza Hut - Hot Fresh" },
+  { id: "ex-rome", image_url: "/marquee/My_new_design_Rome____.jpg", title: "Rome" },
+  { id: "ex-poster-trend", image_url: "/marquee/POSTER_DESIGN_INSPIRETION_trend_2026.jpg", title: "Poster Design Trend 2026" },
 ];
 
 // Instantly preload images in browser memory upfront when module evaluates
