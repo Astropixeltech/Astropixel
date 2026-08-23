@@ -1,79 +1,63 @@
 'use client';
 
 import { useState, useEffect } from "react";
-import CustomArrowIcon from "@/components/ui/CustomArrowIcon";
-import { motion, AnimatePresence } from "framer-motion";
-import { 
-  Menu, 
-  X, 
-  Sun,
-  Moon,
-  ArrowUpRight,
-  Search,
-  User,
-  Home,
-  Info,
-  Briefcase,
-  FolderOpen,
-  Users,
-  GraduationCap,
-  Mail,
-  Phone,
-  MoreHorizontal,
-  ChevronDown,
-  Tag
-} from "lucide-react";
+import { usePathname, useRouter } from "next/navigation";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { useTheme } from "next-themes";
+import { Home, Info, Briefcase, FolderOpen, Mail, Menu, X } from "lucide-react";
+import { MenuBar, MenuItem } from "@/components/ui/glow-menu";
 import { useLanguage } from "@/contexts/LanguageContext";
-import logoFullAsset from "@/assets/astropixel-logo.png.asset.json";
 import logoFullPng from "@/assets/logo-full.png";
-import learnLogoAssetJson from "@/assets/learn-with-alphazero-logo.png.asset.json";
-const learnLogo = learnLogoAssetJson.url;
-const logoFull = logoFullPng || logoFullAsset?.url;
-const isLearnSubdomain = typeof window !== "undefined" && window.location.hostname.startsWith("learn.");
-import SearchModal from "./SearchModal";
-import { ShinyButton } from "@/components/ui/shiny-button";
 
-const LEARN_ROUTES = ["/courses", "/instructors", "/learn-about"];
-
-const Navbar = () => {
+export function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isOverHero, setIsOverHero] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [mounted, setMounted] = useState(false);
-  const [isSearchOpen, setIsSearchOpen] = useState(false);
-
   const pathname = usePathname();
-  const brandLogo = logoFull;
-  const { theme, setTheme } = useTheme();
-  const { language, setLanguage, t } = useLanguage();
+  const router = useRouter();
+  const { language, t } = useLanguage();
 
-  const COURSES_URL = "https://learn.astropixel.tech";
-
-  const navLinks = [
-    { name: t("nav.home"), href: "/", num: "01" },
-    { name: t("nav.about"), href: "/about", num: "02" },
-    { name: t("nav.services"), href: "/services", num: "03" },
-    { name: t("nav.work"), href: "/work", num: "04" },
-    { name: t("nav.contact"), href: "/contact", num: "05" },
-
+  const menuItems: MenuItem[] = [
+    {
+      icon: Home,
+      label: t("nav.home") || "Home",
+      href: "/",
+      gradient:
+        "radial-gradient(circle, rgba(59,130,246,0.2) 0%, rgba(37,99,235,0.08) 50%, rgba(29,78,216,0) 100%)",
+      iconColor: "text-blue-500",
+    },
+    {
+      icon: Info,
+      label: t("nav.about") || "About",
+      href: "/about",
+      gradient:
+        "radial-gradient(circle, rgba(168,85,247,0.2) 0%, rgba(147,51,234,0.08) 50%, rgba(126,34,206,0) 100%)",
+      iconColor: "text-purple-500",
+    },
+    {
+      icon: Briefcase,
+      label: t("nav.services") || "Services",
+      href: "/services",
+      gradient:
+        "radial-gradient(circle, rgba(6,182,212,0.2) 0%, rgba(8,145,178,0.08) 50%, rgba(14,116,144,0) 100%)",
+      iconColor: "text-cyan-500",
+    },
+    {
+      icon: FolderOpen,
+      label: t("nav.work") || "Work",
+      href: "/work",
+      gradient:
+        "radial-gradient(circle, rgba(34,197,94,0.2) 0%, rgba(22,163,74,0.08) 50%, rgba(21,128,61,0) 100%)",
+      iconColor: "text-green-500",
+    },
+    {
+      icon: Mail,
+      label: t("nav.contact") || "Contact",
+      href: "/contact",
+      gradient:
+        "radial-gradient(circle, rgba(249,115,22,0.2) 0%, rgba(234,88,12,0.08) 50%, rgba(194,65,12,0) 100%)",
+      iconColor: "text-orange-500",
+    },
   ];
-
-  const navLinksWithIcons = [
-    { name: t("nav.home"), href: "/", icon: Home },
-    { name: t("nav.about"), href: "/about", icon: Info },
-    { name: t("nav.services"), href: "/services", icon: Briefcase },
-    { name: t("nav.work"), href: "/work", icon: FolderOpen },
-    
-    
-    { name: t("nav.contact"), href: "/contact", icon: Mail },
-  ];
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -89,148 +73,76 @@ const Navbar = () => {
     };
     handleScroll();
     window.addEventListener("scroll", handleScroll, { passive: true });
-    window.addEventListener("resize", handleScroll);
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-      window.removeEventListener("resize", handleScroll);
-    };
+    return () => window.removeEventListener("scroll", handleScroll);
   }, [pathname]);
 
+  const activeItem = menuItems.find(
+    (item) => item.href === pathname || (item.href !== "/" && pathname.startsWith(item.href))
+  )?.label || t("nav.home") || "Home";
 
-  const handleNavClick = () => {
+  const handleItemClick = (label: string, href: string) => {
     setIsMobileMenuOpen(false);
+    router.push(href);
   };
 
   const isWhiteNavText = isOverHero || !isScrolled;
 
   return (
-    <>
-      <nav
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
-          isScrolled ? "py-2 sm:py-2.5" : "py-3.5 sm:py-4"
-        }`}
-      >
-        <div className="flex justify-center px-4 sm:px-6">
-          {/* Header container — compact centered glass pill */}
-          <div
-            className={`relative flex items-center gap-5 sm:gap-7 transition-all duration-500 rounded-full px-5 py-2 backdrop-blur-2xl backdrop-saturate-150 border border-white/20 bg-white/[0.08] dark:bg-white/[0.06] shadow-[0_1px_0_0_rgba(255,255,255,0.35)_inset,0_-1px_0_0_rgba(0,0,0,0.1)_inset,0_10px_30px_-12px_rgba(0,0,0,0.35)]`}
-            style={{
-              WebkitBackdropFilter: "blur(28px) saturate(160%)",
-              backdropFilter: "blur(28px) saturate(160%)",
-            }}
-          >
-            {/* Soft top glass highlight */}
-            <div aria-hidden className="pointer-events-none absolute inset-x-4 top-0 h-px bg-gradient-to-r from-transparent via-white/40 to-transparent rounded-full" />
+    <header
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
+        isScrolled ? "py-2 sm:py-2.5" : "py-3.5 sm:py-4"
+      }`}
+    >
+      <div className="flex items-center justify-between max-w-7xl mx-auto px-4 sm:px-6">
+        {/* Brand Logo */}
+        <Link href="/" className="flex items-center group shrink-0 z-10">
+          <img
+            src={(logoFullPng as any)?.src || logoFullPng}
+            alt="AstroPixel Creative Agency Logo"
+            className={`h-8 sm:h-9 max-w-[170px] sm:max-w-[200px] w-auto object-contain transition-all duration-300 group-hover:scale-105 ${
+              isWhiteNavText ? "brightness-0 invert" : "brightness-0"
+            }`}
+          />
+        </Link>
 
-            {/* Logo */}
-            <Link href="/" className="flex items-center group relative shrink-0 z-10">
-              <img
-                src={(logoFullPng as any)?.src || logoFullPng}
-                alt="AstroPixel Creative Design Agency Logo"
-                width={150}
-                height={32}
-                className={`h-7 sm:h-8 max-w-[150px] sm:max-w-[170px] w-auto object-contain transition-all duration-300 group-hover:scale-105 ${
-                  isWhiteNavText ? "brightness-0 invert" : "brightness-0"
-                }`}
-                loading="eager"
-                fetchPriority="high"
-                decoding="async"
-              />
-            </Link>
-
-            {/* Desktop Navigation Links */}
-            <div className="hidden lg:flex items-center gap-1">
-              <div className="flex items-center gap-1 px-1.5 py-1">
-                {navLinks.map((link) => {
-                  const isActive = pathname === link.href;
-
-                  const linkClasses = "relative px-3.5 py-2 text-sm font-medium transition-all duration-300";
-                  const linkInner = (
-                    <span className={`relative z-10 font-semibold text-sm transition-colors duration-300 ${
-                      isActive
-                        ? isWhiteNavText ? "text-cyan-400 font-bold drop-shadow-sm" : "text-violet-600 font-bold"
-                        : isWhiteNavText ? "text-white/90 hover:text-cyan-400 drop-shadow-sm" : "text-neutral-900 dark:text-white hover:text-violet-600"
-                    }`}>
-                      {link.name}
-                    </span>
-                  );
-                  return link.href.startsWith("http") ? (
-                    <a key={link.href} href={link.href} target="_blank" rel="noopener noreferrer" className={linkClasses}>{linkInner}</a>
-                  ) : (
-                    <Link key={link.href} href={link.href} className={linkClasses}>
-                      {linkInner}
-                    </Link>
-                  );
-                })}
-              </div>
-            </div>
-
-
-
-            {/* Mobile: menu on top bar */}
-            <div className="flex items-center gap-1.5 lg:hidden">
-
-              <button
-                onClick={() => setIsMobileMenuOpen((v) => !v)}
-                aria-label={isMobileMenuOpen ? "Close menu" : "Open menu"}
-                className="w-9 h-9 rounded-full bg-primary/20 border border-primary/30 flex items-center justify-center hover:bg-primary/30 transition-colors"
-              >
-                {isMobileMenuOpen ? <X size={16} className="text-primary" /> : <Menu size={16} className="text-primary" />}
-              </button>
-            </div>
-          </div>
+        {/* Desktop 3D Glow Menu Bar */}
+        <div className="hidden lg:block">
+          <MenuBar
+            items={menuItems}
+            activeItem={activeItem}
+            onItemClick={handleItemClick}
+            className="shadow-2xl border-white/20 dark:border-white/10"
+          />
         </div>
 
-        {/* Mobile menu drawer */}
-        <AnimatePresence>
-          {isMobileMenuOpen && (
-            <motion.div
-              initial={{ opacity: 0, y: -10 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -10 }}
-              transition={{ duration: 0.2 }}
-              className="lg:hidden container mx-auto px-4 sm:px-6 mt-2"
-            >
-              <div className="rounded-2xl bg-white/[0.08] dark:bg-white/[0.06] backdrop-blur-2xl backdrop-saturate-150 border border-white/15 dark:border-white/10 shadow-[0_1px_0_0_rgba(255,255,255,0.35)_inset,0_-1px_0_0_rgba(0,0,0,0.06)_inset,0_10px_30px_-12px_rgba(0,0,0,0.25)] overflow-hidden" style={{ WebkitBackdropFilter: "blur(28px) saturate(160%)", backdropFilter: "blur(28px) saturate(160%)" }}>
-                <div className="grid grid-cols-2 gap-1 p-2">
-                  {navLinksWithIcons.map((link, index) => {
-                    const IconComp = link.icon;
-                    const isActive = pathname === link.href;
-                    const isLastOdd = index === navLinksWithIcons.length - 1 && navLinksWithIcons.length % 2 !== 0;
-                    const baseText = isOverHero ? "text-white/90 hover:bg-white/10" : "text-neutral-800 hover:bg-black/5";
-                    const iconTone = isActive
-                      ? "text-white"
-                      : isOverHero
-                        ? "text-white/80"
-                        : "text-cyan-600/80";
-                    const cls = `flex items-center gap-2 px-3 py-2.5 rounded-xl text-sm transition-colors ${
-                      isLastOdd ? "col-span-2 justify-center" : ""
-                    } ${
-                      isActive
-                        ? "bg-gradient-to-br from-cyan-400 via-cyan-500 to-blue-600 text-white font-semibold shadow-[0_6px_20px_-6px_rgba(6,182,212,0.55)]"
-                        : baseText
-                    }`;
-                    const inner = (<><IconComp size={16} className={iconTone} />{link.name}</>);
-                    return link.href.startsWith("http") ? (
-                      <a key={link.href} href={link.href} target="_blank" rel="noopener noreferrer" onClick={handleNavClick} className={cls}>{inner}</a>
-                    ) : (
-                      <Link key={link.href} href={link.href} onClick={handleNavClick} className={cls}>
-                        {inner}
-                      </Link>
-                    );
-                  })}
-                </div>
+        {/* Mobile menu button */}
+        <div className="lg:hidden flex items-center">
+          <button
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            className="w-10 h-10 rounded-2xl bg-background/80 backdrop-blur border border-border flex items-center justify-center text-foreground"
+            aria-label="Toggle Menu"
+          >
+            {isMobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+          </button>
+        </div>
+      </div>
 
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </nav>
-
-      {/* Search Modal */}
-      <SearchModal isOpen={isSearchOpen} onClose={() => setIsSearchOpen(false)} />
-    </>
+      {/* Mobile Drawer Menu Bar */}
+      {isMobileMenuOpen && (
+        <div className="lg:hidden container mx-auto px-4 mt-2">
+          <div className="p-3 rounded-2xl bg-background/95 backdrop-blur-2xl border border-border shadow-2xl space-y-2">
+            <MenuBar
+              items={menuItems}
+              activeItem={activeItem}
+              onItemClick={handleItemClick}
+              className="w-full flex justify-center"
+            />
+          </div>
+        </div>
+      )}
+    </header>
   );
-};
+}
 
 export default Navbar;
+export { Navbar as Header };
