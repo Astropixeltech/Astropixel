@@ -393,6 +393,32 @@ function AdminDashboardInner() {
   // Calculate total revenue
   const totalRevenue = courseEnrollmentStats.reduce((sum, course) => sum + course.totalSales, 0);
 
+  // Collapsible sidebar state
+  const [expandedGroups, setExpandedGroups] = useState<Record<string, boolean>>({
+    lms_core: true,
+    lms_more: false,
+    cms: true,
+    settings: true,
+  });
+
+  // AI Assistant panel state
+  const [isAssistantOpen, setIsAssistantOpen] = useState(false);
+
+  // If active tab isn't visible in current scope, switch to dashboard
+  useEffect(() => {
+    const validNavIds = ['dashboard', 'homepage', 'about', 'services', 'works', 'team', 'contact', 'footer', 'settings', 'apikeys', 'paymentapi', 'analytics', 'email', 'feedback', 'profile', 'sitesettings', 'paymentmethod'];
+    if (!validNavIds.includes(activeTab)) {
+      setActiveTab('dashboard');
+    }
+  }, [scope, activeTab]);
+
+  // Auto-expand group when its item is active
+  useEffect(() => {
+    if (activeTab === 'lms_more' && !expandedGroups.lms_more) {
+      setExpandedGroups(prev => ({ ...prev, lms_more: true }));
+    }
+  }, [activeTab, expandedGroups.lms_more]);
+
   // 2.5s safety fallback timer for auth loading
   const [authTimeout, setAuthTimeout] = useState(false);
   useEffect(() => {
@@ -405,7 +431,7 @@ function AdminDashboardInner() {
     if ((!authLoading || authTimeout) && (!user || !isAdmin)) {
       router.push('/admin/login');
     }
-  }, [user, isAdmin, authLoading, authTimeout]);
+  }, [user, isAdmin, authLoading, authTimeout, router]);
 
   if (authLoading && !authTimeout) {
     return (
@@ -808,14 +834,6 @@ function AdminDashboardInner() {
     color: CHART_COLORS[index % CHART_COLORS.length]
   }));
 
-  // Collapsible sidebar state
-  const [expandedGroups, setExpandedGroups] = useState<Record<string, boolean>>({
-    lms_core: true,
-    lms_more: false,
-    cms: true,
-    settings: true,
-  });
-
   const toggleGroup = (group: string) => {
     setExpandedGroups(prev => ({ ...prev, [group]: !prev[group] }));
   };
@@ -861,9 +879,6 @@ function AdminDashboardInner() {
   const cmsItems = cmsItemsAll.filter(i => inScope(i.scopeTag));
   const settingsItems = settingsItemsAll.filter(i => inScope(i.scopeTag));
 
-  // AI Assistant panel state
-  const [isAssistantOpen, setIsAssistantOpen] = useState(false);
-
   const dashboardItem = { id: 'dashboard', icon: LayoutDashboard, label: language === 'bn' ? 'ড্যাশবোর্ড' : 'Dashboard' };
   // Hidden settings sub-tabs (accessible only via the Settings hub cards)
   const settingsHubChildren = [
@@ -871,23 +886,6 @@ function AdminDashboardInner() {
     { id: 'paymentmethod', icon: Banknote, label: 'Payment Method' },
   ];
   const allNavItems = [dashboardItem, ...lmsCoreItems, ...lmsMoreItems, ...cmsItems, ...settingsItems, ...settingsHubChildren];
-
-  // If active tab isn't visible in current scope, switch to dashboard
-  useEffect(() => {
-    if (!allNavItems.some((i: any) => i.id === activeTab)) {
-      setActiveTab('dashboard');
-    }
-  }, [scope]);
-
-
-
-
-  // Auto-expand group when its item is active
-  useEffect(() => {
-    if (lmsMoreItems.some(item => item.id === activeTab) && !expandedGroups.lms_more) {
-      setExpandedGroups(prev => ({ ...prev, lms_more: true }));
-    }
-  }, [activeTab]);
 
   // Render a nav button
   const renderNavButton = (item: { id: string; icon: any; label: string; badge?: number }, colorClass: string) => (
