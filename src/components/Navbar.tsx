@@ -1,342 +1,270 @@
 'use client';
-import React from 'react';
-import { Button } from '@/components/ui/button';
-import { cn } from '@/lib/utils';
-import { MenuToggleIcon } from '@/components/ui/menu-toggle-icon';
-import { createPortal } from 'react-dom';
-import {
-	NavigationMenu,
-	NavigationMenuContent,
-	NavigationMenuItem,
-	NavigationMenuLink,
-	NavigationMenuList,
-	NavigationMenuTrigger,
-} from '@/components/ui/navigation-menu';
-import { LucideIcon } from 'lucide-react';
-import {
-	CodeIcon,
-	GlobeIcon,
-	LayersIcon,
-	UserPlusIcon,
-	Users,
-	Star,
-	FileText,
-	Shield,
-	RotateCcw,
-	Handshake,
-	Leaf,
-	HelpCircle,
-	BarChart,
-	PlugIcon,
-} from 'lucide-react';
+
+import { useState, useEffect } from "react";
+import CustomArrowIcon from "@/components/ui/CustomArrowIcon";
+import { motion, AnimatePresence } from "framer-motion";
+import { 
+  Menu, 
+  X, 
+  Sun,
+  Moon,
+  ArrowUpRight,
+  Search,
+  User,
+  Home,
+  Info,
+  Briefcase,
+  FolderOpen,
+  Users,
+  GraduationCap,
+  Mail,
+  Phone,
+  MoreHorizontal,
+  ChevronDown,
+  Tag
+} from "lucide-react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { useTheme } from "next-themes";
+import { useLanguage } from "@/contexts/LanguageContext";
+import logoFullAsset from "@/assets/astropixel-logo.png.asset.json";
 import logoFullPng from "@/assets/logo-full.png";
+import learnLogoAssetJson from "@/assets/learn-with-alphazero-logo.png.asset.json";
+const learnLogo = learnLogoAssetJson.url;
+const logoFull = logoFullPng || logoFullAsset?.url;
+const isLearnSubdomain = typeof window !== "undefined" && window.location.hostname.startsWith("learn.");
+import SearchModal from "./SearchModal";
+import { ShinyButton } from "@/components/ui/shiny-button";
 
-type LinkItem = {
-	title: string;
-	href: string;
-	icon: LucideIcon;
-	description?: string;
+const LEARN_ROUTES = ["/courses", "/instructors", "/learn-about"];
+
+const Navbar = () => {
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [isOverHero, setIsOverHero] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
+
+  const pathname = usePathname();
+  const brandLogo = logoFull;
+  const { theme, setTheme } = useTheme();
+  const { language, setLanguage, t } = useLanguage();
+
+  const COURSES_URL = "https://learn.astropixel.tech";
+
+  const navLinks = [
+    { name: t("nav.home"), href: "/", num: "01" },
+    { name: t("nav.about"), href: "/about", num: "02" },
+    { name: t("nav.services"), href: "/services", num: "03" },
+    { name: t("nav.work"), href: "/work", num: "04" },
+    { name: t("nav.contact"), href: "/contact", num: "05" },
+
+  ];
+
+  const navLinksWithIcons = [
+    { name: t("nav.home"), href: "/", icon: Home },
+    { name: t("nav.about"), href: "/about", icon: Info },
+    { name: t("nav.services"), href: "/services", icon: Briefcase },
+    { name: t("nav.work"), href: "/work", icon: FolderOpen },
+    
+    
+    { name: t("nav.contact"), href: "/contact", icon: Mail },
+  ];
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const y = window.scrollY;
+      setIsScrolled(y > 20);
+      const heroEl = document.getElementById("site-hero");
+      if (heroEl) {
+        const rect = heroEl.getBoundingClientRect();
+        setIsOverHero(rect.bottom > 60);
+      } else {
+        setIsOverHero(y < 350);
+      }
+    };
+    handleScroll();
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    window.addEventListener("resize", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("resize", handleScroll);
+    };
+  }, [pathname]);
+
+
+  const handleNavClick = () => {
+    setIsMobileMenuOpen(false);
+  };
+
+  const isWhiteNavText = isOverHero || !isScrolled;
+
+  return (
+    <>
+      <nav
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
+          isScrolled ? "py-2 sm:py-2.5" : "py-3.5 sm:py-4"
+        }`}
+      >
+        <div className="container mx-auto px-4 sm:px-6">
+          {/* Header container — transparent overlay at top (no box/border), original glass box on scroll */}
+          <div
+            className={`relative flex items-center justify-between transition-all duration-500 ${
+              isScrolled
+                ? "rounded-2xl px-4 sm:px-5 py-2.5 backdrop-blur-2xl backdrop-saturate-150 border border-white/20 bg-white/[0.08] dark:bg-white/[0.06] shadow-[0_1px_0_0_rgba(255,255,255,0.35)_inset,0_-1px_0_0_rgba(0,0,0,0.1)_inset,0_10px_30px_-12px_rgba(0,0,0,0.35)]"
+                : "bg-transparent border-transparent shadow-none px-2 py-1"
+            }`}
+            style={{
+              WebkitBackdropFilter: isScrolled ? "blur(28px) saturate(160%)" : "none",
+              backdropFilter: isScrolled ? "blur(28px) saturate(160%)" : "none",
+            }}
+          >
+            {/* Soft top glass highlight & bottom shadow line (only on scroll) */}
+            {isScrolled && (
+              <>
+                <div aria-hidden className="pointer-events-none absolute inset-x-4 top-0 h-px bg-gradient-to-r from-transparent via-white/40 to-transparent rounded-full" />
+                <div aria-hidden className="pointer-events-none absolute inset-x-6 bottom-0 h-px bg-gradient-to-r from-transparent via-black/10 dark:via-white/5 to-transparent" />
+              </>
+            )}
+
+            {/* Logo */}
+            <Link href="/" className="flex items-center group relative shrink-0 z-10">
+              <img
+                src={(logoFullPng as any)?.src || logoFullPng}
+                alt="AstroPixel Creative Design Agency Logo"
+                width={180}
+                height={36}
+                className={`h-8 sm:h-9 max-w-[180px] sm:max-w-[220px] w-auto object-contain transition-all duration-300 group-hover:scale-105 ${
+                  isWhiteNavText ? "brightness-0 invert" : "brightness-0"
+                }`}
+                loading="eager"
+                fetchPriority="high"
+                decoding="async"
+              />
+            </Link>
+
+            {/* Desktop Navigation - Pill style (centered) */}
+            <div className="hidden lg:flex items-center absolute left-1/2 -translate-x-1/2">
+              <div className="flex items-center gap-1 px-1.5 py-1">
+                {navLinks.map((link) => {
+                  const isActive = pathname === link.href;
+
+                  const linkClasses = "relative px-3.5 py-2 text-sm font-medium transition-all duration-300";
+                  const linkInner = (
+                    <span className={`relative z-10 font-semibold text-sm transition-colors duration-300 ${
+                      isActive
+                        ? isWhiteNavText ? "text-cyan-400 font-bold drop-shadow-sm" : "text-violet-600 font-bold"
+                        : isWhiteNavText ? "text-white/90 hover:text-cyan-400 drop-shadow-sm" : "text-neutral-900 dark:text-white hover:text-violet-600"
+                    }`}>
+                      {link.name}
+                    </span>
+                  );
+                  return link.href.startsWith("http") ? (
+                    <a key={link.href} href={link.href} target="_blank" rel="noopener noreferrer" className={linkClasses}>{linkInner}</a>
+                  ) : (
+                    <Link key={link.href} href={link.href} className={linkClasses}>
+                      {linkInner}
+                    </Link>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* Right-aligned Controls (desktop) */}
+            <div className="hidden lg:flex items-center gap-1.5 ml-2">
+              <Link
+                href="/contact"
+                className="group relative flex items-center gap-1.5 px-4 py-2 rounded-xl overflow-hidden transition-all duration-300 active:scale-95 bg-gradient-to-r from-[#6D28D9] via-[#7C3AED] to-[#9333EA] text-white shadow-[0_5px_18px_-2px_rgba(124,58,237,0.6)] hover:shadow-[0_8px_24px_rgba(168,85,247,0.85)] border border-white/30 hover:border-white/50"
+              >
+                {/* Top-right glossy flare overlay */}
+                <div aria-hidden className="absolute top-0 right-0 w-12 h-12 bg-[radial-gradient(ellipse_at_top_right,rgba(255,255,255,0.45),transparent_70%)] pointer-events-none rounded-tr-xl" />
+
+                <span className="relative z-10 text-xs sm:text-[13px] font-bold text-white tracking-wide">{t("nav.startProject")}</span>
+                <CustomArrowIcon className="w-3.5 h-3.5 text-white relative z-10 transition-transform group-hover:translate-x-1" />
+              </Link>
+            </div>
+
+            {/* Mobile: menu on top bar */}
+            <div className="flex items-center gap-1.5 lg:hidden">
+
+              <button
+                onClick={() => setIsMobileMenuOpen((v) => !v)}
+                aria-label={isMobileMenuOpen ? "Close menu" : "Open menu"}
+                className="w-9 h-9 rounded-full bg-primary/20 border border-primary/30 flex items-center justify-center hover:bg-primary/30 transition-colors"
+              >
+                {isMobileMenuOpen ? <X size={16} className="text-primary" /> : <Menu size={16} className="text-primary" />}
+              </button>
+            </div>
+          </div>
+        </div>
+
+        {/* Mobile menu drawer */}
+        <AnimatePresence>
+          {isMobileMenuOpen && (
+            <motion.div
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              transition={{ duration: 0.2 }}
+              className="lg:hidden container mx-auto px-4 sm:px-6 mt-2"
+            >
+              <div className="rounded-2xl bg-white/[0.08] dark:bg-white/[0.06] backdrop-blur-2xl backdrop-saturate-150 border border-white/15 dark:border-white/10 shadow-[0_1px_0_0_rgba(255,255,255,0.35)_inset,0_-1px_0_0_rgba(0,0,0,0.06)_inset,0_10px_30px_-12px_rgba(0,0,0,0.25)] overflow-hidden" style={{ WebkitBackdropFilter: "blur(28px) saturate(160%)", backdropFilter: "blur(28px) saturate(160%)" }}>
+                <div className="grid grid-cols-2 gap-1 p-2">
+                  {navLinksWithIcons.map((link, index) => {
+                    const IconComp = link.icon;
+                    const isActive = pathname === link.href;
+                    const isLastOdd = index === navLinksWithIcons.length - 1 && navLinksWithIcons.length % 2 !== 0;
+                    const baseText = isOverHero ? "text-white/90 hover:bg-white/10" : "text-neutral-800 hover:bg-black/5";
+                    const iconTone = isActive
+                      ? "text-white"
+                      : isOverHero
+                        ? "text-white/80"
+                        : "text-cyan-600/80";
+                    const cls = `flex items-center gap-2 px-3 py-2.5 rounded-xl text-sm transition-colors ${
+                      isLastOdd ? "col-span-2 justify-center" : ""
+                    } ${
+                      isActive
+                        ? "bg-gradient-to-br from-cyan-400 via-cyan-500 to-blue-600 text-white font-semibold shadow-[0_6px_20px_-6px_rgba(6,182,212,0.55)]"
+                        : baseText
+                    }`;
+                    const inner = (<><IconComp size={16} className={iconTone} />{link.name}</>);
+                    return link.href.startsWith("http") ? (
+                      <a key={link.href} href={link.href} target="_blank" rel="noopener noreferrer" onClick={handleNavClick} className={cls}>{inner}</a>
+                    ) : (
+                      <Link key={link.href} href={link.href} onClick={handleNavClick} className={cls}>
+                        {inner}
+                      </Link>
+                    );
+                  })}
+                </div>
+                <div className={`flex items-center justify-between gap-2 p-2 border-t ${isOverHero ? "border-white/15" : "border-black/10"}`}>
+                  <Link
+                    href="/contact"
+                    onClick={handleNavClick}
+                    className="relative flex-1 h-10 rounded-xl overflow-hidden font-semibold text-xs flex items-center justify-center gap-1 text-white shadow-[0_6px_20px_-6px_rgba(6,182,212,0.55)]"
+                  >
+                    <span className="absolute inset-0 bg-gradient-to-br from-cyan-400 via-cyan-500 to-blue-600" />
+                    <span className="absolute inset-0 bg-gradient-to-b from-white/25 via-transparent to-black/15 opacity-60" />
+                    <span className="relative z-10 flex items-center gap-1">
+                      {t("nav.startProject")}
+                      <ArrowUpRight size={13} />
+                    </span>
+                  </Link>
+                </div>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </nav>
+
+      {/* Search Modal */}
+      <SearchModal isOpen={isSearchOpen} onClose={() => setIsSearchOpen(false)} />
+    </>
+  );
 };
 
-export function Header() {
-	const [open, setOpen] = React.useState(false);
-	const scrolled = useScroll(10);
-
-	React.useEffect(() => {
-		if (open) {
-			document.body.style.overflow = 'hidden';
-		} else {
-			document.body.style.overflow = '';
-		}
-		return () => {
-			document.body.style.overflow = '';
-		};
-	}, [open]);
-
-	return (
-		<header
-			className={cn('sticky top-0 z-50 w-full border-b border-transparent transition-all duration-300', {
-				'bg-background/95 supports-[backdrop-filter]:bg-background/50 border-border backdrop-blur-lg shadow-sm':
-					scrolled,
-			})}
-		>
-			<nav className="mx-auto flex h-16 w-full max-w-7xl items-center justify-between px-4 sm:px-6">
-				<div className="flex items-center gap-6">
-					<a href="/" className="flex items-center gap-2 rounded-md p-1">
-						<img
-							src={(logoFullPng as any)?.src || '/astropixel-logo-full.png'}
-							alt="AstroPixel Agency"
-							className="h-8 w-auto object-contain brightness-0 dark:invert"
-						/>
-					</a>
-					<NavigationMenu className="hidden md:flex">
-						<NavigationMenuList>
-							<NavigationMenuItem>
-								<NavigationMenuTrigger className="bg-transparent text-sm font-semibold">Product</NavigationMenuTrigger>
-								<NavigationMenuContent className="bg-background p-1 pr-1.5">
-									<ul className="bg-popover grid w-lg grid-cols-2 gap-2 rounded-md border p-2 shadow">
-										{productLinks.map((item, i) => (
-											<li key={i}>
-												<ListItem {...item} />
-											</li>
-										))}
-									</ul>
-									<div className="p-2">
-										<p className="text-muted-foreground text-sm">
-											Interested?{' '}
-											<a href="/contact" className="text-foreground font-medium hover:underline">
-												Schedule a demo
-											</a>
-										</p>
-									</div>
-								</NavigationMenuContent>
-							</NavigationMenuItem>
-							<NavigationMenuItem>
-								<NavigationMenuTrigger className="bg-transparent text-sm font-semibold">Company</NavigationMenuTrigger>
-								<NavigationMenuContent className="bg-background p-1 pr-1.5 pb-1.5">
-									<div className="grid w-lg grid-cols-2 gap-2">
-										<ul className="bg-popover space-y-2 rounded-md border p-2 shadow">
-											{companyLinks.map((item, i) => (
-												<li key={i}>
-													<ListItem {...item} />
-												</li>
-											))}
-										</ul>
-										<ul className="space-y-2 p-3">
-											{companyLinks2.map((item, i) => (
-												<li key={i}>
-													<NavigationMenuLink
-														href={item.href}
-														className="flex p-2 hover:bg-accent flex-row rounded-md items-center gap-x-2 text-sm"
-													>
-														<item.icon className="text-foreground size-4" />
-														<span className="font-medium">{item.title}</span>
-													</NavigationMenuLink>
-												</li>
-											))}
-										</ul>
-									</div>
-								</NavigationMenuContent>
-							</NavigationMenuItem>
-							<NavigationMenuLink className="px-4" asChild>
-								<a href="/work" className="hover:bg-accent rounded-md p-2 text-sm font-semibold">
-									Pricing
-								</a>
-							</NavigationMenuLink>
-						</NavigationMenuList>
-					</NavigationMenu>
-				</div>
-				<div className="hidden items-center gap-3 md:flex">
-					<a href="/admin/login">
-						<Button variant="outline" className="rounded-xl">Sign In</Button>
-					</a>
-					<a href="/contact">
-						<Button className="rounded-xl bg-gradient-to-r from-[#6D28D9] via-[#7C3AED] to-[#9333EA] text-white">Get Started</Button>
-					</a>
-				</div>
-				<Button
-					size="icon"
-					variant="outline"
-					onClick={() => setOpen(!open)}
-					className="md:hidden rounded-xl"
-					aria-expanded={open}
-					aria-controls="mobile-menu"
-					aria-label="Toggle menu"
-				>
-					<MenuToggleIcon open={open} className="size-5" duration={300} />
-				</Button>
-			</nav>
-			<MobileMenu open={open} className="flex flex-col justify-between gap-2 overflow-y-auto">
-				<NavigationMenu className="max-w-full">
-					<div className="flex w-full flex-col gap-y-2">
-						<span className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Product</span>
-						{productLinks.map((link) => (
-							<ListItem key={link.title} {...link} />
-						))}
-						<span className="text-xs font-bold uppercase tracking-wider text-muted-foreground mt-4">Company</span>
-						{companyLinks.map((link) => (
-							<ListItem key={link.title} {...link} />
-						))}
-						{companyLinks2.map((link) => (
-							<ListItem key={link.title} {...link} />
-						))}
-					</div>
-				</NavigationMenu>
-				<div className="flex flex-col gap-2 pt-4">
-					<a href="/admin/login" className="w-full">
-						<Button variant="outline" className="w-full bg-transparent rounded-xl">
-							Sign In
-						</Button>
-					</a>
-					<a href="/contact" className="w-full">
-						<Button className="w-full rounded-xl bg-gradient-to-r from-[#6D28D9] via-[#7C3AED] to-[#9333EA] text-white">Get Started</Button>
-					</a>
-				</div>
-			</MobileMenu>
-		</header>
-	);
-}
-
-type MobileMenuProps = React.ComponentProps<'div'> & {
-	open: boolean;
-};
-
-function MobileMenu({ open, children, className, ...props }: MobileMenuProps) {
-	if (!open || typeof window === 'undefined') return null;
-
-	return createPortal(
-		<div
-			id="mobile-menu"
-			className={cn(
-				'bg-background/95 supports-[backdrop-filter]:bg-background/50 backdrop-blur-lg',
-				'fixed top-16 right-0 bottom-0 left-0 z-40 flex flex-col overflow-hidden border-y md:hidden',
-			)}
-		>
-			<div
-				data-slot={open ? 'open' : 'closed'}
-				className={cn(
-					'data-[slot=open]:animate-in data-[slot=open]:zoom-in-97 ease-out',
-					'size-full p-4',
-					className,
-				)}
-				{...props}
-			>
-				{children}
-			</div>
-		</div>,
-		document.body,
-	);
-}
-
-function ListItem({
-	title,
-	description,
-	icon: Icon,
-	className,
-	href,
-	...props
-}: React.ComponentProps<typeof NavigationMenuLink> & LinkItem) {
-	return (
-		<NavigationMenuLink className={cn('w-full flex flex-row gap-x-2 data-[active=true]:focus:bg-accent data-[active=true]:hover:bg-accent data-[active=true]:bg-accent/50 data-[active=true]:text-accent-foreground hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground rounded-md p-2', className)} {...props} asChild>
-			<a href={href}>
-				<div className="bg-background/40 flex aspect-square size-10 items-center justify-center rounded-md border shadow-sm shrink-0">
-					<Icon className="text-foreground size-4" />
-				</div>
-				<div className="flex flex-col items-start justify-center">
-					<span className="font-medium text-sm">{title}</span>
-					{description && <span className="text-muted-foreground text-xs">{description}</span>}
-				</div>
-			</a>
-		</NavigationMenuLink>
-	);
-}
-
-const productLinks: LinkItem[] = [
-	{
-		title: 'Website Builder',
-		href: '/services#web-builder',
-		description: 'Create responsive websites with ease',
-		icon: GlobeIcon,
-	},
-	{
-		title: 'Cloud Platform',
-		href: '/services#cloud',
-		description: 'Deploy and scale apps in the cloud',
-		icon: LayersIcon,
-	},
-	{
-		title: 'Team Collaboration',
-		href: '/about#team',
-		description: 'Tools to help your teams work better together',
-		icon: UserPlusIcon,
-	},
-	{
-		title: 'Analytics',
-		href: '/services#analytics',
-		description: 'Track and analyze your website traffic',
-		icon: BarChart,
-	},
-	{
-		title: 'Integrations',
-		href: '/services#api',
-		description: 'Connect your apps and services',
-		icon: PlugIcon,
-	},
-	{
-		title: 'API',
-		href: '/services#api',
-		description: 'Build custom integrations with our API',
-		icon: CodeIcon,
-	},
-];
-
-const companyLinks: LinkItem[] = [
-	{
-		title: 'About Us',
-		href: '/about',
-		description: 'Learn more about our story and team',
-		icon: Users,
-	},
-	{
-		title: 'Customer Stories',
-		href: '/work',
-		description: 'See how we’ve helped our clients succeed',
-		icon: Star,
-	},
-	{
-		title: 'Partnerships',
-		href: '/contact',
-		icon: Handshake,
-		description: 'Collaborate with us for mutual growth',
-	},
-];
-
-const companyLinks2: LinkItem[] = [
-	{
-		title: 'Terms of Service',
-		href: '/about',
-		icon: FileText,
-	},
-	{
-		title: 'Privacy Policy',
-		href: '/about',
-		icon: Shield,
-	},
-	{
-		title: 'Refund Policy',
-		href: '/about',
-		icon: RotateCcw,
-	},
-	{
-		title: 'Blog',
-		href: '/about',
-		icon: Leaf,
-	},
-	{
-		title: 'Help Center',
-		href: '/contact',
-		icon: HelpCircle,
-	},
-];
-
-function useScroll(threshold: number) {
-	const [scrolled, setScrolled] = React.useState(false);
-
-	const onScroll = React.useCallback(() => {
-		setScrolled(window.scrollY > threshold);
-	}, [threshold]);
-
-	React.useEffect(() => {
-		window.addEventListener('scroll', onScroll);
-		return () => window.removeEventListener('scroll', onScroll);
-	}, [onScroll]);
-
-	React.useEffect(() => {
-		onScroll();
-	}, [onScroll]);
-
-	return scrolled;
-}
-
-export default Header;
-export { Header as Navbar };
+export default Navbar;
