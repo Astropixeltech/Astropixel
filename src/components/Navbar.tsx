@@ -174,19 +174,7 @@ const Navbar = () => {
               </div>
             </div>
 
-            {/* Right-aligned Controls (desktop) */}
-            <div className="hidden lg:flex items-center gap-1.5 ml-2">
-              <Link
-                href="/contact"
-                className="group relative flex items-center gap-1.5 px-4 py-2 rounded-xl overflow-hidden transition-all duration-300 active:scale-95 bg-gradient-to-r from-[#6D28D9] via-[#7C3AED] to-[#9333EA] text-white shadow-[0_5px_18px_-2px_rgba(124,58,237,0.6)] hover:shadow-[0_8px_24px_rgba(168,85,247,0.85)] border border-white/30 hover:border-white/50"
-              >
-                {/* Top-right glossy flare overlay */}
-                <div aria-hidden className="absolute top-0 right-0 w-12 h-12 bg-[radial-gradient(ellipse_at_top_right,rgba(255,255,255,0.45),transparent_70%)] pointer-events-none rounded-tr-xl" />
 
-                <span className="relative z-10 text-xs sm:text-[13px] font-bold text-white tracking-wide">{t("nav.startProject")}</span>
-                <CustomArrowIcon className="w-3.5 h-3.5 text-white relative z-10 transition-transform group-hover:translate-x-1" />
-              </Link>
-            </div>
 
             {/* Mobile: menu on top bar */}
             <div className="flex items-center gap-1.5 lg:hidden">
@@ -241,20 +229,7 @@ const Navbar = () => {
                     );
                   })}
                 </div>
-                <div className={`flex items-center justify-between gap-2 p-2 border-t ${isOverHero ? "border-white/15" : "border-black/10"}`}>
-                  <Link
-                    href="/contact"
-                    onClick={handleNavClick}
-                    className="relative flex-1 h-10 rounded-xl overflow-hidden font-semibold text-xs flex items-center justify-center gap-1 text-white shadow-[0_6px_20px_-6px_rgba(6,182,212,0.55)]"
-                  >
-                    <span className="absolute inset-0 bg-gradient-to-br from-cyan-400 via-cyan-500 to-blue-600" />
-                    <span className="absolute inset-0 bg-gradient-to-b from-white/25 via-transparent to-black/15 opacity-60" />
-                    <span className="relative z-10 flex items-center gap-1">
-                      {t("nav.startProject")}
-                      <ArrowUpRight size={13} />
-                    </span>
-                  </Link>
-                </div>
+
               </div>
             </motion.div>
           )}
