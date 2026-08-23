@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect } from "react";
 import CustomArrowIcon from "@/components/ui/CustomArrowIcon";
 import { motion, AnimatePresence } from "framer-motion";
 import { 
@@ -8,7 +8,6 @@ import {
   X, 
   ChevronDown,
   Globe,
-  Code2,
   Smartphone,
   Sparkles,
   Palette,
@@ -17,11 +16,9 @@ import {
   UsersRound,
   FolderOpen,
   Mail,
-  Phone,
-  Briefcase,
   Layers,
-  Star,
-  Home
+  Home,
+  Briefcase
 } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -30,15 +27,6 @@ import logoFullAsset from "@/assets/astropixel-logo.png.asset.json";
 import logoFullPng from "@/assets/logo-full.png";
 import SearchModal from "./SearchModal";
 
-import {
-  NavigationMenu,
-  NavigationMenuContent,
-  NavigationMenuItem,
-  NavigationMenuLink,
-  NavigationMenuList,
-  NavigationMenuTrigger,
-} from "@/components/ui/navigation-menu";
-
 const logoFull = logoFullPng || logoFullAsset?.url;
 
 export function Navbar() {
@@ -46,6 +34,7 @@ export function Navbar() {
   const [isOverHero, setIsOverHero] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [activeDropdown, setActiveDropdown] = useState<'services' | 'company' | null>(null);
   const [mobileServicesOpen, setMobileServicesOpen] = useState(false);
   const [mobileCompanyOpen, setMobileCompanyOpen] = useState(false);
 
@@ -75,6 +64,7 @@ export function Navbar() {
 
   const handleNavClick = () => {
     setIsMobileMenuOpen(false);
+    setActiveDropdown(null);
   };
 
   const isWhiteNavText = isOverHero || !isScrolled;
@@ -151,6 +141,7 @@ export function Navbar() {
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
           isScrolled ? "py-2 sm:py-2.5" : "py-3.5 sm:py-4"
         }`}
+        onMouseLeave={() => setActiveDropdown(null)}
       >
         <div className="container mx-auto px-4 sm:px-6">
           {/* Header container */}
@@ -174,7 +165,7 @@ export function Navbar() {
             )}
 
             {/* Brand Logo */}
-            <Link href="/" className="flex items-center group relative shrink-0 z-10">
+            <Link href="/" className="flex items-center group relative shrink-0 z-10" onClick={handleNavClick}>
               <img
                 src={(logoFullPng as any)?.src || logoFull}
                 alt="AstroPixel Creative Design Agency Logo"
@@ -189,36 +180,47 @@ export function Navbar() {
               />
             </Link>
 
-            {/* Desktop Dropdown Navigation Menu */}
-            <div className="hidden lg:flex items-center absolute left-1/2 -translate-x-1/2">
-              <NavigationMenu>
-                <NavigationMenuList className="gap-1">
-                  {/* Home */}
-                  <NavigationMenuItem>
-                    <Link
-                      href="/"
-                      className={`px-3.5 py-2 text-sm font-semibold transition-colors rounded-xl hover:bg-white/10 ${
-                        pathname === '/'
-                          ? isWhiteNavText ? "text-cyan-400 drop-shadow-sm" : "text-violet-600"
-                          : isWhiteNavText ? "text-white/90 hover:text-cyan-400" : "text-neutral-900 dark:text-white hover:text-violet-600"
-                      }`}
-                    >
-                      {t("nav.home")}
-                    </Link>
-                  </NavigationMenuItem>
+            {/* Desktop Navigation Links with Animated Dropdowns */}
+            <div className="hidden lg:flex items-center gap-1 absolute left-1/2 -translate-x-1/2">
+              {/* Home */}
+              <Link
+                href="/"
+                className={`px-3.5 py-2 text-sm font-semibold transition-colors rounded-xl hover:bg-white/10 ${
+                  pathname === '/'
+                    ? isWhiteNavText ? "text-cyan-400 drop-shadow-sm" : "text-violet-600 font-bold"
+                    : isWhiteNavText ? "text-white/90 hover:text-cyan-400" : "text-neutral-900 dark:text-white hover:text-violet-600"
+                }`}
+              >
+                {t("nav.home")}
+              </Link>
 
-                  {/* Services Dropdown */}
-                  <NavigationMenuItem>
-                    <NavigationMenuTrigger
-                      className={`bg-transparent px-3.5 py-2 text-sm font-semibold transition-colors rounded-xl border-none shadow-none hover:bg-white/10 ${
-                        pathname.startsWith('/services')
-                          ? isWhiteNavText ? "text-cyan-400 drop-shadow-sm" : "text-violet-600"
-                          : isWhiteNavText ? "text-white/90 hover:text-cyan-400" : "text-neutral-900 dark:text-white hover:text-violet-600"
-                      }`}
+              {/* Services Dropdown Trigger */}
+              <div 
+                className="relative"
+                onMouseEnter={() => setActiveDropdown('services')}
+              >
+                <button
+                  onClick={() => setActiveDropdown(activeDropdown === 'services' ? null : 'services')}
+                  className={`flex items-center gap-1.5 px-3.5 py-2 text-sm font-semibold transition-colors rounded-xl hover:bg-white/10 ${
+                    pathname.startsWith('/services') || activeDropdown === 'services'
+                      ? isWhiteNavText ? "text-cyan-400 drop-shadow-sm" : "text-violet-600 font-bold"
+                      : isWhiteNavText ? "text-white/90 hover:text-cyan-400" : "text-neutral-900 dark:text-white hover:text-violet-600"
+                  }`}
+                >
+                  {t("nav.services")}
+                  <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-200 ${activeDropdown === 'services' ? 'rotate-180' : ''}`} />
+                </button>
+
+                {/* Services Dropdown Content */}
+                <AnimatePresence>
+                  {activeDropdown === 'services' && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                      animate={{ opacity: 1, y: 0, scale: 1 }}
+                      exit={{ opacity: 0, y: 8, scale: 0.95 }}
+                      transition={{ duration: 0.2 }}
+                      className="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-[540px] bg-background/95 dark:bg-slate-900/95 backdrop-blur-2xl border border-border/70 shadow-2xl rounded-2xl p-3 z-50"
                     >
-                      {t("nav.services")}
-                    </NavigationMenuTrigger>
-                    <NavigationMenuContent className="bg-background/95 backdrop-blur-2xl border border-border/60 shadow-2xl rounded-2xl p-3 w-[560px]">
                       <div className="grid grid-cols-2 gap-2">
                         {serviceItems.map((item, i) => {
                           const IconComponent = item.icon;
@@ -226,7 +228,8 @@ export function Navbar() {
                             <Link
                               key={i}
                               href={item.href}
-                              className="group flex items-start gap-3 p-2.5 rounded-xl hover:bg-accent/60 transition-all duration-200"
+                              onClick={handleNavClick}
+                              className="group flex items-start gap-3 p-2.5 rounded-xl hover:bg-accent/70 transition-all duration-200"
                             >
                               <div className="p-2 rounded-lg bg-primary/10 group-hover:bg-primary/20 text-primary transition-colors shrink-0 mt-0.5">
                                 <IconComponent className="w-4 h-4" />
@@ -245,25 +248,42 @@ export function Navbar() {
                       </div>
                       <div className="mt-2 pt-2 border-t border-border/50 flex items-center justify-between px-2 text-xs">
                         <span className="text-muted-foreground">{language === 'bn' ? 'কাস্টম সলিউশন দরকার?' : 'Need a custom digital solution?'}</span>
-                        <Link href="/contact" className="font-semibold text-primary hover:underline flex items-center gap-1">
+                        <Link href="/contact" onClick={handleNavClick} className="font-semibold text-primary hover:underline flex items-center gap-1">
                           {language === 'bn' ? 'ফ্রি পরামর্শ নিন' : 'Get Free Consultation'} →
                         </Link>
                       </div>
-                    </NavigationMenuContent>
-                  </NavigationMenuItem>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
 
-                  {/* Company Dropdown */}
-                  <NavigationMenuItem>
-                    <NavigationMenuTrigger
-                      className={`bg-transparent px-3.5 py-2 text-sm font-semibold transition-colors rounded-xl border-none shadow-none hover:bg-white/10 ${
-                        pathname.startsWith('/about')
-                          ? isWhiteNavText ? "text-cyan-400 drop-shadow-sm" : "text-violet-600"
-                          : isWhiteNavText ? "text-white/90 hover:text-cyan-400" : "text-neutral-900 dark:text-white hover:text-violet-600"
-                      }`}
+              {/* Company Dropdown Trigger */}
+              <div 
+                className="relative"
+                onMouseEnter={() => setActiveDropdown('company')}
+              >
+                <button
+                  onClick={() => setActiveDropdown(activeDropdown === 'company' ? null : 'company')}
+                  className={`flex items-center gap-1.5 px-3.5 py-2 text-sm font-semibold transition-colors rounded-xl hover:bg-white/10 ${
+                    pathname.startsWith('/about') || activeDropdown === 'company'
+                      ? isWhiteNavText ? "text-cyan-400 drop-shadow-sm" : "text-violet-600 font-bold"
+                      : isWhiteNavText ? "text-white/90 hover:text-cyan-400" : "text-neutral-900 dark:text-white hover:text-violet-600"
+                  }`}
+                >
+                  {language === 'bn' ? 'কোম্পানি' : 'Company'}
+                  <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-200 ${activeDropdown === 'company' ? 'rotate-180' : ''}`} />
+                </button>
+
+                {/* Company Dropdown Content */}
+                <AnimatePresence>
+                  {activeDropdown === 'company' && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                      animate={{ opacity: 1, y: 0, scale: 1 }}
+                      exit={{ opacity: 0, y: 8, scale: 0.95 }}
+                      transition={{ duration: 0.2 }}
+                      className="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-[420px] bg-background/95 dark:bg-slate-900/95 backdrop-blur-2xl border border-border/70 shadow-2xl rounded-2xl p-3 z-50"
                     >
-                      {language === 'bn' ? 'কোম্পানি' : 'Company'}
-                    </NavigationMenuTrigger>
-                    <NavigationMenuContent className="bg-background/95 backdrop-blur-2xl border border-border/60 shadow-2xl rounded-2xl p-3 w-[440px]">
                       <div className="grid grid-cols-1 gap-1.5">
                         {companyItems.map((item, i) => {
                           const IconComponent = item.icon;
@@ -271,7 +291,8 @@ export function Navbar() {
                             <Link
                               key={i}
                               href={item.href}
-                              className="group flex items-center gap-3 p-2.5 rounded-xl hover:bg-accent/60 transition-all duration-200"
+                              onClick={handleNavClick}
+                              className="group flex items-center gap-3 p-2.5 rounded-xl hover:bg-accent/70 transition-all duration-200"
                             >
                               <div className="p-2 rounded-lg bg-primary/10 group-hover:bg-primary/20 text-primary transition-colors shrink-0">
                                 <IconComponent className="w-4 h-4" />
@@ -288,38 +309,34 @@ export function Navbar() {
                           );
                         })}
                       </div>
-                    </NavigationMenuContent>
-                  </NavigationMenuItem>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
 
-                  {/* Work */}
-                  <NavigationMenuItem>
-                    <Link
-                      href="/work"
-                      className={`px-3.5 py-2 text-sm font-semibold transition-colors rounded-xl hover:bg-white/10 ${
-                        pathname === '/work'
-                          ? isWhiteNavText ? "text-cyan-400 drop-shadow-sm" : "text-violet-600"
-                          : isWhiteNavText ? "text-white/90 hover:text-cyan-400" : "text-neutral-900 dark:text-white hover:text-violet-600"
-                      }`}
-                    >
-                      {t("nav.work")}
-                    </Link>
-                  </NavigationMenuItem>
+              {/* Work */}
+              <Link
+                href="/work"
+                className={`px-3.5 py-2 text-sm font-semibold transition-colors rounded-xl hover:bg-white/10 ${
+                  pathname === '/work'
+                    ? isWhiteNavText ? "text-cyan-400 drop-shadow-sm" : "text-violet-600 font-bold"
+                    : isWhiteNavText ? "text-white/90 hover:text-cyan-400" : "text-neutral-900 dark:text-white hover:text-violet-600"
+                }`}
+              >
+                {t("nav.work")}
+              </Link>
 
-                  {/* Contact */}
-                  <NavigationMenuItem>
-                    <Link
-                      href="/contact"
-                      className={`px-3.5 py-2 text-sm font-semibold transition-colors rounded-xl hover:bg-white/10 ${
-                        pathname === '/contact'
-                          ? isWhiteNavText ? "text-cyan-400 drop-shadow-sm" : "text-violet-600"
-                          : isWhiteNavText ? "text-white/90 hover:text-cyan-400" : "text-neutral-900 dark:text-white hover:text-violet-600"
-                      }`}
-                    >
-                      {t("nav.contact")}
-                    </Link>
-                  </NavigationMenuItem>
-                </NavigationMenuList>
-              </NavigationMenu>
+              {/* Contact */}
+              <Link
+                href="/contact"
+                className={`px-3.5 py-2 text-sm font-semibold transition-colors rounded-xl hover:bg-white/10 ${
+                  pathname === '/contact'
+                    ? isWhiteNavText ? "text-cyan-400 drop-shadow-sm" : "text-violet-600 font-bold"
+                    : isWhiteNavText ? "text-white/90 hover:text-cyan-400" : "text-neutral-900 dark:text-white hover:text-violet-600"
+                }`}
+              >
+                {t("nav.contact")}
+              </Link>
             </div>
 
             {/* CTA Button */}
