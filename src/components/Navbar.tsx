@@ -147,8 +147,8 @@ const Navbar = () => {
               />
             </Link>
 
-            {/* Desktop Navigation - Pill style (centered) */}
-            <div className="hidden lg:flex items-center absolute left-1/2 -translate-x-1/2">
+            {/* Desktop Navigation - Right aligned */}
+            <div className="hidden lg:flex items-center ml-auto">
               <div className="flex items-center gap-1 px-1.5 py-1">
                 {navLinks.map((link) => {
                   const isActive = pathname === link.href;
