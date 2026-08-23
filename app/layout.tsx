@@ -1,14 +1,15 @@
 import type { Metadata, Viewport } from 'next';
+import Script from 'next/script';
 import '@/App.css';
 import '@/index.css';
 import { Providers } from './providers';
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://astropixel.tech'),
-  title: 'AstroPixel — Creative Design Agency in Rajshahi, Bangladesh',
-  description: 'AstroPixel is a creative design agency in Rajshahi, Bangladesh by Sofiullah Ahammad. Specializing in logo design, branding, UI/UX & web development.',
-  keywords: 'AstroPixel, creative agency Rajshahi, logo design Bangladesh, branding agency Bangladesh, UI UX design agency, web design agency, Sofiullah Ahammad',
-  authors: [{ name: 'AstroPixel Creative Agency' }],
+  title: 'AstroPixel — UI/UX, Branding & Web Development Agency',
+  description: 'AstroPixel is a Bangladesh-based international digital agency specializing in UI/UX design, logo & branding, web development, SaaS development, DevOps, and digital marketing for clients worldwide.',
+  keywords: 'AstroPixel, AstroPixel Agency, UI UX design agency, logo design agency, branding agency Bangladesh, web development agency, SaaS development company, DevOps agency, digital marketing agency, Sofiullah Ahammad, Rajshahi Bangladesh',
+  authors: [{ name: 'AstroPixel Creative Design Agency' }],
   alternates: {
     canonical: 'https://astropixel.tech/',
   },
@@ -26,22 +27,22 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     url: 'https://astropixel.tech/',
-    title: 'AstroPixel — Creative Design Agency in Rajshahi, Bangladesh',
-    description: 'AstroPixel is a creative design agency in Rajshahi, Bangladesh by Sofiullah Ahammad. Specializing in logo design, branding, UI/UX & web development.',
+    title: 'AstroPixel — UI/UX, Branding & Web Development Agency',
+    description: 'AstroPixel is a Bangladesh-based international digital agency specializing in UI/UX design, logo & branding, web development, SaaS development, DevOps, and digital marketing for clients worldwide.',
     siteName: 'AstroPixel',
     images: [
       {
         url: 'https://res.cloudinary.com/dzuex7n2u/image/upload/v1779254926/astropixel/site/og-image.png',
         width: 1200,
         height: 630,
-        alt: 'AstroPixel Creative Design Agency',
+        alt: 'AstroPixel — UI/UX, Branding & Web Development Agency',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'AstroPixel — Creative Design Agency in Rajshahi, Bangladesh',
-    description: 'AstroPixel is a creative design agency in Rajshahi, Bangladesh by Sofiullah Ahammad. Specializing in logo design, branding, UI/UX & web development.',
+    title: 'AstroPixel — UI/UX, Branding & Web Development Agency',
+    description: 'AstroPixel is a Bangladesh-based international digital agency specializing in UI/UX design, logo & branding, web development, SaaS development, DevOps, and digital marketing for clients worldwide.',
     images: ['https://res.cloudinary.com/dzuex7n2u/image/upload/v1779254926/astropixel/site/og-image.png'],
   },
 };
@@ -58,6 +59,38 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const organizationSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'Organization',
+    'name': 'AstroPixel',
+    'legalName': 'AstroPixel Creative Design Agency',
+    'url': 'https://astropixel.tech/',
+    'logo': 'https://astropixel.tech/fav-icon.png',
+    'founder': {
+      '@type': 'Person',
+      'name': 'Sofiullah Ahammad'
+    },
+    'address': {
+      '@type': 'PostalAddress',
+      'addressLocality': 'Rajshahi',
+      'addressCountry': 'Bangladesh'
+    },
+    'contactPoint': {
+      '@type': 'ContactPoint',
+      'email': 'hello@astropixel.tech',
+      'contactType': 'customer service'
+    },
+    'sameAs': [
+      'https://clutch.co/profile/astropixel-0',
+      'https://share.google/K4AuEFEeRfy3AQCVj',
+      'https://www.behance.net/astropixels',
+      'https://dribbble.com/astropixel',
+      'https://www.linkedin.com/company/astropixel',
+      'https://www.facebook.com/astropixel',
+      'https://www.instagram.com/astropixel'
+    ]
+  };
+
   return (
     <html lang="en" className="light" style={{ colorScheme: 'light' }}>
       <head>
@@ -71,11 +104,23 @@ export default function RootLayout({
         <link rel="manifest" href="/site.webmanifest" />
         <meta name="mobile-web-app-capable" content="yes" />
         <meta name="theme-color" content="#000000" />
-        <link rel="preload" href="/hero-bg-custom.webp" as="image" fetchPriority="high" />
-        <link rel="preload" href="/marquee/badam.jpg" as="image" fetchPriority="high" />
-        <link rel="preload" href="/marquee/coconuct.jpg" as="image" fetchPriority="high" />
-        <link rel="preload" href="/marquee/GHEE.jpg" as="image" fetchPriority="high" />
-        <link rel="preload" href="/marquee/creativity-to-create.png" as="image" fetchPriority="high" />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
+        />
+        {/* GA4 Script Initializer */}
+        <Script
+          src="https://www.googletagmanager.com/gtag/js?id=G-ASTROPIXEL"
+          strategy="afterInteractive"
+        />
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-ASTROPIXEL');
+          `}
+        </Script>
       </head>
       <body className="min-h-screen bg-background font-sans antialiased">
         <Providers>{children}</Providers>

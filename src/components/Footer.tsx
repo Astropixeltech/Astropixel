@@ -177,8 +177,8 @@ const Footer = () => {
             </div>
           </div>
 
-          {/* Partner & Review Badges Row (Google, Behance, Dribbble) */}
-          <div className="mt-10 py-6 border-t border-b border-background/10 grid grid-cols-3 gap-4 max-w-3xl mx-auto items-center text-center justify-center">
+          {/* Partner & Review Badges Row (Google, Clutch, Behance, Dribbble) */}
+          <div className="mt-10 py-6 border-t border-b border-background/10 grid grid-cols-2 sm:grid-cols-4 gap-4 max-w-4xl mx-auto items-center text-center justify-center">
             {/* Google */}
             <a 
               href="https://share.google/K4AuEFEeRfy3AQCVj" 
@@ -194,6 +194,26 @@ const Footer = () => {
                   <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/>
                 </svg>
                 <span className="font-sans font-bold text-sm sm:text-lg text-white">Google</span>
+              </div>
+              <span className="text-[10px] sm:text-xs font-medium text-background/50 tracking-wider uppercase flex items-center gap-1 group-hover:text-background/80 transition-colors">
+                <span>Reviewed On</span>
+                <span className="flex text-amber-400 text-[10px] sm:text-xs">★★★★★</span>
+              </span>
+            </a>
+
+            {/* Clutch */}
+            <a 
+              href="https://clutch.co/profile/astropixel-0" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="flex flex-col items-center justify-center gap-1 group cursor-pointer"
+            >
+              <div className="flex items-center justify-center group-hover:scale-105 transition-transform">
+                <img 
+                  src="https://cdn.prod.website-files.com/672a72b52eb5f37692d645a9/68a1a63e1b6574571b18b9f9_Frame%201116606742.svg"
+                  alt="Clutch Agency Reviews"
+                  className="h-5 sm:h-6 w-auto max-w-[130px] object-contain"
+                />
               </div>
               <span className="text-[10px] sm:text-xs font-medium text-background/50 tracking-wider uppercase flex items-center gap-1 group-hover:text-background/80 transition-colors">
                 <span>Reviewed On</span>
@@ -232,13 +252,13 @@ const Footer = () => {
             </a>
           </div>
 
-          {/* Bottom Copyright Bar matching reference image */}
+          {/* Bottom Copyright Bar */}
           <div className="py-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs font-semibold text-background/60">
             <Link href="/terms" className="hover:text-background transition-colors">
               Terms & Conditions
             </Link>
             <span className="text-center">
-              © {new Date().getFullYear()}, AstroPixel Agency, All Rights Reserved.
+              © 2025-26  AstroPixel, All Rights Reserved.
             </span>
             <Link href="/privacy" className="hover:text-background transition-colors">
               Privacy Policy

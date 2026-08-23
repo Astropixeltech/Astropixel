@@ -586,7 +586,7 @@ const Index = () => {
                   src={logo.src}
                   alt={logo.alt}
                   loading="lazy"
-                  className="max-h-6 sm:max-h-7 lg:max-h-7 max-w-[90px] sm:max-w-[110px] w-auto h-auto object-contain brightness-0 dark:invert opacity-75 group-hover:opacity-100 transition-all duration-300 ease-out"
+                  className="max-h-6 sm:max-h-7 lg:max-h-7 max-w-[90px] sm:max-w-[110px] w-auto h-auto object-contain brightness-0 dark:invert opacity-85 group-hover:opacity-100 transition-all duration-300 ease-out"
                 />
               </div>
             );

@@ -69,21 +69,13 @@ export const MenuBar = React.forwardRef<HTMLDivElement, MenuBarProps>(
       <motion.nav
         ref={ref}
         className={cn(
-          "p-2 rounded-2xl bg-gradient-to-b from-background/80 to-background/40 backdrop-blur-lg border border-border/40 shadow-lg relative overflow-hidden",
+          "p-1 rounded-full bg-transparent border-none shadow-none relative overflow-hidden",
           className,
         )}
         initial="initial"
         whileHover="hover"
         {...props}
       >
-        <motion.div
-          className={`absolute -inset-2 bg-gradient-radial from-transparent ${
-            isDarkTheme
-              ? "via-blue-400/30 via-30% via-purple-400/30 via-60% via-red-400/30 via-90%"
-              : "via-blue-400/20 via-30% via-purple-400/20 via-60% via-red-400/20 via-90%"
-          } to-transparent rounded-3xl z-0 pointer-events-none`}
-          variants={navGlowVariants}
-        />
         <ul className="flex items-center gap-1 sm:gap-2 relative z-10">
           {items.map((item) => {
             const Icon = item.icon
@@ -102,21 +94,11 @@ export const MenuBar = React.forwardRef<HTMLDivElement, MenuBarProps>(
                     initial="initial"
                   >
                     <motion.div
-                      className="absolute inset-0 z-0 pointer-events-none"
-                      variants={glowVariants}
-                      animate={isActive ? "hover" : "initial"}
-                      style={{
-                        background: item.gradient,
-                        opacity: isActive ? 1 : 0,
-                        borderRadius: "16px",
-                      }}
-                    />
-                    <motion.div
                       className={cn(
-                        "flex items-center gap-2 px-3 sm:px-4 py-2 relative z-10 bg-transparent transition-colors rounded-xl font-medium text-sm",
+                        "flex items-center gap-2 px-3.5 sm:px-4 py-2 relative z-10 bg-transparent transition-colors rounded-xl font-bold text-xs sm:text-sm tracking-wide",
                         isActive
-                          ? "text-foreground font-semibold"
-                          : "text-muted-foreground group-hover:text-foreground",
+                          ? "text-white drop-shadow-[0_2px_8px_rgba(255,255,255,0.5)]"
+                          : "text-slate-200 hover:text-white group-hover:text-white",
                       )}
                       variants={itemVariants}
                       transition={sharedTransition as any}
@@ -128,20 +110,20 @@ export const MenuBar = React.forwardRef<HTMLDivElement, MenuBarProps>(
                       <span
                         className={cn(
                           "transition-colors duration-300 shrink-0",
-                          isActive ? item.iconColor : "text-foreground",
+                          isActive ? item.iconColor : "text-white",
                           `group-hover:${item.iconColor}`,
                         )}
                       >
-                        <Icon className="h-4.5 w-4.5 sm:h-5 sm:w-5" />
+                        <Icon className="h-4 w-4 sm:h-4.5 sm:w-4.5" />
                       </span>
-                      <span>{item.label}</span>
+                      <span className="font-semibold">{item.label}</span>
                     </motion.div>
                     <motion.div
                       className={cn(
-                        "flex items-center gap-2 px-3 sm:px-4 py-2 absolute inset-0 z-10 bg-transparent transition-colors rounded-xl font-medium text-sm",
+                        "flex items-center gap-2 px-3.5 sm:px-4 py-2 absolute inset-0 z-10 bg-transparent transition-colors rounded-xl font-bold text-xs sm:text-sm tracking-wide",
                         isActive
-                          ? "text-foreground font-semibold"
-                          : "text-muted-foreground group-hover:text-foreground",
+                          ? "text-white drop-shadow-[0_2px_8px_rgba(255,255,255,0.5)]"
+                          : "text-slate-200 hover:text-white group-hover:text-white",
                       )}
                       variants={backVariants}
                       transition={sharedTransition as any}
@@ -154,13 +136,13 @@ export const MenuBar = React.forwardRef<HTMLDivElement, MenuBarProps>(
                       <span
                         className={cn(
                           "transition-colors duration-300 shrink-0",
-                          isActive ? item.iconColor : "text-foreground",
+                          isActive ? item.iconColor : "text-white",
                           `group-hover:${item.iconColor}`,
                         )}
                       >
-                        <Icon className="h-4.5 w-4.5 sm:h-5 sm:w-5" />
+                        <Icon className="h-4 w-4 sm:h-4.5 sm:w-4.5" />
                       </span>
-                      <span>{item.label}</span>
+                      <span className="font-semibold">{item.label}</span>
                     </motion.div>
                   </motion.div>
                 </button>
