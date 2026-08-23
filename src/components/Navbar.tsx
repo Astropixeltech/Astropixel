@@ -110,35 +110,26 @@ const Navbar = () => {
           isScrolled ? "py-2 sm:py-2.5" : "py-3.5 sm:py-4"
         }`}
       >
-        <div className="container mx-auto px-4 sm:px-6">
-          {/* Header container — transparent overlay at top (no box/border), original glass box on scroll */}
+        <div className="flex justify-center px-4 sm:px-6">
+          {/* Header container — compact centered glass pill */}
           <div
-            className={`relative flex items-center justify-between transition-all duration-500 ${
-              isScrolled
-                ? "rounded-2xl px-4 sm:px-5 py-2.5 backdrop-blur-2xl backdrop-saturate-150 border border-white/20 bg-white/[0.08] dark:bg-white/[0.06] shadow-[0_1px_0_0_rgba(255,255,255,0.35)_inset,0_-1px_0_0_rgba(0,0,0,0.1)_inset,0_10px_30px_-12px_rgba(0,0,0,0.35)]"
-                : "bg-transparent border-transparent shadow-none px-2 py-1"
-            }`}
+            className={`relative flex items-center gap-5 sm:gap-7 transition-all duration-500 rounded-full px-5 py-2 backdrop-blur-2xl backdrop-saturate-150 border border-white/20 bg-white/[0.08] dark:bg-white/[0.06] shadow-[0_1px_0_0_rgba(255,255,255,0.35)_inset,0_-1px_0_0_rgba(0,0,0,0.1)_inset,0_10px_30px_-12px_rgba(0,0,0,0.35)]`}
             style={{
-              WebkitBackdropFilter: isScrolled ? "blur(28px) saturate(160%)" : "none",
-              backdropFilter: isScrolled ? "blur(28px) saturate(160%)" : "none",
+              WebkitBackdropFilter: "blur(28px) saturate(160%)",
+              backdropFilter: "blur(28px) saturate(160%)",
             }}
           >
-            {/* Soft top glass highlight & bottom shadow line (only on scroll) */}
-            {isScrolled && (
-              <>
-                <div aria-hidden className="pointer-events-none absolute inset-x-4 top-0 h-px bg-gradient-to-r from-transparent via-white/40 to-transparent rounded-full" />
-                <div aria-hidden className="pointer-events-none absolute inset-x-6 bottom-0 h-px bg-gradient-to-r from-transparent via-black/10 dark:via-white/5 to-transparent" />
-              </>
-            )}
+            {/* Soft top glass highlight */}
+            <div aria-hidden className="pointer-events-none absolute inset-x-4 top-0 h-px bg-gradient-to-r from-transparent via-white/40 to-transparent rounded-full" />
 
             {/* Logo */}
             <Link href="/" className="flex items-center group relative shrink-0 z-10">
               <img
                 src={(logoFullPng as any)?.src || logoFullPng}
                 alt="AstroPixel Creative Design Agency Logo"
-                width={180}
-                height={36}
-                className={`h-8 sm:h-9 max-w-[180px] sm:max-w-[220px] w-auto object-contain transition-all duration-300 group-hover:scale-105 ${
+                width={150}
+                height={32}
+                className={`h-7 sm:h-8 max-w-[150px] sm:max-w-[170px] w-auto object-contain transition-all duration-300 group-hover:scale-105 ${
                   isWhiteNavText ? "brightness-0 invert" : "brightness-0"
                 }`}
                 loading="eager"
@@ -147,8 +138,8 @@ const Navbar = () => {
               />
             </Link>
 
-            {/* Desktop Navigation - Right aligned */}
-            <div className="hidden lg:flex items-center ml-auto">
+            {/* Desktop Navigation Links */}
+            <div className="hidden lg:flex items-center gap-1">
               <div className="flex items-center gap-1 px-1.5 py-1">
                 {navLinks.map((link) => {
                   const isActive = pathname === link.href;
