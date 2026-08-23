@@ -67,6 +67,7 @@ import { ServicesManagement } from '@/components/admin/ServicesManagement';
 import SiteSettingsManagement from '@/components/admin/SiteSettingsManagement';
 import PageContentManagement from '@/components/admin/PageContentManagement';
 import ContactInfoManagement from '@/components/admin/ContactInfoManagement';
+import AboutPageEditor from '@/components/admin/AboutPageEditor';
 import astropixelLogoAsset from '@/assets/astropixel-logo.png.asset.json';
 import HomepageEditor from '@/components/admin/HomepageEditor';
 import FooterManagement from '@/components/admin/FooterManagement';
@@ -918,7 +919,7 @@ function AdminDashboardInner() {
         <div className="p-3 md:p-4 border-b border-border/50">
           <div className="flex flex-col items-center gap-2 md:items-start">
             <img
-              src={astropixelLogoAsset.url || '/logo.png'}
+              src="/logo.png"
               alt="AstroPixel Logo"
               className="w-auto flex-shrink-0 h-8 brightness-0 dark:invert"
             />
