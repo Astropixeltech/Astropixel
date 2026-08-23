@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { motion } from "framer-motion"
+import { motion, HTMLMotionProps } from "framer-motion"
 import { useTheme } from "next-themes"
 import { cn } from "@/lib/utils"
 import { LucideIcon } from "lucide-react"
@@ -14,7 +14,7 @@ export interface MenuItem {
   iconColor: string
 }
 
-export interface MenuBarProps extends React.HTMLAttributes<HTMLDivElement> {
+export interface MenuBarProps extends Omit<HTMLMotionProps<"nav">, "children"> {
   items: MenuItem[]
   activeItem?: string
   onItemClick?: (label: string, href: string) => void
@@ -60,7 +60,7 @@ const sharedTransition = {
   duration: 0.5,
 }
 
-export const MenuBar = React.forwardRef<HTMLDivElement, MenuBarProps>(
+export const MenuBar = React.forwardRef<HTMLElement, MenuBarProps>(
   ({ className, items, activeItem, onItemClick, ...props }, ref) => {
     const { theme } = useTheme()
     const isDarkTheme = theme === "dark"
