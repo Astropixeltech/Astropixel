@@ -864,7 +864,7 @@ function AdminDashboardInner() {
   // AI Assistant panel state
   const [isAssistantOpen, setIsAssistantOpen] = useState(false);
 
-  const dashboardItem = { id: 'dashboard', icon: LayoutDashboard, label: language === 'bn' ? 'Dashboard' : 'Dashboard' };
+  const dashboardItem = { id: 'dashboard', icon: LayoutDashboard, label: language === 'bn' ? 'ড্যাশবোর্ড' : 'Dashboard' };
   // Hidden settings sub-tabs (accessible only via the Settings hub cards)
   const settingsHubChildren = [
     { id: 'sitesettings', icon: Settings, label: 'Site Settings' },
@@ -926,7 +926,7 @@ function AdminDashboardInner() {
             />
             <div className="hidden md:block">
               <h1 className="font-bold text-sm bg-gradient-to-r from-primary to-cyan-600 bg-clip-text text-transparent">
-                AstroPixel Admin
+                {language === 'bn' ? 'ড্যাশবোর্ড' : 'Dashboard'}
               </h1>
               <p className="text-[10px] text-muted-foreground flex items-center gap-1">
                 <span className="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse" />
