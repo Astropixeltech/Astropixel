@@ -72,7 +72,7 @@ export function Header() {
 					<NavigationMenu className="hidden md:flex">
 						<NavigationMenuList>
 							<NavigationMenuItem>
-								<NavigationMenuTrigger className="bg-transparent text-sm font-semibold">Services</NavigationMenuTrigger>
+								<NavigationMenuTrigger className="bg-transparent text-sm font-semibold">Product</NavigationMenuTrigger>
 								<NavigationMenuContent className="bg-background p-1 pr-1.5">
 									<ul className="bg-popover grid w-lg grid-cols-2 gap-2 rounded-md border p-2 shadow">
 										{productLinks.map((item, i) => (
@@ -83,9 +83,9 @@ export function Header() {
 									</ul>
 									<div className="p-2">
 										<p className="text-muted-foreground text-sm">
-											Interested in a custom project?{' '}
+											Interested?{' '}
 											<a href="/contact" className="text-foreground font-medium hover:underline">
-												Schedule a call
+												Schedule a demo
 											</a>
 										</p>
 									</div>
@@ -120,23 +120,18 @@ export function Header() {
 							</NavigationMenuItem>
 							<NavigationMenuLink className="px-4" asChild>
 								<a href="/work" className="hover:bg-accent rounded-md p-2 text-sm font-semibold">
-									Portfolio
-								</a>
-							</NavigationMenuLink>
-							<NavigationMenuLink className="px-2" asChild>
-								<a href="/contact" className="hover:bg-accent rounded-md p-2 text-sm font-semibold">
-									Contact
+									Pricing
 								</a>
 							</NavigationMenuLink>
 						</NavigationMenuList>
 					</NavigationMenu>
 				</div>
 				<div className="hidden items-center gap-3 md:flex">
-					<a href="/contact">
-						<Button variant="outline" className="rounded-xl">Contact Us</Button>
+					<a href="/admin/login">
+						<Button variant="outline" className="rounded-xl">Sign In</Button>
 					</a>
 					<a href="/contact">
-						<Button className="rounded-xl bg-gradient-to-r from-[#6D28D9] via-[#7C3AED] to-[#9333EA] text-white">Start Project</Button>
+						<Button className="rounded-xl bg-gradient-to-r from-[#6D28D9] via-[#7C3AED] to-[#9333EA] text-white">Get Started</Button>
 					</a>
 				</div>
 				<Button
@@ -154,7 +149,7 @@ export function Header() {
 			<MobileMenu open={open} className="flex flex-col justify-between gap-2 overflow-y-auto">
 				<NavigationMenu className="max-w-full">
 					<div className="flex w-full flex-col gap-y-2">
-						<span className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Services</span>
+						<span className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Product</span>
 						{productLinks.map((link) => (
 							<ListItem key={link.title} {...link} />
 						))}
@@ -168,13 +163,13 @@ export function Header() {
 					</div>
 				</NavigationMenu>
 				<div className="flex flex-col gap-2 pt-4">
-					<a href="/contact" className="w-full">
+					<a href="/admin/login" className="w-full">
 						<Button variant="outline" className="w-full bg-transparent rounded-xl">
-							Contact Us
+							Sign In
 						</Button>
 					</a>
 					<a href="/contact" className="w-full">
-						<Button className="w-full rounded-xl bg-gradient-to-r from-[#6D28D9] via-[#7C3AED] to-[#9333EA] text-white">Start Project</Button>
+						<Button className="w-full rounded-xl bg-gradient-to-r from-[#6D28D9] via-[#7C3AED] to-[#9333EA] text-white">Get Started</Button>
 					</a>
 				</div>
 			</MobileMenu>
@@ -238,39 +233,39 @@ function ListItem({
 
 const productLinks: LinkItem[] = [
 	{
-		title: 'Web Development',
-		href: '/services#web-dev',
-		description: 'High performing React & Next.js applications',
+		title: 'Website Builder',
+		href: '/services#web-builder',
+		description: 'Create responsive websites with ease',
 		icon: GlobeIcon,
 	},
 	{
-		title: 'UI/UX Design',
-		href: '/services#ui-ux',
-		description: 'Modern, high-converting digital interfaces',
+		title: 'Cloud Platform',
+		href: '/services#cloud',
+		description: 'Deploy and scale apps in the cloud',
 		icon: LayersIcon,
 	},
 	{
-		title: 'Mobile App Development',
-		href: '/services#mobile-app',
-		description: 'Cross-platform iOS & Android mobile apps',
+		title: 'Team Collaboration',
+		href: '/about#team',
+		description: 'Tools to help your teams work better together',
 		icon: UserPlusIcon,
 	},
 	{
-		title: 'Analytics & SEO',
-		href: '/services#seo',
-		description: 'Track, optimize & scale search rankings',
+		title: 'Analytics',
+		href: '/services#analytics',
+		description: 'Track and analyze your website traffic',
 		icon: BarChart,
 	},
 	{
-		title: 'Integrations & API',
+		title: 'Integrations',
 		href: '/services#api',
-		description: 'Connect your apps and backend services',
+		description: 'Connect your apps and services',
 		icon: PlugIcon,
 	},
 	{
-		title: 'AI Solutions',
-		href: '/services#ai',
-		description: 'Custom AI agents and automated workflows',
+		title: 'API',
+		href: '/services#api',
+		description: 'Build custom integrations with our API',
 		icon: CodeIcon,
 	},
 ];
@@ -279,13 +274,13 @@ const companyLinks: LinkItem[] = [
 	{
 		title: 'About Us',
 		href: '/about',
-		description: 'Learn more about our story and agency vision',
+		description: 'Learn more about our story and team',
 		icon: Users,
 	},
 	{
-		title: 'Our Team',
-		href: '/about#team',
-		description: 'Meet our designers, engineers & leaders',
+		title: 'Customer Stories',
+		href: '/work',
+		description: 'See how we’ve helped our clients succeed',
 		icon: Star,
 	},
 	{
@@ -298,8 +293,8 @@ const companyLinks: LinkItem[] = [
 
 const companyLinks2: LinkItem[] = [
 	{
-		title: 'Portfolio & Works',
-		href: '/work',
+		title: 'Terms of Service',
+		href: '/about',
 		icon: FileText,
 	},
 	{
@@ -308,8 +303,8 @@ const companyLinks2: LinkItem[] = [
 		icon: Shield,
 	},
 	{
-		title: 'Services',
-		href: '/services',
+		title: 'Refund Policy',
+		href: '/about',
 		icon: RotateCcw,
 	},
 	{
@@ -318,7 +313,7 @@ const companyLinks2: LinkItem[] = [
 		icon: Leaf,
 	},
 	{
-		title: 'Contact Support',
+		title: 'Help Center',
 		href: '/contact',
 		icon: HelpCircle,
 	},
