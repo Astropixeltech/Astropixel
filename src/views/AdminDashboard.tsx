@@ -921,7 +921,7 @@ function AdminDashboardInner() {
             <img
               src="/logo.png"
               alt="AstroPixel Logo"
-              className="w-auto flex-shrink-0 h-8 brightness-0 dark:invert"
+              className="h-10 md:h-12 w-auto max-w-[160px] object-contain flex-shrink-0 dark:brightness-110"
             />
             <div className="hidden md:block">
               <h1 className="font-bold text-sm bg-gradient-to-r from-primary to-cyan-600 bg-clip-text text-transparent">
