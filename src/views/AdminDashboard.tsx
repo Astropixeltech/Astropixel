@@ -67,8 +67,7 @@ import { ServicesManagement } from '@/components/admin/ServicesManagement';
 import SiteSettingsManagement from '@/components/admin/SiteSettingsManagement';
 import PageContentManagement from '@/components/admin/PageContentManagement';
 import ContactInfoManagement from '@/components/admin/ContactInfoManagement';
-import AboutPageEditor from '@/components/admin/AboutPageEditor';
-import alphazeroLogoAsset from '@/assets/alphazero-logo.png.asset.json';
+import astropixelLogoAsset from '@/assets/astropixel-logo.png.asset.json';
 import HomepageEditor from '@/components/admin/HomepageEditor';
 import FooterManagement from '@/components/admin/FooterManagement';
 import EmailManagement from '@/components/admin/EmailManagement';
@@ -921,13 +920,13 @@ function AdminDashboardInner() {
         <div className="p-3 md:p-4 border-b border-border/50">
           <div className="flex flex-col items-center gap-2 md:items-start">
             <img
-              src={alphazeroLogoAsset.url}
-              alt="Astropixel Logo"
+              src={astropixelLogoAsset.url || '/logo.png'}
+              alt="AstroPixel Logo"
               className="w-auto flex-shrink-0 h-8 brightness-0 dark:invert"
             />
             <div className="hidden md:block">
-              <h1 className={`font-bold text-sm bg-gradient-to-r from-primary to-cyan-600 bg-clip-text text-transparent ${language === 'bn' ? 'font-[SabinaShorolipi]' : ''}`}>
-                {language === 'bn' ? 'Ã Â¦â€ Ã Â¦Â²Ã Â¦Â«Ã Â¦Â¾ Ã Â¦Â¡Ã Â§ÂÃ Â¦Â¯Ã Â¦Â¾Ã Â¦Â¶Ã Â¦Â¬Ã Â§â€¹Ã Â¦Â°Ã Â§ÂÃ Â¦Â¡' : 'Alpha Dashboard'}
+              <h1 className="font-bold text-sm bg-gradient-to-r from-primary to-cyan-600 bg-clip-text text-transparent">
+                AstroPixel Admin
               </h1>
               <p className="text-[10px] text-muted-foreground flex items-center gap-1">
                 <span className="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse" />
