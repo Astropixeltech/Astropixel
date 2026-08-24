@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useRef } from 'react';
-import { TimelineContent } from '@/components/ui/timeline-content';
+import { TimelineContent } from '@/components/ui/timeline-animation';
 
 const revealVariants = {
   hidden: { opacity: 0, y: 20 },
