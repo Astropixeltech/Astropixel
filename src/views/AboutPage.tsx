@@ -67,12 +67,26 @@ const AboutPage = () => {
     { icon: Code, label: "Web Development" },
   ];
 
+  const faqSchema = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": faqs.map((f) => ({
+      "@type": "Question",
+      "name": f.q,
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": f.a,
+      },
+    })),
+  };
+
   return (
     <>
       <SEO 
         title="About AstroPixel — Founder Sofiullah Ahammad" 
         description="Learn about AstroPixel, a creative design agency in Rajshahi, Bangladesh, founded by Sofiullah Ahammad. From zero to impact." 
         canonical="https://astropixel.tech/about" 
+        jsonLd={faqSchema}
       />
       <div className="overflow-x-hidden">
       {/* Hero — Services style */}
@@ -355,11 +369,26 @@ const FaqSection = () => {
 
 
 const faqs = [
-  { q: "What services does Astropixel offer?", a: "We offer branding, web development, digital marketing, video production, graphic design, and a full learning academy — everything to build a strong digital presence." },
-  { q: "Do you work with startups and small businesses?", a: "Absolutely. We tailor our approach for every stage — from early-stage founders to established brands scaling globally." },
-  { q: "How long does a typical project take?", a: "Most branding and web projects run 2–6 weeks depending on scope. We share a clear timeline before kickoff, so you always know what's next." },
-  { q: "Can I learn digital skills at Astropixel?", a: "Yes — Astropixel Learn offers structured courses in AI, design, programming, marketing, and freelancing, taught by industry practitioners." },
-  { q: "How do I get started?", a: "Book a free discovery call. We'll understand your goals, share a plan, and only move forward when everything feels right." },
+  { 
+    q: "What services does AstroPixel offer?", 
+    a: "AstroPixel is a full-service creative design and software development agency. We specialize in UI/UX design, custom web and SaaS development, brand identity and logo design, DevOps cloud engineering, and performance digital marketing tailored for global startups and enterprises." 
+  },
+  { 
+    q: "Do you work with international startups and small businesses?", 
+    a: "Yes, AstroPixel works with clients worldwide including the US, Canada, Europe, Asia, and Bangladesh. We tailor custom design and software development strategies for every stage—from early-stage founders building an MVP to established enterprises scaling digital products." 
+  },
+  { 
+    q: "How long does a typical web design project take?", 
+    a: "A typical web design or branding project takes between 2 to 6 weeks depending on project complexity and scope requirements. We provide a clear milestone roadmap and timeline before project kickoff to ensure transparent delivery." 
+  },
+  { 
+    q: "Can I learn digital design and programming skills with AstroPixel?", 
+    a: "Yes, AstroPixel Learn offers comprehensive academy courses in UI/UX design, web development, graphic design, and freelancing taught by industry practitioners to empower aspiring designers and software engineers." 
+  },
+  { 
+    q: "How do I start a project with AstroPixel?", 
+    a: "You can start a project by contacting our team via email at hello@astropixel.tech or booking a consultation on our contact page. We conduct an initial discovery session to outline your project goals and scope." 
+  },
 ];
 
 const FAQSection = () => {
