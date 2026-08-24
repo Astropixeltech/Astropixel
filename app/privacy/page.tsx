@@ -4,6 +4,14 @@ import PrivacyPage from "@/views/PrivacyPage";
 export const metadata = {
   title: "Privacy Policy | AstroPixel Creative Design Agency",
   description: "Learn how AstroPixel Creative Design Agency protects your privacy, manages cookies, and secures client data.",
+  alternates: {
+    canonical: "https://astropixel.tech/privacy",
+  },
+  openGraph: {
+    title: "Privacy Policy | AstroPixel Creative Design Agency",
+    description: "Learn how AstroPixel Creative Design Agency protects your privacy, manages cookies, and secures client data.",
+    url: "https://astropixel.tech/privacy",
+  },
 };
 
 export default function Privacy() {
