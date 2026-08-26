@@ -544,9 +544,9 @@ const Index = () => {
             regular: "We Create Brands Beyond the Ordinary.\n",
             gradient: "Powered by Design, Technology & Innovation",
           }}
-          description="Pixels That Move Brands Forward."
-          ctaText={c("cta1", "home.cta1")}
-          ctaHref="/contact"
+          description=""
+          ctaText=""
+          ctaHref=""
           bottomImage={{ light: designShowcaseLight, dark: designShowcase }}
           className="w-full pb-0"
         >

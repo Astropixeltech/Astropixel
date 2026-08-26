@@ -82,21 +82,25 @@ const HeroSection = React.forwardRef<HTMLDivElement, HeroSectionProps>(
             UI/UX Design, Branding & Web Development Agency in Bangladesh
           </h2>
 
-          {/* Description — Rendered instantly */}
-          <p
-            className="max-w-xl mx-auto text-sm sm:text-base md:text-lg text-white/80 font-roboto leading-relaxed tracking-wide mb-5 sm:mb-6 md:mb-7"
-            style={{ fontFamily: "'Roboto', sans-serif" }}
-          >
-            {typeof description === 'string' ? description : (description as any)?.props?.children || ''}
-          </p>
+          {/* Description — Rendered conditionally */}
+          {description && typeof description === 'string' && description.trim().length > 0 && (
+            <p
+              className="max-w-xl mx-auto text-sm sm:text-base md:text-lg text-white/80 font-roboto leading-relaxed tracking-wide mb-5 sm:mb-6 md:mb-7"
+              style={{ fontFamily: "'Roboto', sans-serif" }}
+            >
+              {description}
+            </p>
+          )}
 
-          {/* CTA Button — Light Purple Boxy Rotating Rainbow Glow Style */}
-          <div data-hero-cta className="flex flex-col items-center mb-5 sm:mb-6 md:mb-8">
-            <RainbowButton href={ctaHref}>
-              <span className="font-semibold tracking-wide">{ctaText}</span>
-              <CustomArrowIcon className="w-4 h-4 text-white transition-transform group-hover:translate-x-1" />
-            </RainbowButton>
-          </div>
+          {/* CTA Button — Rendered conditionally */}
+          {ctaText && ctaText.trim().length > 0 && (
+            <div data-hero-cta className="flex flex-col items-center mb-5 sm:mb-6 md:mb-8">
+              <RainbowButton href={ctaHref}>
+                <span className="font-semibold tracking-wide">{ctaText}</span>
+                <CustomArrowIcon className="w-4 h-4 text-white transition-transform group-hover:translate-x-1" />
+              </RainbowButton>
+            </div>
+          )}
         </div>
 
         {/* Marquee Carousel at bottom with compact, natural spacing */}
