@@ -152,57 +152,48 @@ const Navbar = () => {
               />
             </Link>
 
-            {/* Desktop Navigation - Pill style (centered) */}
+            {/* Desktop Navigation - Clean text style with bottom active line */}
             <div className="hidden lg:flex items-center absolute left-1/2 -translate-x-1/2">
-              <div className="flex items-center gap-1 px-1.5 py-1">
+              <div className="flex items-center gap-1.5 px-2 py-1">
                 {navLinks.map((link) => {
                   const isActive = pathname === link.href;
 
-                  const linkClasses = "relative px-3.5 py-2 text-sm font-medium transition-all duration-300";
-                  const linkInner = (
-                    <span className={`relative z-10 font-semibold text-sm transition-colors duration-300 ${
-                      isActive
-                        ? isWhiteNavText ? "text-cyan-400 font-bold drop-shadow-sm" : "text-violet-600 font-bold"
-                        : isWhiteNavText ? "text-white/80 hover:text-white" : "text-slate-700 hover:text-slate-900"
-                    }`}>
-                      {link.name}
-                    </span>
-                  );
-
-                  const activePill = isActive && (
-                    <motion.div
-                      layoutId="activeNavTab"
-                      className={`absolute inset-0 rounded-full ${
-                        isWhiteNavText 
-                          ? "bg-white/10 border border-cyan-400/30 shadow-[0_0_12px_rgba(34,213,238,0.25)]" 
-                          : "bg-black/5 border border-violet-500/20 shadow-sm"
-                      }`}
-                      transition={{ type: "spring", stiffness: 380, damping: 30 }}
-                    />
-                  );
-
                   return (
-                    <Link key={link.href} href={link.href} className={linkClasses}>
-                      {activePill}
-                      {linkInner}
+                    <Link key={link.href} href={link.href} className="relative px-3.5 py-2 text-sm font-medium transition-all duration-300">
+                      <span className={`relative z-10 font-semibold text-sm transition-colors duration-300 ${
+                        isActive
+                          ? isWhiteNavText ? "text-cyan-400 font-bold drop-shadow-sm" : "text-violet-600 font-bold"
+                          : isWhiteNavText ? "text-white/80 hover:text-white" : "text-slate-700 hover:text-slate-900"
+                      }`}>
+                        {link.name}
+                      </span>
+                      {isActive && (
+                        <motion.div
+                          layoutId="activeNavIndicatorLine"
+                          className={`absolute bottom-0 left-3.5 right-3.5 h-[2px] rounded-full ${
+                            isWhiteNavText ? "bg-gradient-to-r from-cyan-400 to-blue-500 shadow-[0_0_8px_#22d3ee]" : "bg-violet-600"
+                          }`}
+                          transition={{ type: "spring", stiffness: 380, damping: 30 }}
+                        />
+                      )}
                     </Link>
                   );
                 })}
               </div>
             </div>
 
-            {/* Right Action — Start a Project button */}
+            {/* Right Action — Start a Project button (Boxy rounded-xl style) */}
             <div className="hidden lg:flex items-center gap-3">
               <Link
                 href="/contact"
-                className={`relative px-4 py-2 rounded-full font-bold text-xs flex items-center gap-1.5 transition-all duration-300 shadow-sm ${
+                className={`group relative flex items-center justify-center gap-2 px-4 sm:px-4.5 py-2 rounded-xl transition-all duration-300 active:scale-95 shrink-0 shadow-md ${
                   isWhiteNavText
-                    ? "bg-white text-black hover:bg-slate-100"
-                    : "bg-slate-900 text-white hover:bg-slate-800"
+                    ? "bg-white hover:bg-slate-100 text-black border border-white/80"
+                    : "bg-slate-900 hover:bg-black text-white border border-slate-800"
                 }`}
               >
-                <span>{t("nav.startProject")}</span>
-                <CustomArrowIcon className={`w-3.5 h-3.5 ${isWhiteNavText ? "text-black" : "text-white"}`} />
+                <span className="relative z-10 text-xs sm:text-[13px] font-bold tracking-wide whitespace-nowrap">{t("nav.startProject")}</span>
+                <CustomArrowIcon className={`w-3.5 h-3.5 relative z-10 transition-transform group-hover:translate-x-1 shrink-0 ${isWhiteNavText ? "text-black" : "text-white"}`} />
               </Link>
             </div>
 
