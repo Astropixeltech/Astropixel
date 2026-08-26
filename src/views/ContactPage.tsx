@@ -309,36 +309,61 @@ const ContactPage = () => {
             <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.1 }}
               className="lg:col-span-5 h-full">
 
-              <div className="relative h-full rounded-[2rem] overflow-hidden bg-black text-white flex flex-col min-h-[420px]">
-                {/* Header */}
-                <div className="relative p-8 lg:p-10 pb-6">
-                  <div className="text-xs uppercase tracking-[0.2em] text-white/50 mb-3">{studioSubtitle}</div>
-                  <h3 className="text-3xl lg:text-4xl font-display font-bold leading-tight mb-3">
-                    {studioTitle}
+              <div className="relative h-full rounded-[2rem] overflow-hidden bg-slate-950 text-white border border-white/15 flex flex-col min-h-[440px] shadow-2xl shadow-black/40 group">
+                {/* Glowing Ambient Mesh Backdrop */}
+                <div className="absolute top-0 right-0 w-72 h-72 bg-gradient-to-br from-cyan-500/20 via-primary/10 to-purple-600/20 rounded-full blur-3xl pointer-events-none group-hover:scale-125 transition-transform duration-700" />
+                <div className="absolute bottom-0 left-0 w-64 h-64 bg-gradient-to-tr from-emerald-500/10 via-teal-500/10 to-transparent rounded-full blur-2xl pointer-events-none" />
+
+                {/* Header Section */}
+                <div className="relative p-8 lg:p-10 pb-6 z-10">
+                  <div className="flex items-center justify-between gap-3 mb-4">
+                    <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 backdrop-blur border border-white/15 text-[11px] font-semibold uppercase tracking-widest text-cyan-300">
+                      <span className="relative flex h-2 w-2">
+                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                        <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                      </span>
+                      {studioSubtitle}
+                    </div>
+                    <Sparkles className="w-5 h-5 text-white/40 group-hover:text-cyan-400 group-hover:rotate-45 transition-all duration-500" />
+                  </div>
+
+                  <h3 className="text-3xl lg:text-4xl font-display font-bold leading-tight tracking-tight text-white mb-3">
+                    {studioTitle.includes("Rajshahi") ? (
+                      <>
+                        Come say hi<br /><span className="font-serif italic font-normal bg-gradient-to-r from-cyan-300 via-emerald-300 to-teal-200 bg-clip-text text-transparent">in Rajshahi.</span>
+                      </>
+                    ) : (
+                      studioTitle
+                    )}
                   </h3>
-                  <p className="text-sm text-white/70 leading-relaxed">
-                    {address}
-                  </p>
+
+                  <div className="inline-flex items-start gap-2.5 mt-2 p-3 rounded-2xl bg-white/5 backdrop-blur border border-white/10 text-xs text-white/80 leading-relaxed">
+                    <MapPin className="w-4 h-4 text-cyan-400 shrink-0 mt-0.5" />
+                    <span>{address}</span>
+                  </div>
                 </div>
 
                 {/* Interactive Map Embed */}
-                <div className="relative flex-1 min-h-[220px] w-full bg-neutral-900 border-t border-white/10 overflow-hidden">
+                <div className="relative flex-1 min-h-[220px] w-full bg-slate-900 border-t border-white/10 overflow-hidden">
                   <iframe
                     title="Office Location Map"
                     src={mapEmbedUrl}
-                    className="w-full h-full border-0 filter opacity-80 hover:opacity-100 transition-opacity"
+                    className="w-full h-full border-0 filter opacity-85 hover:opacity-100 contrast-[1.05] transition-all duration-500"
                     allowFullScreen
                     loading="lazy"
                     referrerPolicy="no-referrer-when-downgrade"
                   />
-                  {/* Floating directions CTA */}
+                  
+                  {/* Glassmorphic floating directions CTA */}
                   <a
                     href={mapDirectionsUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="absolute bottom-4 right-4 inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-white text-black text-xs font-bold shadow-xl hover:bg-neutral-100 transition-all hover:scale-105"
+                    className="absolute bottom-4 right-4 inline-flex items-center gap-2.5 px-4 py-2.5 rounded-2xl bg-white/90 dark:bg-slate-900/90 backdrop-blur-md text-slate-900 dark:text-white text-xs font-bold shadow-2xl border border-white/20 hover:bg-white dark:hover:bg-slate-900 transition-all duration-300 hover:scale-105 group/btn"
                   >
-                    <MapPin size={14} className="text-primary" /> Get Directions
+                    <MapPin className="w-4 h-4 text-primary group-hover/btn:scale-110 transition-transform" />
+                    <span>Get Directions</span>
+                    <ArrowUpRight className="w-3.5 h-3.5 opacity-60 group-hover/btn:opacity-100 group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5 transition-transform" />
                   </a>
                 </div>
               </div>
