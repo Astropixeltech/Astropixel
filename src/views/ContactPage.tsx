@@ -16,32 +16,43 @@ const PinterestIcon = ({ size = 20, className = "" }: { size?: number; className
   </svg>
 );
 
+import { getSavedContactInfo, getSavedContactSocials } from "@/components/admin/ContactInfoManagement";
+
+const socialIconMap: Record<string, any> = {
+  Facebook, MessageCircle, Instagram, Linkedin, Youtube, Twitter, Pinterest: PinterestIcon, Globe
+};
+
 const ContactPage = () => {
   const { t } = useLanguage();
   const { data: footerContents } = useFooterContent();
   const { data: footerLinks } = useFooterLinks();
   const { getContent: getPageContent } = usePageContent("contact");
 
+  const savedInfo = getSavedContactInfo();
+  const savedSocials = getSavedContactSocials();
+
   const getFooterContent = (key: string) => footerContents?.find((i) => i.content_key === key)?.content_en ?? null;
   const normalizePhoneForHref = (v: string) => v.replace(/[^\d+]/g, "");
   const normalizePhoneForWhatsApp = (v: string) => v.replace(/\D/g, "");
-  const getPreferred = (pk: string, fk: string, fb: string) => getPageContent(pk) || getFooterContent(fk) || fb;
+  const getPreferred = (pk: string, fk: string, fb: string) => savedInfo[pk] || getPageContent(pk) || getFooterContent(fk) || fb;
 
   const phone = getPreferred("info.phone", "phone", "+880 1344-497808");
   const rawEmail = getPreferred("info.email", "email", "hello@astropixel.tech").trim();
   const email = (!rawEmail || rawEmail.includes("alphazero") || rawEmail.includes("contact@")) ? "hello@astropixel.tech" : rawEmail;
   const address = getPreferred("info.address", "address", "Hi-Tech Park, Rajshahi, Bangladesh");
-  const whatsappValue = getPageContent("info.whatsapp")?.trim();
-  const whatsappLink = "https://wa.me/8801344497808";
+  const hours = getPreferred("info.hours", "hours", "Sat – Thu · 10:00 AM – 8:00 PM");
 
-  const socials = [
-    { name: "Facebook", handle: "@astropixel.tech", url: "https://www.facebook.com/astropixel.tech", icon: Facebook, brand: "#1877F2" },
-    { name: "WhatsApp", handle: "+880 1344-497808", url: "https://wa.me/8801344497808", icon: MessageCircle, brand: "#25D366" },
-    { name: "Instagram", handle: "@astropixel.tech", url: "https://www.instagram.com/astropixel.tech/", icon: Instagram, brand: "#E4405F" },
-    { name: "LinkedIn", handle: "AstroPixel Agency", url: "https://www.linkedin.com/company/astropixel/", icon: Linkedin, brand: "#0A66C2" },
-    { name: "YouTube", handle: "@astropixeltech", url: "https://www.youtube.com/@astropixeltech", icon: Youtube, brand: "#FF0000" },
-    { name: "Pinterest", handle: "@astropixeltech", url: "https://www.pinterest.com/astropixeltech/", icon: PinterestIcon, brand: "#E60023" },
-  ];
+  const heroBadge = savedInfo["hero.subtitle"] || "Available for new projects";
+  const heroTitle = savedInfo["hero.title"] || "Let's talk.";
+  const heroDescription = savedInfo["hero.description"] || "Tell us about your idea. Whether it's a rebrand, a launch, or a full digital product — we reply within 24 hours.";
+
+  const socials = savedSocials.map((s) => ({
+    name: s.name,
+    handle: s.handle,
+    url: s.url,
+    icon: socialIconMap[s.icon] || Globe,
+    brand: s.brand || "#1877F2",
+  }));
 
   const contactCards = [
     { icon: Phone, label: "Call us", value: phone, href: `tel:${normalizePhoneForHref(phone)}`,
@@ -50,7 +61,7 @@ const ContactPage = () => {
       bg: "#FCE4D6", ink: "#8A3A12", iconBg: "#F8C7A8" },
     { icon: MapPin, label: "Location", value: address,
       bg: "#F3E1F4", ink: "#5B2166", iconBg: "#E5C3E8" },
-    { icon: Clock, label: "Working hours", value: "Sat – Thu · 10:00 AM – 8:00 PM",
+    { icon: Clock, label: "Working hours", value: hours,
       bg: "#DCEBFF", ink: "#0B3D91", iconBg: "#B8D4FA" },
   ];
 
