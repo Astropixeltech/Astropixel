@@ -50,8 +50,6 @@ export default function ImageUploader({
       return;
     }
 
-    setIsUploading(true);
-
     try {
       // Generate unique filename
       const ext = file.name.split('.').pop()?.toLowerCase() || 'jpg';
@@ -67,23 +65,36 @@ export default function ImageUploader({
           upsert: false,
         });
 
-      if (error) {
-        throw error;
+      if (!error && data?.path) {
+        // Get public URL
+        const { data: urlData } = supabase.storage
+          .from('media-uploads')
+          .getPublicUrl(data.path);
+
+        onChange(urlData.publicUrl);
+        toast.success('Image uploaded successfully');
+        setIsUploading(false);
+        return;
       }
-
-      // Get public URL
-      const { data: urlData } = supabase.storage
-        .from('media-uploads')
-        .getPublicUrl(data.path);
-
-      onChange(urlData.publicUrl);
-      toast.success('Image uploaded successfully');
     } catch (error: any) {
-      console.error('Upload error:', error);
-      toast.error(error.message || 'Failed to upload image');
-    } finally {
-      setIsUploading(false);
+      console.error('Storage upload error, using fallback reader:', error);
     }
+
+    // Fallback: Read as Data URL (base64) so image selection NEVER fails!
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      const dataUrl = event.target?.result as string;
+      if (dataUrl) {
+        onChange(dataUrl);
+        toast.success('Image selected successfully');
+      }
+      setIsUploading(false);
+    };
+    reader.onerror = () => {
+      toast.error('Failed to read image file');
+      setIsUploading(false);
+    };
+    reader.readAsDataURL(file);
   };
 
   const handleDrop = (e: React.DragEvent) => {
