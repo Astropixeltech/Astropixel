@@ -79,7 +79,7 @@ const HeroSection = React.forwardRef<HTMLDivElement, HeroSectionProps>(
 
           {/* Visually Subtle H2 Subheading for SEO & GEO */}
           <h2 className="text-xs sm:text-sm md:text-base font-medium uppercase tracking-[0.18em] text-white/70 mb-3.5 sm:mb-4">
-            UI/UX Design, Branding & Web Development Agency in Bangladesh
+            UI/UX Design & Branding Agency in Bangladesh
           </h2>
 
           {/* Description — Rendered conditionally */}
