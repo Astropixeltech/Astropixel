@@ -545,8 +545,8 @@ const Index = () => {
             gradient: "Powered by Design, Technology & Innovation",
           }}
           description=""
-          ctaText=""
-          ctaHref=""
+          ctaText={c("cta1", "home.cta1")}
+          ctaHref="/contact"
           bottomImage={{ light: designShowcaseLight, dark: designShowcase }}
           className="w-full pb-0"
         >
