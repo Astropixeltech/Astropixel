@@ -69,9 +69,31 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           updated_at: new Date().toISOString(),
         } as any);
       } else {
-        setUser(null);
-        setProfile(null);
-        setRole(null);
+        const hasAdminSession = typeof window !== 'undefined' && localStorage.getItem('astropixel_admin_logged_in') === 'true';
+        if (hasAdminSession) {
+          const adminUser: AuthUser = {
+            id: 'sofiullah-admin-id',
+            email: 'sofiullahahammad@gmail.com',
+            full_name: 'Sofiullah Ahammad (Founder & CEO)',
+            role: 'admin',
+          };
+          setUser(adminUser);
+          setRole('admin');
+          setProfile({
+            id: 'sofiullah-admin-id',
+            user_id: 'sofiullah-admin-id',
+            email: 'sofiullahahammad@gmail.com',
+            full_name: 'Sofiullah Ahammad (Founder & CEO)',
+            avatar_url: null,
+            phone_number: null,
+            created_at: new Date().toISOString(),
+            updated_at: new Date().toISOString(),
+          } as any);
+        } else {
+          setUser(null);
+          setProfile(null);
+          setRole(null);
+        }
       }
       setIsLoading(false);
     });
@@ -81,7 +103,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const signUp = async (email: string, password: string, fullName?: string) => {
     try {
-      const res = await createUserWithEmailAndPassword(auth, email, password);
+      await createUserWithEmailAndPassword(auth, email, password);
       return { error: null };
     } catch (e: any) {
       return { error: e };
@@ -107,7 +129,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   };
 
   const signOut = async () => {
+    if (typeof window !== 'undefined') {
+      localStorage.removeItem('astropixel_admin_logged_in');
+    }
     try {
+      await fetch('/api/admin/logout', { method: 'POST' });
       await firebaseSignOut(auth);
     } catch (e) {
       console.error(e);

@@ -68,8 +68,9 @@ export default function AdminLoginPage() {
         return;
       }
 
+      localStorage.setItem('astropixel_admin_logged_in', 'true');
       toast.success('সফলভাবে অ্যাডমিন লগইন হয়েছে!');
-      router.push('/admin');
+      window.location.href = '/admin';
     } catch (err: any) {
       setIsLoading(false);
       toast.error(err.message || 'অ্যাডমিন লগইন সমস্যা');
