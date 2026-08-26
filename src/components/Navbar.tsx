@@ -192,13 +192,11 @@ const Navbar = () => {
 
             {/* Mobile: menu toggle button */}
             <div className="flex items-center gap-1.5 lg:hidden">
-              <div className="p-1 rounded-xl bg-white/10 backdrop-blur-md border border-white/20 shadow-sm flex items-center justify-center">
-                <MenuToggle 
-                  open={isMobileMenuOpen} 
-                  onOpenChange={setIsMobileMenuOpen} 
-                  className={isWhiteNavText ? "text-white" : "text-slate-900"} 
-                />
-              </div>
+              <MenuToggle 
+                open={isMobileMenuOpen} 
+                onOpenChange={setIsMobileMenuOpen} 
+                className={isWhiteNavText ? "text-white" : "text-slate-900"} 
+              />
             </div>
           </div>
         </div>
