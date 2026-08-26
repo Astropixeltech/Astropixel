@@ -72,10 +72,15 @@ const HeroSection = React.forwardRef<HTMLDivElement, HeroSectionProps>(
         {/* Main Hero Content */}
         <div className="relative z-10 max-w-5xl mx-auto px-4 flex flex-col items-center">
           {/* Main Headline */}
-          <h1 className="text-[32px] sm:text-[48px] md:text-[62px] lg:text-[74px] xl:text-[80px] font-bold tracking-tight text-white leading-[1.08] mb-2.5 md:mb-3.5">
+          <h1 className="text-[32px] sm:text-[48px] md:text-[62px] lg:text-[74px] xl:text-[80px] font-bold tracking-tight text-white leading-[1.08] mb-2 md:mb-3">
             <span className="block">Vision Into <span className="font-serif italic font-normal text-white">Reality.</span></span>
             <span className="block"><span className="font-serif italic font-normal text-white">Pixel</span> by Pixel.</span>
           </h1>
+
+          {/* Visually Subtle H2 Subheading for SEO & GEO */}
+          <h2 className="text-xs sm:text-sm md:text-base font-medium uppercase tracking-[0.18em] text-white/70 mb-3.5 sm:mb-4">
+            UI/UX Design, Branding & Web Development Agency in Bangladesh
+          </h2>
 
           {/* Description — Rendered instantly */}
           <p

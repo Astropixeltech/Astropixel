@@ -60,10 +60,12 @@ const Footer = () => {
   ];
 
   const services = [
-    { name: "UI/UX Design", href: "/services" },
-    { name: "Web Development", href: "/services" },
-    { name: "Branding", href: "/services" },
-    { name: "Digital Marketing", href: "/services" },
+    { name: "UI/UX Design", href: "/services/ui-ux-design" },
+    { name: "Logo & Branding", href: "/services/logo-branding" },
+    { name: "Web Development", href: "/services/web-development" },
+    { name: "SaaS Development", href: "/services/saas-development" },
+    { name: "Digital Marketing", href: "/services/digital-marketing" },
+    { name: "Social Media & Packaging", href: "/services/social-media-packaging" },
   ];
 
   const rawEmail = getContent('email');

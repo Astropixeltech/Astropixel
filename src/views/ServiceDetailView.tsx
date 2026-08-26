@@ -81,6 +81,19 @@ export default function ServiceDetailView({
     ]
   };
 
+  const faqSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    'mainEntity': faqs.map((f) => ({
+      '@type': 'Question',
+      'name': f.question,
+      'acceptedAnswer': {
+        '@type': 'Answer',
+        'text': f.answer
+      }
+    }))
+  };
+
   return (
     <>
       <SEO 
@@ -88,7 +101,7 @@ export default function ServiceDetailView({
         description={description}
         keywords={`${primaryKeyword}, ${secondaryKeywords.join(', ')}, AstroPixel`}
         canonical={`https://astropixel.tech/services/${slug}`}
-        jsonLd={[serviceSchema, breadcrumbSchema]}
+        jsonLd={[serviceSchema, breadcrumbSchema, faqSchema]}
       />
 
       <div className="overflow-x-hidden bg-background min-h-screen">
@@ -155,6 +168,8 @@ export default function ServiceDetailView({
                 ))}
               </div>
             </div>
+
+            {/* TODO: add 300-500 words of service-specific content here */}
 
             {/* Core Features */}
             <div className="space-y-8">

@@ -72,23 +72,56 @@ export default function RootLayout({
     },
     'address': {
       '@type': 'PostalAddress',
+      'streetAddress': 'Hi-Tech Park',
       'addressLocality': 'Rajshahi',
       'addressCountry': 'Bangladesh'
     },
     'contactPoint': {
       '@type': 'ContactPoint',
+      'telephone': '+8801344497808',
       'email': 'hello@astropixel.tech',
       'contactType': 'customer service'
     },
     'sameAs': [
+      'https://www.facebook.com/astropixel.tech',
+      'https://www.instagram.com/astropixel.tech/',
+      'https://www.linkedin.com/company/astropixel/',
+      'https://www.youtube.com/@astropixeltech',
+      'https://www.pinterest.com/astropixeltech/',
       'https://clutch.co/profile/astropixel-0',
       'https://share.google/K4AuEFEeRfy3AQCVj',
       'https://www.behance.net/astropixels',
-      'https://dribbble.com/astropixel',
-      'https://www.linkedin.com/company/astropixel',
-      'https://www.facebook.com/astropixel',
-      'https://www.instagram.com/astropixel'
+      'https://dribbble.com/astropixel'
     ]
+  };
+
+  const localBusinessSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'LocalBusiness',
+    'name': 'AstroPixel Creative Design Agency',
+    'image': 'https://astropixel.tech/fav-icon.png',
+    'url': 'https://astropixel.tech/',
+    'telephone': '+8801344497808',
+    'email': 'hello@astropixel.tech',
+    'priceRange': '$$$',
+    'address': {
+      '@type': 'PostalAddress',
+      'streetAddress': 'Hi-Tech Park',
+      'addressLocality': 'Rajshahi',
+      'addressCountry': 'BD'
+    },
+    'geo': {
+      '@type': 'GeoCoordinates',
+      'latitude': 24.3745,
+      'longitude': 88.6042
+    },
+    'openingHoursSpecification': {
+      '@type': 'OpeningHoursSpecification',
+      'dayOfWeek': ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+      'opens': '09:00',
+      'closes': '21:00'
+    },
+    'sameAs': organizationSchema.sameAs
   };
 
   return (
@@ -106,6 +139,10 @@ export default function RootLayout({
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessSchema) }}
         />
         {/* GA4 Script Initializer */}
         <Script
