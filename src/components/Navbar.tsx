@@ -112,11 +112,13 @@ const Navbar = () => {
         }`}
       >
         <div className="container mx-auto px-4 sm:px-6">
-          {/* Header container — transparent overlay at top (no box/border), original glass box on scroll */}
+          {/* Header container — transparent overlay at top, dynamic glass box on scroll */}
           <div
             className={`relative flex items-center justify-between transition-all duration-500 ${
               isScrolled
-                ? "rounded-2xl px-4 sm:px-5 py-2.5 backdrop-blur-2xl backdrop-saturate-150 border border-white/20 bg-white/[0.08] dark:bg-white/[0.06] shadow-[0_1px_0_0_rgba(255,255,255,0.35)_inset,0_-1px_0_0_rgba(0,0,0,0.1)_inset,0_10px_30px_-12px_rgba(0,0,0,0.35)]"
+                ? isWhiteNavText
+                  ? "rounded-2xl px-4 sm:px-5 py-2.5 backdrop-blur-2xl backdrop-saturate-150 border border-white/20 bg-white/[0.08] shadow-[0_1px_0_0_rgba(255,255,255,0.35)_inset,0_-1px_0_0_rgba(0,0,0,0.1)_inset,0_10px_30px_-12px_rgba(0,0,0,0.35)]"
+                  : "rounded-2xl px-4 sm:px-5 py-2.5 backdrop-blur-2xl backdrop-saturate-150 border border-slate-900/15 bg-slate-900/[0.08] shadow-[0_1px_0_0_rgba(255,255,255,0.5)_inset,0_10px_30px_-12px_rgba(0,0,0,0.15)]"
                 : "bg-transparent border-transparent shadow-none px-2 py-1"
             }`}
             style={{
@@ -127,7 +129,9 @@ const Navbar = () => {
             {/* Soft top glass highlight & bottom shadow line (only on scroll) */}
             {isScrolled && (
               <>
-                <div aria-hidden className="pointer-events-none absolute inset-x-4 top-0 h-px bg-gradient-to-r from-transparent via-white/40 to-transparent rounded-full" />
+                <div aria-hidden className={`pointer-events-none absolute inset-x-4 top-0 h-px rounded-full ${
+                  isWhiteNavText ? "bg-gradient-to-r from-transparent via-white/40 to-transparent" : "bg-gradient-to-r from-transparent via-slate-900/20 to-transparent"
+                }`} />
                 <div aria-hidden className="pointer-events-none absolute inset-x-6 bottom-0 h-px bg-gradient-to-r from-transparent via-black/10 dark:via-white/5 to-transparent" />
               </>
             )}
@@ -159,15 +163,27 @@ const Navbar = () => {
                     <span className={`relative z-10 font-semibold text-sm transition-colors duration-300 ${
                       isActive
                         ? isWhiteNavText ? "text-cyan-400 font-bold drop-shadow-sm" : "text-violet-600 font-bold"
-                        : isWhiteNavText ? "text-white/90 hover:text-cyan-400 drop-shadow-sm" : "text-neutral-900 dark:text-white hover:text-violet-600"
+                        : isWhiteNavText ? "text-white/80 hover:text-white" : "text-slate-700 hover:text-slate-900"
                     }`}>
                       {link.name}
                     </span>
                   );
-                  return link.href.startsWith("http") ? (
-                    <a key={link.href} href={link.href} target="_blank" rel="noopener noreferrer" className={linkClasses}>{linkInner}</a>
-                  ) : (
+
+                  const activePill = isActive && (
+                    <motion.div
+                      layoutId="activeNavTab"
+                      className={`absolute inset-0 rounded-full ${
+                        isWhiteNavText 
+                          ? "bg-white/10 border border-cyan-400/30 shadow-[0_0_12px_rgba(34,213,238,0.25)]" 
+                          : "bg-black/5 border border-violet-500/20 shadow-sm"
+                      }`}
+                      transition={{ type: "spring", stiffness: 380, damping: 30 }}
+                    />
+                  );
+
+                  return (
                     <Link key={link.href} href={link.href} className={linkClasses}>
+                      {activePill}
                       {linkInner}
                     </Link>
                   );
@@ -175,18 +191,18 @@ const Navbar = () => {
               </div>
             </div>
 
-            {/* Right-aligned Controls (desktop) */}
-            <div className="hidden lg:flex items-center gap-1.5 ml-2">
+            {/* Right Action — Start a Project button */}
+            <div className="hidden lg:flex items-center gap-3">
               <Link
                 href="/contact"
-                className={`group relative flex items-center justify-center gap-2 px-4 sm:px-4.5 py-2 rounded-lg transition-all duration-300 active:scale-95 shrink-0 shadow-md ${
+                className={`relative px-4 py-2 rounded-full font-bold text-xs flex items-center gap-1.5 transition-all duration-300 shadow-sm ${
                   isWhiteNavText
-                    ? "bg-white hover:bg-slate-100 text-black border border-white/80"
-                    : "bg-slate-900 hover:bg-black text-white border border-slate-800"
+                    ? "bg-white text-black hover:bg-slate-100"
+                    : "bg-slate-900 text-white hover:bg-slate-800"
                 }`}
               >
-                <span className="relative z-10 text-xs sm:text-[13px] font-bold tracking-wide whitespace-nowrap">{t("nav.startProject")}</span>
-                <CustomArrowIcon className={`w-3.5 h-3.5 relative z-10 transition-transform group-hover:translate-x-1 shrink-0 ${isWhiteNavText ? "text-black" : "text-white"}`} />
+                <span>{t("nav.startProject")}</span>
+                <CustomArrowIcon className={`w-3.5 h-3.5 ${isWhiteNavText ? "text-black" : "text-white"}`} />
               </Link>
             </div>
 
@@ -201,7 +217,7 @@ const Navbar = () => {
           </div>
         </div>
 
-        {/* Mobile menu drawer — White Frosted Glassmorphism with Purple Accents */}
+        {/* Mobile menu drawer — Dynamic Glassmorphism matching Hero scroll state */}
         <AnimatePresence>
           {isMobileMenuOpen && (
             <motion.div
@@ -212,13 +228,19 @@ const Navbar = () => {
               className="lg:hidden container mx-auto px-4 sm:px-6 mt-3 relative z-50"
             >
               <div 
-                className="relative rounded-3xl bg-white/85 border border-white/80 shadow-[0_1px_0_0_rgba(255,255,255,0.9)_inset,0_20px_50px_-10px_rgba(0,0,0,0.18)] overflow-hidden backdrop-blur-3xl backdrop-saturate-180" 
+                className={`relative rounded-3xl overflow-hidden backdrop-blur-3xl backdrop-saturate-180 transition-colors duration-500 ${
+                  isWhiteNavText
+                    ? "bg-[#090d16]/75 border border-white/20 shadow-[0_1px_0_0_rgba(255,255,255,0.35)_inset,0_20px_60px_-15px_rgba(0,0,0,0.6)]"
+                    : "bg-white/85 border border-white/80 shadow-[0_1px_0_0_rgba(255,255,255,0.9)_inset,0_20px_50px_-10px_rgba(0,0,0,0.18)]"
+                }`}
                 style={{ WebkitBackdropFilter: "blur(32px) saturate(180%)", backdropFilter: "blur(32px) saturate(180%)" }}
               >
                 {/* Top Glass Highlight */}
-                <div aria-hidden className="pointer-events-none absolute inset-x-4 top-0 h-px bg-gradient-to-r from-transparent via-purple-300/60 to-transparent" />
+                <div aria-hidden className={`pointer-events-none absolute inset-x-4 top-0 h-px ${
+                  isWhiteNavText ? "bg-gradient-to-r from-transparent via-white/50 to-transparent" : "bg-gradient-to-r from-transparent via-purple-300/60 to-transparent"
+                }`} />
 
-                {/* Single line stacked list — White Glassmorphism Items */}
+                {/* Single line stacked list — Dynamic Glassmorphism Items */}
                 <div className="flex flex-col p-2.5 space-y-1.5 relative z-10">
                   {navLinksWithIcons.map((link) => {
                     const IconComp = link.icon;
@@ -226,18 +248,30 @@ const Navbar = () => {
 
                     const cls = `flex items-center justify-between px-4 py-3.5 rounded-2xl text-base font-medium transition-all duration-300 ${
                       isActive
-                        ? "text-purple-700 font-bold bg-purple-100/70 border border-purple-200/80 shadow-[0_0_15px_rgba(168,85,247,0.18)]"
-                        : "text-slate-800 hover:text-slate-900 hover:bg-slate-100/80"
+                        ? isWhiteNavText
+                          ? "text-cyan-300 font-bold bg-white/[0.12] border border-cyan-400/30 shadow-[0_0_20px_rgba(34,213,238,0.15)]"
+                          : "text-purple-700 font-bold bg-purple-100/70 border border-purple-200/80 shadow-[0_0_15px_rgba(168,85,247,0.18)]"
+                        : isWhiteNavText
+                          ? "text-white/85 hover:text-white hover:bg-white/[0.08]"
+                          : "text-slate-800 hover:text-slate-900 hover:bg-slate-100/80"
                     }`;
 
                     const inner = (
                       <>
                         <div className="flex items-center gap-3">
-                          <IconComp size={18} className={isActive ? "text-purple-600" : "text-slate-500"} />
+                          <IconComp size={18} className={
+                            isActive
+                              ? isWhiteNavText ? "text-cyan-400" : "text-purple-600"
+                              : isWhiteNavText ? "text-white/60" : "text-slate-500"
+                          } />
                           <span className="tracking-wide">{link.name}</span>
                         </div>
                         {isActive && (
-                          <span className="w-2 h-2 rounded-full bg-purple-600 shadow-[0_0_8px_#a855f7]" />
+                          <span className={`w-2 h-2 rounded-full ${
+                            isWhiteNavText 
+                              ? "bg-cyan-400 shadow-[0_0_10px_#22d3ee]" 
+                              : "bg-purple-600 shadow-[0_0_8px_#a855f7]"
+                          }`} />
                         )}
                       </>
                     );
@@ -253,14 +287,20 @@ const Navbar = () => {
                 </div>
 
                 {/* Bottom CTA Link */}
-                <div className="p-3.5 bg-slate-50/80 border-t border-slate-200/70 relative z-10">
+                <div className={`p-3.5 border-t relative z-10 ${
+                  isWhiteNavText ? "bg-white/[0.04] border-white/15" : "bg-slate-50/80 border-slate-200/70"
+                }`}>
                   <Link
                     href="/contact"
                     onClick={handleNavClick}
-                    className="w-full py-3.5 px-6 rounded-2xl bg-slate-900 text-white font-bold text-sm flex items-center justify-center gap-2 shadow-[0_4px_25px_rgba(15,23,42,0.25)] hover:bg-slate-800 transition-all active:scale-[0.98]"
+                    className={`w-full py-3.5 px-6 rounded-2xl font-bold text-sm flex items-center justify-center gap-2 transition-all active:scale-[0.98] ${
+                      isWhiteNavText
+                        ? "bg-white text-black shadow-[0_4px_25px_rgba(255,255,255,0.3)] hover:bg-slate-100"
+                        : "bg-slate-900 text-white shadow-[0_4px_25px_rgba(15,23,42,0.25)] hover:bg-slate-800"
+                    }`}
                   >
                     <span>{t("nav.startProject")}</span>
-                    <ArrowUpRight size={16} className="text-white" />
+                    <ArrowUpRight size={16} className={isWhiteNavText ? "text-black" : "text-white"} />
                   </Link>
                 </div>
               </div>
