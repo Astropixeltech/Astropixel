@@ -54,20 +54,26 @@ export default function AdminLoginPage() {
     }
 
     setIsLoading(true);
-    const { error } = await signIn(email, password);
-    setIsLoading(false);
+    try {
+      const res = await fetch('/api/admin/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password }),
+      });
+      const data = await res.json();
+      setIsLoading(false);
 
-    if (error) {
-      if (error.message.includes('Invalid login credentials')) {
-        toast.error('ইমেইল বা পাসওয়ার্ড ভুল');
-      } else {
-        toast.error(error.message);
+      if (!res.ok) {
+        toast.error(data.error || 'ইমেইল বা পাসওয়ার্ড ভুল');
+        return;
       }
-      return;
-    }
 
-    toast.success('সফলভাবে লগইন হয়েছে!');
-    router.push('/admin');
+      toast.success('সফলভাবে অ্যাডমিন লগইন হয়েছে!');
+      router.push('/admin');
+    } catch (err: any) {
+      setIsLoading(false);
+      toast.error(err.message || 'অ্যাডমিন লগইন সমস্যা');
+    }
   };
 
   return (
