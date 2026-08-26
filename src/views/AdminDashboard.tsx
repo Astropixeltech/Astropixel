@@ -1104,40 +1104,6 @@ function AdminDashboardInner() {
                     </button>
                   ))}
                 </div>
-
-                <div className="grid grid-cols-1 lg:grid-cols-3 gap-3">
-                  <div className="lg:col-span-2 rounded-2xl p-5 bg-gradient-to-br from-violet-500/10 via-fuchsia-500/5 to-transparent border border-violet-500/20">
-                    <div className="flex items-start gap-3">
-                      <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-violet-500 to-fuchsia-500 flex items-center justify-center flex-shrink-0">
-                        <Sparkles className="w-5 h-5 text-white" />
-                      </div>
-                      <div>
-                        <h3 className="text-sm font-bold text-foreground mb-1">
-                          {language === 'bn' ? 'Ã Â¦â€¦Ã Â§ÂÃ Â¦Â¯Ã Â¦Â¾Ã Â¦Å“Ã Â§â€¡Ã Â¦Â¨Ã Â§ÂÃ Â¦Â¸Ã Â¦Â¿ Ã Â¦Â¸Ã Â¦Â¾Ã Â¦â€¡Ã Â¦Å¸ Ã Â¦ÂªÃ Â¦Â°Ã Â¦Â¿Ã Â¦Å¡Ã Â¦Â¾Ã Â¦Â²Ã Â¦Â¨Ã Â¦Â¾' : 'Manage your Agency Site'}
-                        </h3>
-                        <p className="text-xs text-muted-foreground leading-relaxed">
-                          {language === 'bn'
-                            ? 'Ã Â¦â€°Ã Â¦ÂªÃ Â¦Â°Ã Â§â€¡Ã Â¦Â° Ã Â¦â€¢Ã Â¦Â¾Ã Â¦Â°Ã Â§ÂÃ Â¦Â¡ Ã Â¦Â¥Ã Â§â€¡Ã Â¦â€¢Ã Â§â€¡ Ã Â¦Â¸Ã Â¦Â°Ã Â¦Â¾Ã Â¦Â¸Ã Â¦Â°Ã Â¦Â¿ Ã Â¦Â¯Ã Â§â€¡Ã Â¦â€¢Ã Â§â€¹Ã Â¦Â¨Ã Â§â€¹ Ã Â¦ÂªÃ Â§â€¡Ã Â¦Å“ Ã Â¦ÂÃ Â¦Â¡Ã Â¦Â¿Ã Â¦Å¸ Ã Â¦â€¢Ã Â¦Â°Ã Â§ÂÃ Â¦Â¨Ã Â¥Â¤ Ã Â¦ÂªÃ Â§ÂÃ Â¦Â°Ã Â¦Â¤Ã Â¦Â¿Ã Â¦Å¸Ã Â¦Â¿ Ã Â¦ÂªÃ Â¦Â°Ã Â¦Â¿Ã Â¦Â¬Ã Â¦Â°Ã Â§ÂÃ Â¦Â¤Ã Â¦Â¨ Ã Â¦Â¸Ã Â¦Â¾Ã Â¦Â¥Ã Â§â€¡ Ã Â¦Â¸Ã Â¦Â¾Ã Â¦Â¥Ã Â§â€¡ Ã Â¦Â²Ã Â¦Â¾Ã Â¦â€¡Ã Â¦Â­ Ã Â¦Â¹Ã Â¦Â¯Ã Â¦Â¼Ã Â§â€¡ Ã Â¦Â¯Ã Â¦Â¾Ã Â¦Â¬Ã Â§â€¡Ã Â¥Â¤'
-                            : 'Jump straight into any page from the cards above. Every change goes live instantly.'}
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                  <button
-                    onClick={() => setIsAssistantOpen(true)}
-                    className="text-left rounded-2xl p-5 bg-gradient-to-br from-primary/10 to-cyan-500/5 border border-primary/20 hover:border-primary/40 transition-colors"
-                  >
-                    <div className="flex items-center gap-2 mb-2">
-                      <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-primary to-cyan-500 flex items-center justify-center">
-                        <Sparkles className="w-4 h-4 text-white" />
-                      </div>
-                      <span className="text-sm font-bold">Alpha AI</span>
-                    </div>
-                    <p className="text-xs text-muted-foreground">
-                      {language === 'bn' ? 'AI Ã Â¦Â¦Ã Â¦Â¿Ã Â¦Â¯Ã Â¦Â¼Ã Â§â€¡ Ã Â¦Â¦Ã Â§ÂÃ Â¦Â°Ã Â§ÂÃ Â¦Â¤ Ã Â¦â€¢Ã Â¦Â¨Ã Â§ÂÃ Â¦Å¸Ã Â§â€¡Ã Â¦Â¨Ã Â§ÂÃ Â¦Å¸ Ã Â¦Â¤Ã Â§Ë†Ã Â¦Â°Ã Â¦Â¿ Ã Â¦â€¢Ã Â¦Â°Ã Â§ÂÃ Â¦Â¨Ã Â¥Â¤' : 'Generate content instantly with AI.'}
-                    </p>
-                  </button>
-                </div>
               </div>
             ) : (
               <div className="space-y-4">
