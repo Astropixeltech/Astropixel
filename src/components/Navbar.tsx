@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import CustomArrowIcon from "@/components/ui/CustomArrowIcon";
+import { MenuToggle } from "@/components/ui/menu-toggle";
 import { motion, AnimatePresence } from "framer-motion";
 import { 
   Menu, 
@@ -189,16 +190,15 @@ const Navbar = () => {
               </Link>
             </div>
 
-            {/* Mobile: menu on top bar */}
+            {/* Mobile: menu toggle button */}
             <div className="flex items-center gap-1.5 lg:hidden">
-
-              <button
-                onClick={() => setIsMobileMenuOpen((v) => !v)}
-                aria-label={isMobileMenuOpen ? "Close menu" : "Open menu"}
-                className="w-9 h-9 rounded-full bg-primary/20 border border-primary/30 flex items-center justify-center hover:bg-primary/30 transition-colors"
-              >
-                {isMobileMenuOpen ? <X size={16} className="text-primary" /> : <Menu size={16} className="text-primary" />}
-              </button>
+              <div className="p-1 rounded-xl bg-white/10 backdrop-blur-md border border-white/20 shadow-sm flex items-center justify-center">
+                <MenuToggle 
+                  open={isMobileMenuOpen} 
+                  onOpenChange={setIsMobileMenuOpen} 
+                  className={isWhiteNavText ? "text-white" : "text-slate-900"} 
+                />
+              </div>
             </div>
           </div>
         </div>
