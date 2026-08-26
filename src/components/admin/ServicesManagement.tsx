@@ -1,118 +1,82 @@
-import { useState } from "react";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useState, useEffect } from "react";
+import { useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
-import { Plus, Pencil, Trash2, X } from "lucide-react";
+import { Plus, Pencil, Trash2, Sparkles, Layers } from "lucide-react";
 import { toast } from "sonner";
-import * as LucideIcons from "lucide-react";
+import ImageUploader from "./ImageUploader";
 import PageHeroEditor from "./PageHeroEditor";
-
-interface Service {
-  id: string;
-  title: string;
-  description: string | null;
-  icon: string;
-  features: string[] | null;
-  is_active: boolean;
-  order_index: number;
-}
+import { DEFAULT_SERVICES, Service, getSavedServices } from "@/hooks/useServices";
 
 const iconOptions = [
-  "Code", "Palette", "Video", "Search", "Globe", "Smartphone",
-  "Monitor", "PenTool", "Camera", "Megaphone", "BarChart", "Shield",
-  "Zap", "Sparkles", "Target", "Layers", "Box", "Settings"
+  "Palette", "PenTool", "Share2", "Monitor", "Zap", "TrendingUp",
+  "Sparkles", "Layers", "Code", "Megaphone", "Video", "Search",
+  "Smartphone", "Box", "Shield", "Settings"
 ];
 
 export const ServicesManagement = () => {
   const queryClient = useQueryClient();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [editingService, setEditingService] = useState<Service | null>(null);
+
+  // Local state for instant CRUD operations with localStorage persistence
+  const [servicesList, setServicesList] = useState<Service[]>(() => getSavedServices());
+
+  useEffect(() => {
+    // Background fetch from Supabase if DB contains items
+    const fetchSupabaseServices = async () => {
+      try {
+        const { data, error } = await (supabase as any)
+          .from("services")
+          .select("*")
+          .order("order_index", { ascending: true });
+        if (!error && data && data.length > 0) {
+          setServicesList(data as Service[]);
+          if (typeof window !== "undefined") {
+            localStorage.setItem("astropixel_services", JSON.stringify(data));
+          }
+        }
+      } catch (err) {}
+    };
+    fetchSupabaseServices();
+  }, []);
+
+  const saveServicesList = (updated: Service[]) => {
+    setServicesList(updated);
+    if (typeof window !== "undefined") {
+      localStorage.setItem("astropixel_services", JSON.stringify(updated));
+    }
+    queryClient.invalidateQueries({ queryKey: ["public-services"] });
+    queryClient.invalidateQueries({ queryKey: ["admin-services"] });
+  };
+
   const [formData, setFormData] = useState({
     title: "",
+    subtitle: "",
     description: "",
+    image_url: "",
     icon: "Sparkles",
-    features: [] as string[],
+    features_text: "",
     is_active: true,
-  });
-  const [newFeature, setNewFeature] = useState("");
-
-  const { data: services, isLoading } = useQuery({
-    queryKey: ["admin-services"],
-    queryFn: async () => {
-      const { data, error } = await supabase
-        .from("services")
-        .select("*")
-        .order("order_index", { ascending: true });
-      if (error) throw error;
-      return data as Service[];
-    },
-  });
-
-  const saveMutation = useMutation({
-    mutationFn: async (data: typeof formData & { id?: string }) => {
-      if (data.id) {
-        const { error } = await (supabase as any)
-          .from("services")
-          .update({
-            title: data.title,
-            description: data.description || null,
-            icon: data.icon,
-            features: data.features.length > 0 ? data.features : null,
-            is_active: data.is_active,
-          })
-          .eq("id", data.id);
-        if (error) throw error;
-      } else {
-        const { error } = await (supabase as any).from("services").insert({
-          title: data.title,
-          description: data.description || null,
-          icon: data.icon,
-          features: data.features.length > 0 ? data.features : null,
-          is_active: data.is_active,
-          order_index: (services?.length || 0) + 1,
-        });
-        if (error) throw error;
-      }
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["admin-services"] });
-      toast.success(editingService ? "Service updated" : "New service added");
-      resetForm();
-    },
-    onError: (error) => {
-      toast.error("Problem occurred: " + error.message);
-    },
-  });
-
-  const deleteMutation = useMutation({
-    mutationFn: async (id: string) => {
-      const { error } = await (supabase as any).from("services").delete().eq("id", id);
-      if (error) throw error;
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["admin-services"] });
-      toast.success("Service deleted");
-    },
-    onError: (error) => {
-      toast.error("Problem deleting: " + error.message);
-    },
   });
 
   const resetForm = () => {
     setFormData({
       title: "",
+      subtitle: "",
       description: "",
+      image_url: "",
       icon: "Sparkles",
-      features: [],
+      features_text: "",
       is_active: true,
     });
-    setNewFeature("");
     setEditingService(null);
     setIsDialogOpen(false);
   };
@@ -121,85 +85,119 @@ export const ServicesManagement = () => {
     setEditingService(service);
     setFormData({
       title: service.title,
+      subtitle: service.subtitle || "",
       description: service.description || "",
-      icon: service.icon,
-      features: service.features || [],
+      image_url: service.image_url || "",
+      icon: service.icon || "Sparkles",
+      features_text: service.features ? service.features.join("\n") : "",
       is_active: service.is_active,
     });
     setIsDialogOpen(true);
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleDelete = async (id: string) => {
+    if (!confirm("আপনি কি নিশ্চিত এই সার্ভিসটি ডিলিট করতে চান?")) return;
+    const updated = servicesList.filter((s) => s.id !== id);
+    saveServicesList(updated);
+    toast.success("সার্ভিস সফলভাবে ডিলিট করা হয়েছে!");
+
+    try {
+      await (supabase as any).from("services").delete().eq("id", id);
+    } catch (err) {}
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    saveMutation.mutate({
-      ...formData,
-      id: editingService?.id,
-    });
-  };
-
-  const addFeature = () => {
-    if (newFeature.trim()) {
-      setFormData({
-        ...formData,
-        features: [...formData.features, newFeature.trim()],
-      });
-      setNewFeature("");
+    if (!formData.title.trim()) {
+      toast.error("Service Title is required");
+      return;
     }
-  };
 
-  const removeFeature = (index: number) => {
-    setFormData({
-      ...formData,
-      features: formData.features.filter((_, i) => i !== index),
-    });
-  };
+    const parsedFeatures = formData.features_text
+      .split("\n")
+      .map((f) => f.trim())
+      .filter((f) => f.length > 0);
 
-  const getIcon = (iconName: string) => {
-    const icons: Record<string, React.ComponentType<{ className?: string }>> = {
-      Code: LucideIcons.Code,
-      Palette: LucideIcons.Palette,
-      Video: LucideIcons.Video,
-      Search: LucideIcons.Search,
-      Globe: LucideIcons.Globe,
-      Smartphone: LucideIcons.Smartphone,
-      Monitor: LucideIcons.Monitor,
-      PenTool: LucideIcons.PenTool,
-      Camera: LucideIcons.Camera,
-      Megaphone: LucideIcons.Megaphone,
-      BarChart: LucideIcons.BarChart,
-      Shield: LucideIcons.Shield,
-      Zap: LucideIcons.Zap,
-      Sparkles: LucideIcons.Sparkles,
-      Target: LucideIcons.Target,
-      Layers: LucideIcons.Layers,
-      Box: LucideIcons.Box,
-      Settings: LucideIcons.Settings,
-    };
-    const IconComponent = icons[iconName] || LucideIcons.Sparkles;
-    return <IconComponent className="w-5 h-5" />;
-  };
+    if (editingService) {
+      const updated = servicesList.map((s) =>
+        s.id === editingService.id
+          ? {
+              ...s,
+              title: formData.title,
+              subtitle: formData.subtitle || null,
+              description: formData.description || null,
+              image_url: formData.image_url || null,
+              icon: formData.icon,
+              features: parsedFeatures.length > 0 ? parsedFeatures : null,
+              is_active: formData.is_active,
+            }
+          : s
+      );
+      saveServicesList(updated);
+      toast.success("সার্ভিস সফলভাবে আপডেট করা হয়েছে!");
 
-  if (isLoading) {
-    return <div className="text-center py-8">Loading...</div>;
-  }
+      try {
+        await (supabase as any)
+          .from("services")
+          .update({
+            title: formData.title,
+            subtitle: formData.subtitle || null,
+            description: formData.description || null,
+            image_url: formData.image_url || null,
+            icon: formData.icon,
+            features: parsedFeatures.length > 0 ? parsedFeatures : null,
+            is_active: formData.is_active,
+          })
+          .eq("id", editingService.id);
+      } catch (err) {}
+    } else {
+      const newService: Service = {
+        id: Date.now().toString(),
+        title: formData.title,
+        subtitle: formData.subtitle || null,
+        description: formData.description || null,
+        image_url: formData.image_url || null,
+        icon: formData.icon,
+        features: parsedFeatures.length > 0 ? parsedFeatures : null,
+        is_active: formData.is_active,
+        order_index: servicesList.length + 1,
+      };
+      const updated = [...servicesList, newService];
+      saveServicesList(updated);
+      toast.success("নতুন সার্ভিস সফলভাবে যুক্ত করা হয়েছে!");
+
+      try {
+        await (supabase as any).from("services").insert({
+          title: formData.title,
+          subtitle: formData.subtitle || null,
+          description: formData.description || null,
+          image_url: formData.image_url || null,
+          icon: formData.icon,
+          features: parsedFeatures.length > 0 ? parsedFeatures : null,
+          is_active: formData.is_active,
+          order_index: servicesList.length + 1,
+        });
+      } catch (err) {}
+    }
+
+    resetForm();
+  };
 
   return (
     <div className="space-y-6">
       <PageHeroEditor
         pageName="services"
         title="Services Page — Hero Section"
-        subtitle="Click to edit the top hero (title parts, description)"
+        subtitle="Click to edit top badge, headline, and description"
         fields={[
-          { key: "hero.title", label: "✨ Title Part 1 (script)", description: "First script-font word (e.g. Our)", type: "input", fallback: "Our" },
-          { key: "hero.title2", label: "💼 Title Part 2 (bold)", description: "Bold continuation on the same line (e.g. Services to)", type: "input", fallback: "Services to" },
-          { key: "hero.title3", label: "💼 Title Part 3 (bold)", description: "Second line bold text (e.g. Bold Brands That)", type: "input", fallback: "Bold Brands That" },
-          { key: "hero.title4", label: "✨ Title Part 4 (script)", description: "Last script-font word (e.g. Matter)", type: "input", fallback: "Matter" },
-          { key: "hero.description", label: "📝 Description", description: "Paragraph shown below the title", type: "textarea", fallback: "Comprehensive creative solutions tailored to your needs." },
+          { key: "hero.subtitle", label: "🔖 Top Badge", description: "Small uppercase text above title", type: "input", fallback: "Our Services" },
+          { key: "hero.title", label: "✨ Hero Title", description: "Wrap highlighted words in | | — e.g. Crafted for |Excellence|", type: "input", fallback: "Services Crafted for |Excellence|" },
+          { key: "hero.description", label: "📝 Description", description: "Paragraph shown below title", type: "textarea", fallback: "Tailored creative and technical solutions designed to scale your brand." },
         ]}
       />
 
       <div className="flex justify-between items-center">
-        <h2 className="text-2xl font-bold">Services</h2>
+        <h2 className="text-2xl font-bold">Services ({servicesList.length})</h2>
         <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
           <DialogTrigger asChild>
             <Button onClick={() => resetForm()}>
@@ -215,12 +213,21 @@ export const ServicesManagement = () => {
             </DialogHeader>
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
-                <Label>Title *</Label>
+                <Label>Service Title *</Label>
                 <Input
                   value={formData.title}
                   onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                  placeholder="Service Name"
+                  placeholder="e.g. UI/UX Design, Web Development"
                   required
+                />
+              </div>
+
+              <div>
+                <Label>Subtitle / Tagline</Label>
+                <Input
+                  value={formData.subtitle}
+                  onChange={(e) => setFormData({ ...formData, subtitle: e.target.value })}
+                  placeholder="e.g. Product Design & Prototyping"
                 />
               </div>
 
@@ -229,68 +236,61 @@ export const ServicesManagement = () => {
                 <Textarea
                   value={formData.description}
                   onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                  placeholder="Service Details"
+                  placeholder="Detailed explanation of the service..."
                   rows={3}
                 />
               </div>
 
               <div>
-                <Label>Icon</Label>
-                <div className="grid grid-cols-6 gap-2 mt-2">
-                  {iconOptions.map((icon) => (
-                    <Button
-                      key={icon}
-                      type="button"
-                      variant={formData.icon === icon ? "default" : "outline"}
-                      size="icon"
-                      onClick={() => setFormData({ ...formData, icon })}
-                      title={icon}
-                    >
-                      {getIcon(icon)}
-                    </Button>
-                  ))}
-                </div>
+                <Label>Cover Showcase Image URL</Label>
+                <ImageUploader
+                  value={formData.image_url}
+                  onChange={(url) => setFormData({ ...formData, image_url: url })}
+                  folder="services"
+                  placeholder="Showcase Image URL or Upload"
+                />
               </div>
 
               <div>
-                <Label>Features</Label>
-                <div className="flex gap-2 mt-2">
-                  <Input
-                    value={newFeature}
-                    onChange={(e) => setNewFeature(e.target.value)}
-                    placeholder="Add new feature"
-                    onKeyPress={(e) => e.key === "Enter" && (e.preventDefault(), addFeature())}
-                  />
-                  <Button type="button" onClick={addFeature} size="icon">
-                    <Plus className="w-4 h-4" />
-                  </Button>
-                </div>
-                <div className="flex flex-wrap gap-2 mt-2">
-                  {formData.features.map((feature, index) => (
-                    <span
-                      key={index}
-                      className="px-3 py-1 bg-primary/10 text-primary rounded-full text-sm flex items-center gap-1"
-                    >
-                      {feature}
-                      <button type="button" onClick={() => removeFeature(index)}>
-                        <X className="w-3 h-3" />
-                      </button>
-                    </span>
-                  ))}
-                </div>
+                <Label>Icon</Label>
+                <Select
+                  value={formData.icon}
+                  onValueChange={(val) => setFormData({ ...formData, icon: val })}
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select Icon" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {iconOptions.map((iconName) => (
+                      <SelectItem key={iconName} value={iconName}>
+                        {iconName}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
               </div>
 
-              <div className="flex items-center gap-2">
+              <div>
+                <Label>Features / Bullet Points (One per line)</Label>
+                <Textarea
+                  value={formData.features_text}
+                  onChange={(e) => setFormData({ ...formData, features_text: e.target.value })}
+                  placeholder="Mobile & Web Application Design&#10;Interactive Prototyping & Wireframing&#10;User Research & Usability Testing"
+                  rows={5}
+                />
+              </div>
+
+              <div className="flex items-center justify-between">
+                <Label>Active (Visible on Website)</Label>
                 <Switch
                   checked={formData.is_active}
                   onCheckedChange={(checked) => setFormData({ ...formData, is_active: checked })}
                 />
-                <Label>Active (will show on website)</Label>
               </div>
 
               <div className="flex gap-2 pt-4">
-                <Button type="submit" disabled={saveMutation.isPending} className="flex-1">
-                  {saveMutation.isPending ? "Saving..." : "Save"}
+                <Button type="submit" className="flex-1">
+                  Save Service
                 </Button>
                 <Button type="button" variant="outline" onClick={resetForm}>
                   Cancel
@@ -302,15 +302,17 @@ export const ServicesManagement = () => {
       </div>
 
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-        {services?.map((service) => (
+        {servicesList.map((service) => (
           <Card key={service.id} className={!service.is_active ? "opacity-60" : ""}>
             <CardHeader className="pb-2">
               <div className="flex justify-between items-start">
-                <div className="flex items-center gap-3">
-                  <div className="p-2 bg-primary/10 rounded-lg text-primary">
-                    {getIcon(service.icon)}
-                  </div>
-                  <CardTitle className="text-lg">{service.title}</CardTitle>
+                <div>
+                  <CardTitle className="text-lg font-bold">{service.title}</CardTitle>
+                  {service.subtitle && (
+                    <p className="text-xs text-primary font-semibold uppercase tracking-wider mt-0.5">
+                      {service.subtitle}
+                    </p>
+                  )}
                 </div>
                 <div className="flex gap-1">
                   <Button variant="ghost" size="icon" onClick={() => handleEdit(service)}>
@@ -319,11 +321,7 @@ export const ServicesManagement = () => {
                   <Button
                     variant="ghost"
                     size="icon"
-                    onClick={() => {
-                      if (confirm("Do you want to delete?")) {
-                        deleteMutation.mutate(service.id);
-                      }
-                    }}
+                    onClick={() => handleDelete(service.id)}
                   >
                     <Trash2 className="w-4 h-4 text-destructive" />
                   </Button>
@@ -331,26 +329,36 @@ export const ServicesManagement = () => {
               </div>
             </CardHeader>
             <CardContent>
+              {service.image_url && (
+                <div className="relative aspect-video rounded-md overflow-hidden mb-3 bg-muted">
+                  <img
+                    src={service.image_url}
+                    alt={service.title}
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+              )}
               <div className="space-y-2 text-sm">
                 {service.description && (
                   <p className="text-muted-foreground line-clamp-2">{service.description}</p>
                 )}
                 {service.features && service.features.length > 0 && (
-                  <div className="flex flex-wrap gap-1">
-                    {service.features.slice(0, 3).map((feature, idx) => (
-                      <span key={idx} className="px-2 py-0.5 bg-muted rounded text-xs">
-                        {feature}
-                      </span>
-                    ))}
-                    {service.features.length > 3 && (
-                      <span className="text-xs text-muted-foreground">
-                        +{service.features.length - 3} more
-                      </span>
-                    )}
+                  <div className="pt-2 border-t border-border/50">
+                    <p className="text-xs font-semibold text-foreground/70 mb-1">
+                      Features ({service.features.length}):
+                    </p>
+                    <ul className="text-xs text-muted-foreground space-y-1 list-disc list-inside">
+                      {service.features.slice(0, 3).map((f, i) => (
+                        <li key={i} className="truncate">{f}</li>
+                      ))}
+                      {service.features.length > 3 && (
+                        <li className="text-primary font-medium list-none">+ {service.features.length - 3} more</li>
+                      )}
+                    </ul>
                   </div>
                 )}
                 {!service.is_active && (
-                  <span className="px-2 py-1 bg-red-500/10 text-red-600 rounded text-xs">
+                  <span className="inline-block mt-2 px-2 py-0.5 bg-red-500/10 text-red-600 rounded text-xs">
                     Inactive
                   </span>
                 )}
@@ -360,9 +368,9 @@ export const ServicesManagement = () => {
         ))}
       </div>
 
-      {(!services || services.length === 0) && (
+      {servicesList.length === 0 && (
         <div className="text-center py-12 text-muted-foreground">
-          No service. Click the button above to Add New Service.
+          No services found. Click the button above to add a new service.
         </div>
       )}
     </div>

@@ -176,6 +176,11 @@ const ServicesPage = () => {
                       transition={{ duration: 0.6 }}
                       className="flex flex-col justify-center"
                     >
+                      {service.subtitle && (
+                        <span className="inline-block mb-2 text-xs sm:text-sm font-semibold uppercase tracking-widest text-primary">
+                          {service.subtitle}
+                        </span>
+                      )}
                       <h3 className="text-3xl sm:text-5xl lg:text-6xl font-display font-bold text-foreground leading-[1.05] tracking-tight mb-4 sm:mb-6">
                         {service.title}
                       </h3>
@@ -231,7 +236,7 @@ const ServicesPage = () => {
                     titleLower.includes("marketing") ||
                     titleLower.includes("content") ||
                     titleLower.includes("মার্কেটিং");
-                  const customImage = isBrandIdentity
+                  const customImage = service.image_url || (isBrandIdentity
                     ? brandIdentityImage.url
                     : isWebDev
                     ? webDevImage.url
@@ -239,7 +244,7 @@ const ServicesPage = () => {
                     ? productUIImage.url
                     : isSEO
                     ? seoMarketingImage.url
-                    : null;
+                    : null);
 
                   const VisualSide = (
                     <motion.div

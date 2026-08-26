@@ -2,10 +2,17 @@ import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { useEffect } from 'react';
 
+import brandIdentityImage from "@/assets/brand-identity-showcase.jpg.asset.json";
+import productUIImage from "@/assets/product-ui-showcase.jpg.asset.json";
+import webDevImage from "@/assets/web-dev-showcase.jpg.asset.json";
+import seoMarketingImage from "@/assets/seo-marketing-showcase.png.asset.json";
+
 export interface Service {
   id: string;
   title: string;
+  subtitle?: string | null;
   description: string | null;
+  image_url?: string | null;
   icon: string | null;
   features: string[] | null;
   is_active: boolean;
@@ -16,7 +23,9 @@ export const DEFAULT_SERVICES: Service[] = [
   {
     id: "serv-1",
     title: "UI/UX Design",
+    subtitle: "Product Design & Prototyping",
     description: "User-friendly and modern interface designs that give your users the best experience.",
+    image_url: productUIImage.url,
     icon: "Palette",
     features: [
       "Mobile & Web Application Design",
@@ -30,7 +39,9 @@ export const DEFAULT_SERVICES: Service[] = [
   {
     id: "serv-2",
     title: "Logo Design & Branding",
+    subtitle: "Brand Identity & Guidelines",
     description: "Create a unique and strong visual identity for your brand.",
+    image_url: brandIdentityImage.url,
     icon: "PenTool",
     features: [
       "Vector Logo Marks & Icons",
@@ -44,7 +55,9 @@ export const DEFAULT_SERVICES: Service[] = [
   {
     id: "serv-3",
     title: "Social Media & Packaging Design",
+    subtitle: "Visual Content & Packaging",
     description: "Social media content and product packaging that catches the eye instantly.",
+    image_url: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=1000&auto=format&fit=crop",
     icon: "Share2",
     features: [
       "Print & Digital Product Packaging",
@@ -58,7 +71,9 @@ export const DEFAULT_SERVICES: Service[] = [
   {
     id: "serv-4",
     title: "Web Development",
+    subtitle: "High-Performance Web Apps",
     description: "Modern and high-performing websites that ensure your business growth.",
+    image_url: webDevImage.url,
     icon: "Monitor",
     features: [
       "Custom React & Next.js Web Apps",
@@ -72,7 +87,9 @@ export const DEFAULT_SERVICES: Service[] = [
   {
     id: "serv-5",
     title: "SaaS Development",
+    subtitle: "Cloud Software & Multi-Tenant Architectures",
     description: "Scalable and powerful cloud-based software solutions.",
+    image_url: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=1000&auto=format&fit=crop",
     icon: "Zap",
     features: [
       "Enterprise Cloud Software Systems",
@@ -86,7 +103,9 @@ export const DEFAULT_SERVICES: Service[] = [
   {
     id: "serv-6",
     title: "Digital Marketing",
+    subtitle: "SEO, Ads & Growth Funnels",
     description: "Guaranteed delivery of your business to the right target audience.",
+    image_url: seoMarketingImage.url,
     icon: "TrendingUp",
     features: [
       "Social & Search Engine Ad Campaigns",
@@ -99,10 +118,24 @@ export const DEFAULT_SERVICES: Service[] = [
   },
 ];
 
+export const getSavedServices = (): Service[] => {
+  if (typeof window !== 'undefined') {
+    const saved = localStorage.getItem('astropixel_services');
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          return parsed;
+        }
+      } catch (e) {}
+    }
+  }
+  return DEFAULT_SERVICES;
+};
+
 export function useServices() {
   const queryClient = useQueryClient();
 
-  // Set up realtime subscription
   useEffect(() => {
     const channel = supabase
       .channel('services-realtime')
@@ -110,7 +143,6 @@ export function useServices() {
         'postgres_changes',
         { event: '*', schema: 'public', table: 'services' },
         () => {
-          // Invalidate and refetch when data changes
           queryClient.invalidateQueries({ queryKey: ['public-services'] });
         }
       )
@@ -124,6 +156,7 @@ export function useServices() {
   return useQuery({
     queryKey: ['public-services'],
     queryFn: async () => {
+      const fallbackList = getSavedServices();
       try {
         const { data, error } = await supabase
           .from('services')
@@ -132,11 +165,11 @@ export function useServices() {
           .order('order_index', { ascending: true });
 
         if (error || !data || data.length === 0) {
-          return DEFAULT_SERVICES;
+          return fallbackList;
         }
         return data as Service[];
       } catch {
-        return DEFAULT_SERVICES;
+        return fallbackList;
       }
     },
     staleTime: 0,
