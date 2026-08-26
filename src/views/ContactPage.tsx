@@ -103,6 +103,11 @@ const ContactPage = () => {
   const heroTitle = savedInfo["hero.title"] || "Let's talk.";
   const heroDescription = savedInfo["hero.description"] || "Tell us about your idea. Whether it's a rebrand, a launch, or a full digital product — we reply within 24 hours.";
 
+  const mapEmbedUrl = savedInfo["info.map_embed"] || "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3634.364448554907!2d88.5833!3d24.3733!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39fbefa400000001%3A0x6b44781775e52d6a!2sSheikh%20Kamal%20IT%20Incubator%20%26%20Training%20Centre%2C%20Rajshahi!5e0!3m2!1sen!2sbd!4v1700000000000!5m2!1sen!2sbd";
+  const mapDirectionsUrl = savedInfo["info.map_directions"] || "https://maps.google.com/?q=Sheikh+Kamal+IT+Incubator+Rajshahi";
+  const studioTitle = savedInfo["info.studio_title"] || "Come say hi in Rajshahi.";
+  const studioSubtitle = savedInfo["info.studio_subtitle"] || "Our studio";
+
   const socials = savedSocials.map((s) => ({
     name: s.name,
     handle: s.handle,
@@ -307,9 +312,9 @@ const ContactPage = () => {
               <div className="relative h-full rounded-[2rem] overflow-hidden bg-black text-white flex flex-col min-h-[420px]">
                 {/* Header */}
                 <div className="relative p-8 lg:p-10 pb-6">
-                  <div className="text-xs uppercase tracking-[0.2em] text-white/50 mb-3">Our studio</div>
+                  <div className="text-xs uppercase tracking-[0.2em] text-white/50 mb-3">{studioSubtitle}</div>
                   <h3 className="text-3xl lg:text-4xl font-display font-bold leading-tight mb-3">
-                    Come say hi<br />in Rajshahi.
+                    {studioTitle}
                   </h3>
                   <p className="text-sm text-white/70 leading-relaxed">
                     {address}
@@ -319,8 +324,8 @@ const ContactPage = () => {
                 {/* Interactive Map Embed */}
                 <div className="relative flex-1 min-h-[220px] w-full bg-neutral-900 border-t border-white/10 overflow-hidden">
                   <iframe
-                    title="AstroPixel Office Location Map — Rajshahi Hi-Tech Park"
-                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3634.364448554907!2d88.5833!3d24.3733!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39fbefa400000001%3A0x6b44781775e52d6a!2sSheikh%20Kamal%20IT%20Incubator%20%26%20Training%20Centre%2C%20Rajshahi!5e0!3m2!1sen!2sbd!4v1700000000000!5m2!1sen!2sbd"
+                    title="Office Location Map"
+                    src={mapEmbedUrl}
                     className="w-full h-full border-0 filter opacity-80 hover:opacity-100 transition-opacity"
                     allowFullScreen
                     loading="lazy"
@@ -328,7 +333,7 @@ const ContactPage = () => {
                   />
                   {/* Floating directions CTA */}
                   <a
-                    href="https://maps.google.com/?q=Sheikh+Kamal+IT+Incubator+Rajshahi"
+                    href={mapDirectionsUrl}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="absolute bottom-4 right-4 inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-white text-black text-xs font-bold shadow-xl hover:bg-neutral-100 transition-all hover:scale-105"
