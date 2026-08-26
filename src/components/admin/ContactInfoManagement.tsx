@@ -20,6 +20,29 @@ export interface ContactSocialLink {
   brand: string;
 }
 
+export const SOCIAL_PLATFORMS = [
+  { name: "Facebook", icon: "Facebook", brand: "#1877F2", defaultHandle: "@astropixel.tech", defaultUrl: "https://facebook.com/astropixel.tech" },
+  { name: "Instagram", icon: "Instagram", brand: "#E4405F", defaultHandle: "@astropixel.tech", defaultUrl: "https://instagram.com/astropixel.tech/" },
+  { name: "Twitter / X", icon: "Twitter", brand: "#000000", defaultHandle: "@astropixeltech", defaultUrl: "https://x.com/astropixeltech" },
+  { name: "LinkedIn", icon: "Linkedin", brand: "#0A66C2", defaultHandle: "AstroPixel Agency", defaultUrl: "https://linkedin.com/company/astropixel/" },
+  { name: "YouTube", icon: "Youtube", brand: "#FF0000", defaultHandle: "@astropixeltech", defaultUrl: "https://youtube.com/@astropixeltech" },
+  { name: "Pinterest", icon: "Pinterest", brand: "#E60023", defaultHandle: "@astropixeltech", defaultUrl: "https://pinterest.com/astropixeltech/" },
+  { name: "Behance", icon: "Behance", brand: "#1769FF", defaultHandle: "astropixel", defaultUrl: "https://behance.net/astropixel" },
+  { name: "Dribbble", icon: "Dribbble", brand: "#EA4C89", defaultHandle: "astropixel", defaultUrl: "https://dribbble.com/astropixel" },
+  { name: "Medium", icon: "Medium", brand: "#000000", defaultHandle: "@astropixel", defaultUrl: "https://medium.com/@astropixel" },
+  { name: "Reddit", icon: "Reddit", brand: "#FF4500", defaultHandle: "u/astropixel", defaultUrl: "https://reddit.com/user/astropixel" },
+  { name: "Quora", icon: "Quora", brand: "#B92B27", defaultHandle: "AstroPixel-Agency", defaultUrl: "https://quora.com/profile/AstroPixel-Agency" },
+  { name: "TikTok", icon: "TikTok", brand: "#000000", defaultHandle: "@astropixeltech", defaultUrl: "https://tiktok.com/@astropixeltech" },
+  { name: "Discord", icon: "Discord", brand: "#5865F2", defaultHandle: "AstroPixel Server", defaultUrl: "https://discord.gg/astropixel" },
+  { name: "Telegram", icon: "Telegram", brand: "#26A5E4", defaultHandle: "@astropixel", defaultUrl: "https://t.me/astropixel" },
+  { name: "GitHub", icon: "Github", brand: "#181717", defaultHandle: "astropixel", defaultUrl: "https://github.com/astropixel" },
+  { name: "Threads", icon: "Threads", brand: "#000000", defaultHandle: "@astropixel.tech", defaultUrl: "https://threads.net/@astropixel.tech" },
+  { name: "Snapchat", icon: "Snapchat", brand: "#FFFC00", defaultHandle: "astropixeltech", defaultUrl: "https://snapchat.com/add/astropixeltech" },
+  { name: "WhatsApp", icon: "MessageCircle", brand: "#25D366", defaultHandle: "+880 1344-497808", defaultUrl: "https://wa.me/8801344497808" },
+  { name: "Email", icon: "Mail", brand: "#EA4335", defaultHandle: "hello@astropixel.tech", defaultUrl: "mailto:hello@astropixel.tech" },
+  { name: "Website", icon: "Globe", brand: "#6366F1", defaultHandle: "astropixel.tech", defaultUrl: "https://astropixel.tech" },
+];
+
 export const DEFAULT_CONTACT_SOCIALS: ContactSocialLink[] = [
   { id: "1", name: "Facebook", handle: "@astropixel.tech", url: "https://www.facebook.com/astropixel.tech", icon: "Facebook", brand: "#1877F2" },
   { id: "2", name: "WhatsApp", handle: "+880 1344-497808", url: "https://wa.me/8801344497808", icon: "MessageCircle", brand: "#25D366" },
@@ -27,6 +50,8 @@ export const DEFAULT_CONTACT_SOCIALS: ContactSocialLink[] = [
   { id: "4", name: "LinkedIn", handle: "AstroPixel Agency", url: "https://www.linkedin.com/company/astropixel/", icon: "Linkedin", brand: "#0A66C2" },
   { id: "5", name: "YouTube", handle: "@astropixeltech", url: "https://www.youtube.com/@astropixeltech", icon: "Youtube", brand: "#FF0000" },
   { id: "6", name: "Pinterest", handle: "@astropixeltech", url: "https://www.pinterest.com/astropixeltech/", icon: "Pinterest", brand: "#E60023" },
+  { id: "7", name: "Behance", handle: "astropixel", url: "https://www.behance.net/astropixel", icon: "Behance", brand: "#1769FF" },
+  { id: "8", name: "Dribbble", handle: "astropixel", url: "https://dribbble.com/astropixel", icon: "Dribbble", brand: "#EA4C89" },
 ];
 
 export const getSavedContactSocials = (): ContactSocialLink[] => {
@@ -81,7 +106,7 @@ export default function ContactInfoManagement() {
   const [socialFormData, setSocialFormData] = useState({
     name: "Facebook",
     handle: "@astropixel.tech",
-    url: "https://facebook.com/...",
+    url: "https://facebook.com/astropixel.tech",
     icon: "Facebook",
     brand: "#1877F2",
   });
@@ -118,12 +143,26 @@ export default function ContactInfoManagement() {
     } catch (err) {}
   };
 
+  // Preset Selection Handler
+  const handleSelectPlatformPreset = (platformName: string) => {
+    const preset = SOCIAL_PLATFORMS.find((p) => p.name === platformName);
+    if (preset) {
+      setSocialFormData({
+        name: preset.name,
+        handle: preset.defaultHandle,
+        url: preset.defaultUrl,
+        icon: preset.icon,
+        brand: preset.brand,
+      });
+    }
+  };
+
   // Social Link CRUD
   const resetSocialForm = () => {
     setSocialFormData({
       name: "Facebook",
       handle: "@astropixel.tech",
-      url: "https://facebook.com/",
+      url: "https://facebook.com/astropixel.tech",
       icon: "Facebook",
       brand: "#1877F2",
     });
@@ -299,7 +338,7 @@ export default function ContactInfoManagement() {
                 <Share2 className="w-4 h-4 text-primary" />
                 Social Media Accounts ({socialsList.length})
               </CardTitle>
-              <CardDescription>Add, edit, or delete social media links shown on the contact page.</CardDescription>
+              <CardDescription>Select from 20+ preset platforms or add custom social links.</CardDescription>
             </div>
             <Dialog open={isSocialDialogOpen} onOpenChange={setIsSocialDialogOpen}>
               <DialogTrigger asChild>
@@ -307,7 +346,7 @@ export default function ContactInfoManagement() {
                   <Plus className="w-3.5 h-3.5" /> Add Link
                 </Button>
               </DialogTrigger>
-              <DialogContent className="max-w-md">
+              <DialogContent className="max-w-md max-h-[90vh] overflow-y-auto">
                 <DialogHeader>
                   <DialogTitle>
                     {editingSocial ? "Edit Social Media Link" : "Add New Social Media Link"}
@@ -315,17 +354,33 @@ export default function ContactInfoManagement() {
                 </DialogHeader>
                 <form onSubmit={handleSaveSocial} className="space-y-3.5 pt-2">
                   <div>
-                    <Label>Platform Name *</Label>
+                    <Label className="font-medium">Choose Social Platform Preset</Label>
+                    <Select onValueChange={handleSelectPlatformPreset}>
+                      <SelectTrigger className="mt-1">
+                        <SelectValue placeholder="Quick Select Platform Preset" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {SOCIAL_PLATFORMS.map((p) => (
+                          <SelectItem key={p.name} value={p.name}>
+                            {p.name}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+
+                  <div>
+                    <Label className="font-medium">Platform Name *</Label>
                     <Input
                       value={socialFormData.name}
                       onChange={(e) => setSocialFormData({ ...socialFormData, name: e.target.value })}
-                      placeholder="e.g. Facebook, WhatsApp, Instagram"
+                      placeholder="e.g. Behance, Dribbble, Pinterest, Reddit"
                       required
                     />
                   </div>
 
                   <div>
-                    <Label>Handle / Display Subtitle</Label>
+                    <Label className="font-medium">Handle / Subtitle Label</Label>
                     <Input
                       value={socialFormData.handle}
                       onChange={(e) => setSocialFormData({ ...socialFormData, handle: e.target.value })}
@@ -334,18 +389,18 @@ export default function ContactInfoManagement() {
                   </div>
 
                   <div>
-                    <Label>Direct URL *</Label>
+                    <Label className="font-medium">Direct URL *</Label>
                     <Input
                       value={socialFormData.url}
                       onChange={(e) => setSocialFormData({ ...socialFormData, url: e.target.value })}
-                      placeholder="https://facebook.com/..."
+                      placeholder="https://behance.net/astropixel"
                       required
                     />
                   </div>
 
                   <div className="grid grid-cols-2 gap-3">
                     <div>
-                      <Label>Lucide Icon</Label>
+                      <Label className="font-medium">Icon Preset</Label>
                       <Select
                         value={socialFormData.icon}
                         onValueChange={(val) => setSocialFormData({ ...socialFormData, icon: val })}
@@ -354,20 +409,17 @@ export default function ContactInfoManagement() {
                           <SelectValue placeholder="Select Icon" />
                         </SelectTrigger>
                         <SelectContent>
-                          <SelectItem value="Facebook">Facebook</SelectItem>
-                          <SelectItem value="MessageCircle">MessageCircle / WhatsApp</SelectItem>
-                          <SelectItem value="Instagram">Instagram</SelectItem>
-                          <SelectItem value="Linkedin">LinkedIn</SelectItem>
-                          <SelectItem value="Youtube">YouTube</SelectItem>
-                          <SelectItem value="Pinterest">Pinterest</SelectItem>
-                          <SelectItem value="Twitter">Twitter / X</SelectItem>
-                          <SelectItem value="Globe">Globe / Website</SelectItem>
+                          {SOCIAL_PLATFORMS.map((p) => (
+                            <SelectItem key={p.icon} value={p.icon}>
+                              {p.name} ({p.icon})
+                            </SelectItem>
+                          ))}
                         </SelectContent>
                       </Select>
                     </div>
 
                     <div>
-                      <Label>Brand Color (Hex)</Label>
+                      <Label className="font-medium">Brand Color (Hex)</Label>
                       <div className="flex gap-2 items-center mt-1">
                         <Input
                           type="color"
@@ -378,7 +430,7 @@ export default function ContactInfoManagement() {
                         <Input
                           value={socialFormData.brand}
                           onChange={(e) => setSocialFormData({ ...socialFormData, brand: e.target.value })}
-                          placeholder="#1877F2"
+                          placeholder="#1769FF"
                         />
                       </div>
                     </div>
