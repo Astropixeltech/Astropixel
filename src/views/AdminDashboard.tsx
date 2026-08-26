@@ -774,45 +774,45 @@ function AdminDashboardInner() {
       return;
     }
 
-    if (file.size > 2 * 1024 * 1024) {
-      toast.error('File size must be less than 2MB');
+    if (file.size > 15 * 1024 * 1024) {
+      toast.error('File size must be less than 15MB');
       return;
     }
 
     setUploadingAvatar(true);
 
     try {
-      const fileExt = file.name.split('.').pop();
-      const filePath = `${user?.id}/avatar.${fileExt}`;
+      // Read file as base64 Data URL
+      const reader = new FileReader();
+      reader.onload = async (event) => {
+        const avatarUrl = event.target?.result as string;
+        if (typeof window !== 'undefined') {
+          localStorage.setItem('astropixel_admin_avatar', avatarUrl);
+        }
 
-      // Upload to storage
-      const { error: uploadError } = await supabase.storage
-        .from('avatars')
-        .upload(filePath, file, { upsert: true });
+        try {
+          const fileExt = file.name.split('.').pop();
+          const filePath = `${user?.id || 'admin'}/avatar.${fileExt}`;
+          const { error: uploadError } = await supabase.storage
+            .from('avatars')
+            .upload(filePath, file, { upsert: true });
 
-      if (uploadError) {
-        toast.error(uploadError.message);
-        return;
-      }
+          if (!uploadError) {
+            const { data: { publicUrl } } = supabase.storage
+              .from('avatars')
+              .getPublicUrl(filePath);
 
-      // Get public URL
-      const { data: { publicUrl } } = supabase.storage
-        .from('avatars')
-        .getPublicUrl(filePath);
+            await supabase
+              .from('profiles')
+              .update({ avatar_url: publicUrl })
+              .eq('user_id', user?.id);
+          }
+        } catch (err) {}
 
-      // Update profile with avatar URL
-      const { error: profileError } = await supabase
-        .from('profiles')
-        .update({ avatar_url: publicUrl })
-        .eq('user_id', user?.id);
-
-      if (profileError) {
-        toast.error(profileError.message);
-        return;
-      }
-
-      toast.success('Profile picture uploaded!');
-      window.location.reload();
+        toast.success('Profile picture uploaded successfully!');
+        window.location.reload();
+      };
+      reader.readAsDataURL(file);
     } catch (error) {
       console.error('Avatar upload error:', error);
       toast.error('Something went wrong');

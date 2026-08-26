@@ -27,7 +27,7 @@ export default function ImageUploader({
   placeholder = 'Upload or paste image URL',
   className,
   aspectRatio = 'auto',
-  maxSizeMB = 5,
+  maxSizeMB = 15,
 }: ImageUploaderProps) {
   const [isUploading, setIsUploading] = useState(false);
   const [showUrlInput, setShowUrlInput] = useState(false);
