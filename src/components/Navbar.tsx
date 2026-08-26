@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import CustomArrowIcon from "@/components/ui/CustomArrowIcon";
 import { MenuToggle } from "@/components/ui/menu-toggle";
+import { useAuth } from "@/contexts/AuthContext";
 import { motion, AnimatePresence } from "framer-motion";
 import { 
   Menu, 
@@ -12,6 +13,8 @@ import {
   ArrowUpRight,
   Search,
   User,
+  LogIn,
+  LogOut,
   Home,
   Info,
   Briefcase,
@@ -47,6 +50,7 @@ const Navbar = () => {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
 
   const pathname = usePathname();
+  const { user, signOut } = useAuth();
   const brandLogo = logoFull;
   const { theme, setTheme } = useTheme();
   const { language, setLanguage, t } = useLanguage();
@@ -182,8 +186,40 @@ const Navbar = () => {
               </div>
             </div>
 
-            {/* Right Action — Start a Project button (Boxy rounded-xl style) */}
-            <div className="hidden lg:flex items-center gap-3">
+            {/* Right Action — Firebase User Profile & Start a Project button */}
+            <div className="hidden lg:flex items-center gap-2.5">
+              {user ? (
+                <div className="flex items-center gap-2">
+                  <div className={`flex items-center gap-2 px-3 py-1.5 rounded-full border text-xs font-semibold backdrop-blur-md ${
+                    isWhiteNavText ? "bg-white/10 border-white/20 text-white" : "bg-slate-900/5 border-slate-900/15 text-slate-900"
+                  }`}>
+                    {user.photoURL ? (
+                      <img src={user.photoURL} alt={user.full_name || 'User'} className="w-4 h-4 rounded-full" />
+                    ) : (
+                      <User className="w-3.5 h-3.5 text-cyan-400" />
+                    )}
+                    <span className="truncate max-w-[120px]">{user.full_name || user.email}</span>
+                  </div>
+                  <button
+                    onClick={() => signOut()}
+                    title="Log Out"
+                    className={`p-1.5 rounded-full hover:bg-white/10 transition-colors ${isWhiteNavText ? "text-white" : "text-slate-900"}`}
+                  >
+                    <LogOut className="w-4 h-4" />
+                  </button>
+                </div>
+              ) : (
+                <Link
+                  href="/login"
+                  className={`px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1.5 transition-colors ${
+                    isWhiteNavText ? "text-white/90 hover:text-cyan-300" : "text-slate-700 hover:text-purple-600"
+                  }`}
+                >
+                  <LogIn className="w-3.5 h-3.5" />
+                  <span>Login</span>
+                </Link>
+              )}
+
               <Link
                 href="/contact"
                 className={`group relative flex items-center justify-center gap-2 px-4 sm:px-4.5 py-2 rounded-lg transition-all duration-300 active:scale-95 shrink-0 shadow-md ${

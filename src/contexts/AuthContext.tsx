@@ -1,6 +1,16 @@
 'use client';
 
 import React, { createContext, useContext, useEffect, useState } from 'react';
+import { 
+  User as FirebaseUser, 
+  onAuthStateChanged, 
+  signInWithEmailAndPassword, 
+  createUserWithEmailAndPassword,
+  signInWithPopup,
+  GoogleAuthProvider,
+  signOut as firebaseSignOut 
+} from 'firebase/auth';
+import { auth, googleProvider } from '@/lib/firebase';
 import { AppRole, Profile } from '@/types/lms';
 
 interface AuthUser {
@@ -8,17 +18,20 @@ interface AuthUser {
   email: string;
   full_name?: string;
   role?: string;
+  photoURL?: string | null;
 }
 
 interface AuthContextType {
   user: AuthUser | null;
+  firebaseUser: FirebaseUser | null;
   session: any | null;
   profile: Profile | null;
   role: AppRole | null;
   isLoading: boolean;
   isAdmin: boolean;
-  signUp: (email: string, password: string, fullName: string, phoneNumber?: string) => Promise<{ error: Error | null }>;
+  signUp: (email: string, password: string, fullName?: string) => Promise<{ error: Error | null }>;
   signIn: (email: string, password: string) => Promise<{ error: Error | null }>;
+  signInWithGoogle: () => Promise<{ error: Error | null }>;
   signOut: () => Promise<void>;
   refreshProfile: () => Promise<void>;
 }
@@ -26,50 +39,67 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
+  const [firebaseUser, setFirebaseUser] = useState<FirebaseUser | null>(null);
   const [user, setUser] = useState<AuthUser | null>(null);
   const [profile, setProfile] = useState<Profile | null>(null);
   const [role, setRole] = useState<AppRole | null>('admin');
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // Default admin session for agency website
-    const defaultUser: AuthUser = {
-      id: 'admin-id',
-      email: 'admin@astropixel.tech',
-      full_name: 'Agency Admin',
-      role: 'admin',
-    };
-    setUser(defaultUser);
-    setRole('admin');
-    setProfile({
-      id: 'admin-id',
-      user_id: 'admin-id',
-      email: 'admin@astropixel.tech',
-      full_name: 'Agency Admin',
-      avatar_url: null,
-      phone_number: null,
-      created_at: new Date().toISOString(),
-      updated_at: new Date().toISOString(),
-    } as any);
+    const unsubscribe = onAuthStateChanged(auth, (fbUser) => {
+      setFirebaseUser(fbUser);
+      if (fbUser) {
+        const authUser: AuthUser = {
+          id: fbUser.uid,
+          email: fbUser.email || '',
+          full_name: fbUser.displayName || fbUser.email?.split('@')[0] || 'User',
+          role: 'admin',
+          photoURL: fbUser.photoURL,
+        };
+        setUser(authUser);
+        setRole('admin');
+        setProfile({
+          id: fbUser.uid,
+          user_id: fbUser.uid,
+          email: fbUser.email || '',
+          full_name: fbUser.displayName || 'User',
+          avatar_url: fbUser.photoURL || null,
+          phone_number: fbUser.phoneNumber || null,
+          created_at: new Date().toISOString(),
+          updated_at: new Date().toISOString(),
+        } as any);
+      } else {
+        setUser(null);
+        setProfile(null);
+        setRole(null);
+      }
+      setIsLoading(false);
+    });
+
+    return () => unsubscribe();
   }, []);
 
-  const signUp = async () => {
-    return { error: new Error('Registration disabled on agency site') };
+  const signUp = async (email: string, password: string, fullName?: string) => {
+    try {
+      const res = await createUserWithEmailAndPassword(auth, email, password);
+      return { error: null };
+    } catch (e: any) {
+      return { error: e };
+    }
   };
 
   const signIn = async (email: string, password: string) => {
     try {
-      const res = await fetch('/api/admin/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password }),
-      });
-      const data = await res.json();
-      if (!res.ok) {
-        return { error: new Error(data.error || 'Login failed') };
-      }
-      setUser(data.user);
-      setRole('admin');
+      await signInWithEmailAndPassword(auth, email, password);
+      return { error: null };
+    } catch (e: any) {
+      return { error: e };
+    }
+  };
+
+  const signInWithGoogleHandler = async () => {
+    try {
+      await signInWithPopup(auth, googleProvider);
       return { error: null };
     } catch (e: any) {
       return { error: e };
@@ -78,7 +108,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const signOut = async () => {
     try {
-      await fetch('/api/admin/logout', { method: 'POST' });
+      await firebaseSignOut(auth);
     } catch (e) {
       console.error(e);
     }
@@ -91,6 +121,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const value: AuthContextType = {
     user,
+    firebaseUser,
     session: user ? { user } : null,
     profile,
     role,
@@ -98,6 +129,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     isAdmin: role === 'admin' || true,
     signUp,
     signIn,
+    signInWithGoogle: signInWithGoogleHandler,
     signOut,
     refreshProfile,
   };
