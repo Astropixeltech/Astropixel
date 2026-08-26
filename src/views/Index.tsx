@@ -650,8 +650,8 @@ const Index = () => {
 
 
 
-          {/* MOBILE — single column: one service per row */}
-          <div className="lg:hidden max-w-2xl mx-auto grid grid-cols-1 gap-6">
+          {/* MOBILE / SMALL TABLET — single column: one service per row */}
+          <div className="md:hidden max-w-2xl mx-auto grid grid-cols-1 gap-12">
             {services.map((s, i) => {
               const Icon = s.icon;
               return (
@@ -661,40 +661,43 @@ const Index = () => {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, margin: "-80px" }}
                   transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+                  className="mb-4"
                 >
-                  <h3 className="text-base sm:text-lg font-display font-bold leading-[1.15] tracking-tight text-foreground mb-1.5">
+                  <h3 className="text-lg sm:text-xl font-display font-bold leading-[1.15] tracking-tight text-foreground mb-2">
                     {s.title}
                   </h3>
-                  <div className="relative h-[2px] w-full max-w-[100px] mb-1.5 overflow-hidden rounded-full">
+                  <div className="relative h-[2px] w-full max-w-[100px] mb-2.5 overflow-hidden rounded-full">
                     <div className="absolute inset-0 bg-gradient-to-r from-cyan-400 via-sky-400 to-blue-500 blur-[2px] opacity-80" />
                     <div className="absolute inset-0 bg-gradient-to-r from-cyan-300 via-sky-400 to-blue-500" />
                   </div>
                   <Link
                     href="/services"
-                    className="inline-flex items-center gap-1 font-semibold text-[11px] group mb-5"
+                    className="inline-flex items-center gap-1.5 font-semibold text-xs group mb-7 sm:mb-9"
                   >
                     <span className="relative bg-gradient-to-r from-cyan-300 via-sky-400 to-blue-500 bg-clip-text text-transparent">
                       {t("common.learnMore") || "See More"}
                     </span>
-                    <ArrowRight size={12} className="text-cyan-300 group-hover:translate-x-1 transition-transform duration-500 ease-out" />
+                    <ArrowRight size={13} className="text-cyan-300 group-hover:translate-x-1 transition-transform duration-500 ease-out" />
                   </Link>
-                  <MemoServicePair
-                    index={i}
-                    title={s.title}
-                    color={s.stripe}
-                    Icon={Icon}
-                    primaryImage={(s as any).primaryImage}
-                    secondaryImage={(s as any).secondaryImage}
-                    priority={i === 0}
-                  />
+                  <div className="pt-2">
+                    <MemoServicePair
+                      index={i}
+                      title={s.title}
+                      color={s.stripe}
+                      Icon={Icon}
+                      primaryImage={(s as any).primaryImage}
+                      secondaryImage={(s as any).secondaryImage}
+                      priority={i === 0}
+                    />
+                  </div>
                 </motion.div>
               );
             })}
           </div>
 
 
-          {/* DESKTOP — Sticky text left, scrolling image pairs right */}
-          <div className="hidden lg:grid max-w-7xl mx-auto grid-cols-12 gap-16 relative">
+          {/* DESKTOP / TABLET PC MODE — Sticky text left, scrolling image pairs right */}
+          <div className="hidden md:grid max-w-7xl mx-auto grid-cols-12 gap-8 lg:gap-16 relative">
             {/* LEFT — sticky text swaps with active service */}
             <div className="col-span-4 sticky top-32 h-[calc(100vh-8rem)] flex flex-col justify-center">
               <div className="relative">
