@@ -534,7 +534,7 @@ const ProcessCards = ({ values }: { values: ProcessValue[] }) => {
   }, []);
 
   return (
-    <div ref={containerRef} className="relative grid grid-cols-1 gap-8 pt-8 pb-8 md:block md:min-h-[520px]">
+    <div ref={containerRef} className="relative flex flex-row overflow-x-auto snap-x snap-mandatory no-scrollbar gap-3 sm:gap-4 pt-6 pb-8 px-1 md:block md:min-h-[520px]">
       {/* Dynamic connector overlay — behind cards, non-interactive */}
       <svg
         className="absolute inset-0 pointer-events-none"
@@ -575,22 +575,22 @@ const ProcessCards = ({ values }: { values: ProcessValue[] }) => {
           key={value.title}
           ref={(el: HTMLDivElement | null) => { cardRefs.current[index] = el; }}
           data-process-card
-          initial={{ opacity: 0, y: 40, rotate: rotations[index] }}
+          initial={{ opacity: 0, y: 30, rotate: rotations[index] }}
           whileInView={{ opacity: 1, y: 0, rotate: rotations[index] }}
           viewport={{ once: true }}
           transition={{ delay: index * 0.15, duration: 0.6 }}
           whileHover={{ y: -12, rotate: 0, scale: 1.03, transition: { duration: 0.3 } }}
           style={{ zIndex: zIndex[index] }}
-          className={`relative aspect-square w-full bg-white rounded-[28px] p-8 lg:p-10 flex flex-col justify-between ${positions[index]} shadow-[0_30px_60px_-25px_rgba(0,0,0,0.22),0_10px_30px_-15px_rgba(0,0,0,0.12)] hover:shadow-[0_40px_80px_-25px_rgba(0,0,0,0.30),0_15px_35px_-15px_rgba(0,0,0,0.15)] transition-shadow duration-300`}
+          className={`relative aspect-square w-[230px] sm:w-[270px] shrink-0 snap-center bg-white rounded-[22px] sm:rounded-[28px] p-5 sm:p-7 flex flex-col justify-between ${positions[index]} shadow-[0_20px_45px_-20px_rgba(0,0,0,0.18)] hover:shadow-[0_40px_80px_-25px_rgba(0,0,0,0.30)] transition-all duration-300`}
         >
-          <div className="text-6xl lg:text-7xl font-display font-semibold text-foreground leading-none tracking-tight">
+          <div className="text-4xl sm:text-6xl lg:text-7xl font-display font-semibold text-foreground leading-none tracking-tight">
             {index + 1}
           </div>
           <div>
-            <h3 className="text-xl lg:text-2xl font-display font-semibold text-foreground mb-2 tracking-tight">
+            <h3 className="text-base sm:text-xl lg:text-2xl font-display font-semibold text-foreground mb-1 sm:mb-2 tracking-tight">
               {value.title}
             </h3>
-            <p className="text-sm text-foreground/55 leading-relaxed">{value.desc}</p>
+            <p className="text-xs sm:text-sm text-foreground/60 leading-relaxed line-clamp-3">{value.desc}</p>
           </div>
         </motion.div>
       ))}
