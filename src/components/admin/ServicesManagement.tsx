@@ -4,12 +4,11 @@ import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
-import { Plus, Pencil, Trash2, Sparkles, Layers } from "lucide-react";
+import { Plus, Pencil, Trash2, ArrowLeft, Save, Sparkles, CheckCircle2 } from "lucide-react";
 import { toast } from "sonner";
 import ImageUploader from "./ImageUploader";
 import PageHeroEditor from "./PageHeroEditor";
@@ -23,7 +22,7 @@ const iconOptions = [
 
 export const ServicesManagement = () => {
   const queryClient = useQueryClient();
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [isFormOpen, setIsFormOpen] = useState(false);
   const [editingService, setEditingService] = useState<Service | null>(null);
 
   // Local state for instant CRUD operations with localStorage persistence
@@ -78,7 +77,12 @@ export const ServicesManagement = () => {
       is_active: true,
     });
     setEditingService(null);
-    setIsDialogOpen(false);
+    setIsFormOpen(false);
+  };
+
+  const handleAddNew = () => {
+    resetForm();
+    setIsFormOpen(true);
   };
 
   const handleEdit = (service: Service) => {
@@ -92,7 +96,7 @@ export const ServicesManagement = () => {
       features_text: service.features ? service.features.join("\n") : "",
       is_active: service.is_active,
     });
-    setIsDialogOpen(true);
+    setIsFormOpen(true);
   };
 
   const handleDelete = async (id: string) => {
@@ -183,6 +187,163 @@ export const ServicesManagement = () => {
     resetForm();
   };
 
+  // Full-page Inline Editor Mode
+  if (isFormOpen) {
+    return (
+      <div className="space-y-6 animate-in fade-in duration-200">
+        {/* Navigation Bar */}
+        <div className="flex flex-wrap items-center justify-between gap-4 p-4 rounded-2xl bg-card border border-border/60 shadow-sm">
+          <div className="flex items-center gap-3">
+            <Button variant="outline" size="sm" onClick={resetForm} className="gap-2">
+              <ArrowLeft className="w-4 h-4" />
+              Back to Services
+            </Button>
+            <div>
+              <h2 className="text-xl font-bold">
+                {editingService ? `Edit Service: ${editingService.title}` : "Add New Service"}
+              </h2>
+              <p className="text-xs text-muted-foreground">
+                Customize title, tagline, showcase image, and features list for the website.
+              </p>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-3">
+            <Button variant="ghost" onClick={resetForm}>
+              Cancel
+            </Button>
+            <Button onClick={handleSubmit} className="gap-2 bg-primary hover:bg-primary/90 text-primary-foreground">
+              <Save className="w-4 h-4" />
+              Save Service
+            </Button>
+          </div>
+        </div>
+
+        {/* Full Page Form Grid */}
+        <form onSubmit={handleSubmit}>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            {/* Left Column: Essential Details */}
+            <Card className="border-border/60 shadow-sm">
+              <CardHeader>
+                <CardTitle className="text-base font-semibold">General Information</CardTitle>
+                <CardDescription>Service title, tagline, description, and icon badge.</CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div>
+                  <Label className="font-medium">Service Title *</Label>
+                  <Input
+                    value={formData.title}
+                    onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+                    placeholder="e.g. UI/UX Design, Web Development"
+                    className="mt-1.5"
+                    required
+                  />
+                </div>
+
+                <div>
+                  <Label className="font-medium">Subtitle / Tagline</Label>
+                  <Input
+                    value={formData.subtitle}
+                    onChange={(e) => setFormData({ ...formData, subtitle: e.target.value })}
+                    placeholder="e.g. Product Design & Prototyping"
+                    className="mt-1.5"
+                  />
+                </div>
+
+                <div>
+                  <Label className="font-medium">Description</Label>
+                  <Textarea
+                    value={formData.description}
+                    onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+                    placeholder="Provide a compelling overview of what this service offers..."
+                    rows={4}
+                    className="mt-1.5"
+                  />
+                </div>
+
+                <div>
+                  <Label className="font-medium">Lucide Icon Badge</Label>
+                  <Select
+                    value={formData.icon}
+                    onValueChange={(val) => setFormData({ ...formData, icon: val })}
+                  >
+                    <SelectTrigger className="mt-1.5">
+                      <SelectValue placeholder="Select Icon" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {iconOptions.map((iconName) => (
+                        <SelectItem key={iconName} value={iconName}>
+                          {iconName}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div className="flex items-center justify-between p-3.5 rounded-xl border border-border/60 bg-muted/30 mt-4">
+                  <div>
+                    <Label className="font-medium cursor-pointer">Active Status</Label>
+                    <p className="text-xs text-muted-foreground">Visible on public /services page</p>
+                  </div>
+                  <Switch
+                    checked={formData.is_active}
+                    onCheckedChange={(checked) => setFormData({ ...formData, is_active: checked })}
+                  />
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Right Column: Visuals & Features List */}
+            <Card className="border-border/60 shadow-sm">
+              <CardHeader>
+                <CardTitle className="text-base font-semibold">Visual Assets & Feature Bullet Points</CardTitle>
+                <CardDescription>Upload cover showcase image and enter feature bullet points.</CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div>
+                  <Label className="font-medium">Cover Showcase Image</Label>
+                  <div className="mt-1.5">
+                    <ImageUploader
+                      value={formData.image_url}
+                      onChange={(url) => setFormData({ ...formData, image_url: url })}
+                      folder="services"
+                      placeholder="Paste Image URL or click Upload"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <div className="flex items-center justify-between">
+                    <Label className="font-medium">Feature Bullet Points</Label>
+                    <span className="text-xs text-muted-foreground">One item per line</span>
+                  </div>
+                  <Textarea
+                    value={formData.features_text}
+                    onChange={(e) => setFormData({ ...formData, features_text: e.target.value })}
+                    placeholder="Mobile & Web Application Design&#10;Interactive Prototyping & Wireframing&#10;User Research & Usability Testing&#10;Design Systems & Component Libraries"
+                    rows={8}
+                    className="mt-1.5 font-mono text-sm leading-relaxed"
+                  />
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+
+          {/* Bottom Action Bar */}
+          <div className="flex items-center justify-end gap-3 mt-6 p-4 rounded-2xl bg-card border border-border/60 shadow-sm">
+            <Button type="button" variant="outline" onClick={resetForm}>
+              Cancel
+            </Button>
+            <Button type="submit" className="gap-2 bg-primary hover:bg-primary/90 text-primary-foreground">
+              <Save className="w-4 h-4" />
+              Save Service
+            </Button>
+          </div>
+        </form>
+      </div>
+    );
+  }
+
   return (
     <div className="space-y-6">
       <PageHeroEditor
@@ -198,107 +359,10 @@ export const ServicesManagement = () => {
 
       <div className="flex justify-between items-center">
         <h2 className="text-2xl font-bold">Services ({servicesList.length})</h2>
-        <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-          <DialogTrigger asChild>
-            <Button onClick={() => resetForm()}>
-              <Plus className="w-4 h-4 mr-2" />
-              Add New Service
-            </Button>
-          </DialogTrigger>
-          <DialogContent className="max-w-lg max-h-[90vh] overflow-y-auto">
-            <DialogHeader>
-              <DialogTitle>
-                {editingService ? "Edit Service" : "Add New Service"}
-              </DialogTitle>
-            </DialogHeader>
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <div>
-                <Label>Service Title *</Label>
-                <Input
-                  value={formData.title}
-                  onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                  placeholder="e.g. UI/UX Design, Web Development"
-                  required
-                />
-              </div>
-
-              <div>
-                <Label>Subtitle / Tagline</Label>
-                <Input
-                  value={formData.subtitle}
-                  onChange={(e) => setFormData({ ...formData, subtitle: e.target.value })}
-                  placeholder="e.g. Product Design & Prototyping"
-                />
-              </div>
-
-              <div>
-                <Label>Description</Label>
-                <Textarea
-                  value={formData.description}
-                  onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                  placeholder="Detailed explanation of the service..."
-                  rows={3}
-                />
-              </div>
-
-              <div>
-                <Label>Cover Showcase Image URL</Label>
-                <ImageUploader
-                  value={formData.image_url}
-                  onChange={(url) => setFormData({ ...formData, image_url: url })}
-                  folder="services"
-                  placeholder="Showcase Image URL or Upload"
-                />
-              </div>
-
-              <div>
-                <Label>Icon</Label>
-                <Select
-                  value={formData.icon}
-                  onValueChange={(val) => setFormData({ ...formData, icon: val })}
-                >
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select Icon" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {iconOptions.map((iconName) => (
-                      <SelectItem key={iconName} value={iconName}>
-                        {iconName}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-
-              <div>
-                <Label>Features / Bullet Points (One per line)</Label>
-                <Textarea
-                  value={formData.features_text}
-                  onChange={(e) => setFormData({ ...formData, features_text: e.target.value })}
-                  placeholder="Mobile & Web Application Design&#10;Interactive Prototyping & Wireframing&#10;User Research & Usability Testing"
-                  rows={5}
-                />
-              </div>
-
-              <div className="flex items-center justify-between">
-                <Label>Active (Visible on Website)</Label>
-                <Switch
-                  checked={formData.is_active}
-                  onCheckedChange={(checked) => setFormData({ ...formData, is_active: checked })}
-                />
-              </div>
-
-              <div className="flex gap-2 pt-4">
-                <Button type="submit" className="flex-1">
-                  Save Service
-                </Button>
-                <Button type="button" variant="outline" onClick={resetForm}>
-                  Cancel
-                </Button>
-              </div>
-            </form>
-          </DialogContent>
-        </Dialog>
+        <Button onClick={handleAddNew} className="gap-2">
+          <Plus className="w-4 h-4" />
+          Add New Service
+        </Button>
       </div>
 
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">

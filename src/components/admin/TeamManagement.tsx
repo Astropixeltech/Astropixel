@@ -4,12 +4,11 @@ import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Plus, Pencil, Trash2, Facebook, Instagram, Linkedin, Twitter, Mail, MessageCircle } from "lucide-react";
+import { Plus, Pencil, Trash2, Facebook, Instagram, Linkedin, Twitter, Mail, MessageCircle, ArrowLeft, Save } from "lucide-react";
 import { toast } from "sonner";
 import ImageUploader from "./ImageUploader";
 import PageHeroEditor from "./PageHeroEditor";
@@ -17,14 +16,14 @@ import { DEFAULT_TEAM_MEMBERS, TeamMember, getSavedTeamMembers } from "@/hooks/u
 
 export const TeamManagement = () => {
   const queryClient = useQueryClient();
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [isFormOpen, setIsFormOpen] = useState(false);
   const [editingMember, setEditingMember] = useState<TeamMember | null>(null);
 
   // Local state for instant CRUD operations with localStorage persistence
   const [membersList, setMembersList] = useState<TeamMember[]>(() => getSavedTeamMembers());
 
   useEffect(() => {
-    // Attempt background fetch from Supabase if table populated
+    // Background fetch from Supabase if DB contains items
     const fetchSupabaseTeam = async () => {
       try {
         const { data, error } = await (supabase as any)
@@ -88,7 +87,12 @@ export const TeamManagement = () => {
       is_active: true,
     });
     setEditingMember(null);
-    setIsDialogOpen(false);
+    setIsFormOpen(false);
+  };
+
+  const handleAddNew = () => {
+    resetForm();
+    setIsFormOpen(true);
   };
 
   const handleEdit = (member: TeamMember) => {
@@ -110,7 +114,7 @@ export const TeamManagement = () => {
       threads_url: member.threads_url || "",
       is_active: member.is_active,
     });
-    setIsDialogOpen(true);
+    setIsFormOpen(true);
   };
 
   const handleDelete = async (id: string) => {
@@ -127,7 +131,7 @@ export const TeamManagement = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!formData.name.trim() || !formData.role.trim()) {
-      toast.error("Name and Role requirements must be filled");
+      toast.error("Name and Role fields are required");
       return;
     }
 
@@ -190,6 +194,191 @@ export const TeamManagement = () => {
     resetForm();
   };
 
+  // Full-page Inline Editor Mode
+  if (isFormOpen) {
+    return (
+      <div className="space-y-6 animate-in fade-in duration-200">
+        {/* Header Bar */}
+        <div className="flex flex-wrap items-center justify-between gap-4 p-4 rounded-2xl bg-card border border-border/60 shadow-sm">
+          <div className="flex items-center gap-3">
+            <Button variant="outline" size="sm" onClick={resetForm} className="gap-2">
+              <ArrowLeft className="w-4 h-4" />
+              Back to Team List
+            </Button>
+            <div>
+              <h2 className="text-xl font-bold">
+                {editingMember ? `Edit Team Member: ${editingMember.name}` : "Add New Team Member"}
+              </h2>
+              <p className="text-xs text-muted-foreground">
+                Set up member profile, position, bio, profile photo, and social links.
+              </p>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-3">
+            <Button variant="ghost" onClick={resetForm}>
+              Cancel
+            </Button>
+            <Button onClick={handleSubmit} className="gap-2 bg-primary hover:bg-primary/90 text-primary-foreground">
+              <Save className="w-4 h-4" />
+              Save Member
+            </Button>
+          </div>
+        </div>
+
+        {/* Full Page Grid */}
+        <form onSubmit={handleSubmit}>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            {/* Left Column: Personal Information */}
+            <Card className="border-border/60 shadow-sm">
+              <CardHeader>
+                <CardTitle className="text-base font-semibold">Personal Information</CardTitle>
+                <CardDescription>Name, position/role, biography, and active status.</CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div>
+                  <Label className="font-medium">Full Name *</Label>
+                  <Input
+                    value={formData.name}
+                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                    placeholder="Full Name"
+                    className="mt-1.5"
+                    required
+                  />
+                </div>
+
+                <div>
+                  <Label className="font-medium">Position / Role *</Label>
+                  <Input
+                    value={formData.role}
+                    onChange={(e) => setFormData({ ...formData, role: e.target.value })}
+                    placeholder="e.g. CEO, Co-Founder, Lead Designer"
+                    className="mt-1.5"
+                    required
+                  />
+                </div>
+
+                <div>
+                  <Label className="font-medium">Bio / Short Introduction</Label>
+                  <Textarea
+                    value={formData.bio}
+                    onChange={(e) => setFormData({ ...formData, bio: e.target.value })}
+                    placeholder="Short introduction about experience, expertise, or role..."
+                    rows={4}
+                    className="mt-1.5"
+                  />
+                </div>
+
+                <div>
+                  <Label className="font-medium">Profile Photo</Label>
+                  <div className="mt-1.5">
+                    <ImageUploader
+                      value={formData.image_url}
+                      onChange={(url) => setFormData({ ...formData, image_url: url })}
+                      folder="team"
+                      placeholder="Photo URL or Upload"
+                    />
+                  </div>
+                </div>
+
+                <div className="flex items-center justify-between p-3.5 rounded-xl border border-border/60 bg-muted/30 mt-4">
+                  <div>
+                    <Label className="font-medium cursor-pointer">Active Status</Label>
+                    <p className="text-xs text-muted-foreground">Visible on website team section</p>
+                  </div>
+                  <Switch
+                    checked={formData.is_active}
+                    onCheckedChange={(checked) => setFormData({ ...formData, is_active: checked })}
+                  />
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Right Column: Contact & Social Accounts */}
+            <Card className="border-border/60 shadow-sm">
+              <CardHeader>
+                <CardTitle className="text-base font-semibold">Contact & Social Media Links</CardTitle>
+                <CardDescription>Direct links to social profiles and contact info.</CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div>
+                  <Label className="font-medium">Facebook Profile URL</Label>
+                  <Input
+                    value={formData.facebook_url}
+                    onChange={(e) => setFormData({ ...formData, facebook_url: e.target.value })}
+                    placeholder="https://facebook.com/username"
+                    className="mt-1.5"
+                  />
+                </div>
+
+                <div>
+                  <Label className="font-medium">Instagram Profile URL</Label>
+                  <Input
+                    value={formData.instagram_url}
+                    onChange={(e) => setFormData({ ...formData, instagram_url: e.target.value })}
+                    placeholder="https://instagram.com/username"
+                    className="mt-1.5"
+                  />
+                </div>
+
+                <div>
+                  <Label className="font-medium">LinkedIn Profile URL</Label>
+                  <Input
+                    value={formData.linkedin_url}
+                    onChange={(e) => setFormData({ ...formData, linkedin_url: e.target.value })}
+                    placeholder="https://linkedin.com/in/username"
+                    className="mt-1.5"
+                  />
+                </div>
+
+                <div>
+                  <Label className="font-medium">Twitter / X Profile URL</Label>
+                  <Input
+                    value={formData.twitter_url}
+                    onChange={(e) => setFormData({ ...formData, twitter_url: e.target.value })}
+                    placeholder="https://x.com/username"
+                    className="mt-1.5"
+                  />
+                </div>
+
+                <div>
+                  <Label className="font-medium">WhatsApp Link / Number</Label>
+                  <Input
+                    value={formData.whatsapp_url}
+                    onChange={(e) => setFormData({ ...formData, whatsapp_url: e.target.value })}
+                    placeholder="https://wa.me/8801..."
+                    className="mt-1.5"
+                  />
+                </div>
+
+                <div>
+                  <Label className="font-medium">Email Address</Label>
+                  <Input
+                    value={formData.email}
+                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                    placeholder="email@example.com"
+                    className="mt-1.5"
+                  />
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+
+          {/* Action Footer */}
+          <div className="flex items-center justify-end gap-3 mt-6 p-4 rounded-2xl bg-card border border-border/60 shadow-sm">
+            <Button type="button" variant="outline" onClick={resetForm}>
+              Cancel
+            </Button>
+            <Button type="submit" className="gap-2 bg-primary hover:bg-primary/90 text-primary-foreground">
+              <Save className="w-4 h-4" />
+              Save Member
+            </Button>
+          </div>
+        </form>
+      </div>
+    );
+  }
+
   return (
     <div className="space-y-6">
       <PageHeroEditor
@@ -205,136 +394,10 @@ export const TeamManagement = () => {
 
       <div className="flex justify-between items-center">
         <h2 className="text-2xl font-bold">Team Members ({membersList.length})</h2>
-        <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-          <DialogTrigger asChild>
-            <Button onClick={() => resetForm()}>
-              <Plus className="w-4 h-4 mr-2" />
-              Add New Member
-            </Button>
-          </DialogTrigger>
-          <DialogContent className="max-w-lg max-h-[90vh] overflow-y-auto">
-            <DialogHeader>
-              <DialogTitle>
-                {editingMember ? "Edit Team Member" : "Add New Team Member"}
-              </DialogTitle>
-            </DialogHeader>
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <div>
-                <Label>Name *</Label>
-                <Input
-                  value={formData.name}
-                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                  placeholder="Full Name"
-                  required
-                />
-              </div>
-
-              <div>
-                <Label>Position / Role *</Label>
-                <Input
-                  value={formData.role}
-                  onChange={(e) => setFormData({ ...formData, role: e.target.value })}
-                  placeholder="e.g. CEO, Designer, Developer"
-                  required
-                />
-              </div>
-
-              <div>
-                <Label>Bio / Introduction</Label>
-                <Textarea
-                  value={formData.bio}
-                  onChange={(e) => setFormData({ ...formData, bio: e.target.value })}
-                  placeholder="Short Bio"
-                  rows={3}
-                />
-              </div>
-
-              <div>
-                <Label>Profile Picture URL</Label>
-                <ImageUploader
-                  value={formData.image_url}
-                  onChange={(url) => setFormData({ ...formData, image_url: url })}
-                  folder="team"
-                  placeholder="Profile Picture"
-                />
-              </div>
-
-              <div className="grid grid-cols-2 gap-3">
-                <div>
-                  <Label className="text-xs">Facebook URL</Label>
-                  <Input
-                    value={formData.facebook_url}
-                    onChange={(e) => setFormData({ ...formData, facebook_url: e.target.value })}
-                    placeholder="https://facebook.com/..."
-                    className="text-xs"
-                  />
-                </div>
-                <div>
-                  <Label className="text-xs">Instagram URL</Label>
-                  <Input
-                    value={formData.instagram_url}
-                    onChange={(e) => setFormData({ ...formData, instagram_url: e.target.value })}
-                    placeholder="https://instagram.com/..."
-                    className="text-xs"
-                  />
-                </div>
-                <div>
-                  <Label className="text-xs">LinkedIn URL</Label>
-                  <Input
-                    value={formData.linkedin_url}
-                    onChange={(e) => setFormData({ ...formData, linkedin_url: e.target.value })}
-                    placeholder="https://linkedin.com/..."
-                    className="text-xs"
-                  />
-                </div>
-                <div>
-                  <Label className="text-xs">Twitter/X URL</Label>
-                  <Input
-                    value={formData.twitter_url}
-                    onChange={(e) => setFormData({ ...formData, twitter_url: e.target.value })}
-                    placeholder="https://x.com/..."
-                    className="text-xs"
-                  />
-                </div>
-                <div>
-                  <Label className="text-xs">WhatsApp URL / Number</Label>
-                  <Input
-                    value={formData.whatsapp_url}
-                    onChange={(e) => setFormData({ ...formData, whatsapp_url: e.target.value })}
-                    placeholder="https://wa.me/..."
-                    className="text-xs"
-                  />
-                </div>
-                <div>
-                  <Label className="text-xs">Email</Label>
-                  <Input
-                    value={formData.email}
-                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                    placeholder="email@example.com"
-                    className="text-xs"
-                  />
-                </div>
-              </div>
-
-              <div className="flex items-center gap-2">
-                <Switch
-                  checked={formData.is_active}
-                  onCheckedChange={(checked) => setFormData({ ...formData, is_active: checked })}
-                />
-                <Label>Active (Visible on Website)</Label>
-              </div>
-
-              <div className="flex gap-2 pt-4">
-                <Button type="submit" className="flex-1">
-                  Save
-                </Button>
-                <Button type="button" variant="outline" onClick={resetForm}>
-                  Cancel
-                </Button>
-              </div>
-            </form>
-          </DialogContent>
-        </Dialog>
+        <Button onClick={handleAddNew} className="gap-2">
+          <Plus className="w-4 h-4" />
+          Add New Member
+        </Button>
       </div>
 
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
