@@ -186,7 +186,7 @@ const Navbar = () => {
             <div className="hidden lg:flex items-center gap-3">
               <Link
                 href="/contact"
-                className={`group relative flex items-center justify-center gap-2 px-4 sm:px-4.5 py-2 rounded-xl transition-all duration-300 active:scale-95 shrink-0 shadow-md ${
+                className={`group relative flex items-center justify-center gap-2 px-4 sm:px-4.5 py-2 rounded-lg transition-all duration-300 active:scale-95 shrink-0 shadow-md ${
                   isWhiteNavText
                     ? "bg-white hover:bg-slate-100 text-black border border-white/80"
                     : "bg-slate-900 hover:bg-black text-white border border-slate-800"
