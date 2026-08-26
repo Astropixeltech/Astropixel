@@ -72,13 +72,13 @@ const HeroSection = React.forwardRef<HTMLDivElement, HeroSectionProps>(
         {/* Main Hero Content */}
         <div className="relative z-10 max-w-5xl mx-auto px-4 flex flex-col items-center">
           {/* Main Headline */}
-          <h1 className="text-[32px] sm:text-[48px] md:text-[62px] lg:text-[74px] xl:text-[80px] font-bold tracking-tight text-white leading-[1.08] mb-2 md:mb-3">
+          <h1 className="text-[38px] xs:text-[42px] sm:text-[52px] md:text-[64px] lg:text-[76px] xl:text-[82px] font-bold tracking-tight text-white leading-[1.04] mb-2 md:mb-3">
             <span className="block">Vision Into <span className="font-serif italic font-normal text-white">Reality.</span></span>
             <span className="block"><span className="font-serif italic font-normal text-white">Pixel</span> by Pixel.</span>
           </h1>
 
-          {/* Visually Subtle H2 Subheading for SEO & GEO */}
-          <h2 className="text-xs sm:text-sm md:text-base font-medium uppercase tracking-[0.18em] text-white/70 mb-3.5 sm:mb-4">
+          {/* Visually Subtle H2 Subheading - Single Line on Mobile */}
+          <h2 className="text-[10px] xs:text-[11px] sm:text-xs md:text-sm lg:text-base font-medium uppercase tracking-[0.05em] xs:tracking-[0.1em] sm:tracking-[0.18em] text-white/75 whitespace-nowrap mb-3.5 sm:mb-4 max-w-full overflow-hidden text-ellipsis">
             UI/UX Design & Branding Agency in Bangladesh
           </h2>
 
