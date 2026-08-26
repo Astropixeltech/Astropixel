@@ -201,7 +201,7 @@ const Navbar = () => {
           </div>
         </div>
 
-        {/* Mobile menu drawer — Glassmorphism AstroPixel Style */}
+        {/* Mobile menu drawer — White Frosted Glassmorphism with Purple Accents */}
         <AnimatePresence>
           {isMobileMenuOpen && (
             <motion.div
@@ -212,13 +212,13 @@ const Navbar = () => {
               className="lg:hidden container mx-auto px-4 sm:px-6 mt-3 relative z-50"
             >
               <div 
-                className="relative rounded-3xl bg-[#090d16]/75 border border-white/20 shadow-[0_1px_0_0_rgba(255,255,255,0.35)_inset,0_20px_60px_-15px_rgba(0,0,0,0.6)] overflow-hidden backdrop-blur-3xl backdrop-saturate-180" 
+                className="relative rounded-3xl bg-white/85 border border-white/80 shadow-[0_1px_0_0_rgba(255,255,255,0.9)_inset,0_20px_50px_-10px_rgba(0,0,0,0.18)] overflow-hidden backdrop-blur-3xl backdrop-saturate-180" 
                 style={{ WebkitBackdropFilter: "blur(32px) saturate(180%)", backdropFilter: "blur(32px) saturate(180%)" }}
               >
                 {/* Top Glass Highlight */}
-                <div aria-hidden className="pointer-events-none absolute inset-x-4 top-0 h-px bg-gradient-to-r from-transparent via-white/50 to-transparent" />
+                <div aria-hidden className="pointer-events-none absolute inset-x-4 top-0 h-px bg-gradient-to-r from-transparent via-purple-300/60 to-transparent" />
 
-                {/* Single line stacked list — Glassmorphism Items */}
+                {/* Single line stacked list — White Glassmorphism Items */}
                 <div className="flex flex-col p-2.5 space-y-1.5 relative z-10">
                   {navLinksWithIcons.map((link) => {
                     const IconComp = link.icon;
@@ -226,18 +226,18 @@ const Navbar = () => {
 
                     const cls = `flex items-center justify-between px-4 py-3.5 rounded-2xl text-base font-medium transition-all duration-300 ${
                       isActive
-                        ? "text-cyan-300 font-bold bg-white/[0.12] border border-cyan-400/30 shadow-[0_0_20px_rgba(34,213,238,0.15)]"
-                        : "text-white/85 hover:text-white hover:bg-white/[0.08]"
+                        ? "text-purple-700 font-bold bg-purple-100/70 border border-purple-200/80 shadow-[0_0_15px_rgba(168,85,247,0.18)]"
+                        : "text-slate-800 hover:text-slate-900 hover:bg-slate-100/80"
                     }`;
 
                     const inner = (
                       <>
                         <div className="flex items-center gap-3">
-                          <IconComp size={18} className={isActive ? "text-cyan-400" : "text-white/60"} />
+                          <IconComp size={18} className={isActive ? "text-purple-600" : "text-slate-500"} />
                           <span className="tracking-wide">{link.name}</span>
                         </div>
                         {isActive && (
-                          <span className="w-2 h-2 rounded-full bg-cyan-400 shadow-[0_0_10px_#22d3ee]" />
+                          <span className="w-2 h-2 rounded-full bg-purple-600 shadow-[0_0_8px_#a855f7]" />
                         )}
                       </>
                     );
@@ -253,14 +253,14 @@ const Navbar = () => {
                 </div>
 
                 {/* Bottom CTA Link */}
-                <div className="p-3.5 bg-white/[0.04] border-t border-white/15 relative z-10">
+                <div className="p-3.5 bg-slate-50/80 border-t border-slate-200/70 relative z-10">
                   <Link
                     href="/contact"
                     onClick={handleNavClick}
-                    className="w-full py-3.5 px-6 rounded-2xl bg-white text-black font-bold text-sm flex items-center justify-center gap-2 shadow-[0_4px_25px_rgba(255,255,255,0.3)] hover:bg-slate-100 transition-all active:scale-[0.98]"
+                    className="w-full py-3.5 px-6 rounded-2xl bg-slate-900 text-white font-bold text-sm flex items-center justify-center gap-2 shadow-[0_4px_25px_rgba(15,23,42,0.25)] hover:bg-slate-800 transition-all active:scale-[0.98]"
                   >
                     <span>{t("nav.startProject")}</span>
-                    <ArrowUpRight size={16} className="text-black" />
+                    <ArrowUpRight size={16} className="text-white" />
                   </Link>
                 </div>
               </div>
