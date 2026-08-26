@@ -25,6 +25,11 @@ const firebaseConfig = {
 // Initialize Firebase App safely
 const app = getApps().length > 0 ? getApp() : initializeApp(firebaseConfig);
 
+if (typeof window !== 'undefined') {
+  (window as any).firebase = (window as any).firebase || app;
+  (window as any).firebase.SDK_VERSION = "10.8.0";
+}
+
 // Initialize Firebase Services
 export const auth = getAuth(app);
 export const db = getFirestore(app);
