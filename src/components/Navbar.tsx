@@ -205,32 +205,40 @@ const Navbar = () => {
         <AnimatePresence>
           {isMobileMenuOpen && (
             <motion.div
-              initial={{ opacity: 0, y: -10 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -10 }}
-              transition={{ duration: 0.2 }}
-              className="lg:hidden container mx-auto px-4 sm:px-6 mt-2"
+              initial={{ opacity: 0, y: -12, scale: 0.98 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: -12, scale: 0.98 }}
+              transition={{ duration: 0.25, ease: "easeOut" }}
+              className="lg:hidden container mx-auto px-4 sm:px-6 mt-3"
             >
-              <div className="rounded-2xl bg-white/[0.08] dark:bg-white/[0.06] backdrop-blur-2xl backdrop-saturate-150 border border-white/15 dark:border-white/10 shadow-[0_1px_0_0_rgba(255,255,255,0.35)_inset,0_-1px_0_0_rgba(0,0,0,0.06)_inset,0_10px_30px_-12px_rgba(0,0,0,0.25)] overflow-hidden" style={{ WebkitBackdropFilter: "blur(28px) saturate(160%)", backdropFilter: "blur(28px) saturate(160%)" }}>
-                <div className="grid grid-cols-2 gap-1 p-2">
-                  {navLinksWithIcons.map((link, index) => {
+              <div 
+                className="rounded-3xl bg-[#090d16]/95 border border-white/15 shadow-[0_20px_50px_rgba(0,0,0,0.5)] overflow-hidden backdrop-blur-2xl" 
+                style={{ WebkitBackdropFilter: "blur(32px)", backdropFilter: "blur(32px)" }}
+              >
+                {/* Single line stacked list — Clean text links, NO heavy button pills */}
+                <div className="flex flex-col p-2 space-y-1">
+                  {navLinksWithIcons.map((link) => {
                     const IconComp = link.icon;
                     const isActive = pathname === link.href;
-                    const isLastOdd = index === navLinksWithIcons.length - 1 && navLinksWithIcons.length % 2 !== 0;
-                    const baseText = isOverHero ? "text-white/90 hover:bg-white/10" : "text-neutral-800 hover:bg-black/5";
-                    const iconTone = isActive
-                      ? "text-white"
-                      : isOverHero
-                        ? "text-white/80"
-                        : "text-cyan-600/80";
-                    const cls = `flex items-center gap-2 px-3 py-2.5 rounded-xl text-sm transition-colors ${
-                      isLastOdd ? "col-span-2 justify-center" : ""
-                    } ${
+
+                    const cls = `flex items-center justify-between px-4 py-3.5 rounded-2xl text-base font-medium transition-all duration-200 ${
                       isActive
-                        ? "bg-gradient-to-br from-cyan-400 via-cyan-500 to-blue-600 text-white font-semibold shadow-[0_6px_20px_-6px_rgba(6,182,212,0.55)]"
-                        : baseText
+                        ? "text-cyan-400 font-bold bg-white/5"
+                        : "text-white/90 hover:text-white hover:bg-white/10"
                     }`;
-                    const inner = (<><IconComp size={16} className={iconTone} />{link.name}</>);
+
+                    const inner = (
+                      <>
+                        <div className="flex items-center gap-3">
+                          <IconComp size={18} className={isActive ? "text-cyan-400" : "text-white/60"} />
+                          <span className="tracking-wide">{link.name}</span>
+                        </div>
+                        {isActive && (
+                          <span className="w-2 h-2 rounded-full bg-cyan-400 shadow-[0_0_8px_#22d3ee]" />
+                        )}
+                      </>
+                    );
+
                     return link.href.startsWith("http") ? (
                       <a key={link.href} href={link.href} target="_blank" rel="noopener noreferrer" onClick={handleNavClick} className={cls}>{inner}</a>
                     ) : (
@@ -240,18 +248,16 @@ const Navbar = () => {
                     );
                   })}
                 </div>
-                <div className={`flex items-center justify-between gap-2 p-2 border-t ${isOverHero ? "border-white/15" : "border-black/10"}`}>
+
+                {/* Bottom CTA Link */}
+                <div className="p-3 bg-white/5 border-t border-white/10">
                   <Link
                     href="/contact"
                     onClick={handleNavClick}
-                    className={`relative flex-1 h-10 rounded-xl overflow-hidden font-bold text-xs flex items-center justify-center gap-1.5 shadow-md border ${
-                      isWhiteNavText
-                        ? "bg-white text-black border-white/80"
-                        : "bg-slate-900 text-white border-slate-800"
-                    }`}
+                    className="w-full py-3.5 px-6 rounded-2xl bg-white text-black font-bold text-sm flex items-center justify-center gap-2 shadow-lg hover:bg-slate-100 transition-all active:scale-[0.98]"
                   >
                     <span>{t("nav.startProject")}</span>
-                    <ArrowUpRight size={13} className={isWhiteNavText ? "text-black" : "text-white"} />
+                    <ArrowUpRight size={16} className="text-black" />
                   </Link>
                 </div>
               </div>
