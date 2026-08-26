@@ -201,7 +201,7 @@ const Navbar = () => {
           </div>
         </div>
 
-        {/* Mobile menu drawer */}
+        {/* Mobile menu drawer — Glassmorphism AstroPixel Style */}
         <AnimatePresence>
           {isMobileMenuOpen && (
             <motion.div
@@ -209,22 +209,25 @@ const Navbar = () => {
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: -12, scale: 0.98 }}
               transition={{ duration: 0.25, ease: "easeOut" }}
-              className="lg:hidden container mx-auto px-4 sm:px-6 mt-3"
+              className="lg:hidden container mx-auto px-4 sm:px-6 mt-3 relative z-50"
             >
               <div 
-                className="rounded-3xl bg-[#090d16]/95 border border-white/15 shadow-[0_20px_50px_rgba(0,0,0,0.5)] overflow-hidden backdrop-blur-2xl" 
-                style={{ WebkitBackdropFilter: "blur(32px)", backdropFilter: "blur(32px)" }}
+                className="relative rounded-3xl bg-[#090d16]/75 border border-white/20 shadow-[0_1px_0_0_rgba(255,255,255,0.35)_inset,0_20px_60px_-15px_rgba(0,0,0,0.6)] overflow-hidden backdrop-blur-3xl backdrop-saturate-180" 
+                style={{ WebkitBackdropFilter: "blur(32px) saturate(180%)", backdropFilter: "blur(32px) saturate(180%)" }}
               >
-                {/* Single line stacked list — Clean text links, NO heavy button pills */}
-                <div className="flex flex-col p-2 space-y-1">
+                {/* Top Glass Highlight */}
+                <div aria-hidden className="pointer-events-none absolute inset-x-4 top-0 h-px bg-gradient-to-r from-transparent via-white/50 to-transparent" />
+
+                {/* Single line stacked list — Glassmorphism Items */}
+                <div className="flex flex-col p-2.5 space-y-1.5 relative z-10">
                   {navLinksWithIcons.map((link) => {
                     const IconComp = link.icon;
                     const isActive = pathname === link.href;
 
-                    const cls = `flex items-center justify-between px-4 py-3.5 rounded-2xl text-base font-medium transition-all duration-200 ${
+                    const cls = `flex items-center justify-between px-4 py-3.5 rounded-2xl text-base font-medium transition-all duration-300 ${
                       isActive
-                        ? "text-cyan-400 font-bold bg-white/5"
-                        : "text-white/90 hover:text-white hover:bg-white/10"
+                        ? "text-cyan-300 font-bold bg-white/[0.12] border border-cyan-400/30 shadow-[0_0_20px_rgba(34,213,238,0.15)]"
+                        : "text-white/85 hover:text-white hover:bg-white/[0.08]"
                     }`;
 
                     const inner = (
@@ -234,7 +237,7 @@ const Navbar = () => {
                           <span className="tracking-wide">{link.name}</span>
                         </div>
                         {isActive && (
-                          <span className="w-2 h-2 rounded-full bg-cyan-400 shadow-[0_0_8px_#22d3ee]" />
+                          <span className="w-2 h-2 rounded-full bg-cyan-400 shadow-[0_0_10px_#22d3ee]" />
                         )}
                       </>
                     );
@@ -250,11 +253,11 @@ const Navbar = () => {
                 </div>
 
                 {/* Bottom CTA Link */}
-                <div className="p-3 bg-white/5 border-t border-white/10">
+                <div className="p-3.5 bg-white/[0.04] border-t border-white/15 relative z-10">
                   <Link
                     href="/contact"
                     onClick={handleNavClick}
-                    className="w-full py-3.5 px-6 rounded-2xl bg-white text-black font-bold text-sm flex items-center justify-center gap-2 shadow-lg hover:bg-slate-100 transition-all active:scale-[0.98]"
+                    className="w-full py-3.5 px-6 rounded-2xl bg-white text-black font-bold text-sm flex items-center justify-center gap-2 shadow-[0_4px_25px_rgba(255,255,255,0.3)] hover:bg-slate-100 transition-all active:scale-[0.98]"
                   >
                     <span>{t("nav.startProject")}</span>
                     <ArrowUpRight size={16} className="text-black" />
