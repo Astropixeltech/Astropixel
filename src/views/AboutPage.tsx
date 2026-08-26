@@ -581,16 +581,16 @@ const ProcessCards = ({ values }: { values: ProcessValue[] }) => {
           transition={{ delay: index * 0.15, duration: 0.6 }}
           whileHover={{ y: -12, rotate: 0, scale: 1.03, transition: { duration: 0.3 } }}
           style={{ zIndex: zIndex[index] }}
-          className={`relative aspect-square w-[230px] sm:w-[270px] shrink-0 snap-center bg-white rounded-[22px] sm:rounded-[28px] p-5 sm:p-7 flex flex-col justify-between ${positions[index]} shadow-[0_20px_45px_-20px_rgba(0,0,0,0.18)] hover:shadow-[0_40px_80px_-25px_rgba(0,0,0,0.30)] transition-all duration-300`}
+          className={`relative aspect-square w-[180px] xs:w-[200px] sm:w-[260px] shrink-0 snap-center bg-white rounded-[18px] sm:rounded-[28px] p-4 sm:p-6 flex flex-col justify-between ${positions[index]} shadow-[0_15px_35px_-15px_rgba(0,0,0,0.16)] hover:shadow-[0_40px_80px_-25px_rgba(0,0,0,0.30)] transition-all duration-300`}
         >
-          <div className="text-4xl sm:text-6xl lg:text-7xl font-display font-semibold text-foreground leading-none tracking-tight">
+          <div className="text-3xl sm:text-5xl lg:text-7xl font-display font-semibold text-foreground leading-none tracking-tight">
             {index + 1}
           </div>
           <div>
-            <h3 className="text-base sm:text-xl lg:text-2xl font-display font-semibold text-foreground mb-1 sm:mb-2 tracking-tight">
+            <h3 className="text-sm sm:text-lg lg:text-2xl font-display font-semibold text-foreground mb-0.5 sm:mb-2 tracking-tight">
               {value.title}
             </h3>
-            <p className="text-xs sm:text-sm text-foreground/60 leading-relaxed line-clamp-3">{value.desc}</p>
+            <p className="text-[11px] sm:text-xs lg:text-sm text-foreground/60 leading-tight line-clamp-3">{value.desc}</p>
           </div>
         </motion.div>
       ))}
