@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
@@ -13,6 +13,7 @@ import { Plus, Pencil, Trash2, Facebook, Instagram, Linkedin, Twitter, Mail, Glo
 import { toast } from "sonner";
 import ImageUploader from "./ImageUploader";
 import PageHeroEditor from "./PageHeroEditor";
+import { DEFAULT_TEAM_MEMBERS, TeamMember } from "@/hooks/useTeamMembers";
 
 // Custom icons for platforms without lucide equivalents
 const FiverrIcon = () => (
@@ -32,26 +33,6 @@ const ThreadsIcon = () => (
     <path d="M12.186 24h-.007c-3.581-.024-6.334-1.205-8.184-3.509C2.35 18.44 1.5 15.586 1.472 12.01v-.017c.03-3.579.879-6.43 2.525-8.482C5.845 1.205 8.6.024 12.18 0h.014c2.746.02 5.043.725 6.826 2.098 1.677 1.29 2.858 3.13 3.509 5.467l-2.04.569c-1.104-3.96-3.898-5.984-8.304-6.015-2.91.022-5.11.936-6.54 2.717C4.307 6.504 3.616 8.914 3.589 12c.027 3.086.718 5.496 2.057 7.164 1.43 1.783 3.631 2.698 6.54 2.717 2.623-.02 4.358-.631 5.8-2.045 1.647-1.613 1.618-3.593 1.09-4.798-.31-.71-.873-1.3-1.634-1.75-.192 1.352-.622 2.446-1.284 3.272-.886 1.102-2.14 1.704-3.73 1.79-1.202.065-2.361-.218-3.259-.801-1.063-.689-1.685-1.74-1.752-2.96-.065-1.182.408-2.256 1.332-3.023.85-.706 2.044-1.114 3.382-1.169l.164-.006c1.077 0 2.063.238 2.88.678-.148-.56-.42-1.025-.82-1.393-.586-.536-1.432-.821-2.443-.821h-.103c-1.17.03-2.14.475-2.736 1.222l-1.511-1.236c.96-1.177 2.405-1.867 4.134-1.974h.138c1.605 0 2.965.488 3.93 1.407.893.852 1.386 2.041 1.428 3.441v.049c.083.018.165.036.249.056 1.188.276 2.163.857 2.898 1.724.878 1.037 1.272 2.378 1.14 3.88-.173 1.962-1.058 3.639-2.559 4.851-1.358 1.096-3.17 1.759-5.38 1.971-.262.025-.521.037-.781.037zm-1.2-8.319c-.788.036-1.408.247-1.793.609-.353.333-.53.756-.499 1.194.062 1.04 1.072 1.75 2.467 1.679 1.017-.053 1.8-.447 2.326-1.17.312-.428.523-.973.635-1.634-.66-.244-1.436-.49-2.369-.592-.257-.03-.516-.058-.767-.086z"/>
   </svg>
 );
-
-interface TeamMember {
-  id: string;
-  name: string;
-  role: string;
-  bio: string | null;
-  image_url: string | null;
-  facebook_url: string | null;
-  instagram_url: string | null;
-  linkedin_url: string | null;
-  twitter_url: string | null;
-  whatsapp_url: string | null;
-  email: string | null;
-  fiverr_url: string | null;
-  upwork_url: string | null;
-  portfolio_url: string | null;
-  threads_url: string | null;
-  is_active: boolean;
-  order_index: number;
-}
 
 interface CustomLink {
   id?: string;
@@ -86,14 +67,20 @@ export const TeamManagement = () => {
   const { data: members, isLoading } = useQuery({
     queryKey: ["admin-team-members"],
     queryFn: async () => {
-      const { data, error } = await (supabase as any)
-        .from("team_members")
-        .select("*")
-        .order("order_index", { ascending: true });
-      if (error) throw error;
-      return data as TeamMember[];
+      try {
+        const { data, error } = await (supabase as any)
+          .from("team_members")
+          .select("*")
+          .order("order_index", { ascending: true });
+        if (error || !data) return DEFAULT_TEAM_MEMBERS;
+        return (data.length > 0 ? data : DEFAULT_TEAM_MEMBERS) as TeamMember[];
+      } catch {
+        return DEFAULT_TEAM_MEMBERS;
+      }
     },
   });
+
+  const displayMembers = (members && members.length > 0) ? members : DEFAULT_TEAM_MEMBERS;
 
   const saveMutation = useMutation({
     mutationFn: async (data: typeof formData & { id?: string }) => {
@@ -121,68 +108,77 @@ export const TeamManagement = () => {
           .eq("id", data.id);
         if (error) throw error;
       } else {
-        const { data: newMember, error } = await (supabase as any).from("team_members").insert({
-          name: data.name,
-          role: data.role,
-          bio: data.bio || null,
-          image_url: data.image_url || null,
-          facebook_url: data.facebook_url || null,
-          instagram_url: data.instagram_url || null,
-          linkedin_url: data.linkedin_url || null,
-          twitter_url: data.twitter_url || null,
-          whatsapp_url: data.whatsapp_url || null,
-          email: data.email || null,
-          fiverr_url: data.fiverr_url || null,
-          upwork_url: data.upwork_url || null,
-          portfolio_url: data.portfolio_url || null,
-          threads_url: data.threads_url || null,
-          is_active: data.is_active,
-          order_index: (members?.length || 0) + 1,
-        }).select('id').single();
+        const { data: inserted, error } = await (supabase as any)
+          .from("team_members")
+          .insert({
+            name: data.name,
+            role: data.role,
+            bio: data.bio || null,
+            image_url: data.image_url || null,
+            facebook_url: data.facebook_url || null,
+            instagram_url: data.instagram_url || null,
+            linkedin_url: data.linkedin_url || null,
+            twitter_url: data.twitter_url || null,
+            whatsapp_url: data.whatsapp_url || null,
+            email: data.email || null,
+            fiverr_url: data.fiverr_url || null,
+            upwork_url: data.upwork_url || null,
+            portfolio_url: data.portfolio_url || null,
+            threads_url: data.threads_url || null,
+            is_active: data.is_active,
+          })
+          .select()
+          .single();
         if (error) throw error;
-        memberId = newMember?.id;
+        memberId = inserted?.id;
       }
 
-      // Save custom links
-      if (memberId) {
-        // Delete existing custom links
-        await (supabase as any).from("team_member_custom_links").delete().eq("team_member_id", memberId);
-        
-        // Insert new custom links
-        if (customLinks.length > 0) {
-          const linksToInsert = customLinks.filter(l => l.label && l.url).map((link, idx) => ({
-            team_member_id: memberId!,
-            label: link.label,
-            url: link.url,
-            icon_url: link.icon_url || null,
-            order_index: idx,
+      if (memberId && customLinks.length > 0) {
+        await (supabase as any)
+          .from("team_member_custom_links")
+          .delete()
+          .eq("team_member_id", memberId);
+
+        const linksToInsert = customLinks
+          .filter((l) => l.label && l.url)
+          .map((l) => ({
+            team_member_id: memberId,
+            label: l.label,
+            url: l.url,
+            icon_url: l.icon_url || "",
           }));
-          if (linksToInsert.length > 0) {
-            await (supabase as any).from("team_member_custom_links").insert(linksToInsert);
-          }
+
+        if (linksToInsert.length > 0) {
+          await (supabase as any)
+            .from("team_member_custom_links")
+            .insert(linksToInsert);
         }
       }
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["admin-team-members"] });
-      toast.success(editingMember ? "Team member updated" : "New team member added");
+      queryClient.invalidateQueries({ queryKey: ["public-team-members"] });
+      toast.success("Team member saved successfully");
       resetForm();
     },
-    onError: (error) => {
-      toast.error("Something went wrong: " + error.message);
+    onError: (error: any) => {
+      toast.error("Failed to save: " + error.message);
     },
   });
 
   const deleteMutation = useMutation({
     mutationFn: async (id: string) => {
-      const { error } = await (supabase as any).from("team_members").delete().eq("id", id);
+      const { error } = await (supabase as any)
+        .from("team_members")
+        .delete()
+        .eq("id", id);
       if (error) throw error;
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["admin-team-members"] });
       toast.success("Team member deleted");
     },
-    onError: (error) => {
+    onError: (error: any) => {
       toast.error("Failed to delete: " + error.message);
     },
   });
@@ -229,29 +225,27 @@ export const TeamManagement = () => {
       threads_url: member.threads_url || "",
       is_active: member.is_active,
     });
-    
-    // Load custom links
-    const { data: links } = await (supabase as any)
-      .from("team_member_custom_links")
-      .select("*")
-      .eq("team_member_id", member.id)
-      .order("order_index");
-    
-    setCustomLinks((links || []).map((l: any) => ({ id: l.id, label: l.label, url: l.url, icon_url: l.icon_url || '' })));
+
+    try {
+      const { data } = await (supabase as any)
+        .from("team_member_custom_links")
+        .select("*")
+        .eq("team_member_id", member.id);
+      if (data) setCustomLinks(data);
+    } catch {
+      setCustomLinks([]);
+    }
     setIsDialogOpen(true);
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    saveMutation.mutate({
-      ...formData,
-      id: editingMember?.id,
-    });
+    if (!formData.name || !formData.role) {
+      toast.error("Name and Role are required");
+      return;
+    }
+    saveMutation.mutate({ ...formData, id: editingMember?.id });
   };
-
-  if (isLoading) {
-    return <div className="text-center py-8">Loading...</div>;
-  }
 
   return (
     <div className="space-y-6">
@@ -314,172 +308,69 @@ export const TeamManagement = () => {
 
               <div>
                 <Label>Profile Picture URL</Label>
-                <Input
+                <ImageUploader
                   value={formData.image_url}
-                  onChange={(e) => setFormData({ ...formData, image_url: e.target.value })}
-                  placeholder="https://example.com/photo.jpg"
+                  onChange={(url) => setFormData({ ...formData, image_url: url })}
+                  folder="team"
+                  placeholder="Profile Picture"
                 />
               </div>
 
-              {/* Social Media Section */}
-              <div className="border-t pt-4 mt-4">
-                <h4 className="font-medium mb-3 text-sm text-muted-foreground">Social Media Links</h4>
-                
-                <div className="grid grid-cols-1 gap-3">
-                  <div className="flex items-center gap-2">
-                    <Facebook className="w-4 h-4 text-blue-600 flex-shrink-0" />
-                    <Input
-                      value={formData.facebook_url}
-                      onChange={(e) => setFormData({ ...formData, facebook_url: e.target.value })}
-                      placeholder="Facebook URL"
-                    />
-                  </div>
-
-                  <div className="flex items-center gap-2">
-                    <Instagram className="w-4 h-4 text-pink-600 flex-shrink-0" />
-                    <Input
-                      value={formData.instagram_url}
-                      onChange={(e) => setFormData({ ...formData, instagram_url: e.target.value })}
-                      placeholder="Instagram URL"
-                    />
-                  </div>
-
-                  <div className="flex items-center gap-2">
-                    <Twitter className="w-4 h-4 text-sky-500 flex-shrink-0" />
-                    <Input
-                      value={formData.twitter_url}
-                      onChange={(e) => setFormData({ ...formData, twitter_url: e.target.value })}
-                      placeholder="Twitter/X URL"
-                    />
-                  </div>
-
-                  <div className="flex items-center gap-2">
-                    <span className="flex-shrink-0"><ThreadsIcon /></span>
-                    <Input
-                      value={formData.threads_url}
-                      onChange={(e) => setFormData({ ...formData, threads_url: e.target.value })}
-                      placeholder="Threads URL"
-                    />
-                  </div>
-
-                  <div className="flex items-center gap-2">
-                    <MessageCircle className="w-4 h-4 text-green-500 flex-shrink-0" />
-                    <Input
-                      value={formData.whatsapp_url}
-                      onChange={(e) => setFormData({ ...formData, whatsapp_url: e.target.value })}
-                      placeholder="WhatsApp (wa.me/8801XXXXXXXXX)"
-                    />
-                  </div>
-
-                  <div className="flex items-center gap-2">
-                    <Mail className="w-4 h-4 text-red-500 flex-shrink-0" />
-                    <Input
-                      value={formData.email}
-                      onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                      placeholder="Email Address"
-                      type="email"
-                    />
-                  </div>
-
-                  <div className="flex items-center gap-2">
-                    <Linkedin className="w-4 h-4 text-blue-700 flex-shrink-0" />
-                    <Input
-                      value={formData.linkedin_url}
-                      onChange={(e) => setFormData({ ...formData, linkedin_url: e.target.value })}
-                      placeholder="LinkedIn URL"
-                    />
-                  </div>
-
-                  <div className="flex items-center gap-2">
-                    <span className="flex-shrink-0 text-green-600"><FiverrIcon /></span>
-                    <Input
-                      value={formData.fiverr_url}
-                      onChange={(e) => setFormData({ ...formData, fiverr_url: e.target.value })}
-                      placeholder="Fiverr Profile URL"
-                    />
-                  </div>
-
-                  <div className="flex items-center gap-2">
-                    <span className="flex-shrink-0 text-green-500"><UpworkIcon /></span>
-                    <Input
-                      value={formData.upwork_url}
-                      onChange={(e) => setFormData({ ...formData, upwork_url: e.target.value })}
-                      placeholder="Upwork Profile URL"
-                    />
-                  </div>
-
-                  <div className="flex items-center gap-2">
-                    <Globe className="w-4 h-4 text-primary flex-shrink-0" />
-                    <Input
-                      value={formData.portfolio_url}
-                      onChange={(e) => setFormData({ ...formData, portfolio_url: e.target.value })}
-                      placeholder="Portfolio Website URL"
-                    />
-                  </div>
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <Label className="text-xs">Facebook URL</Label>
+                  <Input
+                    value={formData.facebook_url}
+                    onChange={(e) => setFormData({ ...formData, facebook_url: e.target.value })}
+                    placeholder="https://facebook.com/..."
+                    className="text-xs"
+                  />
                 </div>
-              </div>
-
-              {/* Custom Links Section */}
-              <div className="border-t pt-4 mt-4">
-                <div className="flex items-center justify-between mb-3">
-                  <h4 className="font-medium text-sm text-muted-foreground">Custom Links (Other Sites)</h4>
-                  <Button
-                    type="button"
-                    variant="outline"
-                    size="sm"
-                    onClick={() => setCustomLinks([...customLinks, { label: '', url: '', icon_url: '' }])}
-                  >
-                    <Plus className="w-3 h-3 mr-1" />
-                    Add Link
-                  </Button>
+                <div>
+                  <Label className="text-xs">Instagram URL</Label>
+                  <Input
+                    value={formData.instagram_url}
+                    onChange={(e) => setFormData({ ...formData, instagram_url: e.target.value })}
+                    placeholder="https://instagram.com/..."
+                    className="text-xs"
+                  />
                 </div>
-                
-                {customLinks.map((link, idx) => (
-                  <div key={idx} className="space-y-2 mb-3 p-3 border rounded-lg relative">
-                    <Button
-                      type="button"
-                      variant="ghost"
-                      size="icon"
-                      className="absolute top-1 right-1 h-6 w-6"
-                      onClick={() => setCustomLinks(customLinks.filter((_, i) => i !== idx))}
-                    >
-                      <X className="w-3 h-3" />
-                    </Button>
-                    <div className="grid grid-cols-2 gap-2">
-                      <Input
-                        placeholder="Label (e.g. YouTube)"
-                        value={link.label}
-                        onChange={(e) => {
-                          const updated = [...customLinks];
-                          updated[idx].label = e.target.value;
-                          setCustomLinks(updated);
-                        }}
-                      />
-                      <Input
-                        placeholder="URL"
-                        value={link.url}
-                        onChange={(e) => {
-                          const updated = [...customLinks];
-                          updated[idx].url = e.target.value;
-                          setCustomLinks(updated);
-                        }}
-                      />
-                    </div>
-                    <div>
-                      <Label className="text-xs text-muted-foreground">Icon (URL or Upload)</Label>
-                      <ImageUploader
-                        value={link.icon_url}
-                        onChange={(url) => {
-                          const updated = [...customLinks];
-                          updated[idx].icon_url = url;
-                          setCustomLinks(updated);
-                        }}
-                        folder="custom-icons"
-                        placeholder="Icon URL or Upload"
-                      />
-                    </div>
-                  </div>
-                ))}
+                <div>
+                  <Label className="text-xs">LinkedIn URL</Label>
+                  <Input
+                    value={formData.linkedin_url}
+                    onChange={(e) => setFormData({ ...formData, linkedin_url: e.target.value })}
+                    placeholder="https://linkedin.com/..."
+                    className="text-xs"
+                  />
+                </div>
+                <div>
+                  <Label className="text-xs">Twitter/X URL</Label>
+                  <Input
+                    value={formData.twitter_url}
+                    onChange={(e) => setFormData({ ...formData, twitter_url: e.target.value })}
+                    placeholder="https://x.com/..."
+                    className="text-xs"
+                  />
+                </div>
+                <div>
+                  <Label className="text-xs">WhatsApp URL / Number</Label>
+                  <Input
+                    value={formData.whatsapp_url}
+                    onChange={(e) => setFormData({ ...formData, whatsapp_url: e.target.value })}
+                    placeholder="https://wa.me/..."
+                    className="text-xs"
+                  />
+                </div>
+                <div>
+                  <Label className="text-xs">Email</Label>
+                  <Input
+                    value={formData.email}
+                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                    placeholder="email@example.com"
+                    className="text-xs"
+                  />
+                </div>
               </div>
 
               <div className="flex items-center gap-2">
@@ -504,7 +395,7 @@ export const TeamManagement = () => {
       </div>
 
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-        {members?.map((member) => (
+        {displayMembers.map((member) => (
           <Card key={member.id} className={!member.is_active ? "opacity-60" : ""}>
             <CardHeader className="pb-2">
               <div className="flex justify-between items-start">
@@ -578,18 +469,13 @@ export const TeamManagement = () => {
                     </a>
                   )}
                   {member.fiverr_url && (
-                    <a href={member.fiverr_url} target="_blank" rel="noopener noreferrer" title="Fiverr" className="text-green-600">
+                    <a href={member.fiverr_url} target="_blank" rel="noopener noreferrer" title="Fiverr">
                       <FiverrIcon />
                     </a>
                   )}
                   {member.upwork_url && (
-                    <a href={member.upwork_url} target="_blank" rel="noopener noreferrer" title="Upwork" className="text-green-500">
+                    <a href={member.upwork_url} target="_blank" rel="noopener noreferrer" title="Upwork">
                       <UpworkIcon />
-                    </a>
-                  )}
-                  {member.portfolio_url && (
-                    <a href={member.portfolio_url} target="_blank" rel="noopener noreferrer" title="Portfolio">
-                      <Globe className="w-4 h-4 text-primary" />
                     </a>
                   )}
                 </div>
@@ -604,7 +490,7 @@ export const TeamManagement = () => {
         ))}
       </div>
 
-      {(!members || members.length === 0) && (
+      {displayMembers.length === 0 && (
         <div className="text-center py-12 text-muted-foreground">
           No team members found. Click the button above to add a new member.
         </div>
