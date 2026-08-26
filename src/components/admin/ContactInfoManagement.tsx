@@ -238,104 +238,105 @@ export default function ContactInfoManagement() {
         </Button>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Contact Details & Hero Information */}
-        <Card className="border-border/60 shadow-sm">
-          <CardHeader>
-            <CardTitle className="text-base font-semibold flex items-center gap-2">
-              <Phone className="w-4 h-4 text-primary" />
-              Contact Information & Cards
-            </CardTitle>
-            <CardDescription>Phone, Email, Location, Business Hours, and Hero text.</CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <div>
-              <Label className="font-medium">Hero Top Badge</Label>
-              <Input
-                value={infoValues["hero.subtitle"] || ""}
-                onChange={(e) => setInfoValues({ ...infoValues, "hero.subtitle": e.target.value })}
-                placeholder="e.g. Available for new projects"
-                className="mt-1"
-              />
-            </div>
-
-            <div>
-              <Label className="font-medium">Hero Headline Title</Label>
-              <Input
-                value={infoValues["hero.title"] || ""}
-                onChange={(e) => setInfoValues({ ...infoValues, "hero.title": e.target.value })}
-                placeholder="e.g. Let's talk."
-                className="mt-1"
-              />
-            </div>
-
-            <div>
-              <Label className="font-medium">Hero Description</Label>
-              <Textarea
-                value={infoValues["hero.description"] || ""}
-                onChange={(e) => setInfoValues({ ...infoValues, "hero.description": e.target.value })}
-                placeholder="Short overview..."
-                rows={3}
-                className="mt-1"
-              />
-            </div>
-
-            <div className="pt-2 border-t border-border/50 grid grid-cols-1 sm:grid-cols-2 gap-3">
-              <div>
-                <Label className="font-medium">📱 Phone Number</Label>
-                <Input
-                  value={infoValues["info.phone"] || ""}
-                  onChange={(e) => setInfoValues({ ...infoValues, "info.phone": e.target.value })}
-                  placeholder="+880 1344-497808"
-                  className="mt-1"
-                />
-              </div>
-
-              <div>
-                <Label className="font-medium">✉️ Email Address</Label>
-                <Input
-                  value={infoValues["info.email"] || ""}
-                  onChange={(e) => setInfoValues({ ...infoValues, "info.email": e.target.value })}
-                  placeholder="hello@astropixel.tech"
-                  className="mt-1"
-                />
-              </div>
-
-              <div>
-                <Label className="font-medium">📍 Office Location / Address</Label>
-                <Input
-                  value={infoValues["info.address"] || ""}
-                  onChange={(e) => setInfoValues({ ...infoValues, "info.address": e.target.value })}
-                  placeholder="Hi-Tech Park, Rajshahi, Bangladesh"
-                  className="mt-1"
-                />
-              </div>
-
-              <div>
-                <Label className="font-medium">🕐 Business Working Hours</Label>
-                <Input
-                  value={infoValues["info.hours"] || ""}
-                  onChange={(e) => setInfoValues({ ...infoValues, "info.hours": e.target.value })}
-                  placeholder="Sat – Thu · 10:00 AM – 8:00 PM"
-                  className="mt-1"
-                />
-              </div>
-            </div>
-
-            <div>
-              <Label className="font-medium">💬 WhatsApp Direct Number</Label>
-              <Input
-                value={infoValues["info.whatsapp"] || ""}
-                onChange={(e) => setInfoValues({ ...infoValues, "info.whatsapp": e.target.value })}
-                placeholder="8801344497808"
-                className="mt-1"
-              />
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* Google Maps & Location Controls */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
+        {/* Left Column: Contact Details + Google Maps Directly Below */}
         <div className="space-y-6">
+          {/* Contact Details & Hero Information */}
+          <Card className="border-border/60 shadow-sm">
+            <CardHeader>
+              <CardTitle className="text-base font-semibold flex items-center gap-2">
+                <Phone className="w-4 h-4 text-primary" />
+                Contact Information & Cards
+              </CardTitle>
+              <CardDescription>Phone, Email, Location, Business Hours, and Hero text.</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div>
+                <Label className="font-medium">Hero Top Badge</Label>
+                <Input
+                  value={infoValues["hero.subtitle"] || ""}
+                  onChange={(e) => setInfoValues({ ...infoValues, "hero.subtitle": e.target.value })}
+                  placeholder="e.g. Available for new projects"
+                  className="mt-1"
+                />
+              </div>
+
+              <div>
+                <Label className="font-medium">Hero Headline Title</Label>
+                <Input
+                  value={infoValues["hero.title"] || ""}
+                  onChange={(e) => setInfoValues({ ...infoValues, "hero.title": e.target.value })}
+                  placeholder="e.g. Let's talk."
+                  className="mt-1"
+                />
+              </div>
+
+              <div>
+                <Label className="font-medium">Hero Description</Label>
+                <Textarea
+                  value={infoValues["hero.description"] || ""}
+                  onChange={(e) => setInfoValues({ ...infoValues, "hero.description": e.target.value })}
+                  placeholder="Short overview..."
+                  rows={3}
+                  className="mt-1"
+                />
+              </div>
+
+              <div className="pt-2 border-t border-border/50 grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div>
+                  <Label className="font-medium">📱 Phone Number</Label>
+                  <Input
+                    value={infoValues["info.phone"] || ""}
+                    onChange={(e) => setInfoValues({ ...infoValues, "info.phone": e.target.value })}
+                    placeholder="+880 1344-497808"
+                    className="mt-1"
+                  />
+                </div>
+
+                <div>
+                  <Label className="font-medium">✉️ Email Address</Label>
+                  <Input
+                    value={infoValues["info.email"] || ""}
+                    onChange={(e) => setInfoValues({ ...infoValues, "info.email": e.target.value })}
+                    placeholder="hello@astropixel.tech"
+                    className="mt-1"
+                  />
+                </div>
+
+                <div>
+                  <Label className="font-medium">📍 Office Location / Address</Label>
+                  <Input
+                    value={infoValues["info.address"] || ""}
+                    onChange={(e) => setInfoValues({ ...infoValues, "info.address": e.target.value })}
+                    placeholder="Hi-Tech Park, Rajshahi, Bangladesh"
+                    className="mt-1"
+                  />
+                </div>
+
+                <div>
+                  <Label className="font-medium">🕐 Business Working Hours</Label>
+                  <Input
+                    value={infoValues["info.hours"] || ""}
+                    onChange={(e) => setInfoValues({ ...infoValues, "info.hours": e.target.value })}
+                    placeholder="Sat – Thu · 10:00 AM – 8:00 PM"
+                    className="mt-1"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <Label className="font-medium">💬 WhatsApp Direct Number</Label>
+                <Input
+                  value={infoValues["info.whatsapp"] || ""}
+                  onChange={(e) => setInfoValues({ ...infoValues, "info.whatsapp": e.target.value })}
+                  placeholder="8801344497808"
+                  className="mt-1"
+                />
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Google Maps & Location Controls - Placed directly UNDER Contact Information */}
           <Card className="border-border/60 shadow-sm">
             <CardHeader>
               <CardTitle className="text-base font-semibold flex items-center gap-2">
@@ -383,8 +384,10 @@ export default function ContactInfoManagement() {
               </div>
             </CardContent>
           </Card>
+        </div>
 
-          {/* Social Media Channels Manager */}
+        {/* Right Column: Social Media Accounts Manager */}
+        <div className="space-y-6">
           <Card className="border-border/60 shadow-sm">
             <CardHeader className="flex flex-row items-center justify-between pb-2">
               <div>
