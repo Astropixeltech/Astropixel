@@ -157,21 +157,6 @@ export default function RootLayout({
             gtag('config', 'G-ASTROPIXEL');
           `}
         </Script>
-        {/* Firebase SDK Detector for Wappalyzer & Tech Trackers */}
-        <Script
-          src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"
-          strategy="afterInteractive"
-        />
-        <Script
-          src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"
-          strategy="afterInteractive"
-        />
-        <Script id="firebase-wappalyzer-init" strategy="afterInteractive">
-          {`
-            window.firebase = window.firebase || {};
-            window.firebase.SDK_VERSION = '10.8.0';
-          `}
-        </Script>
       </head>
       <body className="min-h-screen bg-background font-sans antialiased">
         <Providers>{children}</Providers>
