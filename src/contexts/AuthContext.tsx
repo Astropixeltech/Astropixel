@@ -7,7 +7,6 @@ import {
   signInWithEmailAndPassword, 
   createUserWithEmailAndPassword,
   signInWithPopup,
-  GoogleAuthProvider,
   signOut as firebaseSignOut 
 } from 'firebase/auth';
 import { auth, googleProvider } from '@/lib/firebase';
@@ -49,20 +48,25 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     const unsubscribe = onAuthStateChanged(auth, (fbUser) => {
       setFirebaseUser(fbUser);
       if (fbUser) {
+        const isAdminUser = 
+          fbUser.email?.toLowerCase() === 'sofiullahahammad@gmail.com' ||
+          fbUser.email?.toLowerCase() === 'admin@astropixel.tech' ||
+          (typeof window !== 'undefined' && localStorage.getItem('astropixel_admin_logged_in') === 'true');
+
         const authUser: AuthUser = {
           id: fbUser.uid,
           email: fbUser.email || '',
-          full_name: fbUser.displayName || fbUser.email?.split('@')[0] || 'User',
-          role: 'admin',
+          full_name: fbUser.displayName || 'Sofiullah Ahammad (Founder & CEO)',
+          role: isAdminUser ? 'admin' : 'user',
           photoURL: fbUser.photoURL,
         };
         setUser(authUser);
-        setRole('admin');
+        setRole(isAdminUser ? 'admin' : 'user');
         setProfile({
           id: fbUser.uid,
           user_id: fbUser.uid,
           email: fbUser.email || '',
-          full_name: fbUser.displayName || 'User',
+          full_name: fbUser.displayName || 'Sofiullah Ahammad (Founder & CEO)',
           avatar_url: fbUser.photoURL || null,
           phone_number: fbUser.phoneNumber || null,
           created_at: new Date().toISOString(),
@@ -152,7 +156,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     profile,
     role,
     isLoading,
-    isAdmin: role === 'admin' || true,
+    isAdmin: role === 'admin',
     signUp,
     signIn,
     signInWithGoogle: signInWithGoogleHandler,
