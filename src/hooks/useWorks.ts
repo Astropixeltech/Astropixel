@@ -218,6 +218,21 @@ export const DEFAULT_PORTFOLIO_PROJECTS: Work[] = [
   },
 ];
 
+export const getSavedWorks = (): Work[] => {
+  if (typeof window !== 'undefined') {
+    const saved = localStorage.getItem('astropixel_works');
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          return parsed;
+        }
+      } catch (e) {}
+    }
+  }
+  return DEFAULT_PORTFOLIO_PROJECTS;
+};
+
 export function useWorks() {
   const queryClient = useQueryClient();
 
@@ -241,6 +256,7 @@ export function useWorks() {
   return useQuery({
     queryKey: ['public-works'],
     queryFn: async () => {
+      const fallbackList = getSavedWorks();
       try {
         const { data, error } = await supabase
           .from('works')
@@ -249,10 +265,9 @@ export function useWorks() {
           .order('order_index', { ascending: true });
 
         if (error || !data || data.length === 0) {
-          return DEFAULT_PORTFOLIO_PROJECTS;
+          return fallbackList;
         }
 
-        // Merge tags from default if missing in DB
         const merged = (data as any[]).map((item: any) => {
           const matchedDefault = DEFAULT_PORTFOLIO_PROJECTS.find((d: any) => d.id === item.id || d.title.toLowerCase() === item.title.toLowerCase());
           return {
@@ -263,11 +278,11 @@ export function useWorks() {
 
         return merged as Work[];
       } catch {
-        return DEFAULT_PORTFOLIO_PROJECTS;
+        return fallbackList;
       }
     },
-    staleTime: 1000 * 60 * 5, // Cache for 5 mins
-    refetchOnWindowFocus: false,
+    staleTime: 0,
+    refetchOnWindowFocus: true,
   });
 }
 
