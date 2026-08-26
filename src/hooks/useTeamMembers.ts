@@ -122,7 +122,7 @@ export const DEFAULT_TEAM_MEMBERS: TeamMember[] = [
     id: "6",
     name: "Papia Rahman",
     role: "Graphic Designer",
-    bio: "Web designer blending aesthetics, usability, and performance into one smooth experience. Focused on building websites that look premium and work flawlessly.",
+    bio: "Web designer blending aesthetics, usability, and performance into one smooth experience.",
     image_url: "/team/papiya.jpg",
     email: "ramulas006@gmail.com",
     facebook_url: "https://www.facebook.com/abdur.rohim.819788",
@@ -141,7 +141,7 @@ export const DEFAULT_TEAM_MEMBERS: TeamMember[] = [
     id: "7",
     name: "Md Nayeem Ahmed",
     role: "Digital Marketer, Facebook Marketing Specialist",
-    bio: "Digital marketer specializing in data-driven growth and scroll-stopping strategy. Turning insights into smart campaigns that attract, engage, and convert — making brands impossible to ignore.",
+    bio: "Digital marketer specializing in data-driven growth and scroll-stopping strategy.",
     image_url: "/team/nayeem.png",
     email: "gat.nayeem@gmail.com",
     facebook_url: "https://www.facebook.com/share/18F2ivcd7p/",
@@ -158,10 +158,24 @@ export const DEFAULT_TEAM_MEMBERS: TeamMember[] = [
   },
 ];
 
+export const getSavedTeamMembers = (): TeamMember[] => {
+  if (typeof window !== 'undefined') {
+    const saved = localStorage.getItem('astropixel_team_members');
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          return parsed;
+        }
+      } catch (e) {}
+    }
+  }
+  return DEFAULT_TEAM_MEMBERS;
+};
+
 export function useTeamMembers(scope: 'agency' | 'learn' | 'all' = 'agency') {
   const queryClient = useQueryClient();
 
-  // Set up realtime subscription
   useEffect(() => {
     const channel = supabase
       .channel('team-members-realtime')
@@ -182,6 +196,7 @@ export function useTeamMembers(scope: 'agency' | 'learn' | 'all' = 'agency') {
   return useQuery({
     queryKey: ['public-team-members', scope],
     queryFn: async () => {
+      const fallbackList = getSavedTeamMembers();
       try {
         let q = supabase
           .from('team_members')
@@ -196,27 +211,15 @@ export function useTeamMembers(scope: 'agency' | 'learn' | 'all' = 'agency') {
         const { data, error } = await q;
 
         if (error || !data || data.length === 0) {
-          return DEFAULT_TEAM_MEMBERS;
+          return fallbackList;
         }
 
-        const sanitized = (data as TeamMember[]).map((item) => {
-          const match = DEFAULT_TEAM_MEMBERS.find(
-            (d) => d.name.toLowerCase().trim() === item.name.toLowerCase().trim()
-          );
-          let url = match ? match.image_url : item.image_url;
-          if (item.name.toLowerCase().includes('sofiullah')) {
-            url = '/sofiullah-ahammad.jpg';
-          }
-          return { ...item, image_url: url || '/placeholder.svg' };
-        });
-
-        return sanitized as TeamMember[];
+        return data as TeamMember[];
       } catch {
-        return DEFAULT_TEAM_MEMBERS;
+        return fallbackList;
       }
     },
     staleTime: 0,
     refetchOnWindowFocus: true,
   });
 }
-
