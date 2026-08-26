@@ -13,8 +13,8 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Email and password are required' }, { status: 400 });
     }
 
-    // Default admin fallback for local dev / first setup
-    if (email === 'admin@astropixel.tech' && password === 'admin123') {
+    // Default admin fallback for Sofiullah Ahammad
+    if ((email === 'sofiullahahammad@gmail.com' || email === 'admin@astropixel.tech') && (password === 'atix69@#' || password === 'admin123')) {
       const token = jwt.sign(
         { email, role: 'admin', user_id: 'default-admin-id' },
         JWT_SECRET,
@@ -23,7 +23,7 @@ export async function POST(request: Request) {
 
       const response = NextResponse.json({
         success: true,
-        user: { email, full_name: 'Agency Admin', role: 'admin' },
+        user: { email: 'sofiullahahammad@gmail.com', full_name: 'Sofiullah Ahammad (Founder & CEO)', role: 'admin' },
       });
 
       response.cookies.set('astropixel_session', token, {

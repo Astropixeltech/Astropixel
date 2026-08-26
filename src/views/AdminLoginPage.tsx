@@ -116,7 +116,7 @@ export default function AdminLoginPage() {
                   <Input
                     id="email"
                     type="email"
-                    placeholder="admin@example.com"
+                    placeholder="sofiullahahammad@gmail.com"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     className="pl-11 h-12 rounded-xl bg-background/50 border-border/50 focus:border-destructive/50"
