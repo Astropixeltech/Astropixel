@@ -74,7 +74,7 @@ const Footer = () => {
   const description = getContent('description') || 'We are a creative agency specializing in graphics design, video editing, web development, and digital marketing.';
 
   return (
-    <footer className="relative bg-[#0D111A] text-background after:absolute after:inset-x-0 after:top-full after:h-[100vh] after:bg-[#0D111A] overflow-visible">
+    <footer className="relative bg-[#0D111A] text-background">
       <div className="container mx-auto px-6 sm:px-8 pt-14 sm:pt-20 pb-8">
         <div className="max-w-7xl mx-auto">
           {/* Top grid: Brand | Explore | Services | Office */}
