@@ -1,10 +1,10 @@
-import LoginPageView from "@/views/LoginPageView";
+import AdminLoginPage from "@/views/AdminLoginPage";
 
 export const metadata = {
-  title: "Login / Register | AstroPixel Agency",
-  description: "Sign in or register for AstroPixel Creative Design Agency portal using Firebase Authentication.",
+  title: "Admin Login | AstroPixel Agency",
+  description: "Admin login portal for AstroPixel Creative Design Agency.",
 };
 
 export default function LoginPage() {
-  return <LoginPageView />;
+  return <AdminLoginPage />;
 }
