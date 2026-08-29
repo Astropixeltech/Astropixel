@@ -208,17 +208,7 @@ const Navbar = () => {
                     <LogOut className="w-4 h-4" />
                   </button>
                 </div>
-              ) : (
-                <Link
-                  href="/login"
-                  className={`px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1.5 transition-colors ${
-                    isWhiteNavText ? "text-white/90 hover:text-cyan-300" : "text-slate-700 hover:text-purple-600"
-                  }`}
-                >
-                  <LogIn className="w-3.5 h-3.5" />
-                  <span>Login</span>
-                </Link>
-              )}
+              ) : null}
 
               <Link
                 href="/contact"
