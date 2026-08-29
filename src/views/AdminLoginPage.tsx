@@ -42,10 +42,6 @@ export default function AdminLoginPage() {
     }
 
     const formattedEmail = email.trim().toLowerCase();
-    if (formattedEmail !== 'sofiullahahammad@gmail.com' && formattedEmail !== 'admin@astropixel.tech') {
-      toast.error('শুধুমাত্র অনুমোদিত অ্যাডমিন একাউন্ট প্রবেশ করতে পারবে');
-      return;
-    }
 
     setIsLoading(true);
 

@@ -673,44 +673,37 @@ function AdminDashboardInner() {
 
   // Add admin handler
   const handleAddAdmin = async () => {
-    if (!newAdminName.trim() || !newAdminEmail.trim() || !newAdminPassword.trim()) {
-      toast.error('Provide all information');
-      return;
-    }
-
-    if (newAdminPassword.length < 6) {
-      toast.error('Password must be at least 6 characters');
+    if (!newAdminName.trim() || !newAdminEmail.trim()) {
+      toast.error('Provide name and email');
       return;
     }
 
     setAddingAdmin(true);
 
     try {
-      const { data, error } = await supabase.functions.invoke('create-admin', {
-        body: {
+      const res = await fetch('/api/admin/users/add-admin', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
           full_name: newAdminName.trim(),
           email: newAdminEmail.trim(),
-          password: newAdminPassword,
-        },
+        }),
       });
 
-      if (error) {
-        toast.error(error.message || 'Failed to create Admin');
+      const data = await res.json();
+
+      if (!res.ok) {
+        toast.error(data.error || 'Failed to create Admin');
         return;
       }
 
-      if (data?.error) {
-        toast.error(data.error);
-        return;
-      }
-
-      toast.success('New Admin added successfully!');
+      toast.success('New Admin added successfully! They can log in now.');
       setShowAddAdminDialog(false);
       setNewAdminName('');
       setNewAdminEmail('');
+      setNewAdminPassword('');
       // Refresh admin list
       fetchAdmins();
-      setNewAdminPassword('');
     } catch (error) {
       console.error('Add admin error:', error);
       toast.error('Something went wrong');
@@ -2312,7 +2305,7 @@ function AdminDashboardInner() {
               {language === 'bn' ? 'Ã Â¦Â¬Ã Â¦Â¾Ã Â¦Â¤Ã Â¦Â¿Ã Â¦Â²' : 'Cancel'}
             </Button>
             <Button onClick={handleChangePassword} disabled={changingPassword}>
-              {changingPassword ? (language === 'bn' ? 'Ã Â¦ÂªÃ Â¦Â°Ã Â¦Â¿Ã Â¦Â¬Ã Â¦Â°Ã Â§ÂÃ Â¦Â¤Ã Â¦Â¨ Ã Â¦Â¹Ã Â¦Å¡Ã Â§ÂÃ Â¦â€ºÃ Â§â€¡...' : 'Changing...') : (language === 'bn' ? 'Ã Â¦ÂªÃ Â¦Â¾Ã Â¦Â¸Ã Â¦â€œÃ Â¦Â¯Ã Â¦Â¼Ã Â¦Â¾Ã Â¦Â°Ã Â§ÂÃ Â¦Â¡ Ã Â¦ÂªÃ Â¦Â°Ã Â¦Â¿Ã Â¦Â¬Ã Â¦Â°Ã Â§ÂÃ Â¦Â¤Ã Â¦Â¨' : 'Change Password')}
+              {changingPassword ? (language === 'bn' ? 'Ã Â¦ÂªÃ Â¦Â°Ã Â¦Â¿Ã Â¦Â¬Ã Â¦Â°Ã Â§Â Ã Â¦Â¤Ã Â¦Â¨ Ã Â¦Â¹Ã Â¦Å¡Ã Â§Â Ã Â¦â€ºÃ Â§â€¡...' : 'Changing...') : (language === 'bn' ? 'Ã Â¦ÂªÃ Â¦Â¾Ã Â¦Â¸Ã Â¦â€œÃ Â¦Â¯Ã Â¦Â¼Ã Â¦Â¾Ã Â¦Â°Ã Â§Â Ã Â¦Â¡ Ã Â¦ÂªÃ Â¦Â°Ã Â¦Â¿Ã Â¦Â¬Ã Â¦Â°Ã Â§Â Ã Â¦Â¤Ã Â¦Â¨' : 'Change Password')}
             </Button>
           </DialogFooter>
         </DialogContent>
