@@ -53,7 +53,24 @@ export default function LoginPageView() {
     }
 
     toast.success(isRegister ? 'একাউন্ট সফলভাবে তৈরি হয়েছে!' : 'সফলভাবে লগইন হয়েছে!');
-    router.push('/');
+    
+    const formattedEmail = email.toLowerCase().trim();
+    const isAdmin = formattedEmail === 'sofiullahahammad@gmail.com' || formattedEmail === 'admin@astropixel.tech';
+    
+    if (isAdmin) {
+      // Request admin session cookie
+      try {
+        await fetch('/api/admin/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email: formattedEmail })
+        });
+        localStorage.setItem('astropixel_admin_logged_in', 'true');
+      } catch (e) { console.error(e); }
+      window.location.href = '/admin';
+    } else {
+      router.push('/');
+    }
   };
 
   const handleGoogleLogin = async () => {
@@ -67,7 +84,9 @@ export default function LoginPageView() {
     }
 
     toast.success('গুগল দিয়ে সফলভাবে লগইন হয়েছে!');
-    router.push('/');
+    
+    // For Google login, force reload to home so AuthContext can evaluate admin state
+    window.location.href = '/'; 
   };
 
   return (
