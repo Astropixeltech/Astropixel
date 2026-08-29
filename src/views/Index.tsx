@@ -469,11 +469,7 @@ const Index = () => {
       alt: 'Adobe Firefly',
       gradient: { from: '#FF6666', via: '#FF0000', to: '#990000' },
     },
-    {
-      src: 'https://cdn.brandfetch.io/idA1XM9jiv/theme/dark/symbol.svg',
-      alt: 'Lovable',
-      gradient: { from: '#FF80BF', via: '#FF1493', to: '#C71585' },
-    },
+
     {
       src: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="none"><rect width="100" height="100" rx="20" fill="%2310B981"/><circle cx="50" cy="50" r="20" stroke="white" stroke-width="7"/><path d="M50 18v12M50 70v12M18 50h12M70 50h12" stroke="white" stroke-width="7" stroke-linecap="round"/></svg>',
       alt: 'Antigravity',
