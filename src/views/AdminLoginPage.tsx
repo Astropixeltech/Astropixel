@@ -58,6 +58,12 @@ export default function AdminLoginPage() {
       }
     }
 
+    if (firebaseErr) {
+      setIsLoading(false);
+      toast.error('Firebase Auth Error: ' + firebaseErr.message);
+      return;
+    }
+
     // 2. Issue Server Session Cookie via Admin API
     try {
       const res = await fetch('/api/admin/login', {

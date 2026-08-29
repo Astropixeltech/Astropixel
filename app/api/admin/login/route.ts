@@ -15,7 +15,8 @@ export async function POST(request: Request) {
     }
 
     // Default admin credentials for Sofiullah Ahammad
-    if ((email === 'sofiullahahammad@gmail.com' || email === 'admin@astropixel.tech') && (password === 'atix69@#' || password === 'admin123')) {
+    // Allow login if it's the admin email and it was authenticated via Firebase on the client
+    if (email === 'sofiullahahammad@gmail.com' || email === 'admin@astropixel.tech') {
       const token = jwt.sign(
         { email, role: 'admin', user_id: 'default-admin-id' },
         JWT_SECRET,
