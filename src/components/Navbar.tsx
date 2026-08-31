@@ -188,27 +188,7 @@ const Navbar = () => {
 
             {/* Right Action — Firebase User Profile & Start a Project button */}
             <div className="hidden lg:flex items-center gap-2.5">
-              {user ? (
-                <div className="flex items-center gap-2">
-                  <div className={`flex items-center gap-2 px-3 py-1.5 rounded-full border text-xs font-semibold backdrop-blur-md ${
-                    isWhiteNavText ? "bg-white/10 border-white/20 text-white" : "bg-slate-900/5 border-slate-900/15 text-slate-900"
-                  }`}>
-                    {user.photoURL ? (
-                      <img src={user.photoURL} alt={user.full_name || 'User'} className="w-4 h-4 rounded-full" />
-                    ) : (
-                      <User className="w-3.5 h-3.5 text-cyan-400" />
-                    )}
-                    <span className="truncate max-w-[120px]">{user.full_name || user.email}</span>
-                  </div>
-                  <button
-                    onClick={() => signOut()}
-                    title="Log Out"
-                    className={`p-1.5 rounded-full hover:bg-white/10 transition-colors ${isWhiteNavText ? "text-white" : "text-slate-900"}`}
-                  >
-                    <LogOut className="w-4 h-4" />
-                  </button>
-                </div>
-              ) : null}
+
 
               <Link
                 href="/contact"
