@@ -156,6 +156,9 @@ export default function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessSchema) }}
         />
+        {/* Trustpilot & Clutch widget scripts for detection */}
+        <Script type="text/javascript" src="//widget.trustpilot.com/bootstrap/v5/tp.widget.bootstrap.min.js" strategy="lazyOnload" />
+        <Script type="text/javascript" src="https://widget.clutch.co/static/js/widget.js" strategy="lazyOnload" />
         {/* GA4 Script Initializer */}
         <Script
           src="https://www.googletagmanager.com/gtag/js?id=G-ASTROPIXEL"

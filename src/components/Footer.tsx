@@ -210,7 +210,7 @@ const Footer = () => {
               rel="noopener noreferrer"
               className="flex flex-col items-center justify-center gap-1 group cursor-pointer"
             >
-              <div className="flex items-center justify-center group-hover:scale-105 transition-transform">
+              <div className="flex items-center justify-center group-hover:scale-105 transition-transform clutch-widget trustpilot-widget">
                 <img 
                   src="https://cdn.prod.website-files.com/672a72b52eb5f37692d645a9/68a1a63e1b6574571b18b9f9_Frame%201116606742.svg"
                   alt="Clutch Agency Reviews"
