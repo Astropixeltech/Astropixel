@@ -92,7 +92,13 @@ export default function RootLayout({
       'https://share.google/K4AuEFEeRfy3AQCVj',
       'https://www.behance.net/astropixels',
       'https://dribbble.com/astropixel'
-    ]
+    ],
+    'aggregateRating': {
+      '@type': 'AggregateRating',
+      'ratingValue': '5.0',
+      'reviewCount': '34',
+      'bestRating': '5'
+    }
   };
 
   const localBusinessSchema = {
@@ -120,6 +126,12 @@ export default function RootLayout({
       'dayOfWeek': ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
       'opens': '09:00',
       'closes': '21:00'
+    },
+    'aggregateRating': {
+      '@type': 'AggregateRating',
+      'ratingValue': '5.0',
+      'reviewCount': '34',
+      'bestRating': '5'
     },
     'sameAs': organizationSchema.sameAs
   };
