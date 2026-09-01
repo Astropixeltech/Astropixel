@@ -7,7 +7,7 @@ try {
 
   if (process.env.CF_PAGES === '1' || process.env.CF_PAGES === 'true' || process.env.CF_PAGES_BRANCH || process.env.CF_PAGES_URL) {
     console.log('☁️ Detected Cloudflare Pages environment. Running OpenNext build...');
-    execSync('npx opennextjs-cloudflare build --dangerouslyUseUnsupportedNextVersion', { 
+    execSync('npx -y -p wrangler@latest -p @opennextjs/cloudflare@latest opennextjs-cloudflare build --dangerouslyUseUnsupportedNextVersion', { 
       stdio: 'inherit',
       env: { ...process.env, OPENNEXT_IS_BUILDING: '1' }
     });
