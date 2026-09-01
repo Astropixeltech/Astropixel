@@ -13,6 +13,7 @@ import { toast } from "sonner";
 import ImageUploader from "./ImageUploader";
 import WorkHeroEditor from "./WorkHeroEditor";
 import { DEFAULT_PORTFOLIO_PROJECTS, Work, getSavedWorks } from "@/hooks/useWorks";
+import ProjectBuilder from "./ProjectBuilder";
 
 export const WorksManagement = () => {
   const queryClient = useQueryClient();

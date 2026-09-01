@@ -54,6 +54,7 @@ model Service {
 
 model Work {
   id             String   @id @default(uuid())
+  slug           String?  @unique
   title          String
   title_bn       String?
   title_en       String?
@@ -61,6 +62,8 @@ model Work {
   description_bn String?
   description_en String?
   category       String?
+  tags           Json?
+  project_type   String?
   image_url      String?
   client         String?
   completion_date String?
@@ -68,6 +71,7 @@ model Work {
   live_url       String?
   is_featured    Boolean  @default(false)
   is_published   Boolean  @default(true)
+  content_blocks Json?
   order_index    Int      @default(0)
   created_at     DateTime @default(now())
   updated_at     DateTime @updatedAt
