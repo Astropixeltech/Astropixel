@@ -16,7 +16,7 @@ export async function generateMetadata({ params }: { params: { slug: string } })
   if (!work) return { title: 'Project Not Found' };
 
   return {
-    title: \`\${work.title} - AstroPixel Project\`,
+    title: `${work.title} - AstroPixel Project`,
     description: work.description || 'View this project on AstroPixel.',
     openGraph: {
       images: [work.image_url || 'https://astropixel.tech/og-image.png'],

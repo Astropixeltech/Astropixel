@@ -40,7 +40,7 @@ export const ProjectViewer: React.FC<{ blocks: Block[] }> = ({ blocks }) => {
                   <div key={idx} className="relative aspect-square">
                     <img
                       src={imgUrl}
-                      alt={\`Grid image \${idx + 1}\`}
+                      alt={`Grid image ${idx + 1}`}
                       loading="lazy"
                       className="absolute inset-0 w-full h-full object-cover rounded-md shadow-sm hover:scale-[1.02] transition-transform"
                     />
