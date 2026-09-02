@@ -1,7 +1,18 @@
 import React, { useState } from 'react';
-import ImageUploader from './ImageUploader';
-import { Switch } from '@/components/ui/switch';
-import { Label } from '@/components/ui/label';
+import { 
+  Type, 
+  Image as ImageIcon, 
+  LayoutGrid, 
+  PlaySquare, 
+  Code2, 
+  Settings, ArrowLeft, 
+  Save, 
+  X,
+  Palette,
+  MousePointerClick,
+  Cuboid,
+  Aperture
+} from 'lucide-react';
 import {
   Block,
   TextBlockEditor,
@@ -10,6 +21,13 @@ import {
   VideoBlockEditor,
   EmbedBlockEditor,
 } from './BuilderBlocks';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Textarea } from '@/components/ui/textarea';
+import { Switch } from '@/components/ui/switch';
+import ImageUploader from './ImageUploader';
+import { toast } from 'sonner';
 
 interface ProjectBuilderProps {
   initialData?: any;
@@ -30,17 +48,28 @@ const ProjectBuilder: React.FC<ProjectBuilderProps> = ({
     live_url: initialData?.live_url || initialData?.project_url || '',
     is_featured: initialData?.is_featured ?? false,
     is_published: initialData?.is_published ?? true,
-    tags: initialData?.tags || [],
   });
 
   const [blocks, setBlocks] = useState<Block[]>(initialData?.content_blocks || []);
   const [isSaving, setIsSaving] = useState(false);
+  const [showSettings, setShowSettings] = useState(false);
+
+  const blockTypes = [
+    { type: 'image', label: 'Image', icon: ImageIcon },
+    { type: 'text', label: 'Text', icon: Type },
+    { type: 'image_grid', label: 'Photo Grid', icon: LayoutGrid },
+    { type: 'video', label: 'Video & Audio', icon: PlaySquare },
+    { type: 'embed', label: 'Embed', icon: Code2 },
+    { type: 'lightroom', label: 'Lightroom', icon: Aperture, disabled: true },
+    { type: 'prototype', label: 'Prototype', icon: MousePointerClick, disabled: true },
+    { type: '3d', label: '3D', icon: Cuboid, disabled: true },
+  ];
 
   const handleAddBlock = (type: Block['type']) => {
     const newBlock: Block = {
-      id: Math.random().toString(36).substring(2, 9),
+      id: Math.random().toString(36).substr(2, 9),
       type,
-      content: {},
+      content: type === 'image_grid' ? [] : '',
     };
     setBlocks([...blocks, newBlock]);
   };
@@ -67,10 +96,15 @@ const ProjectBuilder: React.FC<ProjectBuilderProps> = ({
   };
 
   const handleSave = async () => {
+    if (!workData.title) {
+      toast.error('Project title is required');
+      return;
+    }
     setIsSaving(true);
     try {
       const payload = {
         ...workData,
+        project_url: workData.live_url,
         content_blocks: blocks,
         id: initialData?.id,
       };
@@ -85,56 +119,62 @@ const ProjectBuilder: React.FC<ProjectBuilderProps> = ({
         throw new Error('Failed to save project');
       }
 
-      if (onSaveSuccess) {
-        onSaveSuccess();
-      } else {
-        alert('Project saved successfully!');
-      }
+      toast.success('Project saved successfully!');
+      if (onSaveSuccess) onSaveSuccess();
     } catch (error) {
       console.error(error);
-      alert('Error saving project. Please try again.');
+      toast.error('Error saving project. Please try again.');
     } finally {
       setIsSaving(false);
     }
   };
 
   return (
-    <div className="max-w-5xl mx-auto p-6 bg-slate-50 dark:bg-slate-900 min-h-screen">
-      <div className="flex justify-between items-center mb-8">
-        <div>
-          <h1 className="text-3xl font-bold text-slate-900 dark:text-white">
-            {initialData?.id ? 'Edit Project' : 'Create New Project'}
-          </h1>
-          <p className="text-slate-500 dark:text-slate-400 mt-2">
-            Build a Behance-style project case study using blocks.
-          </p>
-        </div>
-        <div className="flex space-x-3">
-          <button
-            onClick={onCancel}
-            className="px-5 py-2.5 rounded-md font-medium text-slate-700 dark:text-slate-200 border border-slate-300 dark:border-slate-600 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
-          >
-            Cancel
-          </button>
-          <button
-            onClick={handleSave}
+    <div className="flex h-full min-h-[85vh] bg-gray-50/50 dark:bg-slate-900/50 rounded-xl border overflow-hidden">
+      {/* Main Canvas Area */}
+      <div className="flex-1 flex flex-col overflow-y-auto">
+        <div className="sticky top-0 z-10 flex justify-between items-center p-4 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border-b">
+          <div className="flex items-center gap-3">
+            <Button variant="ghost" size="icon" onClick={onCancel} className="h-8 w-8 rounded-full">
+              <X className="h-4 w-4" />
+            </Button>
+            <h1 className="font-semibold text-lg">
+              {workData.title || 'Untitled Project'}
+            </h1>
+          </div>
+          <Button 
+            onClick={handleSave} 
             disabled={isSaving}
-            className="px-5 py-2.5 rounded-md font-medium text-white bg-blue-600 hover:bg-blue-700 disabled:opacity-50 transition-colors shadow-sm"
+            className="rounded-full px-6 bg-blue-600 hover:bg-blue-700 text-white shadow-sm"
           >
-            {isSaving ? 'Saving...' : 'Save Project'}
-          </button>
+            {isSaving ? 'Saving...' : 'Save & Publish'}
+          </Button>
         </div>
-      </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        <div className="lg:col-span-2 space-y-6">
-          <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-6 shadow-sm">
-            <h2 className="text-xl font-semibold text-slate-900 dark:text-white mb-4">Project Blocks</h2>
-            
+        <div className="flex-1 p-6 lg:p-12">
+          <div className="max-w-4xl mx-auto space-y-6">
             {blocks.length === 0 ? (
-              <div className="text-center py-12 border-2 border-dashed border-slate-300 dark:border-slate-700 rounded-lg">
-                <p className="text-slate-500 dark:text-slate-400">No content blocks yet.</p>
-                <p className="text-sm text-slate-400 dark:text-slate-500 mt-1">Add a block to start building your project.</p>
+              <div className="flex flex-col items-center justify-center py-20 min-h-[500px]">
+                <h2 className="text-2xl font-medium text-slate-700 dark:text-slate-300 mb-10">
+                  Start building your project:
+                </h2>
+                <div className="flex flex-wrap justify-center gap-6 max-w-3xl">
+                  {blockTypes.map((b) => (
+                    <button
+                      key={b.type}
+                      disabled={b.disabled}
+                      onClick={() => !b.disabled && handleAddBlock(b.type as Block['type'])}
+                      className="group flex flex-col items-center gap-3 disabled:opacity-40 disabled:cursor-not-allowed"
+                    >
+                      <div className="w-20 h-20 rounded-full bg-white dark:bg-slate-800 shadow-sm border border-slate-100 dark:border-slate-700 flex items-center justify-center text-blue-600 transition-transform group-hover:scale-105 group-hover:shadow-md">
+                        <b.icon className="w-8 h-8" strokeWidth={1.5} />
+                      </div>
+                      <span className="text-sm font-medium text-slate-800 dark:text-slate-200">
+                        {b.label}
+                      </span>
+                    </button>
+                  ))}
+                </div>
               </div>
             ) : (
               <div className="space-y-4">
@@ -151,89 +191,153 @@ const ProjectBuilder: React.FC<ProjectBuilderProps> = ({
                   };
 
                   switch (block.type) {
-                    case 'text':
-                      return <TextBlockEditor {...commonProps} />;
-                    case 'image':
-                      return <ImageBlockEditor {...commonProps} />;
-                    case 'image_grid':
-                      return <ImageGridBlockEditor {...commonProps} />;
-                    case 'video':
-                      return <VideoBlockEditor {...commonProps} />;
-                    case 'embed':
-                      return <EmbedBlockEditor {...commonProps} />;
-                    default:
-                      return null;
+                    case 'text': return <TextBlockEditor {...commonProps} />;
+                    case 'image': return <ImageBlockEditor {...commonProps} />;
+                    case 'image_grid': return <ImageGridBlockEditor {...commonProps} />;
+                    case 'video': return <VideoBlockEditor {...commonProps} />;
+                    case 'embed': return <EmbedBlockEditor {...commonProps} />;
+                    default: return null;
                   }
                 })}
               </div>
             )}
           </div>
-
-          <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-6 shadow-sm">
-            <h3 className="font-semibold text-slate-900 dark:text-white mb-4">Add Content Block</h3>
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-              {[
-                { type: 'text', label: 'Text' },
-                { type: 'image', label: 'Image' },
-                { type: 'image_grid', label: 'Image Grid' },
-                { type: 'video', label: 'Video' },
-                { type: 'embed', label: 'Embed' },
-              ].map((b) => (
-                <button
-                  key={b.type}
-                  onClick={() => handleAddBlock(b.type as Block['type'])}
-                  className="px-4 py-3 rounded-lg border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700 text-sm font-medium text-slate-700 dark:text-slate-300 transition-colors"
-                >
-                  + {b.label}
-                </button>
-              ))}
-            </div>
-          </div>
         </div>
+      </div>
 
-        <div className="lg:col-span-1 space-y-6">
-          <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-6 shadow-sm sticky top-6">
-            <h3 className="font-semibold text-slate-900 dark:text-white mb-4">Project Details</h3>
+      {/* Right Sidebar (Settings & Tools) */}
+      <div className="w-80 bg-white dark:bg-slate-950 border-l overflow-y-auto flex flex-col">
+        {showSettings ? (
+          <div className="p-5 flex-1 space-y-6">
+            <div className="flex items-center gap-3 mb-6 pb-4 border-b">
+              <Button variant="ghost" size="icon" onClick={() => setShowSettings(false)} className="h-8 w-8 -ml-2 rounded-full">
+                <ArrowLeft className="h-4 w-4" />
+              </Button>
+              <h3 className="font-semibold text-base">Project Settings</h3>
+            </div>
+
             <div className="space-y-4">
-              <div>
-                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
-                  Title
-                </label>
-                <input
-                  type="text"
+              <div className="space-y-1.5">
+                <Label>Project Title</Label>
+                <Input
                   value={workData.title}
                   onChange={(e) => setWorkData({ ...workData, title: e.target.value })}
-                  className="w-full p-2.5 border border-slate-200 dark:border-slate-700 rounded-md bg-transparent text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  placeholder="e.g. Modern E-commerce App"
+                  placeholder="Title"
                 />
               </div>
-              <div>
-                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
-                  Category
-                </label>
-                <input
-                  type="text"
+              <div className="space-y-1.5">
+                <Label>Category</Label>
+                <Input
                   value={workData.category}
                   onChange={(e) => setWorkData({ ...workData, category: e.target.value })}
-                  className="w-full p-2.5 border border-slate-200 dark:border-slate-700 rounded-md bg-transparent text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  placeholder="e.g. UI/UX Design"
+                  placeholder="e.g. Web Design"
                 />
               </div>
-              <div>
-                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
-                  Description
-                </label>
-                <textarea
+              <div className="space-y-1.5">
+                <Label>Description</Label>
+                <Textarea
                   value={workData.description}
                   onChange={(e) => setWorkData({ ...workData, description: e.target.value })}
-                  rows={4}
-                  className="w-full p-2.5 border border-slate-200 dark:border-slate-700 rounded-md bg-transparent text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  placeholder="Brief summary of the project..."
+                  rows={3}
+                  placeholder="Short description..."
                 />
+              </div>
+              <div className="space-y-1.5">
+                <Label>Cover Image</Label>
+                <ImageUploader
+                  value={workData.image_url}
+                  onChange={(url) => setWorkData({ ...workData, image_url: url })}
+                  folder="works"
+                />
+              </div>
+              <div className="space-y-1.5">
+                <Label>Live Link</Label>
+                <Input
+                  value={workData.live_url}
+                  onChange={(e) => setWorkData({ ...workData, live_url: e.target.value })}
+                  placeholder="https://"
+                />
+              </div>
+              
+              <div className="pt-4 space-y-3">
+                <div className="flex items-center justify-between p-3 rounded-lg border bg-slate-50 dark:bg-slate-900/50">
+                  <div>
+                    <Label className="cursor-pointer">Featured</Label>
+                    <p className="text-[10px] text-muted-foreground">Show on homepage</p>
+                  </div>
+                  <Switch
+                    checked={workData.is_featured}
+                    onCheckedChange={(checked) => setWorkData({ ...workData, is_featured: checked })}
+                  />
+                </div>
+                <div className="flex items-center justify-between p-3 rounded-lg border bg-slate-50 dark:bg-slate-900/50">
+                  <div>
+                    <Label className="cursor-pointer">Published</Label>
+                    <p className="text-[10px] text-muted-foreground">Make it public</p>
+                  </div>
+                  <Switch
+                    checked={workData.is_published}
+                    onCheckedChange={(checked) => setWorkData({ ...workData, is_published: checked })}
+                  />
+                </div>
               </div>
             </div>
           </div>
-        </div>
+        ) : (
+          <>
+            <div className="p-5 border-b">
+              <h3 className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-4">Add Content</h3>
+              <div className="grid grid-cols-2 gap-px bg-slate-200 dark:bg-slate-800 border border-slate-200 dark:border-slate-800 rounded-lg overflow-hidden">
+                {blockTypes.map((b) => (
+                  <button
+                    key={b.type}
+                    disabled={b.disabled}
+                    onClick={() => !b.disabled && handleAddBlock(b.type as Block['type'])}
+                    className="flex flex-col items-center justify-center gap-2 py-4 bg-white dark:bg-slate-950 hover:bg-slate-50 dark:hover:bg-slate-900 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                  >
+                    <b.icon className="w-5 h-5 text-slate-700 dark:text-slate-300" strokeWidth={1.5} />
+                    <span className="text-[11px] font-medium text-slate-600 dark:text-slate-400">{b.label}</span>
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <div className="p-5 border-b">
+              <h3 className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-4">Edit Project</h3>
+              <div className="grid grid-cols-2 gap-px bg-slate-200 dark:bg-slate-800 border border-slate-200 dark:border-slate-800 rounded-lg overflow-hidden">
+                <button className="flex flex-col items-center justify-center gap-2 py-4 bg-white dark:bg-slate-950 hover:bg-slate-50 dark:hover:bg-slate-900 transition-colors opacity-50 cursor-not-allowed">
+                  <Palette className="w-5 h-5 text-slate-700 dark:text-slate-300" strokeWidth={1.5} />
+                  <span className="text-[11px] font-medium text-slate-600 dark:text-slate-400">Styles</span>
+                </button>
+                <button 
+                  onClick={() => setShowSettings(true)}
+                  className="flex flex-col items-center justify-center gap-2 py-4 bg-white dark:bg-slate-950 hover:bg-slate-50 dark:hover:bg-slate-900 transition-colors"
+                >
+                  <Settings className="w-5 h-5 text-slate-700 dark:text-slate-300" strokeWidth={1.5} />
+                  <span className="text-[11px] font-medium text-slate-600 dark:text-slate-400">Settings</span>
+                </button>
+              </div>
+              <div className="mt-3">
+                <button className="w-full py-2.5 rounded-full border text-xs font-medium bg-white dark:bg-slate-950 hover:bg-slate-50 dark:hover:bg-slate-900 transition-colors opacity-50 cursor-not-allowed">
+                  Custom Button
+                </button>
+                <p className="text-[10px] text-center text-slate-500 mt-2">Customize the call to action on your project</p>
+              </div>
+            </div>
+
+            <div className="p-5">
+              <h3 className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-4">Attach Assets</h3>
+              <div className="rounded-lg border p-4 bg-slate-50/50 dark:bg-slate-900/50">
+                <button className="w-full py-2.5 rounded-full border bg-white dark:bg-slate-950 text-xs font-medium hover:bg-slate-50 dark:hover:bg-slate-900 transition-colors opacity-50 cursor-not-allowed flex items-center justify-center gap-2">
+                  <Aperture className="w-3.5 h-3.5" /> Attach Assets
+                </button>
+                <p className="text-[10px] text-center text-slate-500 mt-3 leading-relaxed">
+                  Add files like fonts, illustrations, photos, zips, or templates.
+                </p>
+              </div>
+            </div>
+          </>
+        )}
       </div>
     </div>
   );
