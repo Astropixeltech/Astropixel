@@ -983,15 +983,28 @@ function AdminDashboardInner() {
             </div>
           </div>
 
-          {/* Settings - single entry, opens Settings hub */}
-          <div>
-            {renderNavButton(
-              { id: 'settings', icon: Settings, label: language === 'bn' ? 'Ã Â¦Â¸Ã Â§â€¡Ã Â¦Å¸Ã Â¦Â¿Ã Â¦â€šÃ Â¦Â¸' : 'Settings' } as any,
-              'from-amber-500 to-orange-500'
-            )}
-          </div>
-
-        </nav>
+                      {/* Settings Dropdown */}
+            <div className="mb-2">
+              <button
+                onClick={() => setExpandedGroups(prev => ({ ...prev, settings: !prev.settings }))}
+                className="w-full flex items-center justify-between gap-2.5 px-2.5 md:px-3 py-2 md:py-2 rounded-xl text-sm font-medium transition-all duration-200 text-muted-foreground hover:text-foreground hover:bg-secondary/80"
+              >
+                <div className="flex items-center gap-2.5">
+                  <Settings className="w-4 h-4 flex-shrink-0" />
+                  <span className="hidden md:inline truncate">{language === 'bn' ? 'সেটিংস' : 'Settings'}</span>
+                </div>
+                <ChevronRight className={`w-3 h-3 transition-transform ${expandedGroups.settings ? 'rotate-90' : ''}`} />
+              </button>
+              
+              {expandedGroups.settings && (
+                <div className="mt-1 ml-2 pl-3 border-l border-border/50 space-y-0.5">
+                  {renderNavButton({ id: 'sitesettings', icon: Settings, label: 'Site Settings' } as any, 'from-slate-500 to-slate-700')}
+                  {renderNavButton({ id: 'profile', icon: User, label: 'Users' } as any, 'from-slate-500 to-slate-700')}
+                  {renderNavButton({ id: 'email', icon: Send, label: 'Email' } as any, 'from-slate-500 to-slate-700')}
+                </div>
+              )}
+            </div>
+          </nav>
 
         {/* Footer Actions - Language, Theme, Logout */}
         <div className="p-2 md:p-3 border-t border-border/50 space-y-2">
@@ -1845,64 +1858,15 @@ function AdminDashboardInner() {
           {/* AI Assistant removed from tabs - now a persistent side panel */}
 
 
-          {/* Settings Hub */}
-          <TabsContent value="settings" className="space-y-6">
-            <div className="flex items-center gap-3">
-              <div className="w-11 h-11 rounded-2xl bg-gradient-to-br from-amber-500 to-orange-500 flex items-center justify-center shadow-md">
-                <Settings className="w-5 h-5 text-white" />
-              </div>
-              <div>
-                <h2 className="text-2xl font-bold">{language === 'bn' ? 'Ã Â¦â€¦Ã Â§ÂÃ Â¦Â¯Ã Â¦Â¾Ã Â¦Â¡Ã Â¦Â®Ã Â¦Â¿Ã Â¦Â¨ Ã Â¦ÂªÃ Â§ÂÃ Â¦Â¯Ã Â¦Â¾Ã Â¦Â¨Ã Â§â€¡Ã Â¦Â² Ã Â¦Â¸Ã Â§â€¡Ã Â¦Å¸Ã Â¦Â¿Ã Â¦â€šÃ Â¦Â¸' : 'Admin Panel Settings'}</h2>
-                <p className="text-sm text-muted-foreground">
-                  {language === 'bn' ? 'Ã Â¦Â¯Ã Â§â€¡Ã Â¦â€¢Ã Â§â€¹Ã Â¦Â¨Ã Â§â€¹ Ã Â¦ÂÃ Â¦â€¢Ã Â¦Å¸Ã Â¦Â¿ Ã Â¦â€¦Ã Â¦ÂªÃ Â¦Â¶Ã Â¦Â¨ Ã Â¦Â¬Ã Â§â€¡Ã Â¦â€ºÃ Â§â€¡ Ã Â¦Â¨Ã Â¦Â¿Ã Â¦Â¨' : 'Pick any option below to configure'}
-                </p>
-              </div>
-            </div>
-
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
-              {[
-                { id: 'sitesettings', icon: Settings, label: 'Site Settings', desc: 'Favicon, logo, site name', gradient: 'from-sky-500 to-cyan-500' },
-                { id: 'paymentmethod', icon: Banknote, label: 'Payment Method', desc: 'Bkash, Nagad & payment APIs', gradient: 'from-emerald-500 to-teal-500' },
-                { id: 'apikeys', icon: Key, label: 'API Keys', desc: 'Third-party service keys', gradient: 'from-violet-500 to-purple-500' },
-                { id: 'analytics', icon: BarChart3, label: 'Analytics', desc: 'Traffic & sales', gradient: 'from-rose-500 to-pink-500' },
-                { id: 'email', icon: Send, label: 'Email', desc: 'Outbound mail & threads', gradient: 'from-indigo-500 to-blue-500' },
-                { id: 'feedback', icon: FileText, label: 'Feedback', desc: 'Student video feedback', gradient: 'from-fuchsia-500 to-pink-500' },
-                { id: 'comments', icon: FileText, label: 'Comments', desc: 'Lesson comments & Q&A', scopeTag: 'learn', gradient: 'from-amber-500 to-orange-500' },
-                { id: 'coupons', icon: Ticket, label: 'Coupons', desc: 'Discount codes', scopeTag: 'learn', gradient: 'from-yellow-500 to-amber-500' },
-                { id: 'profile', icon: User, label: 'Admins', desc: 'Admin accounts', gradient: 'from-slate-500 to-slate-700' },
-              ]
-                .filter((c: any) => !c.scopeTag || c.scopeTag === scope)
-                .map((card) => (
-                <button
-                  key={card.id}
-                  onClick={() => setActiveTab(card.id)}
-                  className="group text-left bg-white dark:bg-slate-900 rounded-2xl p-4 border border-border/50 hover:border-transparent hover:shadow-lg hover:shadow-black/5 transition-all duration-300 hover:-translate-y-0.5"
-                >
-                  <div className={`w-10 h-10 rounded-xl bg-gradient-to-br ${card.gradient} flex items-center justify-center mb-3 shadow-md group-hover:scale-110 transition-transform`}>
-                    <card.icon className="w-5 h-5 text-white" />
-                  </div>
-                  <p className="text-sm font-semibold text-foreground">{card.label}</p>
-                  <p className="text-xs text-muted-foreground mt-0.5">{card.desc}</p>
-                </button>
-              ))}
-            </div>
-          </TabsContent>
-
           {/* Site Settings (general) */}
           <TabsContent value="sitesettings" className="space-y-6">
-            <Button variant="ghost" size="sm" onClick={() => setActiveTab('settings')} className="gap-1.5 -ml-2">
-              <ChevronRight className="w-4 h-4 rotate-180" />
-              {language === 'bn' ? 'Ã Â¦Â¸Ã Â§â€¡Ã Â¦Å¸Ã Â¦Â¿Ã Â¦â€šÃ Â¦Â¸Ã Â§â€¡ Ã Â¦Â«Ã Â¦Â¿Ã Â¦Â°Ã Â§â€¡ Ã Â¦Â¯Ã Â¦Â¾Ã Â¦Â¨' : 'Back to Settings'}
-            </Button>
+            
             <SiteSettingsManagement filter="general" />
           </TabsContent>
 
           {/* Payment Method (Bkash/Nagad + Payment API combined) */}
           <TabsContent value="paymentmethod" className="space-y-6">
-            <Button variant="ghost" size="sm" onClick={() => setActiveTab('settings')} className="gap-1.5 -ml-2">
-              <ChevronRight className="w-4 h-4 rotate-180" />
-              {language === 'bn' ? 'Ã Â¦Â¸Ã Â§â€¡Ã Â¦Å¸Ã Â¦Â¿Ã Â¦â€šÃ Â¦Â¸Ã Â§â€¡ Ã Â¦Â«Ã Â¦Â¿Ã Â¦Â°Ã Â§â€¡ Ã Â¦Â¯Ã Â¦Â¾Ã Â¦Â¨' : 'Back to Settings'}
-            </Button>
+            
             <SiteSettingsManagement filter="payment" />
             <div className="pt-2 border-t border-border/50" />
             <PaymentApiManagement />
@@ -1910,10 +1874,7 @@ function AdminDashboardInner() {
 
           {/* API Keys Tab */}
           <TabsContent value="apikeys" className="space-y-6">
-            <Button variant="ghost" size="sm" onClick={() => setActiveTab('settings')} className="gap-1.5 -ml-2">
-              <ChevronRight className="w-4 h-4 rotate-180" />
-              {language === 'bn' ? 'Ã Â¦Â¸Ã Â§â€¡Ã Â¦Å¸Ã Â¦Â¿Ã Â¦â€šÃ Â¦Â¸Ã Â§â€¡ Ã Â¦Â«Ã Â¦Â¿Ã Â¦Â°Ã Â§â€¡ Ã Â¦Â¯Ã Â¦Â¾Ã Â¦Â¨' : 'Back to Settings'}
-            </Button>
+            
             <ApiKeyManagement />
           </TabsContent>
 
