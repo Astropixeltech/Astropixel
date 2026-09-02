@@ -85,7 +85,7 @@ const CHART_COLORS = ['#0ea5e9', '#06b6d4', '#14b8a6', '#10b981', '#22c55e', '#8
 
 function AdminDashboardInner() {
   const scope: 'agency' | 'learn' = 'agency';
-  const { user, profile, signOut, isAdmin, isLoading: authLoading } = useAuth();
+  const { user, profile, signOut, isAdmin, isLoading: authLoading, refreshProfile } = useAuth();
   const { language, setLanguage } = useLanguage();
   const { theme, setTheme } = useTheme();
   const courses: any[] = [];
