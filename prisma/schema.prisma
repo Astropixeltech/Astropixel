@@ -8,17 +8,17 @@ datasource db {
 }
 
 model Profile {
-  id                    String      @id @default(uuid())
-  user_id               String      @unique
+  id                    String   @id @default(uuid())
+  user_id               String   @unique
   email                 String
   full_name             String
   avatar_url            String?
   phone_number          String?
   linked_team_member_id String?
-  created_at            DateTime    @default(now())
-  updated_at            DateTime    @updatedAt
+  created_at            DateTime @default(now())
+  updated_at            DateTime @updatedAt
 
-  roles                 UserRole[]
+  roles UserRole[]
 
   @@map("profiles")
 }
@@ -29,7 +29,7 @@ model UserRole {
   role       String
   created_at DateTime @default(now())
 
-  profile    Profile  @relation(fields: [user_id], references: [user_id], onDelete: Cascade)
+  profile Profile @relation(fields: [user_id], references: [user_id], onDelete: Cascade)
 
   @@map("user_roles")
 }
@@ -53,65 +53,65 @@ model Service {
 }
 
 model Work {
-  id             String   @id @default(uuid())
-  slug           String?  @unique
-  title          String
-  title_bn       String?
-  title_en       String?
-  description    String?
-  description_bn String?
-  description_en String?
-  category       String?
-  tags           Json?
-  project_type   String?
-  image_url      String?
-  client         String?
+  id              String   @id @default(uuid())
+  slug            String?  @unique
+  title           String
+  title_bn        String?
+  title_en        String?
+  description     String?
+  description_bn  String?
+  description_en  String?
+  category        String?
+  tags            Json?
+  project_type    String?
+  image_url       String?
+  client          String?
   completion_date String?
-  technologies   Json?
-  live_url       String?
-  is_featured    Boolean  @default(false)
-  is_published   Boolean  @default(true)
-  content_blocks Json?
-  order_index    Int      @default(0)
-  created_at     DateTime @default(now())
-  updated_at     DateTime @updatedAt
+  technologies    Json?
+  live_url        String?
+  is_featured     Boolean  @default(false)
+  is_published    Boolean  @default(true)
+  content_blocks  Json?
+  order_index     Int      @default(0)
+  created_at      DateTime @default(now())
+  updated_at      DateTime @updatedAt
 
   @@map("works")
 }
 
 model TeamMember {
-  id             String                  @id @default(uuid())
-  name           String
-  name_bn        String?
-  name_en        String?
-  role           String?
-  role_bn        String?
-  role_en        String?
-  bio            String?
-  bio_bn         String?
-  bio_en         String?
-  image_url      String?
-  order_index    Int                     @default(0)
-  is_active      Boolean                 @default(true)
-  site_scope     String                  @default("agency")
-  created_at     DateTime                @default(now())
-  updated_at     DateTime                @updatedAt
+  id          String   @id @default(uuid())
+  name        String
+  name_bn     String?
+  name_en     String?
+  role        String?
+  role_bn     String?
+  role_en     String?
+  bio         String?
+  bio_bn      String?
+  bio_en      String?
+  image_url   String?
+  order_index Int      @default(0)
+  is_active   Boolean  @default(true)
+  site_scope  String   @default("agency")
+  created_at  DateTime @default(now())
+  updated_at  DateTime @updatedAt
 
-  custom_links   TeamMemberCustomLink[]
+  custom_links TeamMemberCustomLink[]
 
   @@map("team_members")
 }
 
 model TeamMemberCustomLink {
-  id             String     @id @default(uuid())
+  id             String   @id @default(uuid())
   team_member_id String
   title          String
   url            String
   icon           String?
-  order_index    Int        @default(0)
-  created_at     DateTime   @default(now())
+  order_index    Int      @default(0)
+  created_at     DateTime @default(now())
 
-  team_member    TeamMember @relation(fields: [team_member_id], references: [id], onDelete: Cascade)
+  team_member TeamMember @relation(fields: [team_member_id], references: [id], onDelete: Cascade)
 
   @@map("team_member_custom_links")
 }
@@ -157,28 +157,28 @@ model FooterLink {
 }
 
 model EmailMessage {
-  id           String        @id @default(uuid())
+  id           String   @id @default(uuid())
   sender_name  String
   sender_email String
   subject      String?
   message      String
-  status       String        @default("pending")
-  is_read      Boolean       @default(false)
-  created_at   DateTime      @default(now())
+  status       String   @default("pending")
+  is_read      Boolean  @default(false)
+  created_at   DateTime @default(now())
 
-  threads      EmailThread[]
+  threads EmailThread[]
 
   @@map("email_messages")
 }
 
 model EmailThread {
-  id          String       @id @default(uuid())
+  id          String   @id @default(uuid())
   message_id  String
   sender_type String
   message     String
-  created_at  DateTime     @default(now())
+  created_at  DateTime @default(now())
 
-  email       EmailMessage @relation(fields: [message_id], references: [id], onDelete: Cascade)
+  email EmailMessage @relation(fields: [message_id], references: [id], onDelete: Cascade)
 
   @@map("email_threads")
 }
@@ -193,4 +193,76 @@ model ApiClient {
   created_at  DateTime @default(now())
 
   @@map("api_clients")
+}
+
+// --- Custom Email Workspace System Models ---
+
+model Mailbox {
+  id         String   @id @default(uuid())
+  user_id    String // Connects to Profile.user_id
+  address    String   @unique // e.g. atik@astropixel.tech
+  is_active  Boolean  @default(true)
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  messages MailMessage[]
+  threads  MailThread[]
+
+  @@map("mailboxes")
+}
+
+model MailThread {
+  id              String   @id @default(uuid())
+  mailbox_id      String
+  subject         String
+  last_message_at DateTime @default(now())
+  created_at      DateTime @default(now())
+  updated_at      DateTime @updatedAt
+
+  mailbox  Mailbox       @relation(fields: [mailbox_id], references: [id], onDelete: Cascade)
+  messages MailMessage[]
+
+  @@map("mail_threads")
+}
+
+model MailMessage {
+  id           String   @id @default(uuid())
+  mailbox_id   String
+  thread_id    String
+  message_id   String   @unique // Message-ID from email headers
+  in_reply_to  String? // References parent message_id
+  folder       String   @default("inbox") // inbox, sent, drafts, trash, archive
+  from_name    String?
+  from_address String
+  to_address   String
+  cc_address   String?
+  bcc_address  String?
+  subject      String
+  body_text    String?
+  body_html    String?
+  is_read      Boolean  @default(false)
+  is_starred   Boolean  @default(false)
+  received_at  DateTime @default(now())
+  created_at   DateTime @default(now())
+  updated_at   DateTime @updatedAt
+
+  mailbox     Mailbox          @relation(fields: [mailbox_id], references: [id], onDelete: Cascade)
+  thread      MailThread       @relation(fields: [thread_id], references: [id], onDelete: Cascade)
+  attachments MailAttachment[]
+
+  @@map("mail_messages")
+}
+
+model MailAttachment {
+  id           String   @id @default(uuid())
+  message_id   String
+  filename     String
+  content_type String
+  size_bytes   Int
+  url          String
+  created_at   DateTime @default(now())
+
+  message MailMessage @relation(fields: [message_id], references: [id], onDelete: Cascade)
+
+  @@map("mail_attachments")
 }
