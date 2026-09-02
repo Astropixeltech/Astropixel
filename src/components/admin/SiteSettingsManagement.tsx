@@ -6,6 +6,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Switch } from "@/components/ui/switch";
+import { Textarea } from "@/components/ui/textarea";
+import ImageUploader from "./ImageUploader";
 import { toast } from "sonner";
 import { Settings, Image, Type, Save, Loader2 } from "lucide-react";
 type SiteSetting = { id: string; setting_key: string; setting_value: string | null; setting_type: string; site_scope: string };
@@ -20,7 +22,6 @@ const SiteSettingsManagement = ({ filter }: { filter?: 'general' | 'payment' } =
   const { data: settings, isLoading } = useQuery({
     queryKey: ['site-settings', scope],
         queryFn: async () => {
-      // Fetch settings for current scope. Fallback to agency template for missing keys on learn scope.
       const { data: scopeRows, error } = await supabase
         .from('site_settings')
         .select('*')
@@ -30,21 +31,20 @@ const SiteSettingsManagement = ({ filter }: { filter?: 'general' | 'payment' } =
 
       let allRows = scopeRows || [];
 
-      // Ensure SEO/Branding keys always exist for agency
       if (scope === 'agency') {
         const requiredAgencyKeys = [
-          { key: 'site_name', type: 'text' },
-          { key: 'favicon_url', type: 'image' },
-          { key: 'logo_url', type: 'image' },
-          { key: 'meta_title', type: 'text' },
-          { key: 'meta_description', type: 'text' },
-          { key: 'og_image_url', type: 'image' },
+          { key: 'site_name', type: 'text', val: 'AstroPixel' },
+          { key: 'favicon_url', type: 'image', val: '/astropixel-icon.png' },
+          { key: 'logo_url', type: 'image', val: '/astropixel-logo-full.png' },
+          { key: 'meta_title', type: 'text', val: 'AstroPixel - UI/UX, Branding & Web Development Agency' },
+          { key: 'meta_description', type: 'textarea', val: 'AstroPixel is a Bangladesh-based international digital agency specializing in UI/UX design, logo & branding, web development, SaaS development, DevOps, and digital marketing for clients worldwide.' },
+          { key: 'og_image_url', type: 'image', val: 'https://res.cloudinary.com/dzuex7n2u/image/upload/v1779254926/astropixel/site/og-image.png' },
         ];
         const existingKeys = new Set(allRows.map((r: any) => r.setting_key));
         const shims = requiredAgencyKeys.filter(rk => !existingKeys.has(rk.key)).map(rk => ({
           id: `shim-${rk.key}`,
           setting_key: rk.key,
-          setting_value: '',
+          setting_value: rk.val,
           setting_type: rk.type,
           site_scope: 'agency'
         }));
@@ -52,7 +52,6 @@ const SiteSettingsManagement = ({ filter }: { filter?: 'general' | 'payment' } =
       }
 
       if (scope === 'learn') {
-        // Ensure the same keys as agency are visible for editing (so admin can create learn overrides)
         const { data: agencyRows } = await (supabase as any)
           .from('site_settings')
           .select('*')
@@ -231,46 +230,60 @@ const SiteSettingsManagement = ({ filter }: { filter?: 'general' | 'payment' } =
                 </div>
                 <CardDescription>{getSettingDescription(setting.setting_key)}</CardDescription>
               </CardHeader>
-              <CardContent className="space-y-3">
-                {setting.setting_type === 'image' && currentValue && (
-                  <div className="relative h-20 w-20 rounded-lg border border-border overflow-hidden bg-secondary">
-                    <img 
-                      src={currentValue} 
-                      alt={setting.setting_key}
-                      className="h-full w-full object-contain"
-                      onError={(e) => {
-                        (e.target as HTMLImageElement).src = '/placeholder.svg';
-                      }}
-                    />
-                  </div>
-                )}
-                
-                <div className="space-y-2">
-                  <Label htmlFor={setting.setting_key}>
-                    {setting.setting_type === 'image' ? 'Image URL' : 'Value'}
-                  </Label>
-                  <div className="flex gap-2">
-                    <Input
-                      id={setting.setting_key}
-                      value={currentValue}
-                      onChange={(e) => handleChange(setting.setting_key, e.target.value)}
-                      placeholder={setting.setting_type === 'image' ? 'https://example.com/image.png' : 'Enter value'}
-                    />
-                    <Button 
-                      size="icon" 
-                      onClick={() => handleSave(setting.setting_key, setting.setting_type)}
-                      disabled={!hasChanges || updateMutation.isPending}
-                      variant={hasChanges ? "default" : "secondary"}
-                    >
-                      {updateMutation.isPending ? (
-                        <Loader2 className="h-4 w-4 animate-spin" />
+              <CardContent className="space-y-4 pt-4">
+                  {setting.setting_type === 'image' ? (
+                    <div className="space-y-3">
+                      <ImageUploader 
+                        value={currentValue} 
+                        onChange={(url) => {
+                          handleChange(setting.setting_key, url);
+                        }} 
+                        folder="site-settings"
+                      />
+                      <Button 
+                        className="w-full"
+                        onClick={() => handleSave(setting.setting_key, setting.setting_type)}
+                        disabled={!hasChanges || updateMutation.isPending}
+                        variant={hasChanges ? "default" : "secondary"}
+                      >
+                        {updateMutation.isPending && hasChanges ? <Loader2 className="h-4 w-4 mr-2 animate-spin" /> : <Save className="h-4 w-4 mr-2" />}
+                        Save Image
+                      </Button>
+                    </div>
+                  ) : (
+                    <div className="space-y-3">
+                      <Label htmlFor={setting.setting_key} className="text-muted-foreground text-xs uppercase tracking-wider">
+                        Value
+                      </Label>
+                      {setting.setting_type === 'textarea' ? (
+                        <Textarea
+                          id={setting.setting_key}
+                          value={currentValue}
+                          onChange={(e) => handleChange(setting.setting_key, e.target.value)}
+                          placeholder="Enter text..."
+                          rows={4}
+                          className="resize-none"
+                        />
                       ) : (
-                        <Save className="h-4 w-4" />
+                        <Input
+                          id={setting.setting_key}
+                          value={currentValue}
+                          onChange={(e) => handleChange(setting.setting_key, e.target.value)}
+                          placeholder="Enter value"
+                        />
                       )}
-                    </Button>
-                  </div>
-                </div>
-              </CardContent>
+                      <Button 
+                        className="w-full"
+                        onClick={() => handleSave(setting.setting_key, setting.setting_type)}
+                        disabled={!hasChanges || updateMutation.isPending}
+                        variant={hasChanges ? "default" : "secondary"}
+                      >
+                        {updateMutation.isPending && hasChanges ? <Loader2 className="h-4 w-4 mr-2 animate-spin" /> : <Save className="h-4 w-4 mr-2" />}
+                        Save Setting
+                      </Button>
+                    </div>
+                  )}
+                </CardContent>
             </Card>
           );
         })}
