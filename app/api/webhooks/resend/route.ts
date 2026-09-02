@@ -27,7 +27,6 @@ export async function POST(req: Request) {
 
     const wh = new Webhook(WEBHOOK_SECRET);
     let evt: any;
-
     try {
       evt = wh.verify(body, {
         'svix-id': svix_id,
@@ -68,7 +67,8 @@ export async function POST(req: Request) {
               from_name: from, // Parse name properly later
               from_address: from,
               to_address: cleanTo,
-              subject: subject || '(No Subject)',
+              to_addresses: data.to,
+              subject: data.subject || 'No Subject',
               body_html: html,
               body_text: text,
               is_read: false,
