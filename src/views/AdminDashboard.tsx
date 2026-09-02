@@ -72,6 +72,7 @@ import logoFullPng from '@/assets/logo-full.png';
 import HomepageEditor from '@/components/admin/HomepageEditor';
 import FooterManagement from '@/components/admin/FooterManagement';
 import EmailManagement from '@/components/admin/EmailManagement';
+import MailWorkspace from '@/components/admin/mail/MailWorkspace';
 import ApiKeyManagement from '@/components/admin/ApiKeyManagement';
 import PaymentApiManagement from '@/components/admin/PaymentApiManagement';
 import FeedbackViewer from '@/components/admin/FeedbackViewer';
@@ -1840,9 +1841,9 @@ function AdminDashboardInner() {
           </TabsContent>
 
           {/* Email Tab */}
-          <TabsContent value="email" className="space-y-6">
-            <EmailManagement language={language} />
-          </TabsContent>
+          <TabsContent value="email" className="space-y-0 h-[800px]">
+              <MailWorkspace />
+            </TabsContent>
 
           {/* Feedback Tab */}
           <TabsContent value="feedback" className="space-y-6">
