@@ -243,7 +243,7 @@ export default function MailWorkspace() {
                 <f.icon className={cn("w-4 h-4 transition-colors", (activeFolder === f.id && !isComposing) ? "text-primary" : "text-muted-foreground group-hover:text-foreground")} />
                 {f.label}
               </div>
-              {f.count > 0 && (
+              {(f.count ?? 0) > 0 && (
                 <span className={cn(
                   "px-2 py-0.5 rounded-full text-[11px] font-bold",
                   (activeFolder === f.id && !isComposing) ? "bg-primary text-primary-foreground" : "bg-secondary text-muted-foreground group-hover:bg-primary/20 group-hover:text-primary"
