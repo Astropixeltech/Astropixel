@@ -99,7 +99,18 @@ function AdminDashboardInner() {
   const removeCourseFromStudent = async (..._args: any[]) => ({ error: null as string | null });
 
   const router = useRouter();
-  const [activeTab, setActiveTab] = useState('dashboard');
+  const [activeTab, setActiveTab] = useState(() => {
+    if (typeof window !== 'undefined') {
+      return localStorage.getItem('admin_active_tab') || 'dashboard';
+    }
+    return 'dashboard';
+  });
+
+  React.useEffect(() => {
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('admin_active_tab', activeTab);
+    }
+  }, [activeTab]);
 
   // Assign course dialog
   const [showAssignDialog, setShowAssignDialog] = useState(false);
