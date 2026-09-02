@@ -106,7 +106,7 @@ function AdminDashboardInner() {
     return 'dashboard';
   });
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (typeof window !== 'undefined') {
       localStorage.setItem('admin_active_tab', activeTab);
     }
