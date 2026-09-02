@@ -63,7 +63,7 @@ export async function POST(req: Request) {
             data: {
               mailbox_id: mailbox.id,
               thread_id: 'temp-thread-id', // Placeholder, will generate proper threads later
-              message_id: data.id || \`msg_\${Date.now()}\`, // Use Resend ID or generate one
+              message_id: data.id || `msg_${Date.now()}`, // Use Resend ID or generate one
               folder: 'inbox',
               from_name: from, // Parse name properly later
               from_address: from,
@@ -74,9 +74,9 @@ export async function POST(req: Request) {
               is_read: false,
             }
           });
-          console.log(\`[Webhook] Email saved to mailbox: \${cleanTo}\`);
+          console.log(`[Webhook] Email saved to mailbox: ${cleanTo}`);
         } else {
-          console.log(\`[Webhook] No mailbox found for recipient: \${cleanTo}\`);
+          console.log(`[Webhook] No mailbox found for recipient: ${cleanTo}`);
         }
       }
     }

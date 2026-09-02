@@ -18,7 +18,7 @@ export async function POST(req: Request) {
     }
 
     // Since this is a custom system, from address must be verified in Resend (e.g. astropixel.tech)
-    const fromAddress = \`Astropixel <\${from}>\`;
+    const fromAddress = `Astropixel <${from}>`;
 
     const data = await resend.emails.send({
       from: fromAddress,
