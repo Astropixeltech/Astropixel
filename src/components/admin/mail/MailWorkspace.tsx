@@ -83,30 +83,54 @@ export default function MailWorkspace() {
     setEmails(prev => prev.map(e => e.id === id ? { ...e, unread: false } : e));
   };
 
-  const handleSendCompose = () => {
+  const handleSendCompose = async () => {
     if (!composeTo || !composeSubject || !composeBody) {
       toast.error('Please fill in all fields');
       return;
     }
-    const newEmail: EmailThread = {
-      id: Date.now().toString(),
-      folder: 'sent',
-      subject: composeSubject,
-      from: 'Me (Admin)',
-      fromEmail: 'admin@astropixel.tech',
-      preview: composeBody.substring(0, 50) + '...',
-      body: composeBody,
-      time: 'Just now',
-      unread: false,
-      initials: 'ME'
-    };
-    setEmails(prev => [newEmail, ...prev]);
-    toast.success('Email sent successfully!');
-    setIsComposing(false);
-    setComposeTo('');
-    setComposeSubject('');
-    setComposeBody('');
-    setActiveFolder('sent');
+
+    const toastId = toast.loading('Sending email...');
+
+    try {
+      const res = await fetch('/api/mail/send', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          to: composeTo,
+          subject: composeSubject,
+          html: composeBody.replace(/\\n/g, '<br/>'),
+          text: composeBody,
+        })
+      });
+
+      const data = await res.json();
+      
+      if (!res.ok) {
+        throw new Error(data.error || 'Failed to send');
+      }
+
+      const newEmail: EmailThread = {
+        id: Date.now().toString(),
+        folder: 'sent',
+        subject: composeSubject,
+        from: 'Me (Admin)',
+        fromEmail: 'admin@astropixel.tech',
+        preview: composeBody.substring(0, 50) + '...',
+        body: composeBody,
+        time: 'Just now',
+        unread: false,
+        initials: 'ME'
+      };
+      setEmails(prev => [newEmail, ...prev]);
+      toast.success('Email sent successfully!', { id: toastId });
+      setIsComposing(false);
+      setComposeTo('');
+      setComposeSubject('');
+      setComposeBody('');
+      setActiveFolder('sent');
+    } catch (err: any) {
+      toast.error(err.message || 'Failed to send email', { id: toastId });
+    }
   };
 
   const handleDelete = () => {
@@ -137,32 +161,54 @@ export default function MailWorkspace() {
     if (fileInputRef.current) fileInputRef.current.value = '';
   };
 
-  const handleSendReply = () => {
+  const handleSendReply = async () => {
     if (!replyText.trim() && attachments.length === 0) {
       toast.error("Please enter a message or attach a file.");
       return;
     }
     
-    // Create a new sent email as reply
-    const newReply: EmailThread = {
-      id: Date.now().toString(),
-      folder: 'sent',
-      subject: 'Re: ' + (selectedThread?.subject || ''),
-      from: 'Me (Admin)',
-      fromEmail: 'admin@astropixel.tech',
-      preview: replyText.substring(0, 50) + '...',
-      body: replyText,
-      time: 'Just now',
-      unread: false,
-      initials: 'ME',
-      attachments: attachments.map(a => ({ name: a.name, size: a.size, type: a.type }))
-    };
+    const toastId = toast.loading('Sending reply...');
     
-    setEmails(prev => [newReply, ...prev]);
-    toast.success("Reply sent successfully!");
-    setReplyText('');
-    setAttachments([]);
-    // Optionally stay on the current thread, or close it. We will stay.
+    try {
+      const res = await fetch('/api/mail/send', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          to: selectedThread?.fromEmail,
+          subject: 'Re: ' + (selectedThread?.subject || ''),
+          html: replyText.replace(/\\n/g, '<br/>'),
+          text: replyText,
+        })
+      });
+
+      const data = await res.json();
+      
+      if (!res.ok) {
+        throw new Error(data.error || 'Failed to send');
+      }
+
+      // Create a new sent email as reply
+      const newReply: EmailThread = {
+        id: Date.now().toString(),
+        folder: 'sent',
+        subject: 'Re: ' + (selectedThread?.subject || ''),
+        from: 'Me (Admin)',
+        fromEmail: 'admin@astropixel.tech',
+        preview: replyText.substring(0, 50) + '...',
+        body: replyText,
+        time: 'Just now',
+        unread: false,
+        initials: 'ME',
+        attachments: attachments.map(a => ({ name: a.name, size: a.size, type: a.type }))
+      };
+      
+      setEmails(prev => [newReply, ...prev]);
+      toast.success("Reply sent successfully!", { id: toastId });
+      setReplyText('');
+      setAttachments([]);
+    } catch (err: any) {
+      toast.error(err.message || 'Failed to send reply', { id: toastId });
+    }
   };
 
   return (
