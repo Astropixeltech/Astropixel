@@ -145,6 +145,13 @@ function AdminDashboardInner() {
   const [editEmail, setEditEmail] = useState('');
   const [updatingProfile, setUpdatingProfile] = useState(false);
   const [uploadingAvatar, setUploadingAvatar] = useState(false);
+  const [localAvatar, setLocalAvatar] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      setLocalAvatar(localStorage.getItem('astropixel_admin_avatar'));
+    }
+  }, []);
 
   // Search state
   const [studentSearch, setStudentSearch] = useState('');
@@ -769,7 +776,7 @@ function AdminDashboardInner() {
   };
 
   // Avatar upload handler
-  const handleAvatarUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleAvatarUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
@@ -786,14 +793,12 @@ function AdminDashboardInner() {
     setUploadingAvatar(true);
 
     try {
-      // Read file as base64 Data URL
       const reader = new FileReader();
       reader.onload = async (event) => {
-        const avatarUrl = event.target?.result as string;
-        if (typeof window !== 'undefined') {
-          try { localStorage.setItem('astropixel_admin_avatar', avatarUrl); } catch (e) { console.warn('localStorage full, skipping avatar cache'); }
-        }
-
+        const base64Url = event.target?.result as string;
+        
+        let finalUrl = base64Url;
+        
         try {
           const fileExt = file.name.split('.').pop();
           const filePath = `${user?.id || 'admin'}/avatar.${fileExt}`;
@@ -805,22 +810,33 @@ function AdminDashboardInner() {
             const { data: { publicUrl } } = supabase.storage
               .from('avatars')
               .getPublicUrl(filePath);
-
-            await supabase
-              .from('profiles')
-              .update({ avatar_url: publicUrl })
-              .eq('user_id', user?.id);
+            finalUrl = publicUrl;
+          } else {
+            console.warn('Storage upload failed, falling back to base64', uploadError);
           }
-        } catch (err) {}
+        } catch (err) {
+          console.warn('Storage error, falling back to base64', err);
+        }
 
+        try {
+          await supabase
+            .from('profiles')
+            .update({ avatar_url: finalUrl })
+            .eq('user_id', user?.id);
+        } catch (updateErr) {
+          console.error('Profile update failed:', updateErr);
+        }
+
+        try { localStorage.setItem('astropixel_admin_avatar', finalUrl); } catch(e){}
+        setLocalAvatar(finalUrl);
         toast.success('Profile picture uploaded successfully!');
-        window.location.reload();
+        if (typeof refreshProfile !== 'undefined') refreshProfile();
+        setUploadingAvatar(false);
       };
       reader.readAsDataURL(file);
     } catch (error) {
       console.error('Avatar upload error:', error);
       toast.error('Something went wrong');
-    } finally {
       setUploadingAvatar(false);
     }
   };
@@ -1028,8 +1044,8 @@ function AdminDashboardInner() {
                 onClick={() => setShowProfileDialog(true)}
                 className="gap-2"
               >
-                {(profile?.avatar_url || user?.photoURL) ? (
-                  <img src={profile?.avatar_url || user?.photoURL || ""} alt="" className="w-5 h-5 rounded-lg shadow-sm object-cover" />
+                {(localAvatar || profile?.avatar_url || user?.photoURL) ? (
+                  <img src={localAvatar || profile?.avatar_url || user?.photoURL || ""} alt="" className="w-5 h-5 rounded-lg shadow-sm object-cover" />
                 ) : (
                   <div className="w-5 h-5 rounded-lg shadow-sm bg-gradient-to-br from-primary to-purple-600 flex items-center justify-center text-[10px] font-bold text-white">
                     {profile?.full_name?.charAt(0)}
@@ -1935,9 +1951,9 @@ function AdminDashboardInner() {
                 <CardContent className="space-y-4">
                   <div className="flex flex-col items-center text-center">
                     <div className="relative group">
-                      {((profile as any)?.avatar_url || user?.photoURL) ? (
+                      {(localAvatar || (profile as any)?.avatar_url || user?.photoURL) ? (
                         <img 
-                          src={(profile as any)?.avatar_url || user?.photoURL || ""} 
+                          src={localAvatar || (profile as any)?.avatar_url || user?.photoURL || ""} 
                           alt={profile?.full_name || undefined}
                           className="w-24 h-24 rounded-lg shadow-sm object-cover border-4 border-primary/20"
                         />
@@ -2330,9 +2346,9 @@ function AdminDashboardInner() {
           </DialogHeader>
           <div className="py-4 space-y-4">
             <div className="flex items-center gap-4">
-              {((profile as any)?.avatar_url || user?.photoURL) ? (
+              {(localAvatar || (profile as any)?.avatar_url || user?.photoURL) ? (
                 <img 
-                  src={(profile as any)?.avatar_url || user?.photoURL || ""} 
+                  src={localAvatar || (profile as any)?.avatar_url || user?.photoURL || ""} 
                   alt={profile?.full_name || undefined}
                   className="w-20 h-20 rounded-lg shadow-sm object-cover"
                 />
