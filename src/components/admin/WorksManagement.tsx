@@ -184,39 +184,26 @@ export const WorksManagement = () => {
       </div>
 
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-                {worksList.map((work) => (
-          <Card key={work.id} className={`overflow-hidden flex flex-col hover:shadow-md transition-all duration-200 border-border/50 ${!work.is_published ? "opacity-60 grayscale-[0.2]" : ""}`}>
-            {/* Top Image Section */}
-            <div className="relative aspect-[16/10] bg-muted w-full overflow-hidden group">
+                        {worksList.map((work) => (
+          <Card key={work.id} className={`overflow-hidden flex flex-col hover:shadow-md transition-all duration-200 border-border/60 ${!work.is_published ? "opacity-60" : ""}`}>
+            {/* Top Image Section - Clean, no overlays */}
+            <div className="relative aspect-[16/10] bg-muted w-full overflow-hidden border-b border-border/40">
               {work.image_url ? (
                 <img
                   src={work.image_url}
                   alt={work.title}
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  className="w-full h-full object-cover"
                 />
               ) : (
                 <div className="w-full h-full flex items-center justify-center">
                   <Image className="w-10 h-10 text-muted-foreground/30" />
                 </div>
               )}
-              
-              {/* Floating Badges & Actions Overlay */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/30 pointer-events-none opacity-80" />
-              
-              {/* Top Actions (Edit/Delete) */}
-              <div className="absolute top-3 right-3 flex gap-1 z-10 bg-black/20 backdrop-blur-md rounded-lg p-1 shadow-sm border border-white/10 pointer-events-auto">
-                <Button variant="ghost" size="icon" className="w-7 h-7 text-white hover:bg-white/20 hover:text-white" onClick={() => handleEdit(work)}>
-                  <Pencil className="w-3.5 h-3.5" />
-                </Button>
-                <Button variant="ghost" size="icon" className="w-7 h-7 text-white hover:bg-white/20 hover:text-red-400" onClick={() => handleDelete(work.id)}>
-                  <Trash2 className="w-3.5 h-3.5" />
-                </Button>
-              </div>
-
-              </div>
+            </div>
 
             {/* Content Section */}
             <CardContent className="p-5 flex-grow flex flex-col">
+              {/* Badges */}
               <div className="flex flex-wrap gap-2 mb-3">
                 <span className="inline-block px-2 py-0.5 bg-primary/10 text-primary text-[10px] font-bold rounded uppercase tracking-wider">
                   {work.category}
@@ -232,12 +219,25 @@ export const WorksManagement = () => {
                   </span>
                 )}
               </div>
-              <h3 className="text-xl font-bold leading-tight mb-2 line-clamp-2 text-card-foreground group-hover:text-primary transition-colors">
-                {work.title}
-              </h3>
+
+              {/* Title and Actions */}
+              <div className="flex justify-between items-start gap-3 mb-2">
+                <h3 className="text-lg font-bold leading-tight line-clamp-2 text-foreground">
+                  {work.title}
+                </h3>
+                <div className="flex gap-1 shrink-0 -mt-1 -mr-2">
+                  <Button variant="ghost" size="icon" className="w-8 h-8 text-muted-foreground hover:text-primary" onClick={() => handleEdit(work)}>
+                    <Pencil className="w-4 h-4" />
+                  </Button>
+                  <Button variant="ghost" size="icon" className="w-8 h-8 text-muted-foreground hover:text-destructive" onClick={() => handleDelete(work.id)}>
+                    <Trash2 className="w-4 h-4" />
+                  </Button>
+                </div>
+              </div>
               
+              {/* Description */}
               {work.description && (
-                <p className="text-sm text-muted-foreground line-clamp-3 mb-4 flex-grow">
+                <p className="text-sm text-muted-foreground line-clamp-2 mb-4 flex-grow">
                   {work.description}
                 </p>
               )}
