@@ -4,7 +4,7 @@ export default function WorkHeroEditor() {
   return (
     <PageHeroEditor
       pageName="work"
-      title="Work Page — Hero Section"
+      title="Work Page - Hero Section"
       subtitle="Click to edit the top hero (badge, title, description, chip)"
       fields={[
         {
@@ -17,7 +17,7 @@ export default function WorkHeroEditor() {
         {
           key: "hero.title",
           label: "💼 Hero Title",
-          description: "Wrap highlighted words with | | — e.g. Our Creative |Works & Projects|",
+          description: "Wrap highlighted words with | | - e.g. Our Creative |Works & Projects|",
           type: "input",
           fallback: "Our Creative |Works & Projects|",
         },
