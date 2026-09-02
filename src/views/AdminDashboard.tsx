@@ -1027,9 +1027,7 @@ function AdminDashboardInner() {
                 <h1 className={`text-2xl font-bold text-foreground ${language === 'bn' ? 'font-[SabinaShorolipi]' : ''}`}>
                   {language === 'bn' ? 'Ã Â¦Â¸Ã Â§ÂÃ Â¦Â¬Ã Â¦Â¾Ã Â¦â€”Ã Â¦Â¤Ã Â¦Â®' : 'Welcome'}, {profile?.full_name?.split(' ')[0]}
                 </h1>
-                <Badge variant="secondary" className="text-[10px] uppercase tracking-wider">
-                  {language === 'bn' ? 'Ã Â¦ÂÃ Â¦Å“Ã Â§â€¡Ã Â¦Â¨Ã Â§ÂÃ Â¦Â¸Ã Â¦Â¿ Ã Â¦Â¸Ã Â¦Â¾Ã Â¦â€¡Ã Â¦Å¸' : 'Agency Site'}
-                </Badge>
+                
               </div>
               <p className="text-sm text-muted-foreground">
                 {language === 'bn' ? 'Ã Â¦â€ Ã Â¦Å“ ' : 'Today is '}{new Date().toLocaleDateString(language === 'bn' ? 'bn-BD' : 'en-US', { weekday: 'long', day: 'numeric', month: 'long' })}
