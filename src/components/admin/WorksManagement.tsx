@@ -213,29 +213,25 @@ export const WorksManagement = () => {
                 </Button>
               </div>
 
-              {/* Bottom Badges on Image */}
-              <div className="absolute bottom-3 left-3 right-3 flex justify-between items-end z-10">
-                <span className="px-2.5 py-1 bg-white/95 text-foreground text-xs font-bold rounded shadow-sm uppercase tracking-widest">
-                  {work.category}
-                </span>
-                
-                <div className="flex gap-1.5">
-                  {work.is_featured && (
-                    <span className="px-2 py-1 bg-amber-500/90 backdrop-blur text-white text-[10px] font-bold uppercase rounded shadow-sm">
-                      Featured
-                    </span>
-                  )}
-                  {!work.is_published && (
-                    <span className="px-2 py-1 bg-red-500/90 backdrop-blur text-white text-[10px] font-bold uppercase rounded shadow-sm">
-                      Draft
-                    </span>
-                  )}
-                </div>
               </div>
-            </div>
 
             {/* Content Section */}
             <CardContent className="p-5 flex-grow flex flex-col">
+              <div className="flex flex-wrap gap-2 mb-3">
+                <span className="inline-block px-2 py-0.5 bg-primary/10 text-primary text-[10px] font-bold rounded uppercase tracking-wider">
+                  {work.category}
+                </span>
+                {work.is_featured && (
+                  <span className="px-1.5 py-0.5 bg-amber-500/10 text-amber-600 text-[10px] font-bold uppercase rounded">
+                    Featured
+                  </span>
+                )}
+                {!work.is_published && (
+                  <span className="px-1.5 py-0.5 bg-red-500/10 text-red-600 text-[10px] font-bold uppercase rounded">
+                    Draft
+                  </span>
+                )}
+              </div>
               <h3 className="text-xl font-bold leading-tight mb-2 line-clamp-2 text-card-foreground group-hover:text-primary transition-colors">
                 {work.title}
               </h3>
