@@ -348,7 +348,7 @@ export const ServicesManagement = () => {
     <div className="space-y-6">
       <PageHeroEditor
         pageName="services"
-        title="Services Page — Hero Section"
+        title="Services Page - Hero Section"
         subtitle="Click to edit top badge, headline, and description"
         fields={[
           { key: "hero.subtitle", label: "🔖 Top Badge", description: "Small uppercase text above title", type: "input", fallback: "Our Services" },
@@ -441,23 +441,7 @@ export const ServicesManagement = () => {
               )}
             </CardContent>
           </Card>
-        ))}
-                      {service.features.length > 3 && (
-                        <li className="text-primary font-medium list-none">+ {service.features.length - 3} more</li>
-                      )}
-                    </ul>
-                  </div>
-                )}
-                {!service.is_active && (
-                  <span className="inline-block mt-2 px-2 py-0.5 bg-red-500/10 text-red-600 rounded text-xs">
-                    Inactive
-                  </span>
-                )}
-              </div>
-            </CardContent>
-          </Card>
-        ))}
-      </div>
+        ))}      </div>
 
       {servicesList.length === 0 && (
         <div className="text-center py-12 text-muted-foreground">
