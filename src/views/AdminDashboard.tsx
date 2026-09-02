@@ -791,7 +791,7 @@ function AdminDashboardInner() {
       reader.onload = async (event) => {
         const avatarUrl = event.target?.result as string;
         if (typeof window !== 'undefined') {
-          localStorage.setItem('astropixel_admin_avatar', avatarUrl);
+          try { localStorage.setItem('astropixel_admin_avatar', avatarUrl); } catch (e) { console.warn('localStorage full, skipping avatar cache'); }
         }
 
         try {
