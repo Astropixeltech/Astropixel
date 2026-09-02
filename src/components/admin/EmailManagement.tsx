@@ -212,10 +212,10 @@ export default function EmailManagement({ language }: EmailManagementProps) {
           <Button
             onClick={handleSendEmail}
             disabled={isSending}
-            className={`w-full h-14 text-base font-semibold rounded-xl transition-all duration-300 ${
+            className={`w-full h-14 text-white text-base font-semibold rounded-xl transition-all duration-300 ${
               emailSent 
                 ? 'bg-emerald-500 hover:bg-emerald-600' 
-                : 'bg-gradient-to-r from-sky-500 to-cyan-600 hover:from-sky-600 hover:to-cyan-700'
+                : 'bg-gradient-to-r from-primary to-purple-600 hover:from-primary/90 hover:to-purple-600/90 shadow-primary/20'
             } shadow-lg`}
           >
             {isSending ? (
