@@ -47,17 +47,62 @@ export default function MailWorkspace() {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    // Load from local storage or mock
-    const saved = localStorage.getItem('astropixel_mail');
-    if (saved) {
+    const fetchEmails = async () => {
       try {
-        setEmails(JSON.parse(saved));
-      } catch (e) {
+        const res = await fetch('/api/mail/inbox?address=atik@astropixel.tech');
+        const data = await res.json();
+        
+        if (data.success && data.messages) {
+          // Map DB models to frontend state
+          const formatted = data.messages.map((m: any) => ({
+            id: m.id,
+            folder: m.folder,
+            subject: m.subject,
+            from: m.from_name || m.from_address,
+            fromEmail: m.from_address,
+            preview: (m.body_text || '').substring(0, 50) + '...',
+            body: m.body_text || m.body_html || 'No content',
+            time: new Date(m.received_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+            unread: !m.is_read,
+            initials: (m.from_name || m.from_address).charAt(0).toUpperCase(),
+            attachments: m.attachments || []
+          }));
+          
+          // Merge with any existing local sent emails just for demo purpose
+          const saved = localStorage.getItem('astropixel_mail');
+          let localSent = [];
+          if (saved) {
+            try {
+              const parsed = JSON.parse(saved);
+              localSent = parsed.filter((e: any) => e.folder === 'sent');
+            } catch(e) {}
+          }
+          
+          setEmails([...formatted, ...localSent]);
+        } else {
+          // Fallback to local storage if API fails (e.g. table doesn't exist yet)
+          loadLocalFallback();
+        }
+      } catch (err) {
+        console.error("Failed to fetch inbox:", err);
+        loadLocalFallback();
+      }
+    };
+    
+    const loadLocalFallback = () => {
+      const saved = localStorage.getItem('astropixel_mail');
+      if (saved) {
+        try { setEmails(JSON.parse(saved)); } catch (e) { setEmails(MOCK_INITIAL_EMAILS); }
+      } else {
         setEmails(MOCK_INITIAL_EMAILS);
       }
-    } else {
-      setEmails(MOCK_INITIAL_EMAILS);
-    }
+    };
+
+    fetchEmails();
+    
+    // Auto refresh every 15 seconds
+    const interval = setInterval(fetchEmails, 15000);
+    return () => clearInterval(interval);
   }, []);
 
   useEffect(() => {
