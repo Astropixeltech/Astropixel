@@ -928,7 +928,7 @@ function AdminDashboardInner() {
               className="h-8 md:h-10 w-auto max-w-[170px] object-contain flex-shrink-0 brightness-0 dark:invert"
             />
             <div className="hidden md:block">
-              <h1 className="font-bold text-sm bg-gradient-to-r from-primary to-cyan-600 bg-clip-text text-transparent">
+              <h1 className="font-bold text-sm bg-gradient-to-r from-primary to-purple-600 bg-clip-text text-transparent">
                 {language === 'bn' ? 'ড্যাশবোর্ড' : 'Dashboard'}
               </h1>
               <p className="text-[10px] text-muted-foreground flex items-center gap-1">
@@ -1028,10 +1028,10 @@ function AdminDashboardInner() {
                 onClick={() => setShowProfileDialog(true)}
                 className="gap-2"
               >
-                {profile?.avatar_url ? (
-                  <img src={profile.avatar_url} alt="" className="w-5 h-5 rounded-full object-cover" />
+                {(profile?.avatar_url || user?.photoURL) ? (
+                  <img src={profile?.avatar_url || user?.photoURL || ""} alt="" className="w-5 h-5 rounded-lg shadow-sm object-cover" />
                 ) : (
-                  <div className="w-5 h-5 rounded-full bg-gradient-to-br from-primary to-cyan-600 flex items-center justify-center text-[10px] font-bold text-white">
+                  <div className="w-5 h-5 rounded-lg shadow-sm bg-gradient-to-br from-primary to-purple-600 flex items-center justify-center text-[10px] font-bold text-white">
                     {profile?.full_name?.charAt(0)}
                   </div>
                 )}
@@ -1388,7 +1388,7 @@ function AdminDashboardInner() {
                     <CardHeader className="pb-2">
                       <div className="flex items-center justify-between">
                         <div className="flex items-center gap-3">
-                          <div className={`w-10 h-10 rounded-full flex items-center justify-center ${
+                          <div className={`w-10 h-10 rounded-lg shadow-sm flex items-center justify-center ${
                             request.status === 'pending' ? 'bg-amber-500/20' : 
                             request.status === 'approved' ? 'bg-green-500/20' : 'bg-red-500/20'
                           }`}>
@@ -1683,7 +1683,7 @@ function AdminDashboardInner() {
                           <CardHeader className="pb-2">
                             <div className="flex items-center gap-3">
                               <input type="checkbox" checked={selectedStudents.includes(student.id)} onChange={() => toggleStudentSelection(student.id)} className="rounded border-gray-300" onClick={(e) => e.stopPropagation()} />
-                              <div className="w-12 h-12 rounded-full bg-gradient-to-br from-primary to-cyan-600 flex items-center justify-center">
+                              <div className="w-12 h-12 rounded-lg shadow-sm bg-gradient-to-br from-primary to-purple-600 flex items-center justify-center">
                                 <span className="text-white font-bold text-lg">{student.full_name?.charAt(0).toUpperCase()}</span>
                               </div>
                               <div className="flex-1 min-w-0">
@@ -1728,7 +1728,7 @@ function AdminDashboardInner() {
                         <CardHeader className="pb-2">
                           <div className="flex items-center gap-3">
                             <input type="checkbox" checked={selectedStudents.includes(student.id)} onChange={() => toggleStudentSelection(student.id)} className="rounded border-gray-300" onClick={(e) => e.stopPropagation()} />
-                            <div className="w-12 h-12 rounded-full bg-gradient-to-br from-primary to-cyan-600 flex items-center justify-center">
+                            <div className="w-12 h-12 rounded-lg shadow-sm bg-gradient-to-br from-primary to-purple-600 flex items-center justify-center">
                               <span className="text-white font-bold text-lg">{student.full_name?.charAt(0).toUpperCase()}</span>
                             </div>
                             <div className="flex-1 min-w-0">
@@ -1935,20 +1935,20 @@ function AdminDashboardInner() {
                 <CardContent className="space-y-4">
                   <div className="flex flex-col items-center text-center">
                     <div className="relative group">
-                      {(profile as any)?.avatar_url ? (
+                      {((profile as any)?.avatar_url || user?.photoURL) ? (
                         <img 
-                          src={(profile as any).avatar_url} 
+                          src={(profile as any)?.avatar_url || user?.photoURL || ""} 
                           alt={profile?.full_name || undefined}
-                          className="w-24 h-24 rounded-full object-cover border-4 border-primary/20"
+                          className="w-24 h-24 rounded-lg shadow-sm object-cover border-4 border-primary/20"
                         />
                       ) : (
-                        <div className="w-24 h-24 rounded-full bg-gradient-to-br from-primary to-cyan-600 flex items-center justify-center">
+                        <div className="w-24 h-24 rounded-lg shadow-sm bg-gradient-to-br from-primary to-purple-600 flex items-center justify-center">
                           <span className="text-3xl font-bold text-white">
                             {profile?.full_name?.charAt(0).toUpperCase()}
                           </span>
                         </div>
                       )}
-                      <label className="absolute inset-0 flex items-center justify-center bg-black/50 rounded-full opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer">
+                      <label className="absolute inset-0 flex items-center justify-center bg-black/50 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer">
                         <input 
                           type="file" 
                           accept="image/*" 
@@ -1966,7 +1966,7 @@ function AdminDashboardInner() {
                     <div className="mt-4">
                       <p className="font-semibold text-lg">{profile?.full_name}</p>
                       <p className="text-sm text-muted-foreground">{profile?.email}</p>
-                      <Badge className="mt-2 bg-gradient-to-r from-primary to-cyan-600">Admin</Badge>
+                      <Badge className="mt-2 bg-gradient-to-r from-primary to-purple-600">Admin</Badge>
                     </div>
                   </div>
                   <Button 
@@ -2084,10 +2084,10 @@ function AdminDashboardInner() {
                           <img 
                             src={admin.avatar_url} 
                             alt={admin.full_name}
-                            className="w-12 h-12 rounded-full object-cover border-2 border-primary/20"
+                            className="w-12 h-12 rounded-lg shadow-sm object-cover border-2 border-primary/20"
                           />
                         ) : (
-                          <div className="w-12 h-12 rounded-full bg-gradient-to-br from-primary to-cyan-600 flex items-center justify-center flex-shrink-0">
+                          <div className="w-12 h-12 rounded-lg shadow-sm bg-gradient-to-br from-primary to-purple-600 flex items-center justify-center flex-shrink-0">
                             <span className="text-lg font-bold text-white">
                               {admin.full_name?.charAt(0).toUpperCase()}
                             </span>
@@ -2170,7 +2170,7 @@ function AdminDashboardInner() {
                         <p className="text-xs text-muted-foreground line-clamp-1">{course.description}</p>
                       )}
                     </div>
-                    <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${
+                    <div className={`w-5 h-5 rounded-lg shadow-sm border-2 flex items-center justify-center ${
                       selectedCourseToAssign === course.id 
                         ? 'border-primary bg-primary' 
                         : 'border-muted-foreground'
@@ -2330,14 +2330,14 @@ function AdminDashboardInner() {
           </DialogHeader>
           <div className="py-4 space-y-4">
             <div className="flex items-center gap-4">
-              {(profile as any)?.avatar_url ? (
+              {((profile as any)?.avatar_url || user?.photoURL) ? (
                 <img 
-                  src={(profile as any).avatar_url} 
+                  src={(profile as any)?.avatar_url || user?.photoURL || ""} 
                   alt={profile?.full_name || undefined}
-                  className="w-20 h-20 rounded-full object-cover"
+                  className="w-20 h-20 rounded-lg shadow-sm object-cover"
                 />
               ) : (
-                <div className="w-20 h-20 rounded-full bg-gradient-to-br from-primary to-cyan-600 flex items-center justify-center">
+                <div className="w-20 h-20 rounded-lg shadow-sm bg-gradient-to-br from-primary to-purple-600 flex items-center justify-center">
                   <span className="text-2xl font-bold text-white">
                     {profile?.full_name?.charAt(0).toUpperCase()}
                   </span>
