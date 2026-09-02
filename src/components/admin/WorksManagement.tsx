@@ -157,156 +157,17 @@ export const WorksManagement = () => {
   // Full-page Inline Editor Mode
   if (isFormOpen) {
     return (
-      <div className="space-y-6 animate-in fade-in duration-200">
-        {/* Header Navigation */}
-        <div className="flex flex-wrap items-center justify-between gap-4 p-4 rounded-2xl bg-card border border-border/60 shadow-sm">
-          <div className="flex items-center gap-3">
-            <Button variant="outline" size="sm" onClick={resetForm} className="gap-2">
-              <ArrowLeft className="w-4 h-4" />
-              Back to Works
-            </Button>
-            <div>
-              <h2 className="text-xl font-bold">
-                {editingWork ? `Edit Project: ${editingWork.title}` : "Add New Project"}
-              </h2>
-              <p className="text-xs text-muted-foreground">
-                Set project title, category, description, cover showcase image, and live URL.
-              </p>
-            </div>
-          </div>
-
-          <div className="flex items-center gap-3">
-            <Button variant="ghost" onClick={resetForm}>
-              Cancel
-            </Button>
-            <Button onClick={handleSubmit} className="gap-2 bg-primary hover:bg-primary/90 text-primary-foreground">
-              <Save className="w-4 h-4" />
-              Save Project
-            </Button>
-          </div>
-        </div>
-
-        {/* Form Body Grid */}
-        <form onSubmit={handleSubmit}>
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            {/* Left Column: Project Info */}
-            <Card className="border-border/60 shadow-sm">
-              <CardHeader>
-                <CardTitle className="text-base font-semibold">Project Overview</CardTitle>
-                <CardDescription>Title, category selection, and description.</CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div>
-                  <Label className="font-medium">Project Title *</Label>
-                  <Input
-                    value={formData.title}
-                    onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                    placeholder="Project Title"
-                    className="mt-1.5"
-                    required
-                  />
-                </div>
-
-                <div>
-                  <Label className="font-medium">Category</Label>
-                  <Select
-                    value={formData.category}
-                    onValueChange={(val) => setFormData({ ...formData, category: val })}
-                  >
-                    <SelectTrigger className="mt-1.5">
-                      <SelectValue placeholder="Select Category" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="web">Web Design & Development</SelectItem>
-                      <SelectItem value="graphics">Graphic Design</SelectItem>
-                      <SelectItem value="branding">Logo & Branding</SelectItem>
-                      <SelectItem value="photography">Photography</SelectItem>
-                      <SelectItem value="motion">Motion / 3D</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-
-                <div>
-                  <Label className="font-medium">Project Description</Label>
-                  <Textarea
-                    value={formData.description}
-                    onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                    placeholder="Short summary of technologies used, goal, or results..."
-                    rows={5}
-                    className="mt-1.5"
-                  />
-                </div>
-
-                <div className="space-y-3 pt-2">
-                  <div className="flex items-center justify-between p-3.5 rounded-xl border border-border/60 bg-muted/30">
-                    <div>
-                      <Label className="font-medium cursor-pointer">Featured Project</Label>
-                      <p className="text-xs text-muted-foreground">Show in homepage showcase grid</p>
-                    </div>
-                    <Switch
-                      checked={formData.is_featured}
-                      onCheckedChange={(checked) => setFormData({ ...formData, is_featured: checked })}
-                    />
-                  </div>
-
-                  <div className="flex items-center justify-between p-3.5 rounded-xl border border-border/60 bg-muted/30">
-                    <div>
-                      <Label className="font-medium cursor-pointer">Published Status</Label>
-                      <p className="text-xs text-muted-foreground">Visible on public portfolio page</p>
-                    </div>
-                    <Switch
-                      checked={formData.is_published}
-                      onCheckedChange={(checked) => setFormData({ ...formData, is_published: checked })}
-                    />
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* Right Column: Cover Image & Links */}
-            <Card className="border-border/60 shadow-sm">
-              <CardHeader>
-                <CardTitle className="text-base font-semibold">Cover Media & Live Links</CardTitle>
-                <CardDescription>Upload cover preview image and set project URL.</CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div>
-                  <Label className="font-medium">Cover Showcase Image</Label>
-                  <div className="mt-1.5">
-                    <ImageUploader
-                      value={formData.image_url}
-                      onChange={(url) => setFormData({ ...formData, image_url: url })}
-                      folder="works"
-                      placeholder="Cover Image URL or Upload"
-                    />
-                  </div>
-                </div>
-
-                <div>
-                  <Label className="font-medium">Live Website / Project Link</Label>
-                  <Input
-                    value={formData.project_url}
-                    onChange={(e) => setFormData({ ...formData, project_url: e.target.value })}
-                    placeholder="https://example.com"
-                    className="mt-1.5"
-                  />
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-
-          {/* Action Footer */}
-          <div className="flex items-center justify-end gap-3 mt-6 p-4 rounded-2xl bg-card border border-border/60 shadow-sm">
-            <Button type="button" variant="outline" onClick={resetForm}>
-              Cancel
-            </Button>
-            <Button type="submit" className="gap-2 bg-primary hover:bg-primary/90 text-primary-foreground">
-              <Save className="w-4 h-4" />
-              Save Project
-            </Button>
-          </div>
-        </form>
-      </div>
+      <ProjectBuilder 
+        initialData={editingWork || formData}
+        onCancel={resetForm}
+        onSaveSuccess={() => {
+          resetForm();
+          // The queryClient in layout should invalidate/refetch, or we can force reload
+          if (typeof window !== 'undefined') {
+            window.location.reload();
+          }
+        }}
+      />
     );
   }
 

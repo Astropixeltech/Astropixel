@@ -53,3 +53,38 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }
+export async function PUT(request: Request) {
+  try {
+    const body = await request.json();
+    if (!body.id) {
+      return NextResponse.json({ error: 'Missing id' }, { status: 400 });
+    }
+
+    const work = await prisma.work.update({
+      where: { id: body.id },
+      data: {
+        title: body.title,
+        title_bn: body.title_bn,
+        title_en: body.title_en,
+        description: body.description,
+        description_bn: body.description_bn,
+        description_en: body.description_en,
+        category: body.category,
+        tags: body.tags,
+        project_type: body.project_type,
+        image_url: body.image_url,
+        client: body.client,
+        completion_date: body.completion_date,
+        technologies: body.technologies,
+        live_url: body.live_url,
+        is_featured: body.is_featured,
+        is_published: body.is_published,
+        content_blocks: body.content_blocks,
+        order_index: body.order_index,
+      },
+    });
+    return NextResponse.json(work);
+  } catch (error: any) {
+    return NextResponse.json({ error: error.message }, { status: 500 });
+  }
+}
