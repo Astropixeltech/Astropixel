@@ -46,70 +46,46 @@ export default function MailWorkspace() {
   const [attachments, setAttachments] = useState<File[]>([]);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  useEffect(() => {
-    const fetchEmails = async () => {
-      try {
-        const res = await fetch('/api/mail/inbox?address=atik@astropixel.tech');
-        const data = await res.json();
-        
-        if (data.success && data.messages) {
-          // Map DB models to frontend state
-          const formatted = data.messages.map((m: any) => ({
-            id: m.id,
-            folder: m.folder,
-            subject: m.subject,
-            from: m.from_name || m.from_address,
-            fromEmail: m.from_address,
-            preview: (m.body_text || '').substring(0, 50) + '...',
-            body: m.body_text || m.body_html || 'No content',
-            time: new Date(m.received_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-            unread: !m.is_read,
-            initials: (m.from_name || m.from_address).charAt(0).toUpperCase(),
-            attachments: m.attachments || []
-          }));
-          
-          // Merge with any existing local sent emails just for demo purpose
-          const saved = localStorage.getItem('astropixel_mail');
-          let localSent = [];
-          if (saved) {
-            try {
-              const parsed = JSON.parse(saved);
-              localSent = parsed.filter((e: any) => e.folder === 'sent');
-            } catch(e) {}
-          }
-          
-          setEmails([...formatted, ...localSent]);
-        } else {
-          // Fallback to local storage if API fails (e.g. table doesn't exist yet)
-          loadLocalFallback();
-        }
-      } catch (err) {
-        console.error("Failed to fetch inbox:", err);
-        loadLocalFallback();
-      }
-    };
-    
-    const loadLocalFallback = () => {
-      const saved = localStorage.getItem('astropixel_mail');
-      if (saved) {
-        try { setEmails(JSON.parse(saved)); } catch (e) { setEmails(MOCK_INITIAL_EMAILS); }
-      } else {
-        setEmails(MOCK_INITIAL_EMAILS);
-      }
-    };
+  const [isLoading, setIsLoading] = useState(false);
+  const MAILBOX = 'atik@astropixel.tech';
 
-    fetchEmails();
-    
-    // Auto refresh every 15 seconds
-    const interval = setInterval(fetchEmails, 15000);
+  const fetchEmailsForFolder = async (folder: string) => {
+    setIsLoading(true);
+    try {
+      const res = await fetch(`/api/mail/inbox?address=${MAILBOX}&folder=${folder}`);
+      const data = await res.json();
+      
+      if (data.messages) {
+        const formatted: EmailThread[] = data.messages.map((m: any) => ({
+          id: m.id,
+          folder: m.folder,
+          subject: m.subject,
+          from: m.from_name || m.from_address,
+          fromEmail: m.from_address,
+          preview: (m.body_text || m.body_html || '').substring(0, 80) + '...',
+          body: m.body_text || m.body_html || '(No content)',
+          time: new Date(m.received_at).toLocaleString('en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' }),
+          unread: !m.is_read,
+          initials: (m.from_name || m.from_address || '?').charAt(0).toUpperCase(),
+          attachments: (m.attachments || []).map((a: any) => ({ name: a.filename, size: a.size, type: a.content_type }))
+        }));
+        // Merge: keep other folders' emails, replace current folder
+        setEmails(prev => [...prev.filter(e => e.folder !== folder), ...formatted]);
+      }
+    } catch (err) {
+      console.error("Failed to fetch emails:", err);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    // Fetch inbox on load
+    fetchEmailsForFolder('inbox');
+    // Poll every 20 seconds for new emails
+    const interval = setInterval(() => fetchEmailsForFolder('inbox'), 20000);
     return () => clearInterval(interval);
   }, []);
-
-  useEffect(() => {
-    if (emails.length > 0) {
-      localStorage.setItem('astropixel_mail', JSON.stringify(emails));
-    }
-  }, [emails]);
 
   const activeThreads = emails.filter(e => e.folder === activeFolder);
   const selectedThread = emails.find(e => e.id === selectedThreadId);
@@ -124,8 +100,14 @@ export default function MailWorkspace() {
   const handleSelectThread = (id: string) => {
     setSelectedThreadId(id);
     setIsComposing(false);
-    // Mark as read
     setEmails(prev => prev.map(e => e.id === id ? { ...e, unread: false } : e));
+  };
+
+  const handleFolderChange = (folderId: string) => {
+    setActiveFolder(folderId);
+    setSelectedThreadId(null);
+    setIsComposing(false);
+    fetchEmailsForFolder(folderId);
   };
 
   const handleSendCompose = async () => {
@@ -276,7 +258,7 @@ export default function MailWorkspace() {
           {folders.map(f => (
             <button
               key={f.id}
-              onClick={() => { setActiveFolder(f.id); setSelectedThreadId(null); setIsComposing(false); }}
+              onClick={() => handleFolderChange(f.id)}
               className={cn(
                 "w-full flex items-center justify-between px-3 py-2.5 text-sm rounded-xl transition-all duration-200 group",
                 activeFolder === f.id && !isComposing

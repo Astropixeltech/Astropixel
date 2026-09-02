@@ -4,8 +4,6 @@ import { Webhook } from 'svix';
 import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
-
-// Your Resend Webhook Secret
 const WEBHOOK_SECRET = process.env.RESEND_WEBHOOK_SECRET || '';
 
 export async function POST(req: Request) {
@@ -21,7 +19,6 @@ export async function POST(req: Request) {
     }
 
     if (!WEBHOOK_SECRET) {
-      console.error('RESEND_WEBHOOK_SECRET is not set');
       return NextResponse.json({ error: 'Webhook secret not configured' }, { status: 500 });
     }
 
@@ -38,51 +35,83 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: 'Invalid signature' }, { status: 401 });
     }
 
-    // Handle the event
     const { type, data } = evt;
 
     if (type === 'email.received') {
-      const { from, to, subject, html, text, attachments } = data;
-      // Extract the exact email address from strings like "Name <email@astropixel.tech>"
-      const toAddresses = Array.isArray(to) ? to : [to];
-      
-      for (const recipient of toAddresses) {
-        const emailMatch = recipient.match(/<([^>]+)>/) ? recipient.match(/<([^>]+)>/)[1] : recipient;
-        const cleanTo = emailMatch.trim().toLowerCase();
+      const toAddresses: string[] = Array.isArray(data.to) ? data.to : [data.to];
+      const fromRaw: string = data.from || '';
+      // Parse "Name <email>" or plain "email"
+      const fromMatch = fromRaw.match(/<([^>]+)>/);
+      const fromAddress = fromMatch ? fromMatch[1].trim() : fromRaw.trim();
+      const fromName = fromMatch ? fromRaw.replace(/<[^>]+>/, '').trim() : fromRaw;
 
-        // Find the mailbox in our database
-        const mailbox = await prisma.mailbox.findUnique({
-          where: { address: cleanTo }
+      for (const recipient of toAddresses) {
+        const toMatch = recipient.match(/<([^>]+)>/);
+        const cleanTo = (toMatch ? toMatch[1] : recipient).trim().toLowerCase();
+
+        // Find the mailbox
+        const mailbox = await prisma.mailbox.findUnique({ where: { address: cleanTo } });
+
+        if (!mailbox) {
+          console.log(`[Webhook] No mailbox for: ${cleanTo}`);
+          continue;
+        }
+
+        const messageId = data.email_id || data.id || `msg_${Date.now()}_${Math.random().toString(36).slice(2)}`;
+
+        // Upsert a thread for this subject
+        const threadSubject = data.subject || 'No Subject';
+        let thread = await prisma.mailThread.findFirst({
+          where: { mailbox_id: mailbox.id, subject: threadSubject }
         });
 
-        if (mailbox) {
-          // Store the email in the inbox!
-          // We will expand this with proper threading, attachments, and html sanitization later.
-          await prisma.mailMessage.create({
+        if (!thread) {
+          thread = await prisma.mailThread.create({
             data: {
               mailbox_id: mailbox.id,
-              thread_id: 'temp-thread-id', // Placeholder, will generate proper threads later
-              message_id: data.id || `msg_${Date.now()}`, // Use Resend ID or generate one
-              folder: 'inbox',
-              from_name: from, // Parse name properly later
-              from_address: from,
-              to_address: cleanTo,
-              subject: data.subject || 'No Subject',
-              body_html: html,
-              body_text: text,
-              is_read: false,
+              subject: threadSubject,
+              last_message_at: new Date(),
             }
           });
-          console.log(`[Webhook] Email saved to mailbox: ${cleanTo}`);
         } else {
-          console.log(`[Webhook] No mailbox found for recipient: ${cleanTo}`);
+          await prisma.mailThread.update({
+            where: { id: thread.id },
+            data: { last_message_at: new Date() }
+          });
         }
+
+        // Check if this message already exists (idempotency)
+        const existing = await prisma.mailMessage.findUnique({ where: { message_id: messageId } });
+        if (existing) {
+          console.log(`[Webhook] Message already exists: ${messageId}`);
+          continue;
+        }
+
+        // Save the email
+        await prisma.mailMessage.create({
+          data: {
+            mailbox_id: mailbox.id,
+            thread_id: thread.id,
+            message_id: messageId,
+            folder: 'inbox',
+            from_name: fromName || fromAddress,
+            from_address: fromAddress,
+            to_address: cleanTo,
+            subject: threadSubject,
+            body_html: data.html || null,
+            body_text: data.text || null,
+            is_read: false,
+            received_at: new Date(),
+          }
+        });
+
+        console.log(`[Webhook] Saved email to ${cleanTo}: "${threadSubject}"`);
       }
     }
 
     return NextResponse.json({ success: true });
-  } catch (error) {
-    console.error('Error processing webhook:', error);
+  } catch (error: any) {
+    console.error('[Webhook] Error:', error);
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
   }
 }
