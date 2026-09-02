@@ -67,7 +67,6 @@ export async function POST(req: Request) {
               from_name: from, // Parse name properly later
               from_address: from,
               to_address: cleanTo,
-              to_addresses: data.to,
               subject: data.subject || 'No Subject',
               body_html: html,
               body_text: text,
