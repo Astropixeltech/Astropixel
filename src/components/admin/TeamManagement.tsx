@@ -232,60 +232,180 @@ export const TeamManagement = () => {
           <Loader2 className="w-5 h-5 animate-spin" /> Loading from database...
         </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
-          {membersList.map(member => (
-            <div
-              key={member.id}
-              className="group relative rounded-2xl border border-border/60 bg-card/50 p-5 flex flex-col gap-4 hover:border-primary/30 hover:shadow-lg transition-all duration-200"
-            >
-              {/* Active badge */}
-              <div className={`absolute top-3 right-3 w-2 h-2 rounded-full ${member.is_active ? 'bg-green-500' : 'bg-muted'}`} />
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+          {membersList.map((member, index) => {
+            // Formatted role with pipe separators like the reference image
+            const formattedRole = (member.role || "")
+              .split(",")
+              .map(r => r.trim())
+              .filter(Boolean)
+              .join(" | ");
 
-              {/* Top: avatar + name */}
-              <div className="flex items-center gap-4">
-                <Avatar className="w-14 h-14 shrink-0">
-                  <AvatarImage src={member.image_url || ''} />
-                  <AvatarFallback className="text-xl font-bold bg-primary/10 text-primary">
-                    {member.name.charAt(0)}
-                  </AvatarFallback>
-                </Avatar>
-                <div className="min-w-0">
-                  <h3 className="font-semibold text-base truncate">{member.name}</h3>
-                  <p className="text-xs text-muted-foreground line-clamp-2">{member.role}</p>
+            // Vibrant modern banner gradients matching the reference image style
+            const bannerGradients = [
+              "from-[#FF5500] via-[#FF6A00] to-[#FFA033]",
+              "from-[#6366F1] via-[#8B5CF6] to-[#EC4899]",
+              "from-[#0EA5E9] via-[#2563EB] to-[#4F46E5]",
+              "from-[#10B981] via-[#059669] to-[#047857]",
+              "from-[#F59E0B] via-[#EA580C] to-[#DC2626]",
+              "from-[#8B5CF6] via-[#A855F7] to-[#D946EF]",
+              "from-[#06B6D4] via-[#0284C7] to-[#2563EB]",
+            ];
+            const currentGradient = bannerGradients[index % bannerGradients.length];
+
+            return (
+              <div
+                key={member.id}
+                className="group relative rounded-[26px] border border-border/50 bg-card overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col"
+              >
+                {/* ── Top Cover Banner ── */}
+                <div className={`relative h-28 sm:h-32 bg-gradient-to-r ${currentGradient} overflow-hidden`}>
+                  {/* Decorative Geometric Watermark */}
+                  <svg
+                    className="absolute -right-6 -bottom-8 w-40 h-40 text-white/20 pointer-events-none transform rotate-12"
+                    viewBox="0 0 100 100"
+                    fill="currentColor"
+                  >
+                    <path d="M50 0 C22.4 0 0 22.4 0 50 C0 77.6 22.4 100 50 100 C77.6 100 100 77.6 100 50 C100 22.4 77.6 0 50 0 Z M50 20 C66.6 20 80 33.4 80 50 C80 66.6 66.6 80 50 80 C33.4 80 20 66.6 20 50 C20 33.4 33.4 20 50 20 Z" />
+                    <rect x="40" y="25" width="45" height="20" rx="10" transform="rotate(45 50 50)" />
+                  </svg>
+
+                  {/* Top Status & Quick Action Badge */}
+                  <div className="absolute top-3 right-3 flex items-center gap-2">
+                    <span
+                      className={`px-2.5 py-1 rounded-full text-[11px] font-semibold tracking-wide backdrop-blur-md transition-all ${
+                        member.is_active
+                          ? "bg-black/30 text-white border border-white/20"
+                          : "bg-black/50 text-white/70"
+                      }`}
+                    >
+                      {member.is_active ? "● Active" : "Hidden"}
+                    </span>
+                  </div>
+                </div>
+
+                {/* ── Overlapping Avatar ── */}
+                <div className="relative px-6 -mt-12 flex items-end justify-between">
+                  <div className="relative w-22 h-22 sm:w-24 sm:h-24 rounded-full border-4 border-card bg-background overflow-hidden shadow-lg shrink-0">
+                    <img
+                      src={member.image_url || "/sofiullah-ahammad.jpg"}
+                      alt={member.name}
+                      onError={(e) => {
+                        (e.target as HTMLImageElement).src = member.name.toLowerCase().includes("sofiullah")
+                          ? "/sofiullah-ahammad.jpg"
+                          : "/team/adib.png";
+                      }}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    />
+                  </div>
+                </div>
+
+                {/* ── Content Details ── */}
+                <div className="px-6 pt-3 pb-5 flex-1 flex flex-col justify-between space-y-3">
+                  <div className="space-y-1">
+                    <h3 className="font-bold text-lg sm:text-xl text-foreground tracking-tight">
+                      {member.name}
+                    </h3>
+                    {formattedRole && (
+                      <p className="text-xs sm:text-sm text-muted-foreground font-medium leading-relaxed">
+                        {formattedRole}
+                      </p>
+                    )}
+                    {member.bio && (
+                      <p className="text-xs text-muted-foreground/80 line-clamp-2 pt-1">
+                        {member.bio}
+                      </p>
+                    )}
+                  </div>
+
+                  {/* Social Links */}
+                  <div className="flex items-center gap-2 flex-wrap pt-1">
+                    {member.facebook_url && (
+                      <a
+                        href={member.facebook_url}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="w-7 h-7 rounded-full bg-secondary flex items-center justify-center text-muted-foreground hover:text-blue-500 hover:bg-blue-500/10 transition-colors"
+                      >
+                        <Facebook className="w-3.5 h-3.5" />
+                      </a>
+                    )}
+                    {member.instagram_url && (
+                      <a
+                        href={member.instagram_url}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="w-7 h-7 rounded-full bg-secondary flex items-center justify-center text-muted-foreground hover:text-pink-500 hover:bg-pink-500/10 transition-colors"
+                      >
+                        <Instagram className="w-3.5 h-3.5" />
+                      </a>
+                    )}
+                    {member.linkedin_url && (
+                      <a
+                        href={member.linkedin_url}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="w-7 h-7 rounded-full bg-secondary flex items-center justify-center text-muted-foreground hover:text-blue-600 hover:bg-blue-600/10 transition-colors"
+                      >
+                        <Linkedin className="w-3.5 h-3.5" />
+                      </a>
+                    )}
+                    {member.twitter_url && (
+                      <a
+                        href={member.twitter_url}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="w-7 h-7 rounded-full bg-secondary flex items-center justify-center text-muted-foreground hover:text-sky-500 hover:bg-sky-500/10 transition-colors"
+                      >
+                        <Twitter className="w-3.5 h-3.5" />
+                      </a>
+                    )}
+                    {member.email && (
+                      <a
+                        href={`mailto:${member.email}`}
+                        className="w-7 h-7 rounded-full bg-secondary flex items-center justify-center text-muted-foreground hover:text-primary hover:bg-primary/10 transition-colors"
+                      >
+                        <Mail className="w-3.5 h-3.5" />
+                      </a>
+                    )}
+                  </div>
+
+                  {/* ── Bottom Actions Bar ── */}
+                  <div className="flex items-center justify-between pt-3 border-t border-border/40">
+                    <div className="flex items-center gap-2">
+                      <Switch
+                        checked={member.is_active}
+                        onCheckedChange={() => handleToggleActive(member)}
+                        className="scale-75"
+                      />
+                      <span className="text-xs text-muted-foreground">
+                        {member.is_active ? "Active" : "Hidden"}
+                      </span>
+                    </div>
+
+                    <div className="flex items-center gap-1">
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        className="h-8 px-2.5 text-xs gap-1 hover:text-primary hover:bg-primary/10"
+                        onClick={() => openEdit(member)}
+                      >
+                        <Pencil className="w-3.5 h-3.5" /> Edit
+                      </Button>
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        className="w-8 h-8 hover:text-red-500 hover:bg-red-500/10"
+                        onClick={() => handleDelete(member.id, member.name)}
+                      >
+                        <Trash2 className="w-3.5 h-3.5" />
+                      </Button>
+                    </div>
+                  </div>
                 </div>
               </div>
-
-              {/* Bio */}
-              {member.bio && (
-                <p className="text-xs text-muted-foreground line-clamp-2">{member.bio}</p>
-              )}
-
-              {/* Social links */}
-              <div className="flex items-center gap-2 flex-wrap">
-                {member.facebook_url && <a href={member.facebook_url} target="_blank" rel="noreferrer" className="text-muted-foreground hover:text-blue-500 transition-colors"><Facebook className="w-4 h-4" /></a>}
-                {member.instagram_url && <a href={member.instagram_url} target="_blank" rel="noreferrer" className="text-muted-foreground hover:text-pink-500 transition-colors"><Instagram className="w-4 h-4" /></a>}
-                {member.linkedin_url && <a href={member.linkedin_url} target="_blank" rel="noreferrer" className="text-muted-foreground hover:text-blue-600 transition-colors"><Linkedin className="w-4 h-4" /></a>}
-                {member.twitter_url && <a href={member.twitter_url} target="_blank" rel="noreferrer" className="text-muted-foreground hover:text-sky-500 transition-colors"><Twitter className="w-4 h-4" /></a>}
-                {member.email && <a href={`mailto:${member.email}`} className="text-muted-foreground hover:text-primary transition-colors"><Mail className="w-4 h-4" /></a>}
-              </div>
-
-              {/* Actions */}
-              <div className="flex items-center gap-2 pt-2 border-t border-border/40">
-                <Switch
-                  checked={member.is_active}
-                  onCheckedChange={() => handleToggleActive(member)}
-                  className="scale-75"
-                />
-                <span className="text-xs text-muted-foreground flex-1">{member.is_active ? 'Active' : 'Hidden'}</span>
-                <Button variant="ghost" size="icon" className="w-8 h-8 hover:text-primary" onClick={() => openEdit(member)}>
-                  <Pencil className="w-3.5 h-3.5" />
-                </Button>
-                <Button variant="ghost" size="icon" className="w-8 h-8 hover:text-red-500 hover:bg-red-500/10" onClick={() => handleDelete(member.id, member.name)}>
-                  <Trash2 className="w-3.5 h-3.5" />
-                </Button>
-              </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       )}
     </div>
