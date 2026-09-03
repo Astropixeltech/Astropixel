@@ -1,17 +1,19 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { 
   Type, 
   Image as ImageIcon, 
   LayoutGrid, 
   PlaySquare, 
   Code2, 
-  Settings, ArrowLeft, 
+  Settings, 
   Save, 
+  ArrowLeft,
   X,
-  Palette,
-  MousePointerClick,
-  Cuboid,
-  Aperture
+  Sparkles,
+  Plus,
+  Eye,
+  Loader2,
+  ExternalLink
 } from 'lucide-react';
 import {
   Block,
@@ -26,6 +28,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Switch } from '@/components/ui/switch';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import ImageUploader from './ImageUploader';
 import { toast } from 'sonner';
 
@@ -46,6 +49,8 @@ const ProjectBuilder: React.FC<ProjectBuilderProps> = ({
     category: initialData?.category || 'web',
     image_url: initialData?.image_url || '',
     live_url: initialData?.live_url || initialData?.project_url || '',
+    client: initialData?.client || '',
+    tagsText: Array.isArray(initialData?.tags) ? initialData.tags.join(', ') : '',
     is_featured: initialData?.is_featured ?? false,
     is_published: initialData?.is_published ?? true,
   });
@@ -55,58 +60,72 @@ const ProjectBuilder: React.FC<ProjectBuilderProps> = ({
   const [showSettings, setShowSettings] = useState(false);
 
   const blockTypes = [
-    { type: 'image', label: 'Image', icon: ImageIcon },
-    { type: 'text', label: 'Text', icon: Type },
-    { type: 'image_grid', label: 'Photo Grid', icon: LayoutGrid },
-    { type: 'video', label: 'Video & Audio', icon: PlaySquare },
-    { type: 'embed', label: 'Embed', icon: Code2 },
-    { type: 'lightroom', label: 'Lightroom', icon: Aperture, disabled: true },
-    { type: 'prototype', label: 'Prototype', icon: MousePointerClick, disabled: true },
-    { type: '3d', label: '3D', icon: Cuboid, disabled: true },
+    { type: 'image' as const, label: 'Single Image', icon: ImageIcon, desc: 'Full-bleed or centered mockup' },
+    { type: 'text' as const, label: 'Rich Narrative', icon: Type, desc: 'Typography, headings & quotes' },
+    { type: 'image_grid' as const, label: 'Photo Grid', icon: LayoutGrid, desc: 'Multi-column photo showcase' },
+    { type: 'video' as const, label: 'Video Player', icon: PlaySquare, desc: 'YouTube, Vimeo or MP4' },
+    { type: 'embed' as const, label: 'Code / Prototype', icon: Code2, desc: 'Figma or iframe embed' },
   ];
 
-  const handleAddBlock = (type: Block['type']) => {
+  const handleAddBlock = (type: Block['type'], initialContent: any = null) => {
     const newBlock: Block = {
-      id: Math.random().toString(36).substr(2, 9),
+      id: Math.random().toString(36).substring(2, 9),
       type,
-      content: type === 'image_grid' ? [] : '',
+      content: initialContent || (type === 'image_grid' ? { images: [] } : {}),
     };
-    setBlocks([...blocks, newBlock]);
+    setBlocks((prev) => [...prev, newBlock]);
   };
 
   const handleBlockChange = (index: number, updatedBlock: Block) => {
-    const newBlocks = [...blocks];
-    newBlocks[index] = updatedBlock;
-    setBlocks(newBlocks);
+    setBlocks((prev) => {
+      const next = [...prev];
+      next[index] = updatedBlock;
+      return next;
+    });
   };
 
   const moveBlock = (index: number, direction: 'up' | 'down') => {
-    const newBlocks = [...blocks];
-    if (direction === 'up' && index > 0) {
-      [newBlocks[index - 1], newBlocks[index]] = [newBlocks[index], newBlocks[index - 1]];
-    } else if (direction === 'down' && index < newBlocks.length - 1) {
-      [newBlocks[index + 1], newBlocks[index]] = [newBlocks[index], newBlocks[index + 1]];
-    }
-    setBlocks(newBlocks);
+    setBlocks((prev) => {
+      const next = [...prev];
+      if (direction === 'up' && index > 0) {
+        [next[index - 1], next[index]] = [next[index], next[index - 1]];
+      } else if (direction === 'down' && index < next.length - 1) {
+        [next[index + 1], next[index]] = [next[index], next[index + 1]];
+      }
+      return next;
+    });
   };
 
   const handleDeleteBlock = (index: number) => {
-    const newBlocks = blocks.filter((_, i) => i !== index);
-    setBlocks(newBlocks);
+    setBlocks((prev) => prev.filter((_, i) => i !== index));
   };
 
   const handleSave = async () => {
-    if (!workData.title) {
-      toast.error('Project title is required');
+    if (!workData.title.trim()) {
+      setShowSettings(true);
+      toast.error('Please enter a project title in settings');
       return;
     }
+
     setIsSaving(true);
     try {
+      const parsedTags = workData.tagsText
+        ? workData.tagsText.split(',').map((t: string) => t.trim()).filter(Boolean)
+        : [];
+
       const payload = {
-        ...workData,
-        project_url: workData.live_url,
-        content_blocks: blocks,
         id: initialData?.id,
+        title: workData.title,
+        description: workData.description,
+        category: workData.category,
+        image_url: workData.image_url,
+        live_url: workData.live_url,
+        project_url: workData.live_url,
+        client: workData.client,
+        tags: parsedTags,
+        is_featured: workData.is_featured,
+        is_published: workData.is_published,
+        content_blocks: blocks,
       };
 
       const res = await fetch('/api/works', {
@@ -116,68 +135,122 @@ const ProjectBuilder: React.FC<ProjectBuilderProps> = ({
       });
 
       if (!res.ok) {
-        throw new Error('Failed to save project');
+        const errJson = await res.json().catch(() => ({}));
+        throw new Error(errJson.error || 'Failed to save project');
       }
 
-      toast.success('Project saved successfully!');
+      toast.success('Project published successfully!');
       if (onSaveSuccess) onSaveSuccess();
-    } catch (error) {
-      console.error(error);
-      toast.error('Error saving project. Please try again.');
+    } catch (error: any) {
+      console.error('Save error:', error);
+      toast.error(error.message || 'Error saving project.');
     } finally {
       setIsSaving(false);
     }
   };
 
   return (
-    <div className="flex h-full min-h-[85vh] bg-gray-50/50 dark:bg-slate-900/50 rounded-xl border overflow-hidden">
-      {/* Main Canvas Area */}
-      <div className="flex-1 flex flex-col overflow-y-auto">
-        <div className="sticky top-0 z-10 flex justify-between items-center p-4 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border-b">
-          <div className="flex items-center gap-3">
-            <Button variant="ghost" size="icon" onClick={onCancel} className="h-8 w-8 rounded-full">
-              <X className="h-4 w-4" />
-            </Button>
-            <h1 className="font-semibold text-lg">
-              {workData.title || 'Untitled Project'}
-            </h1>
-          </div>
-          <Button 
-            onClick={handleSave} 
-            disabled={isSaving}
-            className="rounded-full px-6 bg-blue-600 hover:bg-blue-700 text-white shadow-sm"
-          >
-            {isSaving ? 'Saving...' : 'Save & Publish'}
+    <div className="flex flex-col h-[88vh] bg-background rounded-2xl border border-border/80 overflow-hidden shadow-xl">
+      {/* Top Header Bar */}
+      <header className="sticky top-0 z-30 flex items-center justify-between px-6 py-3.5 bg-card/90 backdrop-blur-md border-b border-border/60">
+        <div className="flex items-center gap-3">
+          <Button variant="ghost" size="sm" onClick={onCancel} className="gap-1.5 text-xs text-muted-foreground hover:text-foreground">
+            <ArrowLeft className="w-4 h-4" /> Back
           </Button>
+          <div className="h-4 w-px bg-border/60" />
+          <h1 className="font-bold text-base text-foreground truncate max-w-sm">
+            {workData.title || 'Untitled Project'}
+          </h1>
+          <span className="px-2.5 py-0.5 rounded-full bg-primary/10 text-primary text-[10px] font-bold uppercase tracking-wider">
+            {workData.category}
+          </span>
         </div>
 
-        <div className="flex-1 p-6 lg:p-12">
+        <div className="flex items-center gap-2.5">
+          <Button
+            variant={showSettings ? 'default' : 'outline'}
+            size="sm"
+            onClick={() => setShowSettings(!showSettings)}
+            className="gap-1.5 text-xs"
+          >
+            <Settings className="w-3.5 h-3.5" /> Project Info & Cover
+          </Button>
+
+          <Button
+            onClick={handleSave}
+            disabled={isSaving}
+            className="gap-2 text-xs bg-gradient-to-r from-primary to-purple-600 hover:opacity-90 text-white font-semibold shadow-md"
+          >
+            {isSaving ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Save className="w-3.5 h-3.5" />}
+            {isSaving ? 'Publishing...' : 'Save & Publish'}
+          </Button>
+        </div>
+      </header>
+
+      {/* Main Workspace Body */}
+      <div className="flex-1 flex overflow-hidden">
+        {/* Canvas Area */}
+        <div className="flex-1 overflow-y-auto p-6 md:p-10 bg-slate-50 dark:bg-[#0B0D11]">
           <div className="max-w-4xl mx-auto space-y-6">
+            {/* Project Hero Banner Preview */}
+            <div className="p-6 rounded-2xl bg-card border border-border/60 shadow-xs mb-8">
+              <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+                <div className="space-y-1.5 flex-1">
+                  <span className="text-[11px] font-mono text-primary uppercase tracking-widest font-bold">
+                    Case Study Preview
+                  </span>
+                  <h2 className="text-2xl font-bold text-foreground">
+                    {workData.title || 'Your Project Headline'}
+                  </h2>
+                  <p className="text-xs text-muted-foreground line-clamp-2">
+                    {workData.description || 'Add your project summary and deliverables in Project Settings.'}
+                  </p>
+                </div>
+                {workData.image_url ? (
+                  <img
+                    src={workData.image_url}
+                    alt="Cover preview"
+                    className="w-24 h-16 object-cover rounded-xl border border-border shrink-0"
+                  />
+                ) : (
+                  <Button variant="outline" size="sm" onClick={() => setShowSettings(true)} className="text-xs gap-1">
+                    <ImageIcon className="w-3.5 h-3.5" /> Set Cover Image
+                  </Button>
+                )}
+              </div>
+            </div>
+
+            {/* Content Blocks Canvas */}
             {blocks.length === 0 ? (
-              <div className="flex flex-col items-center justify-center py-20 min-h-[500px]">
-                <h2 className="text-2xl font-medium text-slate-700 dark:text-slate-300 mb-10">
-                  Start building your project:
-                </h2>
-                <div className="flex flex-wrap justify-center gap-6 max-w-3xl">
+              <div className="py-20 text-center rounded-2xl border-2 border-dashed border-border/80 bg-card/40 p-8 space-y-6">
+                <div className="w-14 h-14 rounded-2xl bg-primary/10 text-primary flex items-center justify-center mx-auto shadow-xs">
+                  <Sparkles className="w-7 h-7" />
+                </div>
+                <div>
+                  <h3 className="text-lg font-bold text-foreground">Build your Behance-style Case Study</h3>
+                  <p className="text-xs text-muted-foreground mt-1 max-w-md mx-auto">
+                    Add high-res mockups, design philosophy text, photo grids, and video reels to create a stunning presentation.
+                  </p>
+                </div>
+
+                <div className="grid grid-cols-2 sm:grid-cols-5 gap-3 max-w-2xl mx-auto pt-2">
                   {blockTypes.map((b) => (
                     <button
                       key={b.type}
-                      disabled={b.disabled}
-                      onClick={() => !b.disabled && handleAddBlock(b.type as Block['type'])}
-                      className="group flex flex-col items-center gap-3 disabled:opacity-40 disabled:cursor-not-allowed"
+                      type="button"
+                      onClick={() => handleAddBlock(b.type)}
+                      className="group p-4 rounded-xl border border-border/60 bg-card hover:bg-primary/5 hover:border-primary/40 transition-all flex flex-col items-center justify-center gap-2 cursor-pointer shadow-xs hover:scale-105"
                     >
-                      <div className="w-20 h-20 rounded-full bg-white dark:bg-slate-800 shadow-sm border border-slate-100 dark:border-slate-700 flex items-center justify-center text-blue-600 transition-transform group-hover:scale-105 group-hover:shadow-md">
-                        <b.icon className="w-8 h-8" strokeWidth={1.5} />
+                      <div className="w-10 h-10 rounded-xl bg-secondary/80 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-colors">
+                        <b.icon className="w-5 h-5" />
                       </div>
-                      <span className="text-sm font-medium text-slate-800 dark:text-slate-200">
-                        {b.label}
-                      </span>
+                      <span className="text-xs font-bold text-foreground">{b.label}</span>
                     </button>
                   ))}
                 </div>
               </div>
             ) : (
-              <div className="space-y-4">
+              <div className="space-y-6">
                 {blocks.map((block, index) => {
                   const commonProps = {
                     key: block.id,
@@ -191,152 +264,161 @@ const ProjectBuilder: React.FC<ProjectBuilderProps> = ({
                   };
 
                   switch (block.type) {
-                    case 'text': return <TextBlockEditor {...commonProps} />;
-                    case 'image': return <ImageBlockEditor {...commonProps} />;
-                    case 'image_grid': return <ImageGridBlockEditor {...commonProps} />;
-                    case 'video': return <VideoBlockEditor {...commonProps} />;
-                    case 'embed': return <EmbedBlockEditor {...commonProps} />;
-                    default: return null;
+                    case 'text':
+                      return <TextBlockEditor {...commonProps} />;
+                    case 'image':
+                      return <ImageBlockEditor {...commonProps} />;
+                    case 'image_grid':
+                      return <ImageGridBlockEditor {...commonProps} />;
+                    case 'video':
+                      return <VideoBlockEditor {...commonProps} />;
+                    case 'embed':
+                      return <EmbedBlockEditor {...commonProps} />;
+                    default:
+                      return null;
                   }
                 })}
+
+                {/* Bottom Add Module Trigger */}
+                <div className="pt-6 border-t border-border/60">
+                  <p className="text-center text-xs font-bold text-muted-foreground uppercase tracking-widest mb-4">
+                    + Add Next Section Block
+                  </p>
+                  <div className="flex flex-wrap items-center justify-center gap-3">
+                    {blockTypes.map((b) => (
+                      <Button
+                        key={b.type}
+                        type="button"
+                        variant="outline"
+                        size="sm"
+                        onClick={() => handleAddBlock(b.type)}
+                        className="gap-2 text-xs hover:border-primary/50 hover:bg-primary/5"
+                      >
+                        <b.icon className="w-3.5 h-3.5 text-primary" />
+                        {b.label}
+                      </Button>
+                    ))}
+                  </div>
+                </div>
               </div>
             )}
           </div>
         </div>
-      </div>
 
-      {/* Right Sidebar (Settings & Tools) */}
-      <div className="w-80 bg-white dark:bg-slate-950 border-l overflow-y-auto flex flex-col">
-        {showSettings ? (
-          <div className="p-5 flex-1 space-y-6">
-            <div className="flex items-center gap-3 mb-6 pb-4 border-b">
-              <Button variant="ghost" size="icon" onClick={() => setShowSettings(false)} className="h-8 w-8 -ml-2 rounded-full">
-                <ArrowLeft className="h-4 w-4" />
-              </Button>
-              <h3 className="font-semibold text-base">Project Settings</h3>
+        {/* Right Settings Sidebar */}
+        {showSettings && (
+          <aside className="w-84 md:w-96 bg-card border-l border-border/80 overflow-y-auto p-6 space-y-5 shrink-0 z-20">
+            <div className="flex items-center justify-between pb-3 border-b border-border/60">
+              <h3 className="font-bold text-sm text-foreground flex items-center gap-2">
+                <Settings className="w-4 h-4 text-primary" /> Project Metadata & Cover
+              </h3>
+              <button
+                type="button"
+                onClick={() => setShowSettings(false)}
+                className="text-muted-foreground hover:text-foreground cursor-pointer"
+              >
+                <X className="w-4 h-4" />
+              </button>
             </div>
 
             <div className="space-y-4">
-              <div className="space-y-1.5">
-                <Label>Project Title</Label>
+              <div>
+                <Label className="text-xs font-semibold">Project Title *</Label>
                 <Input
                   value={workData.title}
                   onChange={(e) => setWorkData({ ...workData, title: e.target.value })}
-                  placeholder="Title"
+                  placeholder="e.g. Fintech Mobile App UI/UX"
+                  className="mt-1"
                 />
               </div>
-              <div className="space-y-1.5">
-                <Label>Category</Label>
-                <Input
+
+              <div>
+                <Label className="text-xs font-semibold">Category</Label>
+                <Select
                   value={workData.category}
-                  onChange={(e) => setWorkData({ ...workData, category: e.target.value })}
-                  placeholder="e.g. Web Design"
-                />
+                  onValueChange={(val) => setWorkData({ ...workData, category: val })}
+                >
+                  <SelectTrigger className="mt-1">
+                    <SelectValue placeholder="Select Category" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="web">Web Design & Development</SelectItem>
+                    <SelectItem value="branding">Logo & Branding</SelectItem>
+                    <SelectItem value="graphics">Graphic Design</SelectItem>
+                    <SelectItem value="motion">Motion & Video</SelectItem>
+                    <SelectItem value="photography">Photography</SelectItem>
+                  </SelectContent>
+                </Select>
               </div>
-              <div className="space-y-1.5">
-                <Label>Description</Label>
+
+              <div>
+                <Label className="text-xs font-semibold">Short Description</Label>
                 <Textarea
                   value={workData.description}
                   onChange={(e) => setWorkData({ ...workData, description: e.target.value })}
+                  placeholder="Brief summary of client challenge and design solution..."
                   rows={3}
-                  placeholder="Short description..."
+                  className="mt-1 text-xs"
                 />
               </div>
-              <div className="space-y-1.5">
-                <Label>Cover Image</Label>
-                <ImageUploader
-                  value={workData.image_url}
-                  onChange={(url) => setWorkData({ ...workData, image_url: url })}
-                  folder="works"
-                />
+
+              <div>
+                <Label className="text-xs font-semibold">Cover Showcase Image</Label>
+                <div className="mt-1">
+                  <ImageUploader
+                    value={workData.image_url}
+                    onChange={(url) => setWorkData({ ...workData, image_url: url })}
+                    folder="works"
+                    placeholder="Upload cover image"
+                  />
+                </div>
               </div>
-              <div className="space-y-1.5">
-                <Label>Live Link</Label>
+
+              <div>
+                <Label className="text-xs font-semibold">Live Project URL / Demo Link</Label>
                 <Input
                   value={workData.live_url}
                   onChange={(e) => setWorkData({ ...workData, live_url: e.target.value })}
-                  placeholder="https://"
+                  placeholder="https://..."
+                  className="mt-1"
                 />
               </div>
-              
-              <div className="pt-4 space-y-3">
-                <div className="flex items-center justify-between p-3 rounded-lg border bg-slate-50 dark:bg-slate-900/50">
+
+              <div>
+                <Label className="text-xs font-semibold">Tags (comma-separated)</Label>
+                <Input
+                  value={workData.tagsText}
+                  onChange={(e) => setWorkData({ ...workData, tagsText: e.target.value })}
+                  placeholder="UI/UX, Mobile App, Figma, Tailwind"
+                  className="mt-1 text-xs"
+                />
+              </div>
+
+              <div className="p-3.5 rounded-xl border border-border/60 bg-secondary/20 space-y-3">
+                <div className="flex items-center justify-between">
                   <div>
-                    <Label className="cursor-pointer">Featured</Label>
-                    <p className="text-[10px] text-muted-foreground">Show on homepage</p>
+                    <Label className="text-xs font-semibold cursor-pointer">Featured Project</Label>
+                    <p className="text-[11px] text-muted-foreground">Highlight on homepage</p>
                   </div>
                   <Switch
                     checked={workData.is_featured}
-                    onCheckedChange={(checked) => setWorkData({ ...workData, is_featured: checked })}
+                    onCheckedChange={(c) => setWorkData({ ...workData, is_featured: c })}
                   />
                 </div>
-                <div className="flex items-center justify-between p-3 rounded-lg border bg-slate-50 dark:bg-slate-900/50">
+
+                <div className="flex items-center justify-between pt-2 border-t border-border/40">
                   <div>
-                    <Label className="cursor-pointer">Published</Label>
-                    <p className="text-[10px] text-muted-foreground">Make it public</p>
+                    <Label className="text-xs font-semibold cursor-pointer">Published</Label>
+                    <p className="text-[11px] text-muted-foreground">Make visible on website</p>
                   </div>
                   <Switch
                     checked={workData.is_published}
-                    onCheckedChange={(checked) => setWorkData({ ...workData, is_published: checked })}
+                    onCheckedChange={(c) => setWorkData({ ...workData, is_published: c })}
                   />
                 </div>
               </div>
             </div>
-          </div>
-        ) : (
-          <>
-            <div className="p-5 border-b">
-              <h3 className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-4">Add Content</h3>
-              <div className="grid grid-cols-2 gap-px bg-slate-200 dark:bg-slate-800 border border-slate-200 dark:border-slate-800 rounded-lg overflow-hidden">
-                {blockTypes.map((b) => (
-                  <button
-                    key={b.type}
-                    disabled={b.disabled}
-                    onClick={() => !b.disabled && handleAddBlock(b.type as Block['type'])}
-                    className="flex flex-col items-center justify-center gap-2 py-4 bg-white dark:bg-slate-950 hover:bg-slate-50 dark:hover:bg-slate-900 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-                  >
-                    <b.icon className="w-5 h-5 text-slate-700 dark:text-slate-300" strokeWidth={1.5} />
-                    <span className="text-[11px] font-medium text-slate-600 dark:text-slate-400">{b.label}</span>
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            <div className="p-5 border-b">
-              <h3 className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-4">Edit Project</h3>
-              <div className="grid grid-cols-2 gap-px bg-slate-200 dark:bg-slate-800 border border-slate-200 dark:border-slate-800 rounded-lg overflow-hidden">
-                <button className="flex flex-col items-center justify-center gap-2 py-4 bg-white dark:bg-slate-950 hover:bg-slate-50 dark:hover:bg-slate-900 transition-colors opacity-50 cursor-not-allowed">
-                  <Palette className="w-5 h-5 text-slate-700 dark:text-slate-300" strokeWidth={1.5} />
-                  <span className="text-[11px] font-medium text-slate-600 dark:text-slate-400">Styles</span>
-                </button>
-                <button 
-                  onClick={() => setShowSettings(true)}
-                  className="flex flex-col items-center justify-center gap-2 py-4 bg-white dark:bg-slate-950 hover:bg-slate-50 dark:hover:bg-slate-900 transition-colors"
-                >
-                  <Settings className="w-5 h-5 text-slate-700 dark:text-slate-300" strokeWidth={1.5} />
-                  <span className="text-[11px] font-medium text-slate-600 dark:text-slate-400">Settings</span>
-                </button>
-              </div>
-              <div className="mt-3">
-                <button className="w-full py-2.5 rounded-full border text-xs font-medium bg-white dark:bg-slate-950 hover:bg-slate-50 dark:hover:bg-slate-900 transition-colors opacity-50 cursor-not-allowed">
-                  Custom Button
-                </button>
-                <p className="text-[10px] text-center text-slate-500 mt-2">Customize the call to action on your project</p>
-              </div>
-            </div>
-
-            <div className="p-5">
-              <h3 className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-4">Attach Assets</h3>
-              <div className="rounded-lg border p-4 bg-slate-50/50 dark:bg-slate-900/50">
-                <button className="w-full py-2.5 rounded-full border bg-white dark:bg-slate-950 text-xs font-medium hover:bg-slate-50 dark:hover:bg-slate-900 transition-colors opacity-50 cursor-not-allowed flex items-center justify-center gap-2">
-                  <Aperture className="w-3.5 h-3.5" /> Attach Assets
-                </button>
-                <p className="text-[10px] text-center text-slate-500 mt-3 leading-relaxed">
-                  Add files like fonts, illustrations, photos, zips, or templates.
-                </p>
-              </div>
-            </div>
-          </>
+          </aside>
         )}
       </div>
     </div>

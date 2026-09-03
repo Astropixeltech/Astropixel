@@ -379,57 +379,167 @@ const WorkPage = () => {
                   </div>
                 </div>
 
-                {/* Behance Sequential Stacked Showcase Images (White Theme Cards) */}
+                {/* Live Demo Link Pill if available */}
+                {caseStudyProject.live_url || caseStudyProject.project_url ? (
+                  <div className="mb-6 flex justify-center">
+                    <a
+                      href={caseStudyProject.live_url || caseStudyProject.project_url || "#"}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-primary/10 hover:bg-primary/20 text-primary border border-primary/20 text-xs font-bold transition-all hover:scale-105"
+                    >
+                      <span>Explore Live Project</span>
+                      <ExternalLink className="w-3.5 h-3.5" />
+                    </a>
+                  </div>
+                ) : null}
+
+                {/* Behance Sequential Stacked Showcase Modules */}
                 <div className="space-y-8 sm:space-y-12">
-                  {/* Image 1 — Main Showcase Cover */}
-                  <div className="p-3 sm:p-4 rounded-3xl bg-white border border-slate-200/80 shadow-md">
-                    <img
-                      src={caseStudyProject.image_url || "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=1000&auto=format&fit=crop"}
-                      alt={`${caseStudyProject.title} — Main Showcase Cover`}
-                      width={1200}
-                      height={750}
-                      className="w-full h-auto object-cover rounded-2xl sm:rounded-[20px]"
-                    />
-                  </div>
+                  {/* If custom Behance content blocks exist, render them */}
+                  {Array.isArray(caseStudyProject.content_blocks) && caseStudyProject.content_blocks.length > 0 ? (
+                    caseStudyProject.content_blocks.map((block: any, idx: number) => {
+                      if (block.type === 'text') {
+                        return (
+                          <div
+                            key={block.id || idx}
+                            className="p-8 sm:p-12 rounded-3xl bg-white border border-slate-200/80 shadow-xs"
+                          >
+                            {block.content?.title && (
+                              <h3 className="text-xl sm:text-2xl font-bold text-slate-900 mb-3">
+                                {block.content.title}
+                              </h3>
+                            )}
+                            {block.content?.html ? (
+                              <div
+                                className="prose prose-slate max-w-none text-slate-700 leading-relaxed"
+                                dangerouslySetInnerHTML={{ __html: block.content.html }}
+                              />
+                            ) : (
+                              <p className="text-slate-600 text-sm sm:text-base leading-relaxed">
+                                {block.content?.text}
+                              </p>
+                            )}
+                          </div>
+                        );
+                      }
 
-                  {/* Concept & Strategy Card */}
-                  <div className="p-8 sm:p-12 rounded-3xl bg-white border border-slate-200/80 shadow-xs">
-                    <h3 className="text-xl sm:text-2xl font-bold text-slate-900 mb-3">Project Concept & Execution</h3>
-                    <p className="text-slate-600 text-sm sm:text-base leading-relaxed max-w-3xl">
-                      This project presents a complete visual identity and design system created by AstroPixel. Every detail — from typography hierarchy, color palette selection, to 3D mockup presentation — was crafted to build an impactful market presence for the brand.
-                    </p>
-                    {caseStudyProject.tags && caseStudyProject.tags.length > 0 && (
-                      <div className="flex flex-wrap gap-2 mt-6">
-                        {caseStudyProject.tags.map((tag, idx) => (
-                          <span key={idx} className="px-3.5 py-1.5 rounded-full bg-purple-50 text-purple-700 text-xs font-semibold border border-purple-100">
-                            #{tag}
-                          </span>
-                        ))}
+                      if (block.type === 'image' && block.content?.url) {
+                        return (
+                          <div
+                            key={block.id || idx}
+                            className="p-3 sm:p-4 rounded-3xl bg-white border border-slate-200/80 shadow-md overflow-hidden"
+                          >
+                            <img
+                              src={block.content.url}
+                              alt={block.content?.caption || `${caseStudyProject.title} showcase asset ${idx + 1}`}
+                              width={1400}
+                              height={900}
+                              className="w-full h-auto object-cover rounded-2xl sm:rounded-[20px]"
+                            />
+                            {block.content?.caption && (
+                              <p className="text-xs text-center text-slate-400 mt-3 italic">
+                                {block.content.caption}
+                              </p>
+                            )}
+                          </div>
+                        );
+                      }
+
+                      if (block.type === 'image_grid' && Array.isArray(block.content?.images) && block.content.images.length > 0) {
+                        return (
+                          <div key={block.id || idx} className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            {block.content.images.map((imgUrl: string, imgIdx: number) => (
+                              <div
+                                key={imgIdx}
+                                className="p-3 rounded-2xl bg-white border border-slate-200/80 shadow-sm overflow-hidden"
+                              >
+                                <img
+                                  src={imgUrl}
+                                  alt={`Grid view ${imgIdx + 1}`}
+                                  className="w-full aspect-[4/3] object-cover rounded-xl"
+                                />
+                              </div>
+                            ))}
+                          </div>
+                        );
+                      }
+
+                      if (block.type === 'video' && block.content?.url) {
+                        const vUrl = block.content.url;
+                        const ytMatch = vUrl.match(/(?:youtube\.com\/(?:watch\?v=|embed\/|shorts\/)|youtu\.be\/)([\w-]{11})/);
+                        const vimeoMatch = vUrl.match(/vimeo\.com\/(?:video\/)?(\d+)/);
+
+                        return (
+                          <div
+                            key={block.id || idx}
+                            className="p-3 sm:p-4 rounded-3xl bg-white border border-slate-200/80 shadow-md"
+                          >
+                            <div className="relative aspect-video rounded-2xl overflow-hidden bg-black">
+                              {ytMatch ? (
+                                <iframe
+                                  src={`https://www.youtube.com/embed/${ytMatch[1]}?rel=0&modestbranding=1`}
+                                  title="Video presentation"
+                                  className="w-full h-full border-0"
+                                  allowFullScreen
+                                />
+                              ) : vimeoMatch ? (
+                                <iframe
+                                  src={`https://player.vimeo.com/video/${vimeoMatch[1]}`}
+                                  title="Video presentation"
+                                  className="w-full h-full border-0"
+                                  allowFullScreen
+                                />
+                              ) : (
+                                <video src={vUrl} controls className="w-full h-full object-contain" />
+                              )}
+                            </div>
+                          </div>
+                        );
+                      }
+
+                      if (block.type === 'embed' && block.content?.code) {
+                        return (
+                          <div
+                            key={block.id || idx}
+                            className="p-4 rounded-3xl bg-white border border-slate-200/80 shadow-sm overflow-hidden"
+                            dangerouslySetInnerHTML={{ __html: block.content.code }}
+                          />
+                        );
+                      }
+
+                      return null;
+                    })
+                  ) : (
+                    /* Default Fallback Presentation if no blocks */
+                    <>
+                      <div className="p-3 sm:p-4 rounded-3xl bg-white border border-slate-200/80 shadow-md">
+                        <img
+                          src={caseStudyProject.image_url || "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=1000&auto=format&fit=crop"}
+                          alt={`${caseStudyProject.title} — Main Showcase Cover`}
+                          width={1200}
+                          height={750}
+                          className="w-full h-auto object-cover rounded-2xl sm:rounded-[20px]"
+                        />
                       </div>
-                    )}
-                  </div>
 
-                  {/* Image 2 — Detail View 1 */}
-                  <div className="p-3 sm:p-4 rounded-3xl bg-white border border-slate-200/80 shadow-md">
-                    <img
-                      src={caseStudyProject.image_url || "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=1000&auto=format&fit=crop"}
-                      alt={`${caseStudyProject.title} — Detailed Showcase View 1`}
-                      width={1200}
-                      height={750}
-                      className="w-full h-auto object-cover rounded-2xl sm:rounded-[20px] filter contrast-105"
-                    />
-                  </div>
-
-                  {/* Image 3 — Detail View 2 */}
-                  <div className="p-3 sm:p-4 rounded-3xl bg-white border border-slate-200/80 shadow-md">
-                    <img
-                      src={caseStudyProject.image_url || "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=1000&auto=format&fit=crop"}
-                      alt={`${caseStudyProject.title} — Detailed Showcase View 2`}
-                      width={1200}
-                      height={750}
-                      className="w-full h-auto object-cover rounded-2xl sm:rounded-[20px]"
-                    />
-                  </div>
+                      <div className="p-8 sm:p-12 rounded-3xl bg-white border border-slate-200/80 shadow-xs">
+                        <h3 className="text-xl sm:text-2xl font-bold text-slate-900 mb-3">Project Concept & Execution</h3>
+                        <p className="text-slate-600 text-sm sm:text-base leading-relaxed max-w-3xl">
+                          {caseStudyProject.description || "This project presents a complete visual identity and design system created by AstroPixel. Every detail — from typography hierarchy, color palette selection, to 3D mockup presentation — was crafted to build an impactful market presence for the brand."}
+                        </p>
+                        {caseStudyProject.tags && caseStudyProject.tags.length > 0 && (
+                          <div className="flex flex-wrap gap-2 mt-6">
+                            {caseStudyProject.tags.map((tag, idx) => (
+                              <span key={idx} className="px-3.5 py-1.5 rounded-full bg-purple-50 text-purple-700 text-xs font-semibold border border-purple-100">
+                                #{tag}
+                              </span>
+                            ))}
+                          </div>
+                        )}
+                      </div>
+                    </>
+                  )}
                 </div>
 
                 {/* Bottom CTA Card */}

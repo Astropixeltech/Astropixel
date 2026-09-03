@@ -9,10 +9,15 @@ export interface Work {
   category: string;
   image_url: string | null;
   project_url: string | null;
+  live_url?: string | null;
   is_featured: boolean;
   is_published: boolean;
   order_index: number;
   tags?: string[];
+  content_blocks?: any[];
+  client?: string | null;
+  created_at?: string;
+  updated_at?: string;
 }
 
 export const PORTFOLIO_CATEGORIES = [
@@ -255,33 +260,25 @@ export function useWorks() {
 
   return useQuery({
     queryKey: ['public-works'],
-    queryFn: async () => {
-      const fallbackList = getSavedWorks();
+    queryFn: async (): Promise<Work[]> => {
       try {
-        const { data, error } = await supabase
-          .from('works')
-          .select('*')
-          .eq('is_published', true)
-          .order('order_index', { ascending: true });
-
-        if (error || !data || data.length === 0) {
-          return fallbackList;
+        const res = await fetch('/api/works');
+        if (res.ok) {
+          const json = await res.json();
+          if (json.works && json.works.length > 0) {
+            return json.works.map((w: any) => ({
+              ...w,
+              tags: w.tags || getCategoryTags(w.category),
+              content_blocks: w.content_blocks || [],
+            }));
+          }
         }
-
-        const merged = (data as any[]).map((item: any) => {
-          const matchedDefault = DEFAULT_PORTFOLIO_PROJECTS.find((d: any) => d.id === item.id || d.title.toLowerCase() === item.title.toLowerCase());
-          return {
-            ...item,
-            tags: (item as any).tags || matchedDefault?.tags || getCategoryTags(item.category),
-          };
-        });
-
-        return merged as Work[];
-      } catch {
-        return fallbackList;
+      } catch (err) {
+        console.warn('API /api/works fetch failed, using fallback:', err);
       }
+      return DEFAULT_PORTFOLIO_PROJECTS;
     },
-    staleTime: 0,
+    staleTime: 30_000,
     refetchOnWindowFocus: true,
   });
 }

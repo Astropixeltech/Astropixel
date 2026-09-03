@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
@@ -20,28 +20,35 @@ export const WorksManagement = () => {
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [editingWork, setEditingWork] = useState<Work | null>(null);
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
+  const [isLoading, setIsLoading] = useState(false);
 
-  // Local state for instant CRUD operations with localStorage persistence
+  // Local state initialized with saved/fallback works
   const [worksList, setWorksList] = useState<Work[]>(() => getSavedWorks());
 
-  useEffect(() => {
-    // Background fetch from Supabase if DB contains items
-    const fetchSupabaseWorks = async () => {
-      try {
-        const { data, error } = await (supabase as any)
-          .from("works")
-          .select("*")
-          .order("order_index", { ascending: true });
-        if (!error && data && data.length > 0) {
-          setWorksList(data as Work[]);
+  const fetchWorks = useCallback(async () => {
+    setIsLoading(true);
+    try {
+      const res = await fetch("/api/works");
+      if (res.ok) {
+        const json = await res.json();
+        if (json.works && json.works.length > 0) {
+          setWorksList(json.works);
           if (typeof window !== "undefined") {
-            localStorage.setItem("astropixel_works", JSON.stringify(data));
+            localStorage.setItem("astropixel_works", JSON.stringify(json.works));
           }
+          return;
         }
-      } catch (err) {}
-    };
-    fetchSupabaseWorks();
+      }
+    } catch (err) {
+      console.warn("Error fetching /api/works:", err);
+    } finally {
+      setIsLoading(false);
+    }
   }, []);
+
+  useEffect(() => {
+    fetchWorks();
+  }, [fetchWorks]);
 
   const saveWorksList = (updated: Work[]) => {
     setWorksList(updated);
@@ -52,233 +59,56 @@ export const WorksManagement = () => {
     queryClient.invalidateQueries({ queryKey: ["admin-works"] });
   };
 
-  const [formData, setFormData] = useState({
-    title: "",
-    description: "",
-    category: "web",
-    image_url: "",
-    project_url: "",
-    is_featured: false,
-    is_published: true,
-  });
-
   const resetForm = () => {
-    setFormData({
-      title: "",
-      description: "",
-      category: "web",
-      image_url: "",
-      project_url: "",
-      is_featured: false,
-      is_published: true,
-    });
     setEditingWork(null);
     setIsFormOpen(false);
   };
 
   const handleAddNew = () => {
-    resetForm();
+    setEditingWork(null);
     setIsFormOpen(true);
   };
 
   const handleEdit = (work: Work) => {
     setEditingWork(work);
-    setFormData({
-      title: work.title,
-      description: work.description || "",
-      category: work.category,
-      image_url: work.image_url || "",
-      project_url: work.project_url || "",
-      is_featured: work.is_featured,
-      is_published: work.is_published,
-    });
     setIsFormOpen(true);
   };
 
-  const handleDelete = (id: string) => {
+  const handleDelete = async (id: string) => {
     if (!confirm("Are you sure you want to delete this project?")) return;
-    const updated = worksList.filter((w) => w.id !== id);
-    saveWorksList(updated);
-    toast.success("Project deleted successfully!");
-  };
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!formData.title) {
-      toast.error("Project title is required");
-      return;
-    }
-
-    if (editingWork) {
-      const updated = worksList.map((w) =>
-        w.id === editingWork.id ? { ...w, ...formData } : w
-      );
+    try {
+      await fetch(`/api/works?id=${id}`, { method: "DELETE" });
+      const updated = worksList.filter((w) => w.id !== id);
       saveWorksList(updated);
-      toast.success("Project updated successfully!");
-    } else {
-      const newWork: Work = {
-        id: Date.now().toString(),
-        title: formData.title,
-        description: formData.description,
-        category: formData.category,
-        image_url: formData.image_url,
-        project_url: formData.project_url,
-        is_featured: formData.is_featured,
-        is_published: formData.is_published,
-        order_index: worksList.length + 1,
-      };
-      const updated = [newWork, ...worksList];
-      saveWorksList(updated);
-      toast.success("New project created successfully!");
+      toast.success("Project deleted successfully!");
+    } catch {
+      toast.error("Failed to delete project");
     }
-
-    resetForm();
   };
 
   if (isFormOpen) {
-    if (editingWork) {
-      return (
-        <div className="space-y-6">
-          <Button variant="ghost" onClick={resetForm} className="gap-2 mb-2">
-            <ArrowLeft className="w-4 h-4" /> Back to Projects
-          </Button>
-          <ProjectBuilder
-            initialData={editingWork}
-            onSaveSuccess={() => {
-              toast.success("Project saved successfully!");
-              setIsFormOpen(false);
-            }}
-            onCancel={resetForm}
-          />
-        </div>
-      );
-    }
-
     return (
-      <div className="space-y-6">
-        <div className="flex items-center gap-3">
-          <Button variant="ghost" size="icon" onClick={resetForm}>
-            <ArrowLeft className="w-5 h-5" />
-          </Button>
-          <div>
-            <h2 className="text-2xl font-bold">Add New Project</h2>
-            <p className="text-muted-foreground text-sm">Create a new portfolio project showcase</p>
-          </div>
-        </div>
-
-        <form onSubmit={handleSubmit}>
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
-            <Card className="border-border/60 shadow-sm">
-              <CardHeader>
-                <CardTitle className="text-base font-semibold">Project Details</CardTitle>
-                <CardDescription>Enter title, description, and classification.</CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div>
-                  <Label className="font-medium text-xs">Project Title *</Label>
-                  <Input
-                    value={formData.title}
-                    onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                    placeholder="e.g. Modern FinTech Brand Identity"
-                    className="mt-1"
-                    required
-                  />
-                </div>
-
-                <div>
-                  <Label className="font-medium text-xs">Category</Label>
-                  <Select
-                    value={formData.category}
-                    onValueChange={(val) => setFormData({ ...formData, category: val })}
-                  >
-                    <SelectTrigger className="mt-1">
-                      <SelectValue placeholder="Select Category" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="web">Web Design & Development</SelectItem>
-                      <SelectItem value="graphics">Graphic Design</SelectItem>
-                      <SelectItem value="branding">Logo & Branding</SelectItem>
-                      <SelectItem value="motion">Motion & Video</SelectItem>
-                      <SelectItem value="photography">Photography</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-
-                <div>
-                  <Label className="font-medium text-xs">Description</Label>
-                  <Textarea
-                    value={formData.description}
-                    onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                    placeholder="Brief description of the project, deliverables, and outcome..."
-                    rows={4}
-                    className="mt-1"
-                  />
-                </div>
-
-                <div>
-                  <Label className="font-medium text-xs">Live Website / Behance / Video URL</Label>
-                  <Input
-                    value={formData.project_url}
-                    onChange={(e) => setFormData({ ...formData, project_url: e.target.value })}
-                    placeholder="https://..."
-                    className="mt-1"
-                  />
-                </div>
-
-                <div className="flex items-center justify-between p-3 rounded-xl border border-border/60 bg-secondary/30">
-                  <div>
-                    <Label className="text-xs font-semibold cursor-pointer">Featured Project</Label>
-                    <p className="text-[11px] text-muted-foreground">Highlight on homepage showcase</p>
-                  </div>
-                  <Switch
-                    checked={formData.is_featured}
-                    onCheckedChange={(checked) => setFormData({ ...formData, is_featured: checked })}
-                  />
-                </div>
-              </CardContent>
-            </Card>
-
-            <Card className="border-border/60 shadow-sm">
-              <CardHeader>
-                <CardTitle className="text-base font-semibold">Cover Media</CardTitle>
-                <CardDescription>Upload cover image or teaser artwork.</CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div>
-                  <Label className="font-medium text-xs">Cover Showcase Image</Label>
-                  <div className="mt-1">
-                    <ImageUploader
-                      value={formData.image_url}
-                      onChange={(url) => setFormData({ ...formData, image_url: url })}
-                      folder="works"
-                      placeholder="Paste image URL or click Upload"
-                    />
-                  </div>
-                </div>
-
-                <div className="flex items-center justify-between p-3 rounded-xl border border-border/60 bg-secondary/30">
-                  <div>
-                    <Label className="text-xs font-semibold cursor-pointer">Published Status</Label>
-                    <p className="text-[11px] text-muted-foreground">Make visible on public portfolio</p>
-                  </div>
-                  <Switch
-                    checked={formData.is_published}
-                    onCheckedChange={(checked) => setFormData({ ...formData, is_published: checked })}
-                  />
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-
-          <div className="flex items-center justify-end gap-3 mt-6 p-4 rounded-2xl bg-card border border-border/60 shadow-sm">
-            <Button type="button" variant="outline" onClick={resetForm}>
-              Cancel
-            </Button>
-            <Button type="submit" className="gap-2 bg-gradient-to-r from-primary to-purple-600 text-white">
-              <Save className="w-4 h-4" /> Save Project
-            </Button>
-          </div>
-        </form>
+      <div className="space-y-4">
+        <ProjectBuilder
+          initialData={
+            editingWork || {
+              title: "",
+              category: "web",
+              description: "",
+              image_url: "",
+              is_published: true,
+              is_featured: false,
+              content_blocks: [],
+            }
+          }
+          onSaveSuccess={() => {
+            fetchWorks();
+            queryClient.invalidateQueries({ queryKey: ["public-works"] });
+            queryClient.invalidateQueries({ queryKey: ["admin-works"] });
+            setIsFormOpen(false);
+          }}
+          onCancel={resetForm}
+        />
       </div>
     );
   }

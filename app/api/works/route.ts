@@ -1,90 +1,113 @@
 import { NextResponse } from 'next/server';
-import { prisma } from '@/lib/db/prisma';
+import { PrismaClient } from '@prisma/client';
 
+const globalForPrisma = globalThis as unknown as { prisma?: PrismaClient };
+const prisma = globalForPrisma.prisma ?? new PrismaClient();
+if (process.env.NODE_ENV !== 'production') globalForPrisma.prisma = prisma;
+
+// GET all works
 export async function GET() {
   try {
     const works = await prisma.work.findMany({
-      where: { is_published: true },
       orderBy: { order_index: 'asc' },
     });
-    return NextResponse.json(works);
-  } catch (error: any) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    return NextResponse.json({ success: true, works });
+  } catch (err: any) {
+    return NextResponse.json({ error: err.message }, { status: 500 });
   }
 }
 
-export async function POST(request: Request) {
+// POST create new project with Behance content blocks
+export async function POST(req: Request) {
   try {
-    const body = await request.json();
+    const body = await req.json();
+    const {
+      title,
+      description,
+      category,
+      image_url,
+      live_url,
+      project_url,
+      is_featured,
+      is_published,
+      content_blocks,
+      tags,
+    } = body;
 
-    let generatedSlug = body.slug || body.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '');
-
-    // check if slug exists
-    const existing = await prisma.work.findUnique({ where: { slug: generatedSlug } });
-    if (existing) {
-      generatedSlug = `${generatedSlug}-${Date.now()}`;
+    if (!title) {
+      return NextResponse.json({ error: 'Title is required' }, { status: 400 });
     }
+
+    const count = await prisma.work.count();
 
     const work = await prisma.work.create({
       data: {
-        title: body.title,
-        slug: generatedSlug,
-        title_bn: body.title_bn,
-        title_en: body.title_en,
-        description: body.description,
-        description_bn: body.description_bn,
-        description_en: body.description_en,
-        category: body.category,
-        tags: body.tags || [],
-        project_type: body.project_type,
-        image_url: body.image_url,
-        client: body.client,
-        completion_date: body.completion_date,
-        technologies: body.technologies,
-        live_url: body.live_url,
-        is_featured: body.is_featured ?? false,
-        is_published: body.is_published ?? true,
-        content_blocks: body.content_blocks || [],
-        order_index: body.order_index ?? 0,
+        title,
+        description: description || null,
+        category: category || 'web',
+        image_url: image_url || null,
+        live_url: live_url || project_url || null,
+        is_featured: Boolean(is_featured),
+        is_published: is_published ?? true,
+        content_blocks: content_blocks || [],
+        tags: tags || [],
+        order_index: count + 1,
       },
     });
-    return NextResponse.json(work);
-  } catch (error: any) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+
+    return NextResponse.json({ success: true, work });
+  } catch (err: any) {
+    console.error('Create work error:', err);
+    return NextResponse.json({ error: err.message }, { status: 500 });
   }
 }
-export async function PUT(request: Request) {
+
+// PUT update existing project
+export async function PUT(req: Request) {
   try {
-    const body = await request.json();
-    if (!body.id) {
-      return NextResponse.json({ error: 'Missing id' }, { status: 400 });
+    const body = await req.json();
+    const { id, title, description, category, image_url, live_url, project_url, is_featured, is_published, content_blocks, tags } = body;
+
+    if (!id) {
+      return NextResponse.json({ error: 'ID is required' }, { status: 400 });
     }
 
     const work = await prisma.work.update({
-      where: { id: body.id },
+      where: { id },
       data: {
-        title: body.title,
-        title_bn: body.title_bn,
-        title_en: body.title_en,
-        description: body.description,
-        description_bn: body.description_bn,
-        description_en: body.description_en,
-        category: body.category,
-        tags: body.tags,
-        project_type: body.project_type,
-        image_url: body.image_url,
-        client: body.client,
-        completion_date: body.completion_date,
-        technologies: body.technologies,
-        live_url: body.live_url,
-        is_featured: body.is_featured,
-        is_published: body.is_published,
-        content_blocks: body.content_blocks,
-        order_index: body.order_index,
+        title: title !== undefined ? title : undefined,
+        description: description !== undefined ? description : undefined,
+        category: category !== undefined ? category : undefined,
+        image_url: image_url !== undefined ? image_url : undefined,
+        live_url: (live_url || project_url) !== undefined ? (live_url || project_url) : undefined,
+        is_featured: is_featured !== undefined ? Boolean(is_featured) : undefined,
+        is_published: is_published !== undefined ? Boolean(is_published) : undefined,
+        content_blocks: content_blocks !== undefined ? content_blocks : undefined,
+        tags: tags !== undefined ? tags : undefined,
       },
     });
-    return NextResponse.json(work);
-  } catch (error: any) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+
+    return NextResponse.json({ success: true, work });
+  } catch (err: any) {
+    console.error('Update work error:', err);
+    return NextResponse.json({ error: err.message }, { status: 500 });
+  }
+}
+
+// DELETE project
+export async function DELETE(req: Request) {
+  try {
+    const { searchParams } = new URL(req.url);
+    const id = searchParams.get('id');
+
+    if (!id) {
+      return NextResponse.json({ error: 'ID is required' }, { status: 400 });
+    }
+
+    await prisma.work.delete({ where: { id } });
+    return NextResponse.json({ success: true });
+  } catch (err: any) {
+    console.error('Delete work error:', err);
+    return NextResponse.json({ error: err.message }, { status: 500 });
   }
 }
