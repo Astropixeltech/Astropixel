@@ -150,7 +150,8 @@ function AdminDashboardInner() {
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
-      setLocalAvatar(localStorage.getItem('astropixel_admin_avatar'));
+      const saved = localStorage.getItem('astropixel_admin_avatar');
+      setLocalAvatar(saved || '/sofiullah-ahammad.jpg');
     }
   }, []);
 
@@ -1038,32 +1039,31 @@ function AdminDashboardInner() {
           <div className="flex items-center justify-between mb-6 gap-4 flex-wrap">
             <div>
               <div className="flex items-center gap-2 mb-1">
-                <h1 className={`text-2xl font-bold text-foreground ${language === 'bn' ? 'font-[SabinaShorolipi]' : ''}`}>
-                  {language === 'bn' ? 'Ã Â¦Â¸Ã Â§ÂÃ Â¦Â¬Ã Â¦Â¾Ã Â¦â€”Ã Â¦Â¤Ã Â¦Â®' : 'Welcome'}, {profile?.full_name?.split(' ')[0]}
+                <h1 className="text-2xl font-bold text-foreground">
+                  {language === 'bn' ? 'স্বাগতম' : 'Welcome'}, {profile?.full_name?.split(' ')[0] || 'Admin'}
                 </h1>
-                
               </div>
               <p className="text-sm text-muted-foreground">
-                {language === 'bn' ? 'Ã Â¦â€ Ã Â¦Å“ ' : 'Today is '}{new Date().toLocaleDateString(language === 'bn' ? 'bn-BD' : 'en-US', { weekday: 'long', day: 'numeric', month: 'long' })}
+                {language === 'bn' ? 'আজ ' : 'Today is '}{new Date().toLocaleDateString(language === 'bn' ? 'bn-BD' : 'en-US', { weekday: 'long', day: 'numeric', month: 'long' })}
               </p>
             </div>
             
             <div className="flex items-center gap-2">
-              {/* Profile Button */}
               <Button 
                 variant="outline" 
                 size="sm" 
                 onClick={() => setShowProfileDialog(true)}
                 className="gap-2"
               >
-                {(localAvatar || profile?.avatar_url || user?.photoURL) ? (
-                  <img src={localAvatar || profile?.avatar_url || user?.photoURL || ""} alt="" className="w-5 h-5 rounded-lg shadow-sm object-cover" />
-                ) : (
-                  <div className="w-5 h-5 rounded-lg shadow-sm bg-gradient-to-br from-primary to-purple-600 flex items-center justify-center text-[10px] font-bold text-white">
-                    {profile?.full_name?.charAt(0)}
-                  </div>
-                )}
-                <span className='hidden sm:inline'>{language === 'bn' ? 'Ã Â¦ÂªÃ Â§ÂÃ Â¦Â°Ã Â§â€¹Ã Â¦Â«Ã Â¦Â¾Ã Â¦â€¡Ã Â¦Â²' : 'Profile'}</span>
+                <img 
+                  src={localAvatar || profile?.avatar_url || user?.photoURL || "/sofiullah-ahammad.jpg"} 
+                  alt="" 
+                  onError={(e) => {
+                    (e.target as HTMLImageElement).src = '/sofiullah-ahammad.jpg';
+                  }}
+                  className="w-5 h-5 rounded-lg shadow-sm object-cover" 
+                />
+                <span className='hidden sm:inline'>{language === 'bn' ? 'প্রোফাইল' : 'Profile'}</span>
               </Button>
             </div>
           </div>
@@ -1911,19 +1911,14 @@ function AdminDashboardInner() {
                 <CardContent className="space-y-4">
                   <div className="flex flex-col items-center text-center">
                     <div className="relative group">
-                      {(localAvatar || (profile as any)?.avatar_url || user?.photoURL) ? (
-                        <img 
-                          src={localAvatar || (profile as any)?.avatar_url || user?.photoURL || ""} 
-                          alt={profile?.full_name || undefined}
-                          className="w-24 h-24 rounded-lg shadow-sm object-cover border-4 border-primary/20"
-                        />
-                      ) : (
-                        <div className="w-24 h-24 rounded-lg shadow-sm bg-gradient-to-br from-primary to-purple-600 flex items-center justify-center">
-                          <span className="text-3xl font-bold text-white">
-                            {profile?.full_name?.charAt(0).toUpperCase()}
-                          </span>
-                        </div>
-                      )}
+                      <img 
+    src={localAvatar || (profile as any)?.avatar_url || user?.photoURL || "/sofiullah-ahammad.jpg"} 
+    alt={profile?.full_name || "Admin"}
+    onError={(e) => {
+      (e.target as HTMLImageElement).src = '/sofiullah-ahammad.jpg';
+    }}
+    className="w-24 h-24 rounded-lg shadow-sm object-cover border-4 border-primary/20"
+  />
                       <label className="absolute inset-0 flex items-center justify-center bg-black/50 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer">
                         <input 
                           type="file" 
@@ -2056,19 +2051,14 @@ function AdminDashboardInner() {
                             : 'border-border hover:bg-muted/50'
                         } transition-colors`}
                       >
-                        {admin.avatar_url ? (
-                          <img 
-                            src={admin.avatar_url} 
-                            alt={admin.full_name}
-                            className="w-12 h-12 rounded-lg shadow-sm object-cover border-2 border-primary/20"
-                          />
-                        ) : (
-                          <div className="w-12 h-12 rounded-lg shadow-sm bg-gradient-to-br from-primary to-purple-600 flex items-center justify-center flex-shrink-0">
-                            <span className="text-lg font-bold text-white">
-                              {admin.full_name?.charAt(0).toUpperCase()}
-                            </span>
-                          </div>
-                        )}
+                        <img 
+    src={admin.avatar_url || "/sofiullah-ahammad.jpg"} 
+    alt={admin.full_name}
+    onError={(e) => {
+      (e.target as HTMLImageElement).src = '/sofiullah-ahammad.jpg';
+    }}
+    className="w-12 h-12 rounded-lg shadow-sm object-cover border-2 border-primary/20"
+  />
                         <div className="flex-1 min-w-0">
                           <p className="font-medium truncate flex items-center gap-2">
                             {admin.full_name}
@@ -2306,19 +2296,14 @@ function AdminDashboardInner() {
           </DialogHeader>
           <div className="py-4 space-y-4">
             <div className="flex items-center gap-4">
-              {(localAvatar || (profile as any)?.avatar_url || user?.photoURL) ? (
-                <img 
-                  src={localAvatar || (profile as any)?.avatar_url || user?.photoURL || ""} 
-                  alt={profile?.full_name || undefined}
-                  className="w-20 h-20 rounded-lg shadow-sm object-cover"
-                />
-              ) : (
-                <div className="w-20 h-20 rounded-lg shadow-sm bg-gradient-to-br from-primary to-purple-600 flex items-center justify-center">
-                  <span className="text-2xl font-bold text-white">
-                    {profile?.full_name?.charAt(0).toUpperCase()}
-                  </span>
-                </div>
-              )}
+              <img 
+    src={localAvatar || (profile as any)?.avatar_url || user?.photoURL || "/sofiullah-ahammad.jpg"} 
+    alt={profile?.full_name || "Admin"}
+    onError={(e) => {
+      (e.target as HTMLImageElement).src = '/sofiullah-ahammad.jpg';
+    }}
+    className="w-24 h-24 rounded-lg shadow-sm object-cover border-4 border-primary/20"
+  />
               <div>
                 <p className="font-semibold text-xl">{profile?.full_name}</p>
                 <p className="text-muted-foreground">{profile?.email}</p>
