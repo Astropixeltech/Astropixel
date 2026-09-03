@@ -35,7 +35,7 @@ const AboutPage = () => {
   const { section: sisterSection } = useHomepageSection('sister_brands', 'agency', 'home');
   const { data: sisterItems } = useHomepageSectionItems(sisterSection?.id);
 
-  const founder = teamMembers?.find(m => m.name.toLowerCase().includes('sofiullah') || m.role.toLowerCase().includes('founder'));
+  const founder = teamMembers?.find(m => m.name.toLowerCase().includes('sofiullah') || (m.role || '').toLowerCase().includes('founder'));
 
   const c = (key: string, translationKey: string) => {
     const dbContent = getContent(key);

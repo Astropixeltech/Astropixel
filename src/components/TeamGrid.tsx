@@ -43,7 +43,7 @@ export default function TeamGrid() {
     <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
       {teamMembers.map((member, index) => {
         const memberLinks = getMemberCustomLinks(member.id);
-        const roles = member.role.split(', ');
+        const roles = (member.role || "").split(',').map(r => r.trim()).filter(Boolean);
         const socials: { href: string; icon: React.ReactNode; label: string }[] = [];
         if (member.facebook_url) socials.push({ href: member.facebook_url, icon: <Facebook size={14} />, label: "Facebook" });
         if (member.instagram_url) socials.push({ href: member.instagram_url, icon: <Instagram size={14} />, label: "Instagram" });

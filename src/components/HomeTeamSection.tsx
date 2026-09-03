@@ -40,7 +40,7 @@ const HomeTeamSection = () => {
         ) : members.length === 0 ? null : (
           <div className="max-w-7xl mx-auto grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-7 gap-4 sm:gap-5">
             {members.map((member, index) => {
-              const roles = member.role.split(",");
+              const roles = (member.role || "").split(",").map(r => r.trim()).filter(Boolean);
               return (
                 <motion.div
                   key={member.id}

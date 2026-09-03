@@ -385,7 +385,7 @@ const ServicesPage = () => {
 
 const CtaSection = () => {
   const { data: teamMembers } = useTeamMembers();
-  const founder = teamMembers?.find(m => m.name.toLowerCase().includes('sofiullah') || m.role.toLowerCase().includes('founder'));
+  const founder = teamMembers?.find(m => m.name.toLowerCase().includes('sofiullah') || (m.role || '').toLowerCase().includes('founder'));
 
   return (
     <section className="py-16 lg:py-24 relative">

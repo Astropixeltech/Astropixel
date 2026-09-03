@@ -169,10 +169,10 @@ export const TeamManagement = () => {
               <h3 className="font-semibold text-sm text-muted-foreground uppercase tracking-wider">Basic Info</h3>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div><Label className="text-xs mb-1 block">Full Name *</Label><Input placeholder="John Doe" value={form.name} onChange={e => setField('name', e.target.value)} /></div>
-                <div><Label className="text-xs mb-1 block">Role / Title</Label><Input placeholder="CEO, Designer..." value={form.role} onChange={e => setField('role', e.target.value)} /></div>
+                <div><Label className="text-xs mb-1 block">Role / Title</Label><Input placeholder="CEO, Designer..." value={form.role || ''} onChange={e => setField('role', e.target.value)} /></div>
               </div>
-              <div><Label className="text-xs mb-1 block">Email</Label><Input type="email" placeholder="john@example.com" value={form.email} onChange={e => setField('email', e.target.value)} /></div>
-              <div><Label className="text-xs mb-1 block">Bio</Label><Textarea placeholder="Short biography..." value={form.bio} onChange={e => setField('bio', e.target.value)} rows={3} /></div>
+              <div><Label className="text-xs mb-1 block">Email</Label><Input type="email" placeholder="john@example.com" value={form.email || ''} onChange={e => setField('email', e.target.value)} /></div>
+              <div><Label className="text-xs mb-1 block">Bio</Label><Textarea placeholder="Short biography..." value={form.bio || ''} onChange={e => setField('bio', e.target.value)} rows={3} /></div>
             </div>
 
             <div className="rounded-2xl border border-border/60 p-5 space-y-3 bg-secondary/5">
