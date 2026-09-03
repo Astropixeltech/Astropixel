@@ -81,41 +81,31 @@ model Work {
 }
 
 model TeamMember {
-  id          String   @id @default(uuid())
-  name        String
-  name_bn     String?
-  name_en     String?
-  role        String?
-  role_bn     String?
-  role_en     String?
-  bio         String?
-  bio_bn      String?
-  bio_en      String?
-  image_url   String?
-  order_index Int      @default(0)
-  is_active   Boolean  @default(true)
-  site_scope  String   @default("agency")
-  created_at  DateTime @default(now())
-  updated_at  DateTime @updatedAt
-
-  custom_links TeamMemberCustomLink[]
+  id            String   @id @default(uuid())
+  name          String
+  role          String?
+  bio           String?
+  image_url     String?
+  order_index   Int      @default(0)
+  is_active     Boolean  @default(true)
+  site_scope    String   @default("agency")
+  email         String?
+  facebook_url  String?
+  instagram_url String?
+  linkedin_url  String?
+  twitter_url   String?
+  whatsapp_url  String?
+  fiverr_url    String?
+  upwork_url    String?
+  portfolio_url String?
+  threads_url   String?
+  created_at    DateTime @default(now())
+  updated_at    DateTime @updatedAt
 
   @@map("team_members")
 }
 
-model TeamMemberCustomLink {
-  id             String   @id @default(uuid())
-  team_member_id String
-  title          String
-  url            String
-  icon           String?
-  order_index    Int      @default(0)
-  created_at     DateTime @default(now())
 
-  team_member TeamMember @relation(fields: [team_member_id], references: [id], onDelete: Cascade)
-
-  @@map("team_member_custom_links")
-}
 
 model SiteSetting {
   id          String   @id @default(uuid())
