@@ -232,16 +232,15 @@ export const TeamManagement = () => {
           <Loader2 className="w-5 h-5 animate-spin" /> Loading from database...
         </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-5">
           {membersList.map((member, index) => {
-            // Formatted role with pipe separators like the reference image
+            // Formatted role with pipe separators
             const formattedRole = (member.role || "")
               .split(",")
               .map(r => r.trim())
               .filter(Boolean)
               .join(" | ");
 
-            // Vibrant modern banner gradients matching the reference image style
             const bannerGradients = [
               "from-[#FF5500] via-[#FF6A00] to-[#FFA033]",
               "from-[#6366F1] via-[#8B5CF6] to-[#EC4899]",
@@ -256,13 +255,13 @@ export const TeamManagement = () => {
             return (
               <div
                 key={member.id}
-                className="group relative rounded-[26px] border border-border/50 bg-card overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col"
+                className="group relative rounded-2xl border border-border/50 bg-card overflow-hidden shadow-sm hover:shadow-md hover:border-primary/30 transition-all duration-200 flex flex-col justify-between"
               >
                 {/* ── Top Cover Banner ── */}
-                <div className={`relative h-28 sm:h-32 bg-gradient-to-r ${currentGradient} overflow-hidden`}>
+                <div className={`relative h-20 sm:h-22 bg-gradient-to-r ${currentGradient} overflow-hidden shrink-0`}>
                   {/* Decorative Geometric Watermark */}
                   <svg
-                    className="absolute -right-6 -bottom-8 w-40 h-40 text-white/20 pointer-events-none transform rotate-12"
+                    className="absolute -right-4 -bottom-6 w-28 h-28 text-white/20 pointer-events-none transform rotate-12"
                     viewBox="0 0 100 100"
                     fill="currentColor"
                   >
@@ -270,13 +269,13 @@ export const TeamManagement = () => {
                     <rect x="40" y="25" width="45" height="20" rx="10" transform="rotate(45 50 50)" />
                   </svg>
 
-                  {/* Top Status & Quick Action Badge */}
-                  <div className="absolute top-3 right-3 flex items-center gap-2">
+                  {/* Top Status Badge */}
+                  <div className="absolute top-2.5 right-2.5">
                     <span
-                      className={`px-2.5 py-1 rounded-full text-[11px] font-semibold tracking-wide backdrop-blur-md transition-all ${
+                      className={`px-2 py-0.5 rounded-full text-[10px] font-semibold tracking-wide backdrop-blur-md transition-all ${
                         member.is_active
-                          ? "bg-black/30 text-white border border-white/20"
-                          : "bg-black/50 text-white/70"
+                          ? "bg-black/35 text-white border border-white/20"
+                          : "bg-black/60 text-white/70"
                       }`}
                     >
                       {member.is_active ? "● Active" : "Hidden"}
@@ -285,8 +284,8 @@ export const TeamManagement = () => {
                 </div>
 
                 {/* ── Overlapping Avatar ── */}
-                <div className="relative px-6 -mt-12 flex items-end justify-between">
-                  <div className="relative w-22 h-22 sm:w-24 sm:h-24 rounded-full border-4 border-card bg-background overflow-hidden shadow-lg shrink-0">
+                <div className="relative px-4 -mt-9 flex items-end justify-between">
+                  <div className="relative w-16 h-16 rounded-full border-3 border-card bg-background overflow-hidden shadow-md shrink-0">
                     <img
                       src={member.image_url || "/sofiullah-ahammad.jpg"}
                       alt={member.name}
@@ -295,39 +294,39 @@ export const TeamManagement = () => {
                           ? "/sofiullah-ahammad.jpg"
                           : "/team/adib.png";
                       }}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                     />
                   </div>
                 </div>
 
                 {/* ── Content Details ── */}
-                <div className="px-6 pt-3 pb-5 flex-1 flex flex-col justify-between space-y-3">
-                  <div className="space-y-1">
-                    <h3 className="font-bold text-lg sm:text-xl text-foreground tracking-tight">
+                <div className="px-4 pt-2 pb-3.5 flex-1 flex flex-col justify-between space-y-2.5">
+                  <div className="space-y-0.5">
+                    <h3 className="font-bold text-base text-foreground tracking-tight line-clamp-1">
                       {member.name}
                     </h3>
                     {formattedRole && (
-                      <p className="text-xs sm:text-sm text-muted-foreground font-medium leading-relaxed">
+                      <p className="text-[11px] text-muted-foreground font-medium line-clamp-2 leading-tight">
                         {formattedRole}
                       </p>
                     )}
                     {member.bio && (
-                      <p className="text-xs text-muted-foreground/80 line-clamp-2 pt-1">
+                      <p className="text-[10px] text-muted-foreground/75 line-clamp-2 pt-0.5">
                         {member.bio}
                       </p>
                     )}
                   </div>
 
                   {/* Social Links */}
-                  <div className="flex items-center gap-2 flex-wrap pt-1">
+                  <div className="flex items-center gap-1.5 flex-wrap pt-0.5">
                     {member.facebook_url && (
                       <a
                         href={member.facebook_url}
                         target="_blank"
                         rel="noreferrer"
-                        className="w-7 h-7 rounded-full bg-secondary flex items-center justify-center text-muted-foreground hover:text-blue-500 hover:bg-blue-500/10 transition-colors"
+                        className="w-6 h-6 rounded-full bg-secondary flex items-center justify-center text-muted-foreground hover:text-blue-500 hover:bg-blue-500/10 transition-colors"
                       >
-                        <Facebook className="w-3.5 h-3.5" />
+                        <Facebook className="w-3 h-3" />
                       </a>
                     )}
                     {member.instagram_url && (
@@ -335,9 +334,9 @@ export const TeamManagement = () => {
                         href={member.instagram_url}
                         target="_blank"
                         rel="noreferrer"
-                        className="w-7 h-7 rounded-full bg-secondary flex items-center justify-center text-muted-foreground hover:text-pink-500 hover:bg-pink-500/10 transition-colors"
+                        className="w-6 h-6 rounded-full bg-secondary flex items-center justify-center text-muted-foreground hover:text-pink-500 hover:bg-pink-500/10 transition-colors"
                       >
-                        <Instagram className="w-3.5 h-3.5" />
+                        <Instagram className="w-3 h-3" />
                       </a>
                     )}
                     {member.linkedin_url && (
@@ -345,9 +344,9 @@ export const TeamManagement = () => {
                         href={member.linkedin_url}
                         target="_blank"
                         rel="noreferrer"
-                        className="w-7 h-7 rounded-full bg-secondary flex items-center justify-center text-muted-foreground hover:text-blue-600 hover:bg-blue-600/10 transition-colors"
+                        className="w-6 h-6 rounded-full bg-secondary flex items-center justify-center text-muted-foreground hover:text-blue-600 hover:bg-blue-600/10 transition-colors"
                       >
-                        <Linkedin className="w-3.5 h-3.5" />
+                        <Linkedin className="w-3 h-3" />
                       </a>
                     )}
                     {member.twitter_url && (
@@ -355,50 +354,50 @@ export const TeamManagement = () => {
                         href={member.twitter_url}
                         target="_blank"
                         rel="noreferrer"
-                        className="w-7 h-7 rounded-full bg-secondary flex items-center justify-center text-muted-foreground hover:text-sky-500 hover:bg-sky-500/10 transition-colors"
+                        className="w-6 h-6 rounded-full bg-secondary flex items-center justify-center text-muted-foreground hover:text-sky-500 hover:bg-sky-500/10 transition-colors"
                       >
-                        <Twitter className="w-3.5 h-3.5" />
+                        <Twitter className="w-3 h-3" />
                       </a>
                     )}
                     {member.email && (
                       <a
                         href={`mailto:${member.email}`}
-                        className="w-7 h-7 rounded-full bg-secondary flex items-center justify-center text-muted-foreground hover:text-primary hover:bg-primary/10 transition-colors"
+                        className="w-6 h-6 rounded-full bg-secondary flex items-center justify-center text-muted-foreground hover:text-primary hover:bg-primary/10 transition-colors"
                       >
-                        <Mail className="w-3.5 h-3.5" />
+                        <Mail className="w-3 h-3" />
                       </a>
                     )}
                   </div>
 
                   {/* ── Bottom Actions Bar ── */}
-                  <div className="flex items-center justify-between pt-3 border-t border-border/40">
-                    <div className="flex items-center gap-2">
+                  <div className="flex items-center justify-between pt-2 border-t border-border/40">
+                    <div className="flex items-center gap-1.5">
                       <Switch
                         checked={member.is_active}
                         onCheckedChange={() => handleToggleActive(member)}
-                        className="scale-75"
+                        className="scale-[0.7] origin-left"
                       />
-                      <span className="text-xs text-muted-foreground">
+                      <span className="text-[10px] text-muted-foreground font-medium">
                         {member.is_active ? "Active" : "Hidden"}
                       </span>
                     </div>
 
-                    <div className="flex items-center gap-1">
+                    <div className="flex items-center gap-0.5">
                       <Button
                         variant="ghost"
                         size="sm"
-                        className="h-8 px-2.5 text-xs gap-1 hover:text-primary hover:bg-primary/10"
+                        className="h-7 px-2 text-[11px] gap-1 hover:text-primary hover:bg-primary/10"
                         onClick={() => openEdit(member)}
                       >
-                        <Pencil className="w-3.5 h-3.5" /> Edit
+                        <Pencil className="w-3 h-3" /> Edit
                       </Button>
                       <Button
                         variant="ghost"
                         size="icon"
-                        className="w-8 h-8 hover:text-red-500 hover:bg-red-500/10"
+                        className="w-7 h-7 hover:text-red-500 hover:bg-red-500/10"
                         onClick={() => handleDelete(member.id, member.name)}
                       >
-                        <Trash2 className="w-3.5 h-3.5" />
+                        <Trash2 className="w-3 h-3" />
                       </Button>
                     </div>
                   </div>

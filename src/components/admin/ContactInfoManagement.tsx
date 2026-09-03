@@ -6,9 +6,26 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Save, Phone, Mail, MapPin, Clock, MessageCircle, Sparkles, FileText, Zap, Plus, Pencil, Trash2, Globe, Share2, Map } from "lucide-react";
+import { 
+  Save, 
+  Phone, 
+  Mail, 
+  MapPin, 
+  Clock, 
+  MessageCircle, 
+  Plus, 
+  Pencil, 
+  Trash2, 
+  Globe, 
+  Map, 
+  Layers, 
+  Share2, 
+  Sparkles,
+  ExternalLink,
+  Loader2
+} from "lucide-react";
 import { toast } from "sonner";
 
 export interface ContactSocialLink {
@@ -29,15 +46,9 @@ export const SOCIAL_PLATFORMS = [
   { name: "Pinterest", icon: "Pinterest", brand: "#E60023", defaultHandle: "@astropixeltech", defaultUrl: "https://pinterest.com/astropixeltech/" },
   { name: "Behance", icon: "Behance", brand: "#1769FF", defaultHandle: "astropixel", defaultUrl: "https://behance.net/astropixel" },
   { name: "Dribbble", icon: "Dribbble", brand: "#EA4C89", defaultHandle: "astropixel", defaultUrl: "https://dribbble.com/astropixel" },
-  { name: "Medium", icon: "Medium", brand: "#000000", defaultHandle: "@astropixel", defaultUrl: "https://medium.com/@astropixel" },
-  { name: "Reddit", icon: "Reddit", brand: "#FF4500", defaultHandle: "u/astropixel", defaultUrl: "https://reddit.com/user/astropixel" },
-  { name: "Quora", icon: "Quora", brand: "#B92B27", defaultHandle: "AstroPixel-Agency", defaultUrl: "https://quora.com/profile/AstroPixel-Agency" },
   { name: "TikTok", icon: "TikTok", brand: "#000000", defaultHandle: "@astropixeltech", defaultUrl: "https://tiktok.com/@astropixeltech" },
   { name: "Discord", icon: "Discord", brand: "#5865F2", defaultHandle: "AstroPixel Server", defaultUrl: "https://discord.gg/astropixel" },
   { name: "Telegram", icon: "Telegram", brand: "#26A5E4", defaultHandle: "@astropixel", defaultUrl: "https://t.me/astropixel" },
-  { name: "GitHub", icon: "Github", brand: "#181717", defaultHandle: "astropixel", defaultUrl: "https://github.com/astropixel" },
-  { name: "Threads", icon: "Threads", brand: "#000000", defaultHandle: "@astropixel.tech", defaultUrl: "https://threads.net/@astropixel.tech" },
-  { name: "Snapchat", icon: "Snapchat", brand: "#FFFC00", defaultHandle: "astropixeltech", defaultUrl: "https://snapchat.com/add/astropixeltech" },
   { name: "WhatsApp", icon: "MessageCircle", brand: "#25D366", defaultHandle: "+880 1344-497808", defaultUrl: "https://wa.me/8801344497808" },
   { name: "Email", icon: "Mail", brand: "#EA4335", defaultHandle: "hello@astropixel.tech", defaultUrl: "mailto:hello@astropixel.tech" },
   { name: "Website", icon: "Globe", brand: "#6366F1", defaultHandle: "astropixel.tech", defaultUrl: "https://astropixel.tech" },
@@ -98,11 +109,10 @@ export const getSavedContactInfo = (): Record<string, string> => {
 export default function ContactInfoManagement() {
   const queryClient = useQueryClient();
 
-  // Contact Info State
+  const [activeTab, setActiveTab] = useState<"info" | "socials" | "map">("info");
   const [infoValues, setInfoValues] = useState<Record<string, string>>(() => getSavedContactInfo());
-
-  // Social Links State
   const [socialsList, setSocialsList] = useState<ContactSocialLink[]>(() => getSavedContactSocials());
+  const [isSaving, setIsSaving] = useState(false);
 
   // Social Dialog Form State
   const [isSocialDialogOpen, setIsSocialDialogOpen] = useState(false);
@@ -134,9 +144,8 @@ export default function ContactInfoManagement() {
   };
 
   const handleSaveAllInfo = async () => {
+    setIsSaving(true);
     saveContactInfo(infoValues);
-    toast.success("যোগাযোগের তথ্য ও গুগল ম্যাপ সফলভাবে সেভ করা হয়েছে!");
-
     try {
       const rows = Object.entries(infoValues).map(([key, val]) => ({
         page_name: "contact",
@@ -144,10 +153,14 @@ export default function ContactInfoManagement() {
         content_en: val,
       }));
       await (supabase as any).from("page_content").upsert(rows, { onConflict: "page_name,content_key" });
-    } catch (err) {}
+      toast.success("Contact settings saved successfully!");
+    } catch {
+      toast.success("Saved to local settings!");
+    } finally {
+      setIsSaving(false);
+    }
   };
 
-  // Preset Selection Handler
   const handleSelectPlatformPreset = (platformName: string) => {
     const preset = SOCIAL_PLATFORMS.find((p) => p.name === platformName);
     if (preset) {
@@ -161,7 +174,6 @@ export default function ContactInfoManagement() {
     }
   };
 
-  // Social Link CRUD
   const resetSocialForm = () => {
     setSocialFormData({
       name: "Facebook",
@@ -187,16 +199,16 @@ export default function ContactInfoManagement() {
   };
 
   const handleDeleteSocial = (id: string) => {
-    if (!confirm("আপনি কি নিশ্চিত এই সোশ্যাল মিডিয়া লিংকটি ডিলিট করতে চান?")) return;
+    if (!confirm("Are you sure you want to delete this social media link?")) return;
     const updated = socialsList.filter((s) => s.id !== id);
     saveSocialsList(updated);
-    toast.success("সোশ্যাল মিডিয়া লিংক সফলভাবে ডিলিট করা হয়েছে!");
+    toast.success("Social link removed!");
   };
 
   const handleSaveSocial = (e: React.FormEvent) => {
     e.preventDefault();
     if (!socialFormData.name || !socialFormData.url) {
-      toast.error("Platform Name and URL are required");
+      toast.error("Platform name and URL are required.");
       return;
     }
 
@@ -205,7 +217,7 @@ export default function ContactInfoManagement() {
         s.id === editingSocial.id ? { ...s, ...socialFormData } : s
       );
       saveSocialsList(updated);
-      toast.success("সোশ্যাল লিংক আপডেট করা হয়েছে!");
+      toast.success("Social link updated!");
     } else {
       const newSocial: ContactSocialLink = {
         id: Date.now().toString(),
@@ -213,76 +225,85 @@ export default function ContactInfoManagement() {
       };
       const updated = [...socialsList, newSocial];
       saveSocialsList(updated);
-      toast.success("নতুন সোশ্যাল মিডিয়া লিংক যোগ করা হয়েছে!");
+      toast.success("New social link added!");
     }
-
     resetSocialForm();
   };
 
   return (
     <div className="space-y-6">
-      {/* Header Bar */}
-      <div className="flex items-center justify-between gap-4 flex-wrap p-4 rounded-2xl bg-card border border-border/60 shadow-sm">
+      {/* Top Header Card */}
+      <div className="flex items-center justify-between gap-4 flex-wrap p-5 rounded-2xl bg-card border border-border/60 shadow-sm">
         <div>
-          <h2 className="text-xl font-bold flex items-center gap-2">
+          <h2 className="text-2xl font-bold flex items-center gap-2">
             <Phone className="w-5 h-5 text-primary" />
-            Contact Page, Google Maps & Social Accounts
+            Contact Page & Information
           </h2>
           <p className="text-xs text-muted-foreground mt-0.5">
-            Manage phone, email, office address, Google Maps embed & directions URL, working hours, and social media channels.
+            Manage contact channels, hero copy, Google Maps studio location, and social media platforms.
           </p>
         </div>
-        <Button onClick={handleSaveAllInfo} className="gap-2 bg-primary hover:bg-primary/90 text-primary-foreground">
-          <Save className="w-4 h-4" />
-          Save All Changes
+        <Button 
+          onClick={handleSaveAllInfo} 
+          disabled={isSaving}
+          className="gap-2 bg-gradient-to-r from-primary to-purple-600 text-white hover:opacity-95 shadow-md"
+        >
+          {isSaving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
+          {isSaving ? "Saving..." : "Save All Changes"}
         </Button>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
-        {/* Left Column: Contact Details */}
-        <Card className="border-border/60 shadow-sm">
-          <CardHeader>
-            <CardTitle className="text-base font-semibold flex items-center gap-2">
-              <Phone className="w-4 h-4 text-primary" />
-              Contact Information & Cards
-            </CardTitle>
-            <CardDescription>Phone, Email, Location, Business Hours, and Hero text.</CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <div>
-              <Label className="font-medium">Hero Top Badge</Label>
-              <Input
-                value={infoValues["hero.subtitle"] || ""}
-                onChange={(e) => setInfoValues({ ...infoValues, "hero.subtitle": e.target.value })}
-                placeholder="e.g. Available for new projects"
-                className="mt-1"
-              />
-            </div>
+      {/* Navigation Sub-Tabs */}
+      <div className="flex items-center gap-2 p-1.5 rounded-xl bg-secondary/40 border border-border/50 w-fit">
+        <button
+          onClick={() => setActiveTab("info")}
+          className={`px-4 py-2 rounded-lg text-xs font-bold transition-all flex items-center gap-2 ${
+            activeTab === "info"
+              ? "bg-card text-foreground shadow-sm border border-border/60"
+              : "text-muted-foreground hover:text-foreground"
+          }`}
+        >
+          <Phone className="w-3.5 h-3.5" /> General & Direct Channels
+        </button>
 
-            <div>
-              <Label className="font-medium">Hero Headline Title</Label>
-              <Input
-                value={infoValues["hero.title"] || ""}
-                onChange={(e) => setInfoValues({ ...infoValues, "hero.title": e.target.value })}
-                placeholder="e.g. Let's talk."
-                className="mt-1"
-              />
-            </div>
+        <button
+          onClick={() => setActiveTab("socials")}
+          className={`px-4 py-2 rounded-lg text-xs font-bold transition-all flex items-center gap-2 ${
+            activeTab === "socials"
+              ? "bg-card text-foreground shadow-sm border border-border/60"
+              : "text-muted-foreground hover:text-foreground"
+          }`}
+        >
+          <Share2 className="w-3.5 h-3.5" /> Social Accounts ({socialsList.length})
+        </button>
 
-            <div>
-              <Label className="font-medium">Hero Description</Label>
-              <Textarea
-                value={infoValues["hero.description"] || ""}
-                onChange={(e) => setInfoValues({ ...infoValues, "hero.description": e.target.value })}
-                placeholder="Short overview..."
-                rows={3}
-                className="mt-1"
-              />
-            </div>
+        <button
+          onClick={() => setActiveTab("map")}
+          className={`px-4 py-2 rounded-lg text-xs font-bold transition-all flex items-center gap-2 ${
+            activeTab === "map"
+              ? "bg-card text-foreground shadow-sm border border-border/60"
+              : "text-muted-foreground hover:text-foreground"
+          }`}
+        >
+          <Map className="w-3.5 h-3.5" /> Studio & Google Map
+        </button>
+      </div>
 
-            <div className="pt-2 border-t border-border/50 grid grid-cols-1 sm:grid-cols-2 gap-3">
+      {/* ── Tab 1: General & Direct Channels ── */}
+      {activeTab === "info" && (
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          {/* Direct Communication Channels */}
+          <Card className="border-border/60 shadow-sm">
+            <CardHeader className="pb-4">
+              <CardTitle className="text-base font-semibold flex items-center gap-2">
+                <Phone className="w-4 h-4 text-emerald-500" />
+                Direct Communication Channels
+              </CardTitle>
+              <CardDescription>Main email, phone number, and office hours displayed on website.</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
               <div>
-                <Label className="font-medium">📱 Phone Number</Label>
+                <Label className="text-xs font-semibold">📞 Official Phone Number</Label>
                 <Input
                   value={infoValues["info.phone"] || ""}
                   onChange={(e) => setInfoValues({ ...infoValues, "info.phone": e.target.value })}
@@ -292,7 +313,7 @@ export default function ContactInfoManagement() {
               </div>
 
               <div>
-                <Label className="font-medium">✉️ Email Address</Label>
+                <Label className="text-xs font-semibold">✉️ Official Email Address</Label>
                 <Input
                   value={infoValues["info.email"] || ""}
                   onChange={(e) => setInfoValues({ ...infoValues, "info.email": e.target.value })}
@@ -302,17 +323,17 @@ export default function ContactInfoManagement() {
               </div>
 
               <div>
-                <Label className="font-medium">📍 Office Location / Address</Label>
+                <Label className="text-xs font-semibold">💬 WhatsApp Number</Label>
                 <Input
-                  value={infoValues["info.address"] || ""}
-                  onChange={(e) => setInfoValues({ ...infoValues, "info.address": e.target.value })}
-                  placeholder="Hi-Tech Park, Rajshahi, Bangladesh"
+                  value={infoValues["info.whatsapp"] || ""}
+                  onChange={(e) => setInfoValues({ ...infoValues, "info.whatsapp": e.target.value })}
+                  placeholder="8801344497808"
                   className="mt-1"
                 />
               </div>
 
               <div>
-                <Label className="font-medium">🕐 Business Working Hours</Label>
+                <Label className="text-xs font-semibold">🕒 Business / Working Hours</Label>
                 <Input
                   value={infoValues["info.hours"] || ""}
                   onChange={(e) => setInfoValues({ ...infoValues, "info.hours": e.target.value })}
@@ -320,234 +341,283 @@ export default function ContactInfoManagement() {
                   className="mt-1"
                 />
               </div>
-            </div>
 
-            <div>
-              <Label className="font-medium">💬 WhatsApp Direct Number</Label>
-              <Input
-                value={infoValues["info.whatsapp"] || ""}
-                onChange={(e) => setInfoValues({ ...infoValues, "info.whatsapp": e.target.value })}
-                placeholder="8801344497808"
-                className="mt-1"
-              />
-            </div>
-          </CardContent>
-        </Card>
+              <div>
+                <Label className="text-xs font-semibold">📍 Physical Office Address</Label>
+                <Input
+                  value={infoValues["info.address"] || ""}
+                  onChange={(e) => setInfoValues({ ...infoValues, "info.address": e.target.value })}
+                  placeholder="Hi-Tech Park, Rajshahi, Bangladesh"
+                  className="mt-1"
+                />
+              </div>
+            </CardContent>
+          </Card>
 
-        {/* Right Column: Google Maps Settings + Social Media Accounts */}
-        <div className="space-y-6">
+          {/* Contact Page Hero Header Text */}
           <Card className="border-border/60 shadow-sm">
-            <CardHeader>
+            <CardHeader className="pb-4">
               <CardTitle className="text-base font-semibold flex items-center gap-2">
-                <Map className="w-4 h-4 text-primary" />
-                Google Maps & Studio Location Settings
+                <Sparkles className="w-4 h-4 text-primary" />
+                Contact Hero Banner Copy
               </CardTitle>
-              <CardDescription>Configure the live map iframe embed and directions link.</CardDescription>
+              <CardDescription>Hero badge, headline title, and description text on /contact.</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <div>
-                <Label className="font-medium">Studio Card Title</Label>
+                <Label className="text-xs font-semibold">Hero Top Pill Badge</Label>
                 <Input
-                  value={infoValues["info.studio_title"] || ""}
-                  onChange={(e) => setInfoValues({ ...infoValues, "info.studio_title": e.target.value })}
-                  placeholder="e.g. Come say hi in Rajshahi."
+                  value={infoValues["hero.subtitle"] || ""}
+                  onChange={(e) => setInfoValues({ ...infoValues, "hero.subtitle": e.target.value })}
+                  placeholder="Available for new projects"
                   className="mt-1"
                 />
               </div>
 
               <div>
-                <Label className="font-medium font-semibold text-primary">🗺️ Google Maps Embed URL (iFrame src)</Label>
-                <p className="text-xs text-muted-foreground mb-1">
-                  Google Maps &gt; Share &gt; Embed a map &gt; copy only the <code>src="..."</code> URL inside iframe.
-                </p>
+                <Label className="text-xs font-semibold">Hero Main Headline</Label>
+                <Input
+                  value={infoValues["hero.title"] || ""}
+                  onChange={(e) => setInfoValues({ ...infoValues, "hero.title": e.target.value })}
+                  placeholder="Let's talk."
+                  className="mt-1"
+                />
+              </div>
+
+              <div>
+                <Label className="text-xs font-semibold">Hero Description Text</Label>
+                <Textarea
+                  value={infoValues["hero.description"] || ""}
+                  onChange={(e) => setInfoValues({ ...infoValues, "hero.description": e.target.value })}
+                  placeholder="Tell us about your idea..."
+                  rows={4}
+                  className="mt-1"
+                />
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      )}
+
+      {/* ── Tab 2: Social Media Platforms ── */}
+      {activeTab === "socials" && (
+        <Card className="border-border/60 shadow-sm">
+          <CardHeader className="flex flex-row items-center justify-between pb-4">
+            <div>
+              <CardTitle className="text-base font-semibold flex items-center gap-2">
+                <Share2 className="w-4 h-4 text-primary" />
+                Connected Social Media Accounts
+              </CardTitle>
+              <CardDescription>Active social profiles shown in contact grid & website footer.</CardDescription>
+            </div>
+            <Button onClick={() => { resetSocialForm(); setIsSocialDialogOpen(true); }} size="sm" className="gap-1.5">
+              <Plus className="w-4 h-4" /> Add Platform
+            </Button>
+          </CardHeader>
+          <CardContent>
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3.5">
+              {socialsList.map((s) => (
+                <div
+                  key={s.id}
+                  className="p-3.5 rounded-2xl border border-border/60 bg-secondary/20 hover:bg-secondary/40 hover:border-primary/30 transition-all flex flex-col justify-between space-y-3"
+                >
+                  <div className="flex items-center gap-3">
+                    <div
+                      className="w-10 h-10 rounded-xl flex items-center justify-center text-white shrink-0 shadow-sm"
+                      style={{ backgroundColor: s.brand }}
+                    >
+                      <Globe className="w-5 h-5" />
+                    </div>
+                    <div className="min-w-0 flex-1">
+                      <h4 className="text-sm font-bold text-foreground truncate">{s.name}</h4>
+                      <p className="text-xs text-muted-foreground truncate">{s.handle}</p>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center justify-between pt-2 border-t border-border/40 text-xs">
+                    <a
+                      href={s.url}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="text-primary hover:underline flex items-center gap-1 font-medium"
+                    >
+                      Visit <ExternalLink className="w-3 h-3" />
+                    </a>
+                    <div className="flex items-center gap-1">
+                      <Button variant="ghost" size="icon" className="w-7 h-7 hover:text-primary" onClick={() => handleEditSocial(s)}>
+                        <Pencil className="w-3.5 h-3.5" />
+                      </Button>
+                      <Button variant="ghost" size="icon" className="w-7 h-7 hover:text-red-500" onClick={() => handleDeleteSocial(s.id)}>
+                        <Trash2 className="w-3.5 h-3.5" />
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+      )}
+
+      {/* ── Tab 3: Studio & Google Map ── */}
+      {activeTab === "map" && (
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <Card className="border-border/60 shadow-sm">
+            <CardHeader className="pb-4">
+              <CardTitle className="text-base font-semibold flex items-center gap-2">
+                <Map className="w-4 h-4 text-cyan-500" />
+                Google Maps Embed & Directions
+              </CardTitle>
+              <CardDescription>Configure Google Maps iframe embed URL and Google Maps direction link.</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div>
+                <Label className="text-xs font-semibold">Studio Section Subtitle</Label>
+                <Input
+                  value={infoValues["info.studio_subtitle"] || ""}
+                  onChange={(e) => setInfoValues({ ...infoValues, "info.studio_subtitle": e.target.value })}
+                  placeholder="Our studio"
+                  className="mt-1"
+                />
+              </div>
+
+              <div>
+                <Label className="text-xs font-semibold">Studio Section Title</Label>
+                <Input
+                  value={infoValues["info.studio_title"] || ""}
+                  onChange={(e) => setInfoValues({ ...infoValues, "info.studio_title": e.target.value })}
+                  placeholder="Come say hi in Rajshahi."
+                  className="mt-1"
+                />
+              </div>
+
+              <div>
+                <Label className="text-xs font-semibold">Google Maps Embed URL (iframe src)</Label>
                 <Textarea
                   value={infoValues["info.map_embed"] || ""}
                   onChange={(e) => setInfoValues({ ...infoValues, "info.map_embed": e.target.value })}
                   placeholder="https://www.google.com/maps/embed?pb=..."
                   rows={3}
-                  className="mt-1 font-mono text-xs"
+                  className="mt-1"
                 />
               </div>
 
               <div>
-                <Label className="font-medium font-semibold text-primary">📍 'Get Directions' Button Link</Label>
-                <p className="text-xs text-muted-foreground mb-1">
-                  Direct share link opened when users click "Get Directions" button on the map.
-                </p>
+                <Label className="text-xs font-semibold">Google Maps Directions Link</Label>
                 <Input
                   value={infoValues["info.map_directions"] || ""}
                   onChange={(e) => setInfoValues({ ...infoValues, "info.map_directions": e.target.value })}
-                  placeholder="https://maps.google.com/?q=Your+Location"
+                  placeholder="https://maps.google.com/?q=..."
                   className="mt-1"
                 />
               </div>
             </CardContent>
           </Card>
 
-          {/* Social Media Channels Manager */}
-          <Card className="border-border/60 shadow-sm">
-            <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <div>
-                <CardTitle className="text-base font-semibold flex items-center gap-2">
-                  <Share2 className="w-4 h-4 text-primary" />
-                  Social Media Accounts ({socialsList.length})
-                </CardTitle>
-                <CardDescription>Select from 20+ preset platforms or add custom social links.</CardDescription>
-              </div>
-              <Dialog open={isSocialDialogOpen} onOpenChange={setIsSocialDialogOpen}>
-                <DialogTrigger asChild>
-                  <Button size="sm" onClick={() => resetSocialForm()} className="gap-1">
-                    <Plus className="w-3.5 h-3.5" /> Add Link
-                  </Button>
-                </DialogTrigger>
-                <DialogContent className="max-w-md max-h-[90vh] overflow-y-auto">
-                  <DialogHeader>
-                    <DialogTitle>
-                      {editingSocial ? "Edit Social Media Link" : "Add New Social Media Link"}
-                    </DialogTitle>
-                  </DialogHeader>
-                  <form onSubmit={handleSaveSocial} className="space-y-3.5 pt-2">
-                    <div>
-                      <Label className="font-medium">Choose Social Platform Preset</Label>
-                      <Select onValueChange={handleSelectPlatformPreset}>
-                        <SelectTrigger className="mt-1">
-                          <SelectValue placeholder="Quick Select Platform Preset" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          {SOCIAL_PLATFORMS.map((p) => (
-                            <SelectItem key={p.name} value={p.name}>
-                              {p.name}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                    </div>
-
-                    <div>
-                      <Label className="font-medium">Platform Name *</Label>
-                      <Input
-                        value={socialFormData.name}
-                        onChange={(e) => setSocialFormData({ ...socialFormData, name: e.target.value })}
-                        placeholder="e.g. Behance, Dribbble, Pinterest, Reddit"
-                        required
-                      />
-                    </div>
-
-                    <div>
-                      <Label className="font-medium">Handle / Subtitle Label</Label>
-                      <Input
-                        value={socialFormData.handle}
-                        onChange={(e) => setSocialFormData({ ...socialFormData, handle: e.target.value })}
-                        placeholder="e.g. @astropixel.tech or +880 1344..."
-                      />
-                    </div>
-
-                    <div>
-                      <Label className="font-medium">Direct URL *</Label>
-                      <Input
-                        value={socialFormData.url}
-                        onChange={(e) => setSocialFormData({ ...socialFormData, url: e.target.value })}
-                        placeholder="https://behance.net/astropixel"
-                        required
-                      />
-                    </div>
-
-                    <div className="grid grid-cols-2 gap-3">
-                      <div>
-                        <Label className="font-medium">Icon Preset</Label>
-                        <Select
-                          value={socialFormData.icon}
-                          onValueChange={(val) => setSocialFormData({ ...socialFormData, icon: val })}
-                        >
-                          <SelectTrigger className="mt-1">
-                            <SelectValue placeholder="Select Icon" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            {SOCIAL_PLATFORMS.map((p) => (
-                              <SelectItem key={p.icon} value={p.icon}>
-                                {p.name} ({p.icon})
-                              </SelectItem>
-                            ))}
-                          </SelectContent>
-                        </Select>
-                      </div>
-
-                      <div>
-                        <Label className="font-medium">Brand Color (Hex)</Label>
-                        <div className="flex gap-2 items-center mt-1">
-                          <Input
-                            type="color"
-                            value={socialFormData.brand}
-                            onChange={(e) => setSocialFormData({ ...socialFormData, brand: e.target.value })}
-                            className="w-10 h-10 p-1 rounded-lg cursor-pointer shrink-0"
-                          />
-                          <Input
-                            value={socialFormData.brand}
-                            onChange={(e) => setSocialFormData({ ...socialFormData, brand: e.target.value })}
-                            placeholder="#1769FF"
-                          />
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="flex gap-2 pt-3">
-                      <Button type="submit" className="flex-1">
-                        Save Social Link
-                      </Button>
-                      <Button type="button" variant="outline" onClick={resetSocialForm}>
-                        Cancel
-                      </Button>
-                    </div>
-                  </form>
-                </DialogContent>
-              </Dialog>
+          {/* Live Preview of Map */}
+          <Card className="border-border/60 shadow-sm overflow-hidden flex flex-col">
+            <CardHeader className="pb-2">
+              <CardTitle className="text-base font-semibold flex items-center gap-2">
+                <MapPin className="w-4 h-4 text-primary" /> Map Preview
+              </CardTitle>
             </CardHeader>
-            <CardContent className="space-y-2">
-              {socialsList.map((social) => (
-                <div
-                  key={social.id}
-                  className="flex items-center justify-between p-3 rounded-xl border border-border/60 bg-muted/20 hover:bg-muted/40 transition-colors"
-                >
-                  <div className="flex items-center gap-3 min-w-0">
-                    <div
-                      className="w-9 h-9 rounded-lg flex items-center justify-center font-bold text-xs shrink-0"
-                      style={{ backgroundColor: `${social.brand}15`, color: social.brand }}
-                    >
-                      {social.name.charAt(0)}
-                    </div>
-                    <div className="min-w-0">
-                      <p className="text-sm font-semibold text-foreground truncate">{social.name}</p>
-                      <p className="text-xs text-muted-foreground truncate">{social.handle}</p>
-                    </div>
-                  </div>
-
-                  <div className="flex items-center gap-1 shrink-0">
-                    <Button variant="ghost" size="icon" onClick={() => handleEditSocial(social)}>
-                      <Pencil className="w-4 h-4" />
-                    </Button>
-                    <Button variant="ghost" size="icon" onClick={() => handleDeleteSocial(social.id)}>
-                      <Trash2 className="w-4 h-4 text-destructive" />
-                    </Button>
-                  </div>
-                </div>
-              ))}
-
-              {socialsList.length === 0 && (
-                <div className="text-center py-8 text-xs text-muted-foreground">
-                  No social links added. Click "+ Add Link" above.
-                </div>
-              )}
+            <CardContent className="flex-1 p-4">
+              <div className="w-full h-72 rounded-xl overflow-hidden border border-border/50 bg-slate-900">
+                <iframe
+                  title="Studio Preview"
+                  src={infoValues["info.map_embed"] || ""}
+                  className="w-full h-full border-0 filter opacity-90"
+                  loading="lazy"
+                />
+              </div>
             </CardContent>
           </Card>
         </div>
-      </div>
+      )}
 
-      <div className="flex justify-end pt-4">
-        <Button onClick={handleSaveAllInfo} className="gap-2 bg-primary hover:bg-primary/90 text-primary-foreground">
-          <Save className="w-4 h-4" />
-          Save All Changes
-        </Button>
-      </div>
+      {/* Add / Edit Social Platform Modal */}
+      <Dialog open={isSocialDialogOpen} onOpenChange={setIsSocialDialogOpen}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle>{editingSocial ? "Edit Social Link" : "Add Social Platform"}</DialogTitle>
+          </DialogHeader>
+
+          <form onSubmit={handleSaveSocial} className="space-y-4 pt-2">
+            <div>
+              <Label className="text-xs">Quick Platform Preset</Label>
+              <Select onValueChange={handleSelectPlatformPreset} defaultValue={socialFormData.name}>
+                <SelectTrigger className="mt-1">
+                  <SelectValue placeholder="Select platform preset..." />
+                </SelectTrigger>
+                <SelectContent>
+                  {SOCIAL_PLATFORMS.map((p) => (
+                    <SelectItem key={p.name} value={p.name}>
+                      {p.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+
+            <div>
+              <Label className="text-xs">Platform Display Name</Label>
+              <Input
+                value={socialFormData.name}
+                onChange={(e) => setSocialFormData({ ...socialFormData, name: e.target.value })}
+                placeholder="e.g. Behance"
+                className="mt-1"
+              />
+            </div>
+
+            <div>
+              <Label className="text-xs">Handle / Username</Label>
+              <Input
+                value={socialFormData.handle}
+                onChange={(e) => setSocialFormData({ ...socialFormData, handle: e.target.value })}
+                placeholder="e.g. @astropixel"
+                className="mt-1"
+              />
+            </div>
+
+            <div>
+              <Label className="text-xs">Full Profile URL</Label>
+              <Input
+                value={socialFormData.url}
+                onChange={(e) => setSocialFormData({ ...socialFormData, url: e.target.value })}
+                placeholder="https://behance.net/..."
+                className="mt-1"
+              />
+            </div>
+
+            <div>
+              <Label className="text-xs">Brand Hex Color Code</Label>
+              <div className="flex items-center gap-2 mt-1">
+                <input
+                  type="color"
+                  value={socialFormData.brand}
+                  onChange={(e) => setSocialFormData({ ...socialFormData, brand: e.target.value })}
+                  className="w-10 h-10 rounded-lg cursor-pointer border border-border"
+                />
+                <Input
+                  value={socialFormData.brand}
+                  onChange={(e) => setSocialFormData({ ...socialFormData, brand: e.target.value })}
+                  placeholder="#1877F2"
+                  className="flex-1"
+                />
+              </div>
+            </div>
+
+            <div className="flex gap-2 pt-2">
+              <Button type="button" variant="outline" onClick={resetSocialForm} className="flex-1">
+                Cancel
+              </Button>
+              <Button type="submit" className="flex-1 bg-primary text-white">
+                {editingSocial ? "Update Link" : "Save Link"}
+              </Button>
+            </div>
+          </form>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
