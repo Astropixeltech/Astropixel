@@ -40,13 +40,21 @@ export async function POST(req: Request) {
     }
 
     const eventType: string = evt?.type ?? '';
-    const data: any = evt?.data ?? {};
 
-    // Accept if type is email.received OR if it has email fields
-    const isEmail = eventType === 'email.received' || (data?.from && (data?.to || data?.toAddress));
+    // Resend puts email fields in evt.data for most events
+    // but sometimes the payload structure varies
+    const data: any = evt?.data ?? evt ?? {};
+
+    // Log the raw structure so we can debug via Vercel logs
+    console.log('[Webhook] type:', eventType, '| data.from:', data?.from, '| data.to:', data?.to);
+
+    // Accept email.received OR any payload with email fields
+    const hasEmailFields = !!(data?.from && (data?.to || data?.toAddress));
+    const isEmail = eventType === 'email.received' || hasEmailFields;
 
     if (!isEmail) {
-      return NextResponse.json({ success: true, ignored: true, eventType });
+      console.log('[Webhook] Ignoring - type:', eventType, 'hasEmailFields:', hasEmailFields);
+      return NextResponse.json({ success: true, ignored: true, eventType, hasEmailFields });
     }
 
     // Parse to-addresses
@@ -56,7 +64,8 @@ export async function POST(req: Request) {
       : typeof toRaw === 'string' ? [toRaw] : [];
 
     if (toAddresses.length === 0) {
-      return NextResponse.json({ success: true, message: 'No recipients' });
+      console.log('[Webhook] No recipients found. data.to:', data?.to);
+      return NextResponse.json({ success: true, message: 'No recipients', rawTo: data?.to });
     }
 
     // Parse sender
