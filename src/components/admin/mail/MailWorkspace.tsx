@@ -41,13 +41,19 @@ export default function MailWorkspace() {
   const [attachments, setAttachments] = useState<File[]>([]);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
+  const [fetchError, setFetchError] = useState<string>('');
+
   // ─── Fetch emails from real DB ───────────────────────────────
   const fetchFolder = useCallback(async (folder: string) => {
     setIsLoading(true);
+    setFetchError('');
     try {
       const res = await fetch(`/api/mail/inbox?address=${encodeURIComponent(MAILBOX)}&folder=${folder}`);
-      if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const data = await res.json();
+      if (!res.ok) {
+        setFetchError(`API Error ${res.status}: ${data.error || 'Unknown'}`);
+        return;
+      }
       const messages: EmailThread[] = (data.messages || []).map((m: any) => ({
         id: m.id,
         folder: m.folder,
@@ -61,9 +67,10 @@ export default function MailWorkspace() {
         initials: (m.from_name || m.from_address || '?').charAt(0).toUpperCase(),
         attachments: (m.attachments || []).map((a: any) => ({ name: a.filename, size: a.size, type: a.content_type }))
       }));
-      // Replace this folder's emails, keep other folders
       setEmails(prev => [...prev.filter(e => e.folder !== folder), ...messages]);
-    } catch (err) {
+      console.log(`[Mail] Loaded ${messages.length} emails for folder: ${folder}`);
+    } catch (err: any) {
+      setFetchError(`Fetch failed: ${err.message}`);
       console.error('fetchFolder error:', err);
     } finally {
       setIsLoading(false);
@@ -254,10 +261,16 @@ export default function MailWorkspace() {
         </div>
 
         <div className="flex-1 overflow-y-auto">
+          {fetchError && (
+            <div className="p-4 m-3 rounded-xl bg-red-500/10 border border-red-500/20 text-red-500 text-xs">
+              ⚠️ {fetchError}
+              <div className="mt-1 text-muted-foreground">Mailbox: {MAILBOX}</div>
+            </div>
+          )}
           {isLoading && activeThreads.length === 0 && (
             <div className="p-8 text-center text-muted-foreground text-sm animate-pulse">Loading emails...</div>
           )}
-          {!isLoading && activeThreads.length === 0 && (
+          {!isLoading && !fetchError && activeThreads.length === 0 && (
             <div className="p-8 text-center text-muted-foreground text-sm">No emails in {activeFolder}</div>
           )}
           {activeThreads.map(t => (
