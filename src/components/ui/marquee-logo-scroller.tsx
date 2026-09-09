@@ -13,8 +13,8 @@ export interface Logo {
 }
 
 // Define the props for the main component
-export interface MarqueeLogoScrollerProps extends React.HTMLAttributes<HTMLDivElement> {
-  title: string;
+export interface MarqueeLogoScrollerProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'title'> {
+  title: React.ReactNode;
   description: string;
   logos: Logo[];
   speed?: 'normal' | 'slow' | 'fast';
@@ -47,7 +47,7 @@ const MarqueeLogoScroller = React.forwardRef<HTMLDivElement, MarqueeLogoScroller
         
         <section
           ref={ref}
-          aria-label={title}
+          aria-label={typeof title === 'string' ? title : 'AI-Powered Design Tools'}
           className={cn(
             'w-full bg-background text-foreground rounded-2xl border border-border/40 overflow-hidden shadow-lg',
             className
@@ -57,7 +57,7 @@ const MarqueeLogoScroller = React.forwardRef<HTMLDivElement, MarqueeLogoScroller
           {/* Header Section */}
           <div className="p-6 md:p-8 lg:p-10">
             <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 pb-6 md:pb-8 border-b border-border/40">
-              <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold tracking-tight font-display max-w-md leading-tight whitespace-pre-line">
+              <h2 className="text-2xl sm:text-3xl lg:text-4xl font-semibold tracking-tight font-display max-w-md leading-tight">
                 {title}
               </h2>
               <p className="text-muted-foreground text-sm sm:text-base leading-relaxed max-w-lg lg:text-right">

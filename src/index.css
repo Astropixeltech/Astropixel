@@ -12,6 +12,23 @@
 html, body { scrollbar-width: none; -ms-overflow-style: none; background-color: #0D111A; }
 html::-webkit-scrollbar, body::-webkit-scrollbar { display: none; width: 0; height: 0; }
 
+/* Lenis smooth scrolling rules */
+html.lenis, html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+.lenis.lenis-smooth iframe {
+  pointer-events: none;
+}
+
 /* Sabina Shorolipi Font for Bengali titles */
 @font-face {
   font-family: 'SabinaShorolipi';
@@ -53,7 +70,7 @@ html::-webkit-scrollbar, body::-webkit-scrollbar { display: none; width: 0; heig
     --popover: 0 0% 100%;
     --popover-foreground: 215 25% 10%;
 
-    --primary: 221 83% 53%;
+    --primary: 221 83% 30%;
     --primary-foreground: 0 0% 100%;
 
     --secondary: 210 20% 93%;
@@ -75,7 +92,7 @@ html::-webkit-scrollbar, body::-webkit-scrollbar { display: none; width: 0; heig
     --radius: 0.5rem;
 
     /* Custom Astropixel tokens */
-    --gradient-start: 221 83% 53%;
+    --gradient-start: 221 83% 30%;
     --gradient-mid: 271 91% 65%;
     --gradient-end: 280 80% 90%;
 
@@ -472,7 +489,7 @@ html::-webkit-scrollbar, body::-webkit-scrollbar { display: none; width: 0; heig
   border-radius: 9999px;
   overflow: hidden;
   text-decoration: none;
-  background: linear-gradient(135deg, #2563eb 0%, #9333ea 70%, #f3e8ff 100%);
+  background: linear-gradient(135deg, #1e3a8a 0%, #9333ea 70%, #f3e8ff 100%);
   color: #ffffff !important;
   font-weight: 600;
   font-size: 0.875rem;

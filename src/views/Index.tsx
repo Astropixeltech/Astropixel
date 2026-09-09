@@ -583,7 +583,7 @@ const Index = () => {
                   src={logo.src}
                   alt={logo.alt}
                   loading="lazy"
-                  className="max-h-6 sm:max-h-7 lg:max-h-7 max-w-[90px] sm:max-w-[110px] w-auto h-auto object-contain brightness-0 dark:invert opacity-85 group-hover:opacity-100 transition-all duration-300 ease-out"
+                  className="max-h-6 sm:max-h-7 lg:max-h-7 max-w-[90px] sm:max-w-[110px] w-auto h-auto object-contain brightness-0 dark:invert opacity-45 group-hover:opacity-85 group-hover:scale-105 transition-all duration-300 ease-out"
                 />
               </div>
             );
@@ -596,9 +596,9 @@ const Index = () => {
                 transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
               >
                 {/* Centered headline */}
-                <div className="text-center max-w-3xl mx-auto mb-6 lg:mb-8">
-                  <h2 className="text-2xl sm:text-3xl lg:text-4xl font-display font-semibold tracking-[-0.02em] text-foreground leading-[1.2]">
-                    Trusted by <span className="font-serif italic font-normal text-primary">26+</span> brands
+                <div className="text-center max-w-2xl mx-auto mb-6 lg:mb-8">
+                  <h2 className="text-base sm:text-lg md:text-xl font-display font-medium tracking-tight text-foreground/80">
+                    Trusted by <span className="font-serif italic font-normal gradient-text">26+ Visionary</span> Brands &amp; <span className="font-serif italic font-normal gradient-text">Partners.</span>
                   </h2>
                 </div>
 
@@ -626,87 +626,100 @@ const Index = () => {
         </div>
       </section>
 
-      {/* ══════════ SERVICES — BENTO GRID ══════════ */}
-      <section className="pb-16 lg:pb-24 pt-4 lg:pt-8 relative bg-background">
-        <div className="container mx-auto px-6 relative z-10">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-center mb-10 lg:mb-28"
-          >
-            <h2 className="text-3xl lg:text-5xl xl:text-6xl font-display font-bold mb-4">
-              {c("whatWeDo", "home.whatWeDo")} <span className="font-serif italic font-normal gradient-text">{c("do", "home.do")}</span>
-            </h2>
-            <p className="text-muted-foreground max-w-xl mx-auto text-base lg:text-lg">
-              We craft designs, websites & brand visuals that stand out.
-            </p>
-          </motion.div>
+      {/* Start of White Background Content */}
+      <div className="relative z-10 bg-white rounded-t-[40px] md:rounded-t-[80px]">
 
+        {/* ══════════ OUR RECENT WORK (Featured Projects & Works) ══════════ */}
+        <RecentWorkSection />
 
+        {/* ══════════ SERVICES — BENTO GRID ══════════ */}
+        <section className="pb-16 lg:pb-24 pt-8 lg:pt-12 relative bg-white">
+          <div className="container mx-auto px-6 relative z-10">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="text-center mb-10 lg:mb-28"
+            >
+              <h2 className="text-2xl sm:text-3xl lg:text-4xl font-display font-semibold mb-3 tracking-tight text-slate-900">
+                Services We <span className="font-serif italic font-normal gradient-text">Craft</span> &amp; <span className="font-serif italic font-normal gradient-text">Deliver.</span>
+              </h2>
+              <p className="text-slate-500 max-w-xl mx-auto text-base lg:text-lg">
+                We craft designs, websites & brand visuals that stand out.
+              </p>
+            </motion.div>
 
-
-
-          {/* MOBILE / SMALL TABLET — single column: one service per row */}
-          <div className="md:hidden max-w-2xl mx-auto grid grid-cols-1 gap-12">
-            {services.map((s, i) => {
-              const Icon = s.icon;
-              return (
-                <motion.div
-                  key={s.title}
-                  initial={{ opacity: 0, y: 24 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, margin: "-80px" }}
-                  transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-                  className="mb-4"
-                >
-                  <h3 className="text-lg sm:text-xl font-display font-bold leading-[1.15] tracking-tight text-foreground mb-2">
-                    {s.title}
-                  </h3>
-                  <div className="relative h-[2px] w-full max-w-[100px] mb-2.5 overflow-hidden rounded-full">
-                    <div className="absolute inset-0 bg-gradient-to-r from-cyan-400 via-sky-400 to-blue-500 blur-[2px] opacity-80" />
-                    <div className="absolute inset-0 bg-gradient-to-r from-cyan-300 via-sky-400 to-blue-500" />
-                  </div>
-                  <Link
-                    href="/services"
-                    className="inline-flex items-center gap-1.5 font-semibold text-xs group mb-7 sm:mb-9"
+            {/* MOBILE / SMALL TABLET — single column: one service per row */}
+            <div className="md:hidden max-w-2xl mx-auto grid grid-cols-1 gap-12">
+              {services.map((s, i) => {
+                const Icon = s.icon;
+                return (
+                  <motion.div
+                    key={s.title}
+                    initial={{ opacity: 0, y: 24 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, margin: "-80px" }}
+                    transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+                    className="mb-4"
                   >
-                    <span className="relative bg-gradient-to-r from-cyan-300 via-sky-400 to-blue-500 bg-clip-text text-transparent">
-                      {t("common.learnMore") || "See More"}
-                    </span>
-                    <ArrowRight size={13} className="text-cyan-300 group-hover:translate-x-1 transition-transform duration-500 ease-out" />
-                  </Link>
-                  <div className="pt-2">
-                    <MemoServicePair
-                      index={i}
-                      title={s.title}
-                      color={s.stripe}
-                      Icon={Icon}
-                      primaryImage={(s as any).primaryImage}
-                      secondaryImage={(s as any).secondaryImage}
-                      priority={i === 0}
-                    />
-                  </div>
-                </motion.div>
-              );
-            })}
-          </div>
+                    <h3 className="text-lg sm:text-xl font-display font-bold leading-[1.15] tracking-tight text-foreground mb-2">
+                      {s.title}
+                    </h3>
+                    <div className="relative h-[2px] w-full max-w-[100px] mb-2.5 overflow-hidden rounded-full">
+                      <div className="absolute inset-0 bg-gradient-to-r from-cyan-400 via-sky-400 to-blue-500 blur-[2px] opacity-80" />
+                      <div className="absolute inset-0 bg-gradient-to-r from-cyan-300 via-sky-400 to-blue-500" />
+                    </div>
+                    <Link
+                      href="/services"
+                      className="inline-flex items-center gap-1.5 font-semibold text-xs group mb-7 sm:mb-9"
+                    >
+                      <span className="relative bg-gradient-to-r from-cyan-300 via-sky-400 to-blue-500 bg-clip-text text-transparent">
+                        {t("common.learnMore") || "See More"}
+                      </span>
+                      <ArrowRight size={13} className="text-cyan-300 group-hover:translate-x-1 transition-transform duration-500 ease-out" />
+                    </Link>
+                    <div className="pt-2">
+                      <MemoServicePair
+                        index={i}
+                        title={s.title}
+                        color={s.stripe}
+                        Icon={Icon}
+                        primaryImage={(s as any).primaryImage}
+                        secondaryImage={(s as any).secondaryImage}
+                        priority={i === 0}
+                      />
+                    </div>
+                  </motion.div>
+                );
+              })}
+            </div>
 
-
-          {/* DESKTOP / TABLET PC MODE — Sticky text left, scrolling image pairs right */}
-          <div className="hidden md:grid max-w-7xl mx-auto grid-cols-12 gap-8 lg:gap-16 relative">
-            {/* LEFT — sticky text swaps with active service */}
-            <div className="col-span-4 sticky top-32 h-[calc(100vh-8rem)] flex flex-col justify-center">
-              <div className="relative">
-                <AnimatePresence mode="popLayout" initial={false}>
-                  {services.map((s, i) =>
-                    activeService === i ? (
+            {/* DESKTOP / TABLET PC MODE — Sticky text left, scrolling image pairs right */}
+            <div className="hidden md:grid max-w-7xl mx-auto grid-cols-12 gap-8 lg:gap-16 relative">
+              {/* LEFT — sticky text swaps with active service */}
+              <div className="col-span-4 sticky top-32 h-[calc(100vh-8rem)] flex flex-col justify-center">
+                <div className="relative min-h-[380px] w-full">
+                  {services.map((s, i) => {
+                    const isActive = activeService === i;
+                    return (
                       <motion.div
                         key={s.title}
-                        initial={{ opacity: 0, y: 10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: -10 }}
-                        transition={{ duration: 0.12, ease: [0.16, 1, 0.3, 1] }}
+                        initial={false}
+                        animate={{
+                          opacity: isActive ? 1 : 0,
+                          y: isActive ? 0 : i < activeService ? -18 : 18,
+                          filter: isActive ? "blur(0px)" : "blur(14px)",
+                          scale: isActive ? 1 : 0.97,
+                        }}
+                        transition={{
+                          duration: 0.75,
+                          ease: [0.16, 1, 0.3, 1],
+                        }}
+                        className={`w-full ${
+                          isActive
+                            ? "relative z-10 pointer-events-auto"
+                            : "absolute top-0 left-0 z-0 pointer-events-none"
+                        }`}
                       >
                         <h3 className="text-3xl md:text-4xl lg:text-[2.1rem] xl:text-[2.5rem] font-display font-bold mb-5 leading-[1.1] tracking-tight text-foreground max-w-full">
                           {s.title}
@@ -729,46 +742,45 @@ const Index = () => {
                           <ArrowRight size={16} className="text-cyan-300 group-hover:translate-x-1 transition-transform duration-500 ease-out" />
                         </Link>
                       </motion.div>
-                    ) : null
-                  )}
-                </AnimatePresence>
+                    );
+                  })}
+                </div>
+              </div>
+
+              {/* RIGHT — scrolling image pairs */}
+              <div className="col-span-8 flex flex-col gap-24">
+                {services.map((s, i) => {
+                  const Icon = s.icon;
+                  return (
+                    <MemoServicePair
+                      key={s.title}
+                      index={i}
+                      title={s.title}
+                      color={s.stripe}
+                      Icon={Icon}
+                      primaryImage={(s as any).primaryImage}
+                      secondaryImage={(s as any).secondaryImage}
+                      priority={i === 0}
+                    />
+                  );
+                })}
               </div>
             </div>
 
-            {/* RIGHT — scrolling image pairs */}
-            <div className="col-span-8 flex flex-col gap-24">
-              {services.map((s, i) => {
-                const Icon = s.icon;
-                return (
-                  <MemoServicePair
-                    key={s.title}
-                    index={i}
-                    title={s.title}
-                    color={s.stripe}
-                    Icon={Icon}
-                    primaryImage={(s as any).primaryImage}
-                    secondaryImage={(s as any).secondaryImage}
-                    priority={i === 0}
-                  />
-                );
-              })}
-            </div>
           </div>
-
-
-
-
-        </div>
-      </section>
-
-      {/* Start of White Background Content */}
-      <div className="relative z-10 bg-white rounded-t-[40px] md:rounded-t-[80px]">
+        </section>
 
         {/* ══════════ AI-POWERED DESIGN MARQUEE ══════════ */}
-        <section className="py-10 lg:py-16 relative">
+        <section className="pt-4 pb-6 lg:pt-8 lg:pb-10 relative bg-white">
           <div className="container mx-auto px-6">
             <MarqueeLogoScroller
-              title={"Smarter Design,\nSupercharged by AI"}
+              title={
+                <span>
+                  Smarter <span className="font-serif italic font-normal gradient-text">Design,</span>
+                  <br />
+                  <span className="font-serif italic font-normal gradient-text">Supercharged</span> by AI.
+                </span>
+              }
               description="From wireframes to launch, we blend AI tools with strategy to deliver faster, sharper, and data-led design results."
               logos={aiDesignTools}
               speed="normal"
@@ -776,15 +788,8 @@ const Index = () => {
           </div>
         </section>
 
-        {/* ══════════ OUR RECENT WORK (HyperFrame Style) ══════════ */}
-        <RecentWorkSection />
-
         {/* ══════════ TESTIMONIALS ══════════ */}
-        <section className="py-10 lg:py-16 relative">
-          <div className="container mx-auto px-4 sm:px-6">
-            <ClientFeedback />
-          </div>
-        </section>
+        <ClientFeedback />
       </div>
 
       {/* ══════════ FINAL CTA + INQUIRY SECTION ══════════ */}
@@ -839,10 +844,10 @@ const TrustedByExperts = () => {
           initial={{ opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="font-display text-2xl font-medium leading-[1.25] text-[#cfd6ff] md:text-[28px]"
+          className="font-display text-2xl sm:text-3xl lg:text-4xl font-semibold tracking-tight leading-[1.2] text-[#cfd6ff]"
         >
-          <span className="block">Trusted by <span className="font-serif italic font-normal text-white">experts.</span></span>
-          <span className="block text-[#f5f3ff]">Used by <span className="font-serif italic font-normal text-white">leaders.</span></span>
+          <span className="block">Trusted by <span className="font-serif italic font-normal gradient-text">Global</span> Experts.</span>
+          <span className="block text-[#f5f3ff]">Used by <span className="font-serif italic font-normal gradient-text">Industry</span> Leaders.</span>
         </motion.h2>
 
         <motion.div

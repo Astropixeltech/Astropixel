@@ -1,20 +1,27 @@
+'use client';
+
 import { useEffect } from "react";
 import Lenis from "lenis";
 
 const SmoothScroll = () => {
   useEffect(() => {
+    if (typeof window === "undefined") return;
+
     // Respect reduced-motion preference
     if (window.matchMedia?.("(prefers-reduced-motion: reduce)").matches) return;
 
     const lenis = new Lenis({
       duration: 1.2,
-      easing: (t) => (t === 1 ? 1 : 1 - Math.pow(2, -10 * t)),
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      orientation: "vertical",
+      gestureOrientation: "vertical",
       smoothWheel: true,
-      wheelMultiplier: 1,
-      touchMultiplier: 1.2,
-      lerp: 0.1,
-      syncTouch: false,
+      wheelMultiplier: 0.95,
+      touchMultiplier: 1.5,
+      infinite: false,
     });
+
+    (window as any).lenis = lenis;
 
     let rafId = 0;
     const raf = (time: number) => {
@@ -26,6 +33,7 @@ const SmoothScroll = () => {
     return () => {
       cancelAnimationFrame(rafId);
       lenis.destroy();
+      delete (window as any).lenis;
     };
   }, []);
 
@@ -33,3 +41,4 @@ const SmoothScroll = () => {
 };
 
 export default SmoothScroll;
+
