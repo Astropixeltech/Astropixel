@@ -190,38 +190,48 @@ function CardContent({ project }: { project: ProjectItem }) {
   );
 }
 
-interface StackCardProps {
+interface ProjectCardProps {
   project: ProjectItem;
-  i: number;
-  progress: MotionValue<number>;
-  range: [number, number];
-  targetScale: number;
-  targetRotate: number;
+  index: number;
+  total: number;
 }
 
-function StackCard({ project, i, progress, range, targetScale, targetRotate }: StackCardProps) {
-  const containerRef = useRef<HTMLDivElement>(null);
-  
-  // Transform scale, rotate, opacity as scroll reaches and passes this card
-  const scale = useTransform(progress, range, [1, targetScale]);
-  const rotate = useTransform(progress, range, [0, targetRotate]);
-  const opacity = useTransform(progress, range, [1, 0.65]);
+function ProjectCard({ project, index, total }: ProjectCardProps) {
+  const cardRef = useRef<HTMLDivElement>(null);
+
+  // Track scroll from when this card hits the sticky header until its container has fully scrolled
+  const { scrollYProgress } = useScroll({
+    target: cardRef,
+    offset: ['start start', 'end start'],
+  });
+
+  const isLast = index === total - 1;
+  const rotateTarget = index % 2 === 0 ? 3.5 : -3.5;
+
+  // 1. Until the next card reaches halfway (0 -> 0.45), current card stays completely straight, full scale & 100% opaque.
+  // 2. When the next card passes halfway (0.45 -> 0.95), current card gradually tilts, shrinks, and fades out (opacity -> 0) behind the incoming card!
+  const scale = useTransform(scrollYProgress, [0, 0.45, 0.95], [1, 1, 0.85]);
+  const rotate = useTransform(scrollYProgress, [0, 0.45, 0.95], [0, 0, rotateTarget]);
+  const opacity = useTransform(scrollYProgress, [0, 0.45, 0.9], [1, 1, 0]);
+  const y = useTransform(scrollYProgress, [0, 0.45, 0.95], [0, 0, -35]);
 
   return (
-    <div 
-      ref={containerRef} 
-      className="min-h-[75vh] sm:min-h-[85vh] flex items-center justify-center sticky top-20 sm:top-28 px-4 sm:px-6 mb-12 sm:mb-16"
-      style={{ zIndex: i + 1 }}
+    <div
+      ref={cardRef}
+      className={`min-h-[90vh] sm:min-h-screen relative flex items-start justify-center ${
+        isLast ? 'pb-16' : 'pb-0'
+      }`}
+      style={{ zIndex: index + 10 }}
     >
       <motion.div
         style={{
-          scale,
-          rotate,
-          opacity,
-          top: `calc(-2vh + ${i * 24}px)`,
+          scale: isLast ? 1 : scale,
+          rotate: isLast ? 0 : rotate,
+          opacity: isLast ? 1 : opacity,
+          y: isLast ? 0 : y,
           transformOrigin: 'top center',
         }}
-        className="relative w-full max-w-5xl"
+        className="sticky top-20 sm:top-24 w-full max-w-5xl px-4 sm:px-6"
       >
         <CardContent project={project} />
       </motion.div>
@@ -230,18 +240,10 @@ function StackCard({ project, i, progress, range, targetScale, targetRotate }: S
 }
 
 export default function RecentWorkSection() {
-  const containerRef = useRef<HTMLDivElement>(null);
-
-  // Track scroll progress of the entire stack section
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ['start start', 'end end'],
-  });
-
   return (
-    <section ref={containerRef} className="relative bg-white text-slate-900 pt-16 sm:pt-24 pb-20 sm:pb-32">
+    <section className="relative bg-white text-slate-900 pt-16 sm:pt-24 pb-20 sm:pb-32">
       {/* ── Section Header ── */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-10 sm:mb-16">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-8 sm:mb-12">
         <div className="flex flex-col items-center text-center space-y-3">
           {/* Framer-style Badge: ( 02 ) Featured Projects */}
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-slate-100 border border-slate-200 shadow-xs">
@@ -265,28 +267,14 @@ export default function RecentWorkSection() {
 
       {/* ── Pinned Stacking Deck ── */}
       <div className="relative max-w-7xl mx-auto">
-        {RECENT_PROJECTS.map((project, i) => {
-          // Calculate active transformation ranges for smooth stacking
-          // Card 0 scales down & tilts when Card 1 scrolls over it
-          // Card 1 scales down & tilts when Card 2 scrolls over it
-          // Card 2 remains crisp on top
-          const targetScale = 1 - (RECENT_PROJECTS.length - 1 - i) * 0.06;
-          const targetRotate = i === 0 ? 3.2 : i === 1 ? -2.6 : 0;
-          const start = i * 0.33;
-          const end = start + 0.33;
-
-          return (
-            <StackCard
-              key={project.id}
-              project={project}
-              i={i}
-              progress={scrollYProgress}
-              range={[start, end]}
-              targetScale={targetScale}
-              targetRotate={targetRotate}
-            />
-          );
-        })}
+        {RECENT_PROJECTS.map((project, i) => (
+          <ProjectCard
+            key={project.id}
+            project={project}
+            index={i}
+            total={RECENT_PROJECTS.length}
+          />
+        ))}
       </div>
 
       {/* ── Bottom CTA Link ── */}
