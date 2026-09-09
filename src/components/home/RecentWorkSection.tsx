@@ -234,9 +234,9 @@ export default function RecentWorkSection() {
   });
 
   return (
-    <section ref={containerRef} className="py-20 lg:py-28 relative bg-[#050409] text-white">
-      {/* Background Decorative Lighting */}
-      <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[700px] h-[350px] bg-gradient-to-r from-orange-500/10 via-purple-600/10 to-cyan-500/10 blur-[130px] pointer-events-none" />
+    <section ref={containerRef} className="py-20 lg:py-28 relative bg-white text-slate-900 overflow-hidden">
+      {/* Subtle soft ambient light */}
+      <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[700px] h-[350px] bg-gradient-to-r from-orange-500/5 via-purple-600/5 to-cyan-500/5 blur-[130px] pointer-events-none" />
 
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl relative z-10">
         
@@ -248,12 +248,12 @@ export default function RecentWorkSection() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
-            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/5 border border-white/10 backdrop-blur-md shadow-xs"
+            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-slate-100 border border-slate-200 shadow-xs"
           >
             <span className="font-mono text-xs font-bold text-[#FF4C03]">(</span>
-            <span className="font-mono text-xs font-semibold text-white/70">02</span>
+            <span className="font-mono text-xs font-semibold text-slate-600">02</span>
             <span className="font-mono text-xs font-bold text-[#FF4C03]">)</span>
-            <span className="text-xs font-semibold text-white tracking-wide">Featured Projects</span>
+            <span className="text-xs font-semibold text-slate-800 tracking-wide">Featured Projects</span>
           </motion.div>
 
           {/* Main Headline */}
@@ -262,7 +262,7 @@ export default function RecentWorkSection() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5, delay: 0.1 }}
-            className="text-4xl sm:text-6xl lg:text-7xl font-bold font-display tracking-tight text-white"
+            className="text-4xl sm:text-6xl lg:text-7xl font-bold font-display tracking-tight text-slate-900"
           >
             Our Recent Work
           </motion.h2>
@@ -273,7 +273,7 @@ export default function RecentWorkSection() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5, delay: 0.2 }}
-            className="text-sm sm:text-base lg:text-lg text-white/60 max-w-2xl leading-relaxed"
+            className="text-sm sm:text-base lg:text-lg text-slate-600 max-w-2xl leading-relaxed"
           >
             Our cross-functional teams work together to achieve outstanding portfolios across all the digital channels.
           </motion.p>
@@ -307,10 +307,10 @@ export default function RecentWorkSection() {
         >
           <Link
             href="/work"
-            className="group relative inline-flex items-center gap-3 px-8 py-4 rounded-full bg-white text-black font-bold text-sm shadow-xl transition-all duration-300 hover:scale-105 hover:shadow-[0_10px_35px_rgba(255,255,255,0.25)]"
+            className="group relative inline-flex items-center gap-3 px-8 py-4 rounded-full bg-slate-900 text-white font-bold text-sm shadow-xl transition-all duration-300 hover:scale-105 hover:bg-black hover:shadow-[0_10px_35px_rgba(0,0,0,0.2)]"
           >
             <span>Explore All Works</span>
-            <div className="w-6 h-6 rounded-full bg-black text-white flex items-center justify-center group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform">
+            <div className="w-6 h-6 rounded-full bg-white text-black flex items-center justify-center group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform">
               <ArrowUpRight className="w-4 h-4" />
             </div>
           </Link>
