@@ -208,18 +208,20 @@ function ProjectCard({ project, index, total }: ProjectCardProps) {
   const isLast = index === total - 1;
   const rotateTarget = index % 2 === 0 ? 3.5 : -3.5;
 
-  // 1. Until the next card reaches halfway (0 -> 0.45), current card stays completely straight, full scale & 100% opaque.
-  // 2. When the next card passes halfway (0.45 -> 0.95), current card gradually sinks downward (+50px), tilts, scales down, and fades out into/behind the next card!
-  const scale = useTransform(scrollYProgress, [0, 0.45, 0.95], [1, 1, 0.82]);
-  const rotate = useTransform(scrollYProgress, [0, 0.45, 0.95], [0, 0, rotateTarget]);
-  const opacity = useTransform(scrollYProgress, [0, 0.45, 0.9], [1, 1, 0]);
-  const y = useTransform(scrollYProgress, [0, 0.45, 0.95], [0, 0, 50]);
+  // 1. Until the next card overlays halfway (0 -> 0.4), current card stays completely straight, full scale, 100% opaque and sharp.
+  // 2. When the next card passes halfway (0.4 -> 0.9), current card plunges distinctly DOWNWARDS (+180px), becomes blurry, tilts, shrinks, and gets swallowed underneath the incoming card!
+  const scale = useTransform(scrollYProgress, [0, 0.4, 0.9], [1, 1, 0.86]);
+  const rotate = useTransform(scrollYProgress, [0, 0.4, 0.9], [0, 0, rotateTarget]);
+  const opacity = useTransform(scrollYProgress, [0, 0.4, 0.85], [1, 1, 0]);
+  const y = useTransform(scrollYProgress, [0, 0.4, 0.9], [0, 0, 180]);
+  const blurValue = useTransform(scrollYProgress, [0, 0.4, 0.85], [0, 0, 14]);
+  const filterBlur = useTransform(blurValue, (v) => `blur(${v}px)`);
 
   return (
     <div
       ref={cardRef}
-      className={`min-h-[90vh] sm:min-h-screen relative flex items-start justify-center ${
-        isLast ? 'pb-16' : 'pb-0'
+      className={`min-h-[105vh] sm:min-h-[115vh] relative flex items-start justify-center ${
+        isLast ? 'pb-20' : 'pb-0'
       }`}
       style={{ zIndex: index + 10 }}
     >
@@ -229,6 +231,7 @@ function ProjectCard({ project, index, total }: ProjectCardProps) {
           rotate: isLast ? 0 : rotate,
           opacity: isLast ? 1 : opacity,
           y: isLast ? 0 : y,
+          filter: isLast ? 'none' : filterBlur,
           transformOrigin: 'center center',
         }}
         className="sticky top-20 sm:top-24 w-full max-w-5xl px-4 sm:px-6"
