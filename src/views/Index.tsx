@@ -35,6 +35,7 @@ import { Sparkles as SparklesFx } from "@/components/ui/sparkles";
 import Link from "next/link";
 
 import FinalCTAInquirySection from "@/components/FinalCTAInquirySection";
+import RecentWorkSection from "@/components/home/RecentWorkSection";
 import { MarqueeLogoScroller } from "@/components/ui/marquee-logo-scroller";
 import ClientFeedback from "@/components/ui/testimonial";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -774,6 +775,9 @@ const Index = () => {
             />
           </div>
         </section>
+
+        {/* ══════════ OUR RECENT WORK (HyperFrame Style) ══════════ */}
+        <RecentWorkSection />
 
         {/* ══════════ TESTIMONIALS ══════════ */}
         <section className="py-10 lg:py-16 relative">
