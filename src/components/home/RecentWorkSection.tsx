@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useRef, useState } from 'react';
+import React, { useRef } from 'react';
 import { motion, useScroll, useTransform, MotionValue } from 'framer-motion';
 import Link from 'next/link';
 import { 
@@ -11,8 +11,7 @@ import {
   Globe, 
   Smartphone, 
   Code, 
-  Palette,
-  ExternalLink 
+  Palette 
 } from 'lucide-react';
 
 interface ProjectItem {
@@ -26,6 +25,7 @@ interface ProjectItem {
   centerImage: string;
   bgImage: string;
   link: string;
+  tiltAngle: number;
 }
 
 const RECENT_PROJECTS: ProjectItem[] = [
@@ -46,6 +46,7 @@ const RECENT_PROJECTS: ProjectItem[] = [
     centerImage: 'https://framerusercontent.com/images/1WzrSWN32BKGb2pG6QIWWfpTHPU.png?width=1360&height=1560',
     bgImage: 'https://framerusercontent.com/images/1WzrSWN32BKGb2pG6QIWWfpTHPU.png?width=1360&height=1560',
     link: '/work',
+    tiltAngle: -2.8,
   },
   {
     id: 'securex',
@@ -64,6 +65,7 @@ const RECENT_PROJECTS: ProjectItem[] = [
     centerImage: 'https://framerusercontent.com/images/IORzPl8Blqi7HhFyJt7Jqk0KHPw.png?width=1360&height=2040',
     bgImage: 'https://framerusercontent.com/images/IORzPl8Blqi7HhFyJt7Jqk0KHPw.png?width=1360&height=2040',
     link: '/work',
+    tiltAngle: 3.1,
   },
   {
     id: 'virtualex',
@@ -82,6 +84,7 @@ const RECENT_PROJECTS: ProjectItem[] = [
     centerImage: 'https://framerusercontent.com/images/Qt5wpOPx6fAOvjF2d2ImieYikY.png?width=904&height=1200',
     bgImage: 'https://framerusercontent.com/images/Qt5wpOPx6fAOvjF2d2ImieYikY.png?width=904&height=1200',
     link: '/work',
+    tiltAngle: -2.2,
   },
 ];
 
@@ -96,19 +99,18 @@ interface CardProps {
 
 function StackingCard({ project, index, total, progress, range, targetScale }: CardProps) {
   const containerRef = useRef<HTMLDivElement>(null);
-  const [isHovered, setIsHovered] = useState(false);
 
-  // Smooth scroll scale & rotation transforms as subsequent cards stack over
+  // Card transform when user scrolls down and the NEXT card enters
   const scale = useTransform(progress, range, [1, targetScale]);
-  const rotate = useTransform(progress, range, [0, index % 2 === 0 ? -1.5 : 1.5]);
-  const opacity = useTransform(progress, range, [1, 0.65]);
+  const rotate = useTransform(progress, range, [0, project.tiltAngle]);
+  const opacity = useTransform(progress, range, [1, 0.6]);
 
   return (
     <div
       ref={containerRef}
-      className="sticky top-24 lg:top-28 flex items-center justify-center mb-16 lg:mb-24"
+      className="sticky top-20 lg:top-28 flex items-center justify-center min-h-[540px] lg:min-h-[580px] mb-20 lg:mb-32"
       style={{
-        top: `calc(100px + ${index * 30}px)`,
+        top: `calc(90px + ${index * 35}px)`,
       }}
     >
       <motion.div
@@ -118,28 +120,26 @@ function StackingCard({ project, index, total, progress, range, targetScale }: C
           opacity: index === total - 1 ? 1 : opacity,
           transformOrigin: 'top center',
         }}
-        onMouseEnter={() => setIsHovered(true)}
-        onMouseLeave={() => setIsHovered(false)}
-        className="relative w-full max-w-6xl rounded-[32px] sm:rounded-[44px] overflow-hidden border border-white/20 shadow-[0_30px_90px_-20px_rgba(0,0,0,0.85)] bg-[#0c0b12]"
+        className="relative w-full max-w-6xl rounded-[36px] sm:rounded-[48px] overflow-hidden border border-white/25 shadow-[0_35px_100px_-20px_rgba(0,0,0,0.45)] bg-[#0c0b12] transition-shadow duration-500"
       >
-        {/* ── Blurred Background Image Layer ── */}
+        {/* ── 1. Full Blurred Background Image Layer ── */}
         <div className="absolute inset-0 pointer-events-none overflow-hidden select-none">
           <img
             src={project.bgImage}
             alt=""
-            className="w-full h-full object-cover filter blur-[65px] brightness-[0.7] saturate-[1.45] scale-135 transition-transform duration-700"
+            className="w-full h-full object-cover filter blur-[60px] brightness-[0.78] saturate-[1.4] scale-135"
           />
-          {/* Subtle dark glass tint */}
-          <div className="absolute inset-0 bg-black/35 backdrop-blur-md" />
+          {/* Subtle color overlay */}
+          <div className="absolute inset-0 bg-black/25 backdrop-blur-sm" />
         </div>
 
-        {/* ── Card Content: 3-Column Bento Arrangement ── */}
-        <div className="relative z-10 p-7 sm:p-10 lg:p-12 min-h-[460px] lg:min-h-[520px] grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-center">
+        {/* ── 2. 3-Column Card Layout (Left info, Center photo, Right metadata) ── */}
+        <div className="relative z-10 p-7 sm:p-10 lg:p-14 min-h-[440px] lg:min-h-[500px] grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
           
-          {/* 1. Left Column: Number, Title, Description */}
+          {/* ── Left Column: Number, Title, Description ── */}
           <div className="lg:col-span-4 flex flex-col justify-between h-full space-y-6 lg:space-y-16">
             <div className="space-y-2">
-              <span className="font-mono text-xs sm:text-sm font-semibold tracking-wider text-white/70 block">
+              <span className="font-mono text-xs sm:text-sm font-semibold tracking-wider text-white/80 block">
                 {project.number}
               </span>
               <h3 className="text-3xl sm:text-5xl lg:text-6xl font-bold font-display text-white tracking-tight leading-[1.05]">
@@ -147,27 +147,30 @@ function StackingCard({ project, index, total, progress, range, targetScale }: C
               </h3>
             </div>
 
-            <p className="text-xs sm:text-sm text-white/80 leading-relaxed max-w-xs font-normal">
+            <p className="text-xs sm:text-sm text-white/85 leading-relaxed max-w-xs font-normal">
               {project.description}
             </p>
           </div>
 
-          {/* 2. Center Column: Sharp Rounded Square Showcase Image */}
+          {/* ── Center Column: Rounded Square Showcase Thumbnail ── */}
           <div className="lg:col-span-4 flex justify-center items-center my-2 lg:my-0">
-            <Link href={project.link} className="block relative group/image w-full max-w-[320px] sm:max-w-[340px] aspect-square rounded-[26px] sm:rounded-[32px] overflow-hidden border border-white/30 shadow-[0_15px_45px_rgba(0,0,0,0.6)] cursor-pointer bg-black/40">
+            <Link 
+              href={project.link} 
+              className="block relative group/img w-full max-w-[310px] sm:max-w-[330px] aspect-square rounded-[28px] sm:rounded-[34px] overflow-hidden border border-white/35 shadow-[0_20px_60px_rgba(0,0,0,0.55)] cursor-pointer bg-black/40"
+            >
               <img
                 src={project.centerImage}
                 alt={project.title}
-                className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover/image:scale-105"
+                className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover/img:scale-105"
                 loading="lazy"
               />
-              
-              {/* Glass Glare Overlay */}
-              <div className="absolute inset-0 bg-gradient-to-tr from-white/10 via-transparent to-transparent opacity-0 group-hover/image:opacity-100 transition-opacity duration-500 pointer-events-none" />
 
-              {/* Floating Center Badge on Hover */}
-              <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover/image:opacity-100 transition-opacity duration-300 pointer-events-none">
-                <div className="px-4 py-2 rounded-full bg-black/75 backdrop-blur-md text-white text-xs font-semibold flex items-center gap-1.5 shadow-lg border border-white/20">
+              {/* Glass subtle glare overlay */}
+              <div className="absolute inset-0 bg-gradient-to-tr from-white/10 via-transparent to-transparent opacity-0 group-hover/img:opacity-100 transition-opacity duration-500 pointer-events-none" />
+
+              {/* Hover Badge */}
+              <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover/img:opacity-100 transition-opacity duration-300 pointer-events-none">
+                <div className="px-4 py-2 rounded-full bg-black/80 backdrop-blur-md text-white text-xs font-semibold flex items-center gap-1.5 shadow-xl border border-white/20">
                   <span>View Project</span>
                   <ArrowUpRight className="w-3.5 h-3.5" />
                 </div>
@@ -175,12 +178,12 @@ function StackingCard({ project, index, total, progress, range, targetScale }: C
             </Link>
           </div>
 
-          {/* 3. Right Column: Year, Role, Services Pills */}
+          {/* ── Right Column: Year, Role, Services 2x2 Pills ── */}
           <div className="lg:col-span-4 flex flex-col justify-between h-full space-y-6 lg:space-y-12 lg:pl-6">
             {/* Year & Role */}
             <div className="space-y-4">
               <div>
-                <span className="block text-white/50 text-[11px] font-mono uppercase tracking-wider mb-0.5">
+                <span className="block text-white/60 text-[11px] font-mono uppercase tracking-wider mb-0.5">
                   Year
                 </span>
                 <span className="font-semibold text-white text-sm sm:text-base">
@@ -189,7 +192,7 @@ function StackingCard({ project, index, total, progress, range, targetScale }: C
               </div>
 
               <div>
-                <span className="block text-white/50 text-[11px] font-mono uppercase tracking-wider mb-0.5">
+                <span className="block text-white/60 text-[11px] font-mono uppercase tracking-wider mb-0.5">
                   Role
                 </span>
                 <span className="font-semibold text-white text-sm sm:text-base">
@@ -200,7 +203,7 @@ function StackingCard({ project, index, total, progress, range, targetScale }: C
 
             {/* Services 2x2 Glass Pills */}
             <div className="space-y-2">
-              <span className="block text-white/50 text-[11px] font-mono uppercase tracking-wider">
+              <span className="block text-white/60 text-[11px] font-mono uppercase tracking-wider">
                 Services
               </span>
               <div className="grid grid-cols-2 gap-2">
@@ -209,7 +212,7 @@ function StackingCard({ project, index, total, progress, range, targetScale }: C
                   return (
                     <div
                       key={idx}
-                      className="inline-flex items-center gap-2 px-3 py-2 rounded-full bg-white/10 hover:bg-white/15 border border-white/20 text-white text-[11px] sm:text-xs font-medium backdrop-blur-md transition-colors"
+                      className="inline-flex items-center gap-1.5 px-3 py-2 rounded-full bg-white/10 hover:bg-white/20 border border-white/25 text-white text-[11px] sm:text-xs font-medium backdrop-blur-md transition-all duration-300"
                     >
                       <Icon className="w-3.5 h-3.5 text-white/80 shrink-0" />
                       <span className="truncate">{svc.name}</span>
@@ -234,14 +237,14 @@ export default function RecentWorkSection() {
   });
 
   return (
-    <section ref={containerRef} className="py-20 lg:py-28 relative bg-white text-slate-900 overflow-hidden">
-      {/* Subtle soft ambient light */}
-      <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[700px] h-[350px] bg-gradient-to-r from-orange-500/5 via-purple-600/5 to-cyan-500/5 blur-[130px] pointer-events-none" />
+    <section ref={containerRef} className="py-20 lg:py-32 relative bg-white text-slate-900 overflow-hidden">
+      {/* Soft Ambient Radial Light */}
+      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-gradient-to-r from-orange-500/5 via-purple-600/5 to-cyan-500/5 blur-[140px] pointer-events-none" />
 
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl relative z-10">
         
         {/* ── Section Header ── */}
-        <div className="flex flex-col items-center text-center space-y-4 mb-16 lg:mb-20">
+        <div className="flex flex-col items-center text-center space-y-4 mb-16 lg:mb-24">
           {/* Framer-style Badge: ( 02 ) Featured Projects */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -280,9 +283,9 @@ export default function RecentWorkSection() {
         </div>
 
         {/* ── Stacking Cards Deck ── */}
-        <div className="relative">
+        <div className="relative pb-10">
           {RECENT_PROJECTS.map((project, i) => {
-            const targetScale = 1 - (RECENT_PROJECTS.length - i) * 0.04;
+            const targetScale = 1 - (RECENT_PROJECTS.length - i) * 0.05;
             return (
               <StackingCard
                 key={project.id}
@@ -290,7 +293,7 @@ export default function RecentWorkSection() {
                 index={i}
                 total={RECENT_PROJECTS.length}
                 progress={scrollYProgress}
-                range={[i * 0.25, 1]}
+                range={[i * 0.3, 1]}
                 targetScale={targetScale}
               />
             );
@@ -303,7 +306,7 @@ export default function RecentWorkSection() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="mt-10 lg:mt-16 flex justify-center"
+          className="mt-6 lg:mt-12 flex justify-center"
         >
           <Link
             href="/work"
