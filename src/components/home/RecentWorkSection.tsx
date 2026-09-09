@@ -206,22 +206,25 @@ function ProjectCard({ project, index, total }: ProjectCardProps) {
   });
 
   const isLast = index === total - 1;
-  const rotateTarget = index % 2 === 0 ? 3.5 : -3.5;
+  const rotateTarget = index % 2 === 0 ? 3.8 : -3.8;
 
-  // 1. Until the next card overlays halfway (0 -> 0.4), current card stays completely straight, full scale, 100% opaque and sharp.
-  // 2. When the next card passes halfway (0.4 -> 0.9), current card plunges distinctly DOWNWARDS (+180px), becomes blurry, tilts, shrinks, and gets swallowed underneath the incoming card!
-  const scale = useTransform(scrollYProgress, [0, 0.4, 0.9], [1, 1, 0.86]);
-  const rotate = useTransform(scrollYProgress, [0, 0.4, 0.9], [0, 0, rotateTarget]);
-  const opacity = useTransform(scrollYProgress, [0, 0.4, 0.85], [1, 1, 0]);
-  const y = useTransform(scrollYProgress, [0, 0.4, 0.9], [0, 0, 180]);
-  const blurValue = useTransform(scrollYProgress, [0, 0.4, 0.85], [0, 0, 14]);
-  const filterBlur = useTransform(blurValue, (v) => `blur(${v}px)`);
+  // 1. Until the next card overlays halfway (0 -> 0.35): stays completely straight, full scale & full color.
+  // 2. When the next card passes halfway (0.35 -> 0.9):
+  //    - scales down (1 -> 0.88)
+  //    - tilts gradually (0 -> 3.8deg)
+  //    - turns whitish / fades into background (whiteOverlay: 0 -> 0.55, opacity: 1 -> 0.4)
+  //    - recedes slightly up/back (y: 0 -> -25px)
+  const scale = useTransform(scrollYProgress, [0, 0.35, 0.9], [1, 1, 0.88]);
+  const rotate = useTransform(scrollYProgress, [0, 0.35, 0.9], [0, 0, rotateTarget]);
+  const opacity = useTransform(scrollYProgress, [0, 0.35, 0.9], [1, 1, 0.4]);
+  const y = useTransform(scrollYProgress, [0, 0.35, 0.9], [0, 0, -25]);
+  const whiteOverlay = useTransform(scrollYProgress, [0, 0.35, 0.9], [0, 0, 0.55]);
 
   return (
     <div
       ref={cardRef}
-      className={`min-h-[105vh] sm:min-h-[115vh] relative flex items-start justify-center ${
-        isLast ? 'pb-20' : 'pb-0'
+      className={`min-h-[100vh] sm:min-h-[110vh] relative flex items-start justify-center ${
+        isLast ? 'pb-24' : 'pb-0'
       }`}
       style={{ zIndex: index + 10 }}
     >
@@ -231,12 +234,118 @@ function ProjectCard({ project, index, total }: ProjectCardProps) {
           rotate: isLast ? 0 : rotate,
           opacity: isLast ? 1 : opacity,
           y: isLast ? 0 : y,
-          filter: isLast ? 'none' : filterBlur,
           transformOrigin: 'center center',
         }}
         className="sticky top-20 sm:top-24 w-full max-w-5xl px-4 sm:px-6"
       >
-        <CardContent project={project} />
+        <div className="relative w-full rounded-[32px] sm:rounded-[44px] overflow-hidden border border-white/25 shadow-[0_30px_90px_-20px_rgba(0,0,0,0.5)] p-6 sm:p-8 lg:p-12 min-h-[440px] sm:min-h-[480px] lg:min-h-[500px] flex flex-col justify-between">
+          {/* ── 1. Blurred Background Artwork ── */}
+          <div className="absolute inset-0 pointer-events-none overflow-hidden select-none">
+            <img
+              src={project.bgImage}
+              alt=""
+              className="w-full h-full object-cover filter blur-[60px] sm:blur-[70px] brightness-[0.85] saturate-[1.4] scale-135"
+            />
+            {/* Dark overlay for contrast */}
+            <div className="absolute inset-0 bg-black/25" />
+          </div>
+
+          {/* ── Dynamic White Overlay (turns white/faded as next card covers it) ── */}
+          {!isLast && (
+            <motion.div
+              style={{ opacity: whiteOverlay }}
+              className="absolute inset-0 bg-white pointer-events-none z-20"
+            />
+          )}
+
+          {/* ── 2. 3-Column Card Layout ── */}
+          <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-center h-full">
+            {/* Left Column: Number, Title, Description */}
+            <div className="lg:col-span-4 flex flex-col justify-between h-full space-y-6 lg:space-y-16">
+              <div className="space-y-1.5">
+                <span className="font-mono text-xs sm:text-sm font-semibold tracking-wider text-white/80 block">
+                  {project.number}
+                </span>
+                <h3 className="text-3xl sm:text-5xl lg:text-6xl font-bold font-display text-white tracking-tight leading-[1.05]">
+                  {project.title}
+                </h3>
+              </div>
+
+              <p className="text-xs sm:text-sm text-white/90 leading-relaxed max-w-[280px] font-normal">
+                {project.description}
+              </p>
+            </div>
+
+            {/* Center Column: Rounded Square Thumbnail */}
+            <div className="lg:col-span-4 flex justify-center items-center my-2 lg:my-0">
+              <Link 
+                href={project.link} 
+                className="group/thumb block relative w-full max-w-[240px] sm:max-w-[290px] lg:max-w-[320px] aspect-square rounded-[24px] sm:rounded-[32px] overflow-hidden border border-white/35 shadow-[0_20px_50px_rgba(0,0,0,0.55)] cursor-pointer bg-black/40 transition-transform duration-500 hover:scale-[1.03]"
+              >
+                <img
+                  src={project.centerImage}
+                  alt={project.title}
+                  className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover/thumb:scale-108"
+                  loading="lazy"
+                />
+
+                {/* Hover Badge */}
+                <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover/thumb:opacity-100 transition-opacity duration-300 bg-black/30 backdrop-blur-xs">
+                  <div className="px-4 py-2 rounded-full bg-black/85 backdrop-blur-md text-white text-xs font-semibold flex items-center gap-1.5 shadow-2xl border border-white/25">
+                    <span>View Project</span>
+                    <ArrowUpRight className="w-3.5 h-3.5" />
+                  </div>
+                </div>
+              </Link>
+            </div>
+
+            {/* Right Column: Year, Role, Services 2x2 Pills */}
+            <div className="lg:col-span-4 flex flex-col justify-between h-full space-y-6 lg:space-y-12 lg:pl-6">
+              {/* Year & Role */}
+              <div className="space-y-3 sm:space-y-4">
+                <div>
+                  <span className="block text-white/70 text-[11px] sm:text-xs font-mono uppercase tracking-wider mb-0.5">
+                    Year
+                  </span>
+                  <span className="font-semibold text-white text-sm sm:text-base">
+                    {project.year}
+                  </span>
+                </div>
+
+                <div>
+                  <span className="block text-white/70 text-[11px] sm:text-xs font-mono uppercase tracking-wider mb-0.5">
+                    Role
+                  </span>
+                  <span className="font-semibold text-white text-sm sm:text-base">
+                    {project.role}
+                  </span>
+                </div>
+              </div>
+
+              {/* Services 2x2 Glass Pills */}
+              <div className="space-y-2">
+                <span className="block text-white/70 text-[11px] sm:text-xs font-mono uppercase tracking-wider">
+                  Services
+                </span>
+                <div className="grid grid-cols-2 gap-2">
+                  {project.services.map((svc, idx) => {
+                    const Icon = svc.icon;
+                    return (
+                      <div
+                        key={idx}
+                        className="inline-flex items-center gap-1.5 px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-full bg-white/10 hover:bg-white/20 border border-white/25 text-white text-[11px] sm:text-xs font-medium backdrop-blur-md transition-all duration-300"
+                      >
+                        <Icon className="w-3.5 h-3.5 text-white/80 shrink-0" />
+                        <span className="truncate">{svc.name}</span>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
       </motion.div>
     </div>
   );
