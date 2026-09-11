@@ -9,11 +9,10 @@ import {
   Search, Inbox, Send, Edit, Trash2, Mail, CornerUpLeft,
   Star, Paperclip, Clock, X, File as FileIcon, Image as ImageIcon,
   RefreshCw, ChevronDown, Check, Shield, ArrowLeft, MoreVertical,
-  Reply, Forward, Archive, AlertOctagon, Sun, Moon, Sparkles
+  Reply, Forward, Archive, AlertOctagon, Sparkles
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { toast } from 'sonner';
-import { useTheme } from 'next-themes';
 
 type Attachment = { name: string; size: number; type: string };
 
@@ -41,7 +40,6 @@ const AVAILABLE_MAILBOXES = [
 ];
 
 export default function StandaloneWebmailPage() {
-  const { theme, setTheme } = useTheme();
   const [currentMailbox, setCurrentMailbox] = useState('atik@astropixel.tech');
   const [activeFolder, setActiveFolder] = useState('inbox');
   const [selectedThreadId, setSelectedThreadId] = useState<string | null>(null);
@@ -283,10 +281,10 @@ export default function StandaloneWebmailPage() {
   };
 
   return (
-    <div className="flex flex-col h-screen w-screen overflow-hidden bg-slate-900 text-slate-100 font-sans antialiased select-none">
+    <div className="flex flex-col h-screen w-screen overflow-hidden bg-slate-50 text-slate-900 font-sans antialiased select-none">
       
       {/* ════════════════════ TOP NAVBAR ════════════════════ */}
-      <header className="h-16 px-4 sm:px-6 bg-slate-950/80 backdrop-blur-md border-b border-slate-800 flex items-center justify-between gap-4 shrink-0 z-30">
+      <header className="h-16 px-4 sm:px-6 bg-white/95 backdrop-blur-md border-b border-slate-200/90 shadow-xs flex items-center justify-between gap-4 shrink-0 z-30">
         
         {/* Brand & Subdomain Info */}
         <div className="flex items-center gap-3">
@@ -296,10 +294,10 @@ export default function StandaloneWebmailPage() {
             </div>
             <div>
               <div className="flex items-center gap-1.5">
-                <span className="font-bold text-base tracking-tight text-white font-display">AstroPixel</span>
-                <span className="text-[11px] font-semibold uppercase tracking-wider px-1.5 py-0.5 rounded bg-purple-500/20 text-purple-300 border border-purple-500/30">Mail</span>
+                <span className="font-bold text-base tracking-tight text-slate-900 font-display">AstroPixel</span>
+                <span className="text-[11px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded bg-purple-100 text-purple-700 border border-purple-200">Mail</span>
               </div>
-              <p className="text-[11px] text-slate-400 font-mono">mail.astropixel.tech</p>
+              <p className="text-[11px] text-slate-500 font-mono">mail.astropixel.tech</p>
             </div>
           </Link>
         </div>
@@ -313,12 +311,12 @@ export default function StandaloneWebmailPage() {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search emails, senders, keywords..."
-              className="w-full h-10 pl-10 pr-4 rounded-xl bg-slate-900/90 border-slate-800 text-slate-200 placeholder-slate-500 text-xs sm:text-sm focus:border-purple-500 focus:ring-1 focus:ring-purple-500"
+              className="w-full h-10 pl-10 pr-4 rounded-xl bg-slate-100/90 border-slate-200 text-slate-800 placeholder-slate-400 text-xs sm:text-sm focus:bg-white focus:border-purple-600 focus:ring-1 focus:ring-purple-600 transition-all shadow-xs"
             />
             {searchQuery && (
               <button
                 onClick={() => setSearchQuery('')}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-200"
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-700"
               >
                 <X className="w-3.5 h-3.5" />
               </button>
@@ -333,15 +331,15 @@ export default function StandaloneWebmailPage() {
           <div className="relative">
             <button
               onClick={() => setIsMailboxDropdownOpen(!isMailboxDropdownOpen)}
-              className="flex items-center gap-2 h-10 px-3.5 rounded-xl bg-slate-900 hover:bg-slate-800/80 border border-slate-800 text-xs sm:text-sm font-medium text-slate-200 transition-colors"
+              className="flex items-center gap-2 h-10 px-3.5 rounded-xl bg-slate-100 hover:bg-slate-200/70 border border-slate-200 text-xs sm:text-sm font-medium text-slate-800 transition-colors shadow-xs"
             >
-              <div className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-              <span className="max-w-[160px] sm:max-w-[200px] truncate">{currentMailbox}</span>
-              <ChevronDown className="w-3.5 h-3.5 text-slate-400" />
+              <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+              <span className="max-w-[160px] sm:max-w-[200px] truncate font-semibold text-slate-800">{currentMailbox}</span>
+              <ChevronDown className="w-3.5 h-3.5 text-slate-500" />
             </button>
 
             {isMailboxDropdownOpen && (
-              <div className="absolute right-0 mt-2 w-72 rounded-2xl bg-slate-900 border border-slate-800 p-2 shadow-2xl z-50">
+              <div className="absolute right-0 mt-2 w-72 rounded-2xl bg-white border border-slate-200 p-2 shadow-2xl z-50 animate-in fade-in zoom-in-95 duration-150">
                 <p className="text-[11px] font-bold uppercase tracking-wider text-slate-400 px-3 py-1.5">Switch Mailbox</p>
                 {AVAILABLE_MAILBOXES.map((m) => (
                   <button
@@ -352,17 +350,17 @@ export default function StandaloneWebmailPage() {
                       toast.success(`Switched to ${m.address}`);
                     }}
                     className={cn(
-                      'w-full flex items-center justify-between px-3 py-2 rounded-xl text-left text-xs transition-colors',
+                      'w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-left text-xs transition-colors',
                       currentMailbox === m.address
-                        ? 'bg-purple-600/20 text-purple-300 font-semibold border border-purple-500/30'
-                        : 'text-slate-300 hover:bg-slate-800'
+                        ? 'bg-purple-50 text-purple-700 font-bold border border-purple-200'
+                        : 'text-slate-700 hover:bg-slate-50'
                     )}
                   >
                     <div>
-                      <p className="font-medium text-white">{m.address}</p>
-                      <p className="text-[11px] text-slate-400">{m.name}</p>
+                      <p className="font-bold text-slate-900">{m.address}</p>
+                      <p className="text-[11px] text-slate-500">{m.name}</p>
                     </div>
-                    {currentMailbox === m.address && <Check className="w-4 h-4 text-purple-400 shrink-0" />}
+                    {currentMailbox === m.address && <Check className="w-4 h-4 text-purple-600 shrink-0" />}
                   </button>
                 ))}
               </div>
@@ -378,16 +376,16 @@ export default function StandaloneWebmailPage() {
               toast.success('Mailbox synced');
             }}
             disabled={isLoading}
-            className="h-10 w-10 text-slate-400 hover:text-white hover:bg-slate-800 rounded-xl"
+            className="h-10 w-10 text-slate-500 hover:text-slate-900 hover:bg-slate-100 rounded-xl"
             title="Refresh inbox"
           >
-            <RefreshCw className={cn('w-4 h-4', isLoading && 'animate-spin text-purple-400')} />
+            <RefreshCw className={cn('w-4 h-4', isLoading && 'animate-spin text-purple-600')} />
           </Button>
 
           {/* Admin Dashboard Back Link */}
-          <Button asChild size="sm" variant="outline" className="hidden sm:inline-flex border-slate-800 bg-slate-900 hover:bg-slate-800 text-slate-300 hover:text-white rounded-xl h-10 px-3 text-xs">
+          <Button asChild size="sm" variant="outline" className="hidden sm:inline-flex border-slate-200 bg-white hover:bg-slate-50 text-slate-700 hover:text-slate-900 rounded-xl h-10 px-3.5 text-xs shadow-xs">
             <Link href="/admin">
-              <Shield className="w-3.5 h-3.5 mr-1.5 text-purple-400" />
+              <Shield className="w-3.5 h-3.5 mr-1.5 text-purple-600" />
               Admin
             </Link>
           </Button>
@@ -399,14 +397,14 @@ export default function StandaloneWebmailPage() {
       <div className="flex flex-1 overflow-hidden relative">
 
         {/* ── 1. LEFT SIDEBAR: FOLDERS ── */}
-        <aside className="w-64 border-r border-slate-800/80 bg-slate-950/50 flex flex-col shrink-0 hidden md:flex">
+        <aside className="w-64 border-r border-slate-200/90 bg-white flex flex-col shrink-0 hidden md:flex">
           <div className="p-4">
             <Button
               onClick={() => {
                 setIsComposing(true);
                 setSelectedThreadId(null);
               }}
-              className="w-full h-12 rounded-xl gap-2.5 bg-gradient-to-r from-purple-600 via-indigo-600 to-blue-600 hover:from-purple-500 hover:to-blue-500 text-white font-semibold text-sm shadow-lg shadow-purple-600/20 transition-all cursor-pointer"
+              className="w-full h-12 rounded-xl gap-2.5 bg-gradient-to-r from-purple-600 via-indigo-600 to-blue-600 hover:from-purple-500 hover:to-blue-500 text-white font-semibold text-sm shadow-md shadow-purple-600/20 transition-all cursor-pointer"
             >
               <Edit className="w-4 h-4" />
               <span>Compose Email</span>
@@ -422,20 +420,23 @@ export default function StandaloneWebmailPage() {
                 className={cn(
                   'w-full flex items-center justify-between px-3.5 py-2.5 text-xs sm:text-sm rounded-xl transition-all duration-200 group font-medium',
                   activeFolder === f.id && !isComposing
-                    ? 'bg-purple-600/20 text-purple-300 font-semibold border border-purple-500/30'
-                    : 'text-slate-400 hover:bg-slate-900 hover:text-slate-200'
+                    ? 'bg-purple-50 text-purple-700 font-bold border border-purple-200/80 shadow-xs'
+                    : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'
                 )}
               >
                 <div className="flex items-center gap-3">
-                  <f.icon className="w-4 h-4 text-slate-400 group-hover:text-purple-400 transition-colors" />
+                  <f.icon className={cn(
+                    'w-4 h-4 transition-colors',
+                    activeFolder === f.id && !isComposing ? 'text-purple-600' : 'text-slate-400 group-hover:text-slate-700'
+                  )} />
                   <span>{f.label}</span>
                 </div>
                 {f.count > 0 && (
                   <span className={cn(
                     'px-2 py-0.5 rounded-full text-[11px] font-bold',
                     activeFolder === f.id && !isComposing
-                      ? 'bg-purple-500 text-white shadow-xs'
-                      : 'bg-slate-800 text-slate-300'
+                      ? 'bg-purple-600 text-white shadow-xs'
+                      : 'bg-slate-100 text-slate-600'
                   )}>
                     {f.count}
                   </span>
@@ -445,48 +446,48 @@ export default function StandaloneWebmailPage() {
           </div>
 
           {/* Storage Meter */}
-          <div className="p-4 border-t border-slate-800/80 text-[11px] text-slate-500 space-y-2">
+          <div className="p-4 border-t border-slate-200/90 text-[11px] text-slate-500 space-y-2 bg-slate-50/50">
             <div className="flex justify-between">
-              <span>Cloud Storage</span>
-              <span className="font-semibold text-slate-400">1.2 GB / 25 GB</span>
+              <span className="font-medium">Cloud Storage</span>
+              <span className="font-semibold text-slate-700">1.2 GB / 25 GB</span>
             </div>
-            <div className="w-full h-1.5 rounded-full bg-slate-800 overflow-hidden">
-              <div className="h-full bg-gradient-to-r from-purple-500 to-indigo-500 w-[5%]" />
+            <div className="w-full h-1.5 rounded-full bg-slate-200 overflow-hidden">
+              <div className="h-full bg-gradient-to-r from-purple-600 to-indigo-600 w-[5%]" />
             </div>
           </div>
         </aside>
 
         {/* ── 2. MIDDLE PANE: THREAD LIST ── */}
         <section className={cn(
-          'w-full md:w-96 lg:w-[420px] border-r border-slate-800/80 bg-slate-900/60 flex flex-col shrink-0 overflow-hidden',
+          'w-full md:w-96 lg:w-[420px] border-r border-slate-200/90 bg-white flex flex-col shrink-0 overflow-hidden',
           (selectedThreadId || isComposing) ? 'hidden md:flex' : 'flex'
         )}>
           {/* Thread list header */}
-          <div className="p-4 border-b border-slate-800/80 bg-slate-950/40 flex items-center justify-between">
+          <div className="p-4 border-b border-slate-200/90 bg-slate-50/80 flex items-center justify-between">
             <div>
-              <h3 className="font-bold text-base text-white capitalize">{activeFolder}</h3>
-              <p className="text-xs text-slate-400">{filteredThreads.length} conversation{filteredThreads.length !== 1 ? 's' : ''}</p>
+              <h3 className="font-bold text-base text-slate-900 capitalize">{activeFolder}</h3>
+              <p className="text-xs text-slate-500 font-medium">{filteredThreads.length} conversation{filteredThreads.length !== 1 ? 's' : ''}</p>
             </div>
             <Button
               size="sm"
               onClick={() => { setIsComposing(true); setSelectedThreadId(null); }}
-              className="md:hidden bg-purple-600 text-white rounded-lg text-xs"
+              className="md:hidden bg-purple-600 text-white rounded-lg text-xs font-semibold shadow-sm"
             >
               <Edit className="w-3.5 h-3.5 mr-1" /> Compose
             </Button>
           </div>
 
           {/* Thread List Items */}
-          <div className="flex-1 overflow-y-auto divide-y divide-slate-800/60">
+          <div className="flex-1 overflow-y-auto divide-y divide-slate-100">
             {isLoading && emails.length === 0 ? (
-              <div className="p-12 text-center text-slate-500 space-y-3">
-                <RefreshCw className="w-6 h-6 animate-spin mx-auto text-purple-400" />
-                <p className="text-xs">Loading emails for {currentMailbox}...</p>
+              <div className="p-12 text-center text-slate-400 space-y-3">
+                <RefreshCw className="w-6 h-6 animate-spin mx-auto text-purple-600" />
+                <p className="text-xs font-medium">Loading emails for {currentMailbox}...</p>
               </div>
             ) : filteredThreads.length === 0 ? (
-              <div className="p-12 text-center text-slate-500 space-y-3">
-                <Inbox className="w-8 h-8 mx-auto text-slate-600" />
-                <p className="text-sm font-medium text-slate-400">No emails in {activeFolder}</p>
+              <div className="p-12 text-center text-slate-400 space-y-3">
+                <Inbox className="w-8 h-8 mx-auto text-slate-300" />
+                <p className="text-sm font-bold text-slate-700">No emails in {activeFolder}</p>
                 <p className="text-xs text-slate-500 max-w-xs mx-auto">Emails sent to {currentMailbox} will appear here instantly.</p>
               </div>
             ) : (
@@ -497,24 +498,26 @@ export default function StandaloneWebmailPage() {
                     key={thread.id}
                     onClick={() => handleSelectThread(thread.id)}
                     className={cn(
-                      'p-4 cursor-pointer transition-all duration-200 relative hover:bg-slate-800/50',
-                      isSelected ? 'bg-purple-950/30 border-l-4 border-l-purple-500' : '',
-                      thread.unread ? 'bg-slate-800/25' : ''
+                      'p-4 cursor-pointer transition-all duration-200 relative border-l-4',
+                      isSelected
+                        ? 'bg-purple-50/80 border-l-purple-600'
+                        : 'border-l-transparent hover:bg-slate-50/80',
+                      thread.unread ? 'bg-purple-50/30' : ''
                     )}
                   >
                     {/* Unread dot */}
                     {thread.unread && (
-                      <span className="absolute top-4 left-1.5 w-2 h-2 rounded-full bg-purple-400 shadow-xs" />
+                      <span className="absolute top-4 left-1.5 w-2 h-2 rounded-full bg-purple-600 shadow-xs" />
                     )}
 
-                    <div className="flex items-start justify-between gap-2 mb-1.5">
+                    <div className="flex items-start justify-between gap-2 mb-1">
                       <div className="flex items-center gap-2.5 truncate">
-                        <div className="w-7 h-7 rounded-lg bg-gradient-to-tr from-purple-800 to-indigo-700 text-white text-xs font-bold flex items-center justify-center shrink-0">
+                        <div className="w-7 h-7 rounded-lg bg-gradient-to-tr from-purple-100 to-indigo-100 text-purple-700 text-xs font-bold flex items-center justify-center shrink-0 border border-purple-200">
                           {thread.initials}
                         </div>
                         <span className={cn(
                           'text-xs sm:text-sm truncate',
-                          thread.unread ? 'font-bold text-white' : 'font-medium text-slate-300'
+                          thread.unread ? 'font-bold text-slate-900' : 'font-semibold text-slate-700'
                         )}>
                           {thread.from}
                         </span>
@@ -523,7 +526,7 @@ export default function StandaloneWebmailPage() {
                         <span className="text-[11px] text-slate-400 font-mono">{thread.time}</span>
                         <button
                           onClick={(e) => toggleStar(thread.id, e)}
-                          className={cn('p-1 rounded hover:bg-slate-700/50', thread.starred ? 'text-amber-400' : 'text-slate-500')}
+                          className={cn('p-1 rounded hover:bg-slate-200/50', thread.starred ? 'text-amber-500' : 'text-slate-300 hover:text-slate-500')}
                         >
                           <Star className={cn('w-3.5 h-3.5', thread.starred && 'fill-current')} />
                         </button>
@@ -532,17 +535,17 @@ export default function StandaloneWebmailPage() {
 
                     <h4 className={cn(
                       'text-xs sm:text-sm truncate mb-1',
-                      thread.unread ? 'font-bold text-white' : 'font-medium text-slate-200'
+                      thread.unread ? 'font-bold text-slate-900' : 'font-semibold text-slate-800'
                     )}>
                       {thread.subject}
                     </h4>
 
-                    <p className="text-xs text-slate-400 line-clamp-2 leading-relaxed">
+                    <p className="text-xs text-slate-500 line-clamp-2 leading-relaxed font-normal">
                       {thread.preview}
                     </p>
 
                     {thread.attachments && thread.attachments.length > 0 && (
-                      <div className="mt-2 flex items-center gap-1 text-[11px] text-purple-400 font-medium">
+                      <div className="mt-2 flex items-center gap-1 text-[11px] text-purple-600 font-medium">
                         <Paperclip className="w-3 h-3" />
                         <span>{thread.attachments.length} attachment{thread.attachments.length > 1 ? 's' : ''}</span>
                       </div>
@@ -556,47 +559,47 @@ export default function StandaloneWebmailPage() {
 
         {/* ── 3. RIGHT PANE: EMAIL VIEWER OR COMPOSE ── */}
         <main className={cn(
-          'flex-1 bg-slate-950/40 flex flex-col overflow-hidden',
+          'flex-1 bg-slate-50/60 flex flex-col overflow-hidden',
           (!selectedThreadId && !isComposing) ? 'hidden md:flex items-center justify-center' : 'flex'
         )}>
           
           {/* COMPOSE VIEW */}
           {isComposing ? (
             <div className="flex-1 flex flex-col p-6 overflow-y-auto">
-              <div className="max-w-3xl w-full mx-auto bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-2xl space-y-4">
-                <div className="flex items-center justify-between pb-3 border-b border-slate-800">
-                  <h3 className="font-bold text-lg text-white flex items-center gap-2">
-                    <Edit className="w-4 h-4 text-purple-400" />
+              <div className="max-w-3xl w-full mx-auto bg-white border border-slate-200 rounded-2xl p-6 sm:p-8 shadow-xl space-y-5">
+                <div className="flex items-center justify-between pb-3 border-b border-slate-100">
+                  <h3 className="font-bold text-lg text-slate-900 flex items-center gap-2 font-display">
+                    <Edit className="w-4 h-4 text-purple-600" />
                     New Message
                   </h3>
-                  <button onClick={() => setIsComposing(false)} className="p-1 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800">
+                  <button onClick={() => setIsComposing(false)} className="p-1 rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-100">
                     <X className="w-5 h-5" />
                   </button>
                 </div>
 
-                <div className="space-y-3">
-                  <div className="flex items-center gap-2">
-                    <span className="text-xs font-bold text-slate-400 w-16 uppercase">From:</span>
-                    <span className="text-xs font-mono text-purple-300 px-3 py-1.5 bg-slate-800 rounded-lg">{currentMailbox}</span>
+                <div className="space-y-3.5">
+                  <div className="flex items-center gap-3">
+                    <span className="text-xs font-bold text-slate-500 w-16 uppercase">From:</span>
+                    <span className="text-xs font-mono font-bold text-purple-700 px-3 py-1.5 bg-purple-50 rounded-lg border border-purple-200">{currentMailbox}</span>
                   </div>
 
-                  <div className="flex items-center gap-2">
-                    <span className="text-xs font-bold text-slate-400 w-16 uppercase">To:</span>
+                  <div className="flex items-center gap-3">
+                    <span className="text-xs font-bold text-slate-500 w-16 uppercase">To:</span>
                     <Input
                       value={composeTo}
                       onChange={(e) => setComposeTo(e.target.value)}
                       placeholder="client@company.com"
-                      className="bg-slate-800/80 border-slate-700 text-white text-xs sm:text-sm h-10"
+                      className="bg-slate-50 border-slate-200 text-slate-900 text-xs sm:text-sm h-11 rounded-xl focus:bg-white focus:border-purple-600"
                     />
                   </div>
 
-                  <div className="flex items-center gap-2">
-                    <span className="text-xs font-bold text-slate-400 w-16 uppercase">Subject:</span>
+                  <div className="flex items-center gap-3">
+                    <span className="text-xs font-bold text-slate-500 w-16 uppercase">Subject:</span>
                     <Input
                       value={composeSubject}
                       onChange={(e) => setComposeSubject(e.target.value)}
                       placeholder="Project Proposal / Inquiry Response"
-                      className="bg-slate-800/80 border-slate-700 text-white text-xs sm:text-sm h-10"
+                      className="bg-slate-50 border-slate-200 text-slate-900 text-xs sm:text-sm h-11 rounded-xl focus:bg-white focus:border-purple-600"
                     />
                   </div>
 
@@ -605,13 +608,13 @@ export default function StandaloneWebmailPage() {
                       rows={10}
                       value={composeBody}
                       onChange={(e) => setComposeBody(e.target.value)}
-                      placeholder="Write your email here..."
-                      className="w-full bg-slate-800/80 border-slate-700 text-white text-xs sm:text-sm resize-none p-4 rounded-xl leading-relaxed"
+                      placeholder="Write your email message here..."
+                      className="w-full bg-slate-50 border-slate-200 text-slate-900 text-xs sm:text-sm resize-none p-4 rounded-xl leading-relaxed focus:bg-white focus:border-purple-600"
                     />
                   </div>
                 </div>
 
-                <div className="flex items-center justify-between pt-3 border-t border-slate-800">
+                <div className="flex items-center justify-between pt-3 border-t border-slate-100">
                   <div className="flex items-center gap-2">
                     <input
                       type="file"
@@ -625,27 +628,27 @@ export default function StandaloneWebmailPage() {
                       variant="outline"
                       size="sm"
                       onClick={() => fileInputRef.current?.click()}
-                      className="border-slate-700 bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs gap-1.5"
+                      className="border-slate-200 bg-white hover:bg-slate-50 text-slate-700 text-xs gap-1.5 rounded-xl h-10 shadow-xs"
                     >
                       <Paperclip className="w-3.5 h-3.5" /> Attach
                     </Button>
                     {attachments.length > 0 && (
-                      <span className="text-xs text-purple-400 font-medium">{attachments.length} attached</span>
+                      <span className="text-xs text-purple-600 font-medium">{attachments.length} file(s) attached</span>
                     )}
                   </div>
 
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-2.5">
                     <Button
                       variant="ghost"
                       size="sm"
                       onClick={() => setIsComposing(false)}
-                      className="text-slate-400 hover:text-white"
+                      className="text-slate-500 hover:text-slate-900 rounded-xl"
                     >
                       Discard
                     </Button>
                     <Button
                       onClick={handleSendCompose}
-                      className="bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white font-semibold text-xs sm:text-sm px-5 h-10 rounded-xl gap-2 shadow-lg shadow-purple-600/20"
+                      className="bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white font-semibold text-xs sm:text-sm px-6 h-10 rounded-xl gap-2 shadow-md shadow-purple-600/20 cursor-pointer"
                     >
                       <Send className="w-4 h-4" /> Send Email
                     </Button>
@@ -655,14 +658,14 @@ export default function StandaloneWebmailPage() {
             </div>
           ) : selectedThread ? (
             /* THREAD DETAIL READER VIEW */
-            <div className="flex-1 flex flex-col h-full overflow-hidden">
+            <div className="flex-1 flex flex-col h-full overflow-hidden bg-slate-50/50">
               
               {/* Header Action Bar */}
-              <div className="h-14 px-6 border-b border-slate-800/80 bg-slate-950/40 flex items-center justify-between shrink-0">
+              <div className="h-14 px-6 border-b border-slate-200/90 bg-white flex items-center justify-between shrink-0 shadow-xs">
                 <div className="flex items-center gap-2">
                   <button
                     onClick={() => setSelectedThreadId(null)}
-                    className="md:hidden p-2 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800"
+                    className="md:hidden p-2 rounded-lg text-slate-500 hover:text-slate-900 hover:bg-slate-100"
                   >
                     <ArrowLeft className="w-4 h-4" />
                   </button>
@@ -670,7 +673,7 @@ export default function StandaloneWebmailPage() {
                     size="icon"
                     variant="ghost"
                     onClick={() => toggleStar(selectedThread.id)}
-                    className={cn('h-9 w-9 rounded-lg', selectedThread.starred ? 'text-amber-400' : 'text-slate-400 hover:text-white')}
+                    className={cn('h-9 w-9 rounded-lg', selectedThread.starred ? 'text-amber-500' : 'text-slate-400 hover:text-slate-800')}
                   >
                     <Star className={cn('w-4 h-4', selectedThread.starred && 'fill-current')} />
                   </Button>
@@ -678,7 +681,7 @@ export default function StandaloneWebmailPage() {
                     size="icon"
                     variant="ghost"
                     onClick={handleDelete}
-                    className="h-9 w-9 rounded-lg text-slate-400 hover:text-red-400 hover:bg-red-500/10"
+                    className="h-9 w-9 rounded-lg text-slate-400 hover:text-red-600 hover:bg-red-50"
                     title="Delete email"
                   >
                     <Trash2 className="w-4 h-4" />
@@ -692,7 +695,7 @@ export default function StandaloneWebmailPage() {
                     onClick={() => {
                       setReplyText(`\n\n--- On ${selectedThread.time}, ${selectedThread.from} wrote:\n> ${selectedThread.body}`);
                     }}
-                    className="border-slate-800 bg-slate-900 hover:bg-slate-800 text-slate-300 text-xs gap-1.5"
+                    className="border-slate-200 bg-white hover:bg-slate-50 text-slate-700 text-xs gap-1.5 rounded-xl h-9 shadow-xs"
                   >
                     <Reply className="w-3.5 h-3.5" /> Reply
                   </Button>
@@ -703,50 +706,50 @@ export default function StandaloneWebmailPage() {
               <div className="flex-1 overflow-y-auto p-6 lg:p-8 space-y-6">
                 
                 {/* Subject Title */}
-                <h2 className="text-xl sm:text-2xl font-bold text-white tracking-tight font-display">
+                <h2 className="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight font-display">
                   {selectedThread.subject}
                 </h2>
 
                 {/* Sender Header Card */}
-                <div className="p-4 rounded-xl bg-slate-900/90 border border-slate-800 flex items-center justify-between gap-4">
+                <div className="p-4 rounded-xl bg-white border border-slate-200/90 shadow-xs flex items-center justify-between gap-4">
                   <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-purple-700 to-indigo-600 text-white font-bold text-sm flex items-center justify-center shadow-md">
+                    <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-purple-100 to-indigo-100 text-purple-700 font-bold text-sm flex items-center justify-center border border-purple-200 shadow-xs">
                       {selectedThread.initials}
                     </div>
                     <div>
                       <div className="flex items-center gap-2">
-                        <p className="font-bold text-white text-sm">{selectedThread.from}</p>
-                        <span className="text-xs text-slate-400 font-mono">&lt;{selectedThread.fromEmail}&gt;</span>
+                        <p className="font-bold text-slate-900 text-sm">{selectedThread.from}</p>
+                        <span className="text-xs text-slate-500 font-mono">&lt;{selectedThread.fromEmail}&gt;</span>
                       </div>
-                      <p className="text-[11px] text-slate-500">To: {currentMailbox}</p>
+                      <p className="text-[11px] text-slate-400">To: {currentMailbox}</p>
                     </div>
                   </div>
-                  <span className="text-xs text-slate-400 font-mono shrink-0">{selectedThread.time}</span>
+                  <span className="text-xs text-slate-500 font-mono shrink-0">{selectedThread.time}</span>
                 </div>
 
                 {/* Body Text / HTML */}
-                <div className="p-6 rounded-2xl bg-slate-900/60 border border-slate-800/80 text-slate-200 text-sm leading-relaxed whitespace-pre-wrap font-normal">
+                <div className="p-6 rounded-2xl bg-white border border-slate-200/90 text-slate-800 text-sm sm:text-[14.5px] leading-relaxed whitespace-pre-wrap font-normal shadow-xs">
                   {selectedThread.body}
                 </div>
 
                 {/* Attachments Section */}
                 {selectedThread.attachments && selectedThread.attachments.length > 0 && (
                   <div className="space-y-2.5 pt-2">
-                    <p className="text-xs font-bold text-slate-400 uppercase tracking-wider">Attachments ({selectedThread.attachments.length})</p>
+                    <p className="text-xs font-bold text-slate-500 uppercase tracking-wider">Attachments ({selectedThread.attachments.length})</p>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                       {selectedThread.attachments.map((att, idx) => (
                         <div
                           key={idx}
-                          className="p-3 rounded-xl bg-slate-900 border border-slate-800 flex items-center justify-between hover:border-purple-500/50 transition-colors"
+                          className="p-3 rounded-xl bg-white border border-slate-200 flex items-center justify-between hover:border-purple-300 shadow-xs transition-colors"
                         >
                           <div className="flex items-center gap-2.5 truncate">
-                            <FileIcon className="w-5 h-5 text-purple-400 shrink-0" />
+                            <FileIcon className="w-5 h-5 text-purple-600 shrink-0" />
                             <div className="truncate">
-                              <p className="text-xs font-medium text-white truncate">{att.name}</p>
-                              <p className="text-[11px] text-slate-500 font-mono">{(att.size / 1024).toFixed(1)} KB</p>
+                              <p className="text-xs font-bold text-slate-800 truncate">{att.name}</p>
+                              <p className="text-[11px] text-slate-400 font-mono">{(att.size / 1024).toFixed(1)} KB</p>
                             </div>
                           </div>
-                          <Button size="sm" variant="ghost" className="text-xs text-purple-400 hover:text-purple-300">
+                          <Button size="sm" variant="ghost" className="text-xs text-purple-600 hover:text-purple-700 hover:bg-purple-50">
                             Download
                           </Button>
                         </div>
@@ -756,17 +759,17 @@ export default function StandaloneWebmailPage() {
                 )}
 
                 {/* Quick Inline Reply Box */}
-                <div className="p-5 rounded-2xl bg-slate-900 border border-slate-800 space-y-3 mt-6">
-                  <div className="flex items-center gap-2 text-xs font-bold text-slate-400 uppercase">
-                    <Reply className="w-3.5 h-3.5 text-purple-400" />
-                    <span>Quick Reply as <strong className="text-purple-300 font-mono">{currentMailbox}</strong></span>
+                <div className="p-5 rounded-2xl bg-white border border-slate-200 shadow-sm space-y-3 mt-6">
+                  <div className="flex items-center gap-2 text-xs font-bold text-slate-500 uppercase">
+                    <Reply className="w-3.5 h-3.5 text-purple-600" />
+                    <span>Quick Reply as <strong className="text-purple-700 font-mono">{currentMailbox}</strong></span>
                   </div>
                   <Textarea
                     rows={4}
                     value={replyText}
                     onChange={(e) => setReplyText(e.target.value)}
                     placeholder={`Reply to ${selectedThread.from}...`}
-                    className="w-full bg-slate-950/80 border-slate-800 text-white text-xs sm:text-sm p-3.5 rounded-xl resize-none leading-relaxed"
+                    className="w-full bg-slate-50 border-slate-200 text-slate-900 text-xs sm:text-sm p-3.5 rounded-xl resize-none leading-relaxed focus:bg-white focus:border-purple-600"
                   />
                   <div className="flex justify-between items-center pt-1">
                     <div className="flex items-center gap-2">
@@ -775,14 +778,14 @@ export default function StandaloneWebmailPage() {
                         variant="outline"
                         size="sm"
                         onClick={() => fileInputRef.current?.click()}
-                        className="border-slate-800 bg-slate-950 text-slate-400 hover:text-white text-xs gap-1.5"
+                        className="border-slate-200 bg-white text-slate-600 hover:text-slate-900 text-xs gap-1.5 rounded-xl shadow-xs"
                       >
                         <Paperclip className="w-3.5 h-3.5" /> Attach
                       </Button>
                     </div>
                     <Button
                       onClick={handleSendReply}
-                      className="bg-purple-600 hover:bg-purple-500 text-white font-semibold text-xs sm:text-sm px-5 h-9 rounded-xl gap-2 shadow-md shadow-purple-600/20"
+                      className="bg-purple-600 hover:bg-purple-500 text-white font-semibold text-xs sm:text-sm px-5 h-9 rounded-xl gap-2 shadow-md shadow-purple-600/20 cursor-pointer"
                     >
                       <Send className="w-3.5 h-3.5" /> Send Reply
                     </Button>
@@ -793,14 +796,14 @@ export default function StandaloneWebmailPage() {
             </div>
           ) : (
             /* EMPTY PLACEHOLDER */
-            <div className="text-center p-12 text-slate-500 space-y-4">
-              <div className="w-16 h-16 rounded-2xl bg-slate-900 border border-slate-800 flex items-center justify-center mx-auto text-slate-600 shadow-inner">
-                <Mail className="w-8 h-8" />
+            <div className="text-center p-12 text-slate-400 space-y-4">
+              <div className="w-16 h-16 rounded-2xl bg-white border border-slate-200 flex items-center justify-center mx-auto text-slate-300 shadow-sm">
+                <Mail className="w-8 h-8 text-slate-400" />
               </div>
               <div>
-                <h3 className="text-base font-bold text-slate-300 font-display">No conversation selected</h3>
+                <h3 className="text-base font-bold text-slate-800 font-display">No conversation selected</h3>
                 <p className="text-xs text-slate-500 max-w-sm mx-auto mt-1">
-                  Select an email thread from the left or compose a new message using your official <strong className="text-slate-400">{currentMailbox}</strong> account.
+                  Select an email thread from the left or compose a new message using your official <strong className="text-slate-700 font-medium">{currentMailbox}</strong> account.
                 </p>
               </div>
             </div>
