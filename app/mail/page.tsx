@@ -2,6 +2,7 @@
 
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -288,9 +289,16 @@ export default function StandaloneWebmailPage() {
         
         {/* Brand & Subdomain Info (Dark Pillar Header) */}
         <div className="w-64 h-full bg-[#090D16] border-r border-slate-800/90 px-4 sm:px-5 flex items-center shrink-0">
-          <Link href="/" className="flex items-center gap-2.5 group">
-            <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-purple-600 via-indigo-600 to-blue-500 flex items-center justify-center text-white shadow-lg shadow-purple-600/30 group-hover:scale-105 transition-transform">
-              <Mail className="w-4 h-4" />
+          <Link href="/" className="flex items-center gap-3 group">
+            <div className="relative w-9 h-9 rounded-xl overflow-hidden shadow-lg shadow-purple-900/40 border border-purple-500/20 group-hover:scale-105 group-hover:border-purple-400/50 transition-all flex items-center justify-center bg-slate-900 shrink-0">
+              <Image
+                src="/fav-icon.png"
+                alt="AstroPixel"
+                width={36}
+                height={36}
+                className="w-full h-full object-cover"
+                priority
+              />
             </div>
             <div>
               <div className="flex items-center gap-1.5">
