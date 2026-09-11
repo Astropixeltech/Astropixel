@@ -1,9 +1,21 @@
 import { NextResponse, type NextRequest } from 'next/server';
 
 export async function middleware(request: NextRequest) {
-  const response = NextResponse.next();
-  // Standard session cookie check for admin routes
-  if (request.nextUrl.pathname.startsWith('/admin') && !request.nextUrl.pathname.startsWith('/login')) {
+  const host = request.headers.get('host') || '';
+  const pathname = request.nextUrl.pathname;
+
+  // 1. Subdomain Routing for mail.astropixel.tech / mail.localhost
+  const isMailSubdomain = host.startsWith('mail.') || host.includes('mail.astropixel.tech');
+  
+  if (isMailSubdomain) {
+    // If accessing root on mail subdomain, rewrite directly to /mail Webmail App
+    if (pathname === '/') {
+      return NextResponse.rewrite(new URL('/mail', request.url));
+    }
+  }
+
+  // 2. Standard session cookie check for admin routes
+  if (pathname.startsWith('/admin') && !pathname.startsWith('/login')) {
     const sessionToken = request.cookies.get('astropixel_session')?.value;
     // Allow access in development or if token exists
     if (!sessionToken && process.env.NODE_ENV === 'production') {
@@ -11,7 +23,7 @@ export async function middleware(request: NextRequest) {
     }
   }
 
-  return response;
+  return NextResponse.next();
 }
 
 export const config = {
