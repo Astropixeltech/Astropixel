@@ -420,9 +420,6 @@ export default function StandaloneWebmailPage() {
 
           <div className="flex-1 overflow-y-auto p-2 md:p-3 space-y-1">
             <div className="mb-2">
-              <p className="text-[10px] font-medium text-slate-400 uppercase tracking-widest px-2 mb-1.5">
-                Mailbox
-              </p>
               <div className="space-y-0.5">
                 {folders.map(f => {
                   const isActive = activeFolder === f.id && !isComposing;
@@ -461,11 +458,8 @@ export default function StandaloneWebmailPage() {
             </div>
 
             {/* Quick Labels Section */}
-            <div className="mb-2 pt-2">
-              <p className="text-[10px] font-medium text-slate-400 uppercase tracking-widest px-2 mb-1.5">
-                Website
-              </p>
-              <div className="space-y-0.5">
+            <div className="mb-2 pt-1 border-t border-slate-100">
+              <div className="space-y-0.5 pt-1">
                 <button
                   onClick={() => {
                     setSearchQuery('VIP');

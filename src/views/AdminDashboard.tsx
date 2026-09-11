@@ -966,9 +966,6 @@ function AdminDashboardInner() {
 
           {/* LMS Core */}
           <div className="mb-2">
-            <p className="hidden md:block text-[10px] font-medium text-muted-foreground/60 uppercase tracking-widest px-2 mb-1.5">
-              {language === 'bn' ? 'Ã Â¦ÂÃ Â¦Â²Ã Â¦ÂÃ Â¦Â®Ã Â¦ÂÃ Â¦Â¸' : 'LMS'}
-            </p>
             <div className="space-y-0.5">
               {lmsCoreItems.map((item) => renderNavButton(item, 'from-sky-500 to-cyan-500'))}
             </div>
@@ -977,9 +974,6 @@ function AdminDashboardInner() {
 
           {/* CMS Section */}
           <div className="mb-2">
-            <p className="hidden md:block text-[10px] font-medium text-muted-foreground/60 uppercase tracking-widest px-2 mb-1.5">
-              {language === 'bn' ? 'Ã Â¦â€œÃ Â¦Â¯Ã Â¦Â¼Ã Â§â€¡Ã Â¦Â¬Ã Â¦Â¸Ã Â¦Â¾Ã Â¦â€¡Ã Â¦Å¸' : 'Website'}
-            </p>
             <div className="space-y-0.5">
               {cmsItems.map((item) => renderNavButton(item, 'from-violet-500 to-purple-500'))}
             </div>
